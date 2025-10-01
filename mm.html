@@ -982,8 +982,7 @@
                         </div>
                     </div>
                     <div class="transaction-amount amount-${transaction.type}">
-                        ${transaction.type === 'income' ? '+' : '-'}${transaction.amount} ر.س
-                    </div>
+                        ${transaction.type === 'income' ? '+' : '-'}${transaction.amount} ريال
                     <div class="transaction-status status-${transaction.status}">
                         ${transaction.status === 'completed' ? 'مكتمل' : transaction.status === 'pending' ? 'قيد الانتظار' : 'فاشل'}
                     </div>
@@ -1019,7 +1018,7 @@
                 });
                 
                 displayTransactions();
-                showNotification(`تم تقديم طلب سحب بقيمة ${amount} ر.س`, 'success');
+                showNotification(`تم تقديم طلب سحب بقيمة ${amount} ريال`, 'success');
             }, 1000);
         }
 
@@ -1120,14 +1119,14 @@
             const change = Math.floor(Math.random() * 200) - 100; // بين -100 و +100
             const newBalance = currentBalance + change;
             
-            balanceElement.textContent = newBalance.toLocaleString('ar-SA') + ' ر.س';
+            balanceElement.textContent = newBalance.toLocaleString('ar-SA') + ' ر.ي';
             
             const changeElement = document.querySelector('.balance-change');
             if (change > 0) {
-                changeElement.innerHTML = `<i class="fas fa-arrow-up"></i><span>+${change} ر.س تحديث</span>`;
+                changeElement.innerHTML = `<i class="fas fa-arrow-up"></i><span>+${change} ر.ي تحديث</span>`;
                 changeElement.className = 'balance-change change-positive';
             } else {
-                changeElement.innerHTML = `<i class="fas fa-arrow-down"></i><span>${change} ر.س تحديث</span>`;
+                changeElement.innerHTML = `<i class="fas fa-arrow-down"></i><span>${change} ر.ي تحديث</span>`;
                 changeElement.className = 'balance-change change-negative';
             }
         }
