@@ -1,0 +1,1229 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - التقارير والإحصائيات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #c7d2fe;
+            --secondary: #06d6a0;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --surface: #ffffff;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-medical: linear-gradient(135deg, #6366f1 0%, #06d6a0 100%);
+            --gradient-premium: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --gradient-reports: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(99, 102, 241, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'El Messiri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #e0e7ff 100%);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        /* تصميم شريط الحالة المتميز */
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .status-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* التطبيق الرئيسي */
+        .premium-app {
+            max-width: 428px;
+            margin: 0 auto;
+            background: transparent;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* الخلفية الديناميكية */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* الهيدر المتميز */
+        .premium-header {
+            background: var(--gradient-medical);
+            color: white;
+            padding: 30px 24px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            box-shadow: var(--shadow-glass);
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .greeting-text h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .greeting-text p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .premium-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 0 20px 100px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 32px 0 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient-medical);
+            border-radius: 2px;
+        }
+
+        /* فلاتر التقارير */
+        .reports-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-medical);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* الإحصائيات الرئيسية */
+        .main-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .main-stat-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .main-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-medical);
+        }
+
+        .main-stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .main-stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .main-stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .stat-1 .main-stat-icon { background: var(--primary); }
+        .stat-2 .main-stat-icon { background: var(--success); }
+        .stat-3 .main-stat-icon { background: var(--warning); }
+        .stat-4 .main-stat-icon { background: #8b5cf6; }
+
+        .main-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--gradient-medical);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-stat-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-trend {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--error); }
+
+        /* مخططات مصغرة */
+        .mini-charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .mini-chart {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+        }
+
+        .mini-chart:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .chart-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .chart-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .chart-container {
+            height: 80px;
+            position: relative;
+            margin-top: 12px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 100%;
+            gap: 4px;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--primary-light);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            background: var(--primary);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* التقارير المتخصصة */
+        .specialized-reports {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .report-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-reports);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .report-card:hover::before {
+            opacity: 1;
+        }
+
+        .report-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .report-1 .report-icon { background: var(--primary); }
+        .report-2 .report-icon { background: var(--success); }
+        .report-3 .report-icon { background: var(--warning); }
+        .report-4 .report-icon { background: #8b5cf6; }
+
+        .report-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .report-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* تقارير سريعة */
+        .quick-reports {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quick-report-item {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-report-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-medical);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .quick-report-item:hover::before {
+            opacity: 1;
+        }
+
+        .quick-report-item:hover {
+            transform: translateX(-8px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .quick-report-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            background: var(--gradient-medical);
+        }
+
+        .quick-report-info {
+            flex: 1;
+        }
+
+        .quick-report-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+
+        .quick-report-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .quick-report-action {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* شريط التنقل السفلي المتميز */
+        .bottom-nav-premium {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            padding: 12px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            z-index: 1000;
+            max-width: 380px;
+            width: calc(100% - 40px);
+        }
+
+        .nav-item-premium {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            transition: var(--transition-smooth);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-item-premium.active {
+            background: var(--gradient-medical);
+            color: white;
+            transform: translateY(-8px);
+        }
+
+        .nav-item-premium.active .nav-label {
+            color: white;
+        }
+
+        .nav-icon-premium {
+            font-size: 20px;
+            margin-bottom: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-item-premium.active .nav-icon-premium {
+            transform: scale(1.2);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        /* زر الفعل العائم المتميز */
+        .fab-premium {
+            position: fixed;
+            bottom: 90px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-premium);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glass);
+            z-index: 999;
+            transition: var(--transition-bounce);
+            border: none;
+            cursor: pointer;
+        }
+
+        .fab-premium:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .fab-premium:active {
+            transform: scale(0.9) rotate(180deg);
+        }
+
+        /* التكيف مع الشاشات */
+        @media (max-width: 428px) {
+            .premium-app {
+                max-width: 100%;
+            }
+            
+            .main-stats,
+            .mini-charts,
+            .specialized-reports {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* تأثيرات الظهور */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* موجات الخلفية */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="%23ffffff"></path></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        /* مؤشر التحميل */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر المتميز -->
+        <div class="premium-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <div class="welcome-section">
+                    <div class="greeting-text">
+                        <h1>التقارير والإحصائيات 📊</h1>
+                        <p>تحليلات شاملة لأداء العيادة</p>
+                    </div>
+                    <div class="premium-avatar">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- فلاتر التقارير -->
+            <div class="section-title">فلاتر التقارير</div>
+            <div class="reports-filters">
+                <button class="filter-btn active" data-period="week">أسبوع</button>
+                <button class="filter-btn" data-period="month">شهر</button>
+                <button class="filter-btn" data-period="quarter">ربع سنوي</button>
+                <button class="filter-btn" data-period="year">سنوي</button>
+                <button class="filter-btn" data-period="custom">مخصص</button>
+            </div>
+
+            <!-- الإحصائيات الرئيسية -->
+            <div class="section-title">نظرة عامة</div>
+            <div class="main-stats">
+                <div class="main-stat-card stat-1 fade-in">
+                    <div class="main-stat-header">
+                        <div>
+                            <div class="main-stat-value">٤٨٬٢٠٠</div>
+                            <div class="main-stat-label">إجمالي الإيرادات</div>
+                        </div>
+                        <div class="main-stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+١٢٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+
+                <div class="main-stat-card stat-2 fade-in">
+                    <div class="main-stat-header">
+                        <div>
+                            <div class="main-stat-value">٣٢٤</div>
+                            <div class="main-stat-label">عدد المرضى</div>
+                        </div>
+                        <div class="main-stat-icon">
+                            <i class="fas fa-user-injured"></i>
+                        </div>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+٨٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+
+                <div class="main-stat-card stat-3 fade-in">
+                    <div class="main-stat-header">
+                        <div>
+                            <div class="main-stat-value">٩٤٪</div>
+                            <div class="main-stat-label">رضا المرضى</div>
+                        </div>
+                        <div class="main-stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+٢٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+
+                <div class="main-stat-card stat-4 fade-in">
+                    <div class="main-stat-header">
+                        <div>
+                            <div class="main-stat-value">١٨٫٥</div>
+                            <div class="main-stat-label">معدل الكفاءة</div>
+                        </div>
+                        <div class="main-stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>-٠٫٥ عن الشهر الماضي</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مخططات مصغرة -->
+            <div class="section-title">اتجاهات الأداء</div>
+            <div class="mini-charts">
+                <div class="mini-chart fade-in">
+                    <div class="chart-header">
+                        <div class="chart-title">المواعيد الأسبوعية</div>
+                        <div class="chart-value">٦٨</div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bar">
+                            <div class="bar" style="height: 60%"><div class="bar-label">أحد</div></div>
+                            <div class="bar" style="height: 80%"><div class="bar-label">اثنين</div></div>
+                            <div class="bar" style="height: 75%"><div class="bar-label">ثلاثاء</div></div>
+                            <div class="bar" style="height: 90%"><div class="bar-label">أربعاء</div></div>
+                            <div class="bar" style="height: 85%"><div class="bar-label">خميس</div></div>
+                            <div class="bar" style="height: 40%"><div class="bar-label">جمعة</div></div>
+                            <div class="bar" style="height: 20%"><div class="bar-label">سبت</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mini-chart fade-in">
+                    <div class="chart-header">
+                        <div class="chart-title">نوع الاستشارات</div>
+                        <div class="chart-value">١٠٠٪</div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bar">
+                            <div class="bar" style="height: 70%; background: var(--primary)"><div class="bar-label">حضوري</div></div>
+                            <div class="bar" style="height: 50%; background: var(--success)"><div class="bar-label">فيديو</div></div>
+                            <div class="bar" style="height: 30%; background: var(--warning)"><div class="bar-label">هاتفي</div></div>
+                            <div class="bar" style="height: 20%; background: #8b5cf6"><div class="bar-label">محادثة</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التقارير المتخصصة -->
+            <div class="section-title">تقارير متخصصة</div>
+            <div class="specialized-reports">
+                <div class="report-card report-1 fade-in" onclick="generateReport('financial')">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="report-name">التقرير المالي</div>
+                    <div class="report-description">تحليل الإيرادات والمصروفات</div>
+                </div>
+
+                <div class="report-card report-2 fade-in" onclick="generateReport('patients')">
+                    <div class="report-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="report-name">تقرير المرضى</div>
+                    <div class="report-description">إحصائيات وتقييمات المرضى</div>
+                </div>
+
+                <div class="report-card report-3 fade-in" onclick="generateReport('medical')">
+                    <div class="report-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="report-name">تقرير طبي</div>
+                    <div class="report-description">تحليل الحالات والأمراض</div>
+                </div>
+
+                <div class="report-card report-4 fade-in" onclick="generateReport('performance')">
+                    <div class="report-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="report-name">تقرير الأداء</div>
+                    <div class="report-description">مؤشرات كفاءة العيادة</div>
+                </div>
+            </div>
+
+            <!-- تقارير سريعة -->
+            <div class="section-title">تقارير سريعة</div>
+            <div class="quick-reports">
+                <div class="quick-report-item fade-in" onclick="generateQuickReport('today')">
+                    <div class="quick-report-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="quick-report-info">
+                        <div class="quick-report-title">تقرير اليوم</div>
+                        <div class="quick-report-desc">ملخص شامل لأنشطة اليوم</div>
+                    </div>
+                    <div class="quick-report-action">عرض</div>
+                </div>
+
+                <div class="quick-report-item fade-in" onclick="generateQuickReport('weekly')">
+                    <div class="quick-report-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="quick-report-info">
+                        <div class="quick-report-title">تقرير أسبوعي</div>
+                        <div class="quick-report-desc">تحليل أداء الأسبوع الحالي</div>
+                    </div>
+                    <div class="quick-report-action">عرض</div>
+                </div>
+
+                <div class="quick-report-item fade-in" onclick="generateQuickReport('monthly')">
+                    <div class="quick-report-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="quick-report-info">
+                        <div class="quick-report-title">تقرير شهري</div>
+                        <div class="quick-report-desc">إحصائيات الشهر بالكامل</div>
+                    </div>
+                    <div class="quick-report-action">عرض</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- زر الفعل العائم -->
+        <button class="fab-premium" id="exportBtn">
+            <i class="fas fa-download"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="appointments.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">المواعيد</div>
+            </a>
+            <a href="patients.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <div class="nav-label">المرضى</div>
+            </a>
+            <a href="reports.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="settings.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التقارير
+        const reportsData = {
+            financial: {
+                title: "التقرير المالي",
+                description: "تحليل شامل للإيرادات والمصروفات"
+            },
+            patients: {
+                title: "تقرير المرضى", 
+                description: "إحصائيات وتقييمات المرضى"
+            },
+            medical: {
+                title: "التقرير الطبي",
+                description: "تحليل الحالات والأمراض"
+            },
+            performance: {
+                title: "تقرير الأداء",
+                description: "مؤشرات كفاءة العيادة"
+            }
+        };
+
+        // عناصر DOM
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const exportBtn = document.getElementById('exportBtn');
+
+        // دالة لتغيير الفلتر
+        function changeFilter(period) {
+            showNotification(`جاري تحميل بيانات ${getPeriodName(period)}...`, 'info');
+            
+            // محاكاة تحميل البيانات
+            setTimeout(() => {
+                updateCharts(period);
+                showNotification(`تم تحميل بيانات ${getPeriodName(period)}`, 'success');
+            }, 1500);
+        }
+
+        // دالة لتوليد تقرير متخصص
+        function generateReport(type) {
+            const report = reportsData[type];
+            if (report) {
+                showNotification(`جاري إنشاء ${report.title}...`, 'info');
+                
+                // محاكاة إنشاء التقرير
+                setTimeout(() => {
+                    showNotification(`تم إنشاء ${report.title} بنجاح`, 'success');
+                    
+                    // محاكاة فتح التقرير
+                    setTimeout(() => {
+                        showNotification(`تم فتح ${report.title}`, 'info');
+                    }, 500);
+                }, 2000);
+            }
+        }
+
+        // دالة لتوليد تقرير سريع
+        function generateQuickReport(type) {
+            const quickReports = {
+                today: { name: "تقرير اليوم", time: "اليوم" },
+                weekly: { name: "التقرير الأسبوعي", time: "هذا الأسبوع" },
+                monthly: { name: "التقرير الشهري", time: "هذا الشهر" }
+            };
+            
+            const report = quickReports[type];
+            if (report) {
+                showNotification(`جاري إنشاء ${report.name}...`, 'info');
+                
+                // محاكاة إنشاء التقرير السريع
+                setTimeout(() => {
+                    showNotification(`تم إنشاء ${report.name} ل${report.time}`, 'success');
+                }, 1000);
+            }
+        }
+
+        // دالة لتصدير التقارير
+        function exportReports() {
+            showNotification('جاري تجهيز التقرير للتصدير...', 'info');
+            
+            // محاكاة التصدير
+            setTimeout(() => {
+                showNotification('تم تصدير التقرير بنجاح', 'success');
+            }, 2000);
+        }
+
+        // دالة لتحديث المخططات
+        function updateCharts(period) {
+            // محاكاة تحديث البيانات في المخططات
+            const bars = document.querySelectorAll('.chart-bar .bar');
+            bars.forEach(bar => {
+                const randomHeight = Math.floor(Math.random() * 80) + 20;
+                bar.style.height = `${randomHeight}%`;
+            });
+        }
+
+        // دالة للحصول على اسم الفترة
+        function getPeriodName(period) {
+            const periods = {
+                'week': 'الأسبوع',
+                'month': 'الشهر', 
+                'quarter': 'الربع السنوي',
+                'year': 'السنة',
+                'custom': 'الفترة المخصصة'
+            };
+            return periods[period] || period;
+        }
+
+        // دالة لعرض الإشعارات
+        function showNotification(message, type) {
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // إضافة الأنماط للإشعار
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#6366f1'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-soft);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إزالة الإشعار بعد 3 ثوانٍ
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // إضافة أنيميشن للإشعارات
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // تفعيل الفلاتر
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                changeFilter(button.getAttribute('data-period'));
+            });
+        });
+
+        // تفعيل زر التصدير
+        exportBtn.addEventListener('click', exportReports);
+
+        // محاكاة تحديث البيانات الحية
+        function updateLiveData() {
+            setInterval(() => {
+                // تحديث الإحصائيات الرئيسية
+                const stats = document.querySelectorAll('.main-stat-value');
+                if (stats.length >= 4) {
+                    // تحديث الإيرادات
+                    let revenue = parseInt(stats[0].textContent.replace(/[^\d]/g, ''));
+                    stats[0].textContent = (revenue + Math.floor(Math.random() * 1000)).toLocaleString('ar-SA');
+                    
+                    // تحديث عدد المرضى
+                    let patients = parseInt(stats[1].textContent.replace(/[^\d]/g, ''));
+                    stats[1].textContent = patients + Math.floor(Math.random() * 5);
+                    
+                    // تحديث نسبة الرضا
+                    let satisfaction = parseInt(stats[2].textContent);
+                    stats[2].textContent = Math.min(99, Math.max(85, satisfaction + Math.floor(Math.random() * 3) - 1)) + '%';
+                    
+                    // تحديث الكفاءة
+                    let efficiency = parseFloat(stats[3].textContent);
+                    stats[3].textContent = (efficiency + (Math.random() * 0.4 - 0.2)).toFixed(1);
+                }
+            }, 10000); // كل 10 ثوانٍ
+        }
+
+        // تفعيل تأثيرات الظهور عند التمرير
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+
+        // تحديث الوقت في شريط الحالة
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-EG', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.querySelector('.status-left span').textContent = timeString;
+        }
+
+        setInterval(updateTime, 60000);
+        updateTime();
+
+        // بدء محاكاة تحديث البيانات الحية
+        updateLiveData();
+    </script>
+</body>
+</html>
