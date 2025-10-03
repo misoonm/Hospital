@@ -759,7 +759,7 @@
                         <i class="fas fa-video"></i>
                     </div>
                     <div class="type-name">استشارة فيديو</div>
-                    <div class="type-price">150 ر.س</div>
+                    <div class="type-price">5000 ر.ي</div>
                     <div class="type-duration">30 دقيقة</div>
                 </div>
 
@@ -768,7 +768,7 @@
                         <i class="fas fa-phone-alt"></i>
                     </div>
                     <div class="type-name">استشارة صوتية</div>
-                    <div class="type-price">100 ر.س</div>
+                    <div class="type-price">3000 ر.ي</div>
                     <div class="type-duration">20 دقيقة</div>
                 </div>
 
@@ -777,7 +777,7 @@
                         <i class="fas fa-comments"></i>
                     </div>
                     <div class="type-name">استشارة محادثة</div>
-                    <div class="type-price">80 ر.س</div>
+                    <div class="type-price">2000 ر.ي</div>
                     <div class="type-duration">غير محدود</div>
                 </div>
 
@@ -786,7 +786,7 @@
                         <i class="fas fa-home"></i>
                     </div>
                     <div class="type-name">زيارة منزلية</div>
-                    <div class="type-price">300 ر.س</div>
+                    <div class="type-price">15000 ر.ي</div>
                     <div class="type-duration">60 دقيقة</div>
                 </div>
             </div>
@@ -904,7 +904,7 @@
                 duration: "30 دقيقة",
                 status: "waiting",
                 isOnline: true,
-                price: 150
+                price: 5000
             },
             {
                 id: 2,
@@ -917,7 +917,7 @@
                 duration: "20 دقيقة",
                 status: "active",
                 isOnline: true,
-                price: 100
+                price: 3000
             },
             {
                 id: 3,
@@ -930,7 +930,7 @@
                 duration: "غير محدد",
                 status: "waiting",
                 isOnline: false,
-                price: 80
+                price: 2000
             },
             {
                 id: 4,
@@ -943,7 +943,7 @@
                 duration: "60 دقيقة",
                 status: "completed",
                 isOnline: false,
-                price: 300
+                price: 15000
             }
         ];
 
@@ -1056,7 +1056,7 @@
                     duration: type === 'video' ? '30 دقيقة' : type === 'voice' ? '20 دقيقة' : type === 'home' ? '60 دقيقة' : 'غير محدد',
                     status: 'waiting',
                     isOnline: true,
-                    price: type === 'video' ? 150 : type === 'voice' ? 100 : type === 'home' ? 300 : 80
+                    price: type === 'video' ? 5000 : type === 'voice' ? 3000 : type === 'home' ? 15000 : 2000
                 };
                 
                 consultationsData.unshift(newConsultation);
