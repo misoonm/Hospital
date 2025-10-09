@@ -1,1 +1,1238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - حساب المستشفى</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #c7d2fe;
+            --secondary: #06d6a0;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --surface: #ffffff;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-medical: linear-gradient(135deg, #6366f1 0%, #06d6a0 100%);
+            --gradient-premium: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(99, 102, 241, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'El Messiri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #e0e7ff 100%);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* التطبيق الرئيسي */
+        .auth-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+        }
+
+        /* الهيدر */
+        .auth-header {
+            background: var(--gradient-medical);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .auth-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* المحتوى */
+        .auth-content {
+            padding: 40px 30px;
+        }
+
+        /* تبادل النماذج */
+        .form-toggle {
+            display: flex;
+            background: var(--light);
+            border-radius: var(--radius-lg);
+            padding: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            color: var(--text-secondary);
+        }
+
+        .toggle-btn.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: var(--shadow-card);
+        }
+
+        /* النماذج */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition-smooth);
+            background: var(--surface);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+        }
+
+        .form-input.success {
+            border-color: var(--success);
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-hint.error {
+            color: var(--error);
+        }
+
+        .form-hint.success {
+            color: var(--success);
+        }
+
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* تحميل الملفات */
+        .file-upload {
+            border: 2px dashed #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .file-upload input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-icon {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .file-text {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .file-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .file-preview {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+        }
+
+        .file-preview.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* زر الإرسال */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-medical);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* الروابط */
+        .auth-link {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-secondary);
+        }
+
+        .auth-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* رسائل التنبيه */
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            color: var(--success);
+            border: 1px solid #a7f3d0;
+            display: block;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: var(--error);
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        /* شريط التقدم */
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-medical);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* الخطوات */
+        .form-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition-smooth);
+        }
+
+        .step.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            white-space: nowrap;
+            color: var(--text-secondary);
+        }
+
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* مجموعة الأزرار */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* خيارات متعددة */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-item label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* التكيف مع الشاشات */
+        @media (max-width: 768px) {
+            .auth-container {
+                max-width: 100%;
+            }
+            
+            .auth-header {
+                padding: 30px 20px;
+            }
+            
+            .auth-content {
+                padding: 30px 20px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- الهيدر -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-hospital"></i>
+            </div>
+            <h1 class="auth-title">طبيب 24/7</h1>
+            <p class="auth-subtitle">نظام إدارة المستشفيات والعيادات</p>
+        </div>
+
+        <!-- المحتوى -->
+        <div class="auth-content">
+            <!-- تبادل النماذج -->
+            <div class="form-toggle">
+                <button class="toggle-btn active" id="loginToggle">تسجيل الدخول</button>
+                <button class="toggle-btn" id="registerToggle">إنشاء حساب مستشفى</button>
+            </div>
+
+            <!-- رسائل التنبيه -->
+            <div class="alert success" id="successAlert"></div>
+            <div class="alert error" id="errorAlert"></div>
+
+            <!-- نموذج تسجيل الدخول -->
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">اسم المستخدم</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="أدخل اسم المستخدم" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="أدخل كلمة المرور" required>
+                </div>
+
+                <button type="submit" class="submit-btn">تسجيل الدخول</button>
+
+                <div class="auth-link">
+                    ليس لديك حساب؟ <a href="#" id="showRegister">إنشاء حساب جديد</a>
+                </div>
+            </form>
+
+            <!-- نموذج إنشاء حساب -->
+            <form class="auth-form" id="registerForm">
+                <!-- شريط التقدم -->
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <!-- الخطوات -->
+                <div class="form-steps">
+                    <div class="step active" data-step="1">
+                        <span>1</span>
+                        <div class="step-label">البيانات الأساسية</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <span>2</span>
+                        <div class="step-label">البيانات الطبية</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <span>3</span>
+                        <div class="step-label">الوثائق والمستندات</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <span>4</span>
+                        <div class="step-label">حساب الدخول</div>
+                    </div>
+                </div>
+
+                <!-- الخطوة 1: البيانات الأساسية -->
+                <div class="form-step active" data-step="1">
+                    <div class="form-group">
+                        <label class="form-label">اسم المستشفى <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="hospitalName" placeholder="أدخل اسم المستشفى" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">صورة شعار المستشفى <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="hospitalLogo" accept="image/*" required>
+                            <div class="file-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="file-text">انقر لرفع شعار المستشفى</div>
+                            <div class="file-hint">PNG, JPG - الحد الأقصى 5MB</div>
+                        </div>
+                        <div class="file-preview" id="hospitalLogoPreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">رقم الهاتف الخاص <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="phone" placeholder="7XXXXXXX" pattern="[7][0-9]{8}" required>
+                        <div class="form-hint">يجب أن يبدأ برقم 7 ويتكون من 9 أرقام</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">رقم هاتف الطوارئ <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="emergencyPhone" placeholder="7XXXXXXX" pattern="[7][0-9]{8}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">رقم هاتف الإسعاف <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="ambulancePhone" placeholder="7XXXXXXX" pattern="[7][0-9]{8}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">عنوان المستشفى <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="address" placeholder="أدخل العنوان الكامل" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">نبذة عن المستشفى <span class="required">*</span></label>
+                        <textarea class="form-input" id="hospitalBio" placeholder="أدخل نبذة مختصرة عن المستشفى وخدماته" required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" disabled>السابق</button>
+                        <button type="button" class="btn btn-primary" id="nextToStep2">التالي</button>
+                    </div>
+                </div>
+
+                <!-- الخطوة 2: البيانات الطبية -->
+                <div class="form-step" data-step="2">
+                    <div class="form-group">
+                        <label class="form-label">الخدمات الطبية المتاحة <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service1" name="medicalServices" value="طوارئ">
+                                <label for="service1">طوارئ 24 ساعة</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service2" name="medicalServices" value="عمليات">
+                                <label for="service2">عمليات جراحية</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service3" name="medicalServices" value="عناية مركزة">
+                                <label for="service3">عناية مركزة</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service4" name="medicalServices" value="ولادة">
+                                <label for="service4">ولادة ورعاية مواليد</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service5" name="medicalServices" value="عناية قلب">
+                                <label for="service5">عناية قلبية</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service6" name="medicalServices" value="عناية مسنين">
+                                <label for="service6">رعاية المسنين</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service7" name="medicalServices" value="طب نفسي">
+                                <label for="service7">طب نفسي</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="service8" name="medicalServices" value="إعادة تأهيل">
+                                <label for="service8">إعادة تأهيل</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">التخصصات والأقسام المتاحة <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty1" name="specialties" value="باطنية">
+                                <label for="specialty1">باطنية</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty2" name="specialties" value="جراحة">
+                                <label for="specialty2">جراحة</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty3" name="specialties" value="أطفال">
+                                <label for="specialty3">أطفال</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty4" name="specialties" value="نساء وتوليد">
+                                <label for="specialty4">نساء وتوليد</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty5" name="specialties" value="عظام">
+                                <label for="specialty5">عظام</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty6" name="specialties" value="قلب">
+                                <label for="specialty6">قلب</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty7" name="specialties" value="أعصاب">
+                                <label for="specialty7">أعصاب</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty8" name="specialties" value="جلدية">
+                                <label for="specialty8">جلدية</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty9" name="specialties" value="أنف وأذن وحنجرة">
+                                <label for="specialty9">أنف وأذن وحنجرة</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty10" name="specialties" value="عيون">
+                                <label for="specialty10">عيون</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty11" name="specialties" value="نفسية">
+                                <label for="specialty11">نفسية</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specialty12" name="specialties" value="مسالك">
+                                <label for="specialty12">مسالك</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">أنواع الأشعات والفحوصات المتاحة <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan1" name="scans" value="أشعة سينية">
+                                <label for="scan1">أشعة سينية (X-Ray)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan2" name="scans" value="أشعة مقطعية">
+                                <label for="scan2">أشعة مقطعية (CT Scan)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan3" name="scans" value="رنين مغناطيسي">
+                                <label for="scan3">رنين مغناطيسي (MRI)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan4" name="scans" value="موجات فوق صوتية">
+                                <label for="scan4">موجات فوق صوتية (Ultrasound)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan5" name="scans" value="فحوصات دم">
+                                <label for="scan5">فحوصات الدم</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan6" name="scans" value="فحوصات بول">
+                                <label for="scan6">فحوصات البول</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan7" name="scans" value="تخطيط قلب">
+                                <label for="scan7">تخطيط القلب (ECG)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scan8" name="scans" value="منظار">
+                                <label for="scan8">منظار</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="prevToStep1">السابق</button>
+                        <button type="button" class="btn btn-primary" id="nextToStep3">التالي</button>
+                    </div>
+                </div>
+
+                <!-- الخطوة 3: الوثائق والمستندات -->
+                <div class="form-step" data-step="3">
+                    <div class="form-group">
+                        <label class="form-label">صور تراخيص وزارة الصحة <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="healthLicenses" accept="image/*" multiple required>
+                            <div class="file-icon">
+                                <i class="fas fa-file-medical"></i>
+                            </div>
+                            <div class="file-text">انقر لرفع صور التراخيص</div>
+                            <div class="file-hint">PNG, JPG - الحد الأقصى 5MB لكل صورة</div>
+                        </div>
+                        <div class="file-preview" id="healthLicensesPreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">صور الشهادات المعتمدة <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="certificates" accept="image/*" multiple required>
+                            <div class="file-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="file-text">انقر لرفع صور الشهادات</div>
+                            <div class="file-hint">PNG, JPG - الحد الأقصى 5MB لكل صورة</div>
+                        </div>
+                        <div class="file-preview" id="certificatesPreview"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="prevToStep2">السابق</button>
+                        <button type="button" class="btn btn-primary" id="nextToStep4">التالي</button>
+                    </div>
+                </div>
+
+                <!-- الخطوة 4: حساب الدخول -->
+                <div class="form-step" data-step="4">
+                    <div class="form-group">
+                        <label class="form-label">اسم المستخدم للإدمن <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="username" placeholder="اختر اسم مستخدم فريد" required>
+                        <div class="form-hint">يجب أن يكون اسم المستخدم فريداً ويتكون من 3 أحرف على الأقل</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">كلمة المرور <span class="required">*</span></label>
+                        <input type="password" class="form-input" id="password" placeholder="أنشئ كلمة مرور قوية" required>
+                        <div class="form-hint">يجب أن تحتوي على 8 أحرف على الأقل وتشمل أحرف وأرقام</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">تأكيد كلمة المرور <span class="required">*</span></label>
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                        <div class="form-hint" id="passwordMatchHint"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="prevToStep3">السابق</button>
+                        <button type="submit" class="btn btn-primary">إنشاء الحساب</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المستشفيات الافتراضية
+        const defaultHospitals = [
+            {
+                username: "مستشفى_الامل",
+                password: "Hope123",
+                hospitalName: "مستشفى الأمل التخصصي",
+                phone: "712345678",
+                emergencyPhone: "765432189",
+                ambulancePhone: "778899001",
+                address: "الرياض - حي العليا",
+                hospitalBio: "مستشفى الأمل التخصصي يقدم خدمات طبية متكاملة مع أحدث التقنيات وأفضل الكوادر الطبية",
+                medicalServices: ["طوارئ", "عمليات", "عناية مركزة"],
+                specialties: ["باطنية", "جراحة", "أطفال", "عظام"],
+                scans: ["أشعة سينية", "أشعة مقطعية", "فحوصات دم"]
+            },
+            {
+                username: "مستشفى_الشفاء", 
+                password: "Heal123",
+                hospitalName: "مستشفى الشفاء العام",
+                phone: "765432189",
+                emergencyPhone: "712345678",
+                ambulancePhone: "799887766",
+                address: "جدة - حي السلامة",
+                hospitalBio: "مستشفى الشفاء العام يقدم رعاية صحية شاملة للمرضى مع التركيز على الجودة والتميز",
+                medicalServices: ["طوارئ", "ولادة", "عناية قلب"],
+                specialties: ["نساء وتوليد", "قلب", "أعصاب", "جلدية"],
+                scans: ["موجات فوق صوتية", "رنين مغناطيسي", "تخطيط قلب"]
+            }
+        ];
+
+        // تخزين المستشفيات في localStorage
+        if (!localStorage.getItem('hospitals')) {
+            localStorage.setItem('hospitals', JSON.stringify(defaultHospitals));
+        }
+
+        // عناصر DOM
+        const loginToggle = document.getElementById('loginToggle');
+        const registerToggle = document.getElementById('registerToggle');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const progressFill = document.getElementById('progressFill');
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+
+        // تبديل النماذج
+        loginToggle.addEventListener('click', () => {
+            loginToggle.classList.add('active');
+            registerToggle.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            clearAlerts();
+        });
+
+        registerToggle.addEventListener('click', () => {
+            registerToggle.classList.add('active');
+            loginToggle.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            clearAlerts();
+        });
+
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerToggle.click();
+        });
+
+        // إدارة الخطوات
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressFill.style.width = `${progress}%`;
+            
+            // تحديث الخطوات
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum === currentStep) {
+                    step.classList.add('active');
+                } else if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            // إظهار/إخفاء الخطوات
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.remove('active');
+                if (parseInt(step.getAttribute('data-step')) === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // التنقل بين الخطوات
+        document.getElementById('nextToStep2').addEventListener('click', () => {
+            if (validateStep1()) {
+                currentStep = 2;
+                updateProgress();
+            }
+        });
+
+        document.getElementById('nextToStep3').addEventListener('click', () => {
+            if (validateStep2()) {
+                currentStep = 3;
+                updateProgress();
+            }
+        });
+
+        document.getElementById('nextToStep4').addEventListener('click', () => {
+            if (validateStep3()) {
+                currentStep = 4;
+                updateProgress();
+            }
+        });
+
+        document.getElementById('prevToStep1').addEventListener('click', () => {
+            currentStep = 1;
+            updateProgress();
+        });
+
+        document.getElementById('prevToStep2').addEventListener('click', () => {
+            currentStep = 2;
+            updateProgress();
+        });
+
+        document.getElementById('prevToStep3').addEventListener('click', () => {
+            currentStep = 3;
+            updateProgress();
+        });
+
+        // التحقق من الخطوة 1
+        function validateStep1() {
+            const hospitalName = document.getElementById('hospitalName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const emergencyPhone = document.getElementById('emergencyPhone').value.trim();
+            const ambulancePhone = document.getElementById('ambulancePhone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const hospitalBio = document.getElementById('hospitalBio').value.trim();
+            const hospitalLogo = document.getElementById('hospitalLogo').files.length;
+
+            if (!hospitalName) {
+                showError('يرجى إدخال اسم المستشفى');
+                return false;
+            }
+
+            if (!hospitalLogo) {
+                showError('يرجى رفع شعار المستشفى');
+                return false;
+            }
+
+            if (!phone.match(/^7[0-9]{8}$/)) {
+                showError('يرجى إدخال رقم هاتف خاص صحيح يبدأ بـ 7 ويتكون من 9 أرقام');
+                return false;
+            }
+
+            if (!emergencyPhone.match(/^7[0-9]{8}$/)) {
+                showError('يرجى إدخال رقم هاتف طوارئ صحيح يبدأ بـ 7 ويتكون من 9 أرقام');
+                return false;
+            }
+
+            if (!ambulancePhone.match(/^7[0-9]{8}$/)) {
+                showError('يرجى إدخال رقم هاتف إسعاف صحيح يبدأ بـ 7 ويتكون من 9 أرقام');
+                return false;
+            }
+
+            if (!address) {
+                showError('يرجى إدخال عنوان المستشفى');
+                return false;
+            }
+
+            if (!hospitalBio) {
+                showError('يرجى إدخال نبذة عن المستشفى');
+                return false;
+            }
+
+            return true;
+        }
+
+        // التحقق من الخطوة 2
+        function validateStep2() {
+            const medicalServices = document.querySelectorAll('input[name="medicalServices"]:checked');
+            const specialties = document.querySelectorAll('input[name="specialties"]:checked');
+            const scans = document.querySelectorAll('input[name="scans"]:checked');
+
+            if (medicalServices.length === 0) {
+                showError('يرجى اختيار خدمة طبية واحدة على الأقل');
+                return false;
+            }
+
+            if (specialties.length === 0) {
+                showError('يرجى اختيار تخصص واحد على الأقل');
+                return false;
+            }
+
+            if (scans.length === 0) {
+                showError('يرجى اختيار نوع أشعة أو فحص واحد على الأقل');
+                return false;
+            }
+
+            return true;
+        }
+
+        // التحقق من الخطوة 3
+        function validateStep3() {
+            const healthLicenses = document.getElementById('healthLicenses').files.length;
+            const certificates = document.getElementById('certificates').files.length;
+
+            if (healthLicenses === 0) {
+                showError('يرجى رفع صور تراخيص وزارة الصحة');
+                return false;
+            }
+
+            if (certificates === 0) {
+                showError('يرجى رفع صور الشهادات المعتمدة');
+                return false;
+            }
+
+            return true;
+        }
+
+        // معاينة الملفات
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const previewId = this.id + 'Preview';
+                const preview = document.getElementById(previewId);
+                
+                if (this.files.length > 0) {
+                    let fileNames = [];
+                    for (let i = 0; i < this.files.length; i++) {
+                        const file = this.files[i];
+                        fileNames.push(`${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+                    }
+                    
+                    preview.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <span>${fileNames.join('<br>')}</span>
+                    `;
+                    preview.classList.add('show');
+                } else {
+                    preview.classList.remove('show');
+                }
+            });
+        });
+
+        // التحقق من تطابق كلمة المرور
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const hint = document.getElementById('passwordMatchHint');
+
+            if (confirmPassword) {
+                if (password === confirmPassword) {
+                    hint.textContent = 'كلمة المرور متطابقة';
+                    hint.className = 'form-hint success';
+                } else {
+                    hint.textContent = 'كلمة المرور غير متطابقة';
+                    hint.className = 'form-hint error';
+                }
+            } else {
+                hint.textContent = '';
+                hint.className = 'form-hint';
+            }
+        });
+
+        // تسجيل الدخول
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const hospitals = JSON.parse(localStorage.getItem('hospitals') || '[]');
+            const hospital = hospitals.find(h => h.username === username && h.password === password);
+
+            if (hospital) {
+                showSuccess('تم تسجيل الدخول بنجاح!');
+                // هنا يمكن التوجيه إلى الصفحة الرئيسية
+                setTimeout(() => {
+                    window.location.href = 'hospital-dashboard.html';
+                }, 2000);
+            } else {
+                showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+            }
+        });
+
+        // إنشاء حساب
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateStep4()) return;
+
+            const hospitals = JSON.parse(localStorage.getItem('hospitals') || '[]');
+            const username = document.getElementById('username').value.trim();
+
+            // التحقق من عدم تكرار اسم المستخدم
+            if (hospitals.find(h => h.username === username)) {
+                showError('اسم المستخدم موجود مسبقاً، يرجى اختيار اسم آخر');
+                return;
+            }
+
+            // جمع البيانات من الخيارات المتعددة
+            const medicalServices = Array.from(document.querySelectorAll('input[name="medicalServices"]:checked'))
+                .map(input => input.value);
+                
+            const specialties = Array.from(document.querySelectorAll('input[name="specialties"]:checked'))
+                .map(input => input.value);
+                
+            const scans = Array.from(document.querySelectorAll('input[name="scans"]:checked'))
+                .map(input => input.value);
+
+            // إنشاء حساب جديد
+            const newHospital = {
+                username: username,
+                password: document.getElementById('password').value,
+                hospitalName: document.getElementById('hospitalName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+                ambulancePhone: document.getElementById('ambulancePhone').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                hospitalBio: document.getElementById('hospitalBio').value.trim(),
+                medicalServices: medicalServices,
+                specialties: specialties,
+                scans: scans,
+                registrationDate: new Date().toISOString()
+            };
+
+            hospitals.push(newHospital);
+            localStorage.setItem('hospitals', JSON.stringify(hospitals));
+
+            showSuccess('تم إنشاء حساب المستشفى بنجاح! سيتم مراجعة المستندات وتفعيل الحساب خلال 24 ساعة');
+            
+            setTimeout(() => {
+                registerToggle.classList.remove('active');
+                loginToggle.classList.add('active');
+                registerForm.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.reset();
+                currentStep = 1;
+                updateProgress();
+                clearAlerts();
+            }, 3000);
+        });
+
+        // التحقق من الخطوة 4
+        function validateStep4() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (username.length < 3) {
+                showError('اسم المستخدم يجب أن يتكون من 3 أحرف على الأقل');
+                return false;
+            }
+
+            if (password.length < 8) {
+                showError('كلمة المرور يجب أن تتكون من 8 أحرف على الأقل');
+                return false;
+            }
+
+            if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
+                showError('كلمة المرور يجب أن تحتوي على أحرف وأرقام');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                showError('كلمة المرور غير متطابقة');
+                return false;
+            }
+
+            return true;
+        }
+
+        // دوال المساعدة
+        function showSuccess(message) {
+            successAlert.textContent = message;
+            successAlert.style.display = 'block';
+            errorAlert.style.display = 'none';
+        }
+
+        function showError(message) {
+            errorAlert.textContent = message;
+            errorAlert.style.display = 'block';
+            successAlert.style.display = 'none';
+        }
+
+        function clearAlerts() {
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+        }
+
+        // التهيئة الأولية
+        updateProgress();
+    </script>
+</body>
+</html>
