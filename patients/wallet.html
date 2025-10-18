@@ -1,0 +1,3218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحساب المالي - طبيب 24/7</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --secondary: #dc2626;
+            --accent: #f59e0b;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --dark: #1e1b4b;
+            --light: #f0f9ff;
+            --surface: #ffffff;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-light: #64748b;
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+            --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+            --gradient-finance: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'El Messiri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* تصميم شريط الحالة المتميز */
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .status-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* التطبيق الرئيسي */
+        .premium-app {
+            max-width: 428px;
+            margin: 0 auto;
+            background: transparent;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* الخلفية الديناميكية */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* الهيدر المالي المتقدم */
+        .financial-header {
+            background: var(--gradient-hospital);
+            color: white;
+            padding: 40px 24px 30px;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            box-shadow: var(--shadow-glass);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+        }
+
+        .client-info {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .client-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .client-name {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .account-number {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .balance-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 2;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .balance-label {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .balance-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .balance-btn {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 90px;
+            justify-content: center;
+        }
+
+        .balance-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* المحتوى الرئيسي */
+        .financial-content {
+            padding: 25px 20px;
+            padding-bottom: 120px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 30px 0 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient-hospital);
+            border-radius: 2px;
+        }
+
+        /* طرق الدفع المتقدمة */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px 12px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-bounce);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-method::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-hospital);
+            transform: scaleX(0);
+            transition: var(--transition-smooth);
+        }
+
+        .payment-method:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .payment-method:hover::before {
+            transform: scaleX(1);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .payment-method.active::before {
+            transform: scaleX(1);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            background: var(--gradient-hospital);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+            color: white;
+            transition: var(--transition-smooth);
+        }
+
+        .payment-method:hover .payment-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .payment-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .payment-balance {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .create-wallet-btn {
+            grid-column: span 3;
+            background: var(--gradient-hospital);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .create-wallet-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-large);
+        }
+
+        /* الفواتير والمعاملات المتقدمة */
+        .transactions-section {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 30px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: var(--light);
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .transaction-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+        }
+
+        .filter-btn {
+            background: var(--light);
+            border: 1px solid #e2e8f0;
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-hospital);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .filter-count {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+            border-right: 4px solid var(--primary);
+            transition: var(--transition-bounce);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .transaction-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: var(--gradient-hospital);
+            opacity: 0.1;
+            transition: var(--transition-smooth);
+        }
+
+        .transaction-item:hover {
+            background: #f1f5f9;
+            transform: translateX(-8px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .transaction-item:hover::before {
+            width: 100%;
+        }
+
+        .transaction-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .icon-consultation { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+        .icon-appointment { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .icon-hospital { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .icon-pharmacy { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .icon-insurance { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .transaction-details {
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .transaction-title {
+            font-weight: 800;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .transaction-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .transaction-meta {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            gap: 15px;
+        }
+
+        .transaction-ref {
+            background: var(--light);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        .transaction-amount {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .transaction-status {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* الحركات الأخيرة المتقدمة */
+        .recent-activity {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 30px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background: #f1f5f9;
+            transform: translateX(-4px);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--primary);
+            transition: var(--transition-smooth);
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.1);
+            background: var(--gradient-hospital);
+            color: white;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .activity-amount {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .amount-positive { color: var(--success); }
+        .amount-negative { color: var(--error); }
+
+        /* التقرير المالي المتقدم */
+        .financial-report {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid #f1f5f9;
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .report-stat {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: var(--radius-lg);
+            border: 1px solid #e2e8f0;
+            transition: var(--transition-smooth);
+        }
+
+        .report-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .report-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .report-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .report-chart-container {
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        /* النوافذ المنبثقة المتقدمة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow-large);
+            animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .close-modal:hover {
+            color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition-smooth);
+            background: white;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            flex: 1;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-hospital);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text-primary);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* شريط التنقل السفلي المتقدم */
+        .bottom-nav-premium {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            padding: 15px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            z-index: 1000;
+            max-width: 380px;
+            width: calc(100% - 40px);
+        }
+
+        .nav-item-premium {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            transition: var(--transition-bounce);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-item-premium.active {
+            background: var(--gradient-hospital);
+            color: white;
+            transform: translateY(-10px);
+        }
+
+        .nav-item-premium.active .nav-label {
+            color: white;
+        }
+
+        .nav-item-premium.active::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            width: 20px;
+            height: 3px;
+            background: var(--gradient-hospital);
+            border-radius: 2px;
+        }
+
+        .nav-icon-premium {
+            font-size: 20px;
+            margin-bottom: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-item-premium.active .nav-icon-premium {
+            transform: scale(1.2);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        /* حالة عدم وجود حساب */
+        .no-account-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            margin: 40px 20px;
+        }
+
+        .no-account-icon {
+            font-size: 64px;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+        }
+
+        .no-account-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .no-account-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .create-account-btn {
+            background: var(--gradient-hospital);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: var(--radius-lg);
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .create-account-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-large);
+        }
+
+        /* التحميل والحركات */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* الإشعارات */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-large);
+            z-index: 3000;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* أنماط جديدة للمحافظ والبطاقات */
+        .wallet-verification {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .verification-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .verification-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #f59e0b;
+            z-index: 1;
+        }
+
+        .verification-step {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .step-number.active {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .wallet-qr {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: #f8fafc;
+            border: 2px dashed #d1d5db;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .card-preview {
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            color: white;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .card-number {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .card-holder, .card-expiry {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+        }
+
+        .payment-security {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin: 15px 0;
+            border-right: 4px solid var(--success);
+        }
+
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .transaction-limits {
+            background: var(--light);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .limit-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .limit-item:last-child {
+            border-bottom: none;
+        }
+
+        .limit-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .limit-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* التكيف مع الشاشات */
+        @media (max-width: 428px) {
+            .payment-methods {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .create-wallet-btn {
+                grid-column: span 2;
+            }
+            
+            .report-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .verification-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .verification-steps::before {
+                display: none;
+            }
+            
+            .security-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- حالة عدم وجود حساب -->
+        <div id="noAccountState" class="no-account-state">
+            <div class="no-account-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="no-account-title">لا يوجد حساب مالي</div>
+            <div class="no-account-description">
+                أنشئ حسابك المالي الآن للتمتع بجميع خدماتنا<br>
+                وإدارة معاملاتك المالية بكل سهولة وأمان
+            </div>
+            <button class="create-account-btn" onclick="openModal('createAccountModal')">
+                <i class="fas fa-plus-circle"></i>
+                إنشاء حساب مالي
+            </button>
+        </div>
+
+        <!-- الهيدر المالي (يظهر بعد إنشاء الحساب) -->
+        <div id="financialHeader" class="financial-header" style="display: none;">
+            <div class="header-background"></div>
+            <div class="client-info">
+                <div class="client-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="client-name" id="displayUserName">---</div>
+                <div class="account-number" id="displayAccountNumber">---</div>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-label">الرصيد المتاح</div>
+                <div class="balance-amount pulse" id="displayBalance">0 ر.ي</div>
+                <div class="balance-actions">
+                    <button class="balance-btn" onclick="openModal('depositModal')">
+                        <i class="fas fa-download"></i>
+                        إيداع
+                    </button>
+                    <button class="balance-btn" onclick="openModal('withdrawModal')">
+                        <i class="fas fa-upload"></i>
+                        سحب
+                    </button>
+                    <button class="balance-btn" onclick="openModal('transferModal')">
+                        <i class="fas fa-exchange-alt"></i>
+                        تحويل
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي (يظهر بعد إنشاء الحساب) -->
+        <div id="financialContent" class="financial-content" style="display: none;">
+            <!-- طرق الدفع -->
+            <div class="section-title">طرق الدفع</div>
+            <div class="payment-methods" id="paymentMethods">
+                <!-- سيتم تعبئتها بالجافاسكربت -->
+            </div>
+
+            <!-- الفواتير -->
+            <div class="section-title">الفواتير</div>
+            <div class="transactions-section">
+                <div class="section-header">
+                    <div class="section-actions">
+                        <button class="action-btn" onclick="downloadStatement()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                        <button class="action-btn" onclick="refreshTransactions()">
+                            <i class="fas fa-sync-alt"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+                <div class="transaction-filters">
+                    <button class="filter-btn active" onclick="filterTransactions('all')">
+                        الكل <span class="filter-count" id="countAll">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('appointments')">
+                        المواعيد <span class="filter-count" id="countAppointments">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('consultations')">
+                        الاستشارات <span class="filter-count" id="countConsultations">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('pharmacy')">
+                        الصيدليات <span class="filter-count" id="countPharmacy">0</span>
+                    </button>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- الحركات الأخيرة -->
+            <div class="section-title">الحركات الأخيرة</div>
+            <div class="recent-activity">
+                <div class="activity-list" id="activityList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- التقرير المالي -->
+            <div class="section-title">التقرير المالي</div>
+            <div class="financial-report">
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-value" id="monthlyExpenses">0 ر.ي</div>
+                        <div class="report-label">المصروفات هذا الشهر</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="monthlyIncome">0 ر.ي</div>
+                        <div class="report-label">الإيداعات هذا الشهر</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="totalTransactions">0</div>
+                        <div class="report-label">عدد المعاملات</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="digitalWallets">0%</div>
+                        <div class="report-label">محافظ رقمية</div>
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="financeChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة إنشاء الحساب -->
+        <div id="createAccountModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إنشاء حساب مالي</div>
+                    <button class="close-modal" onclick="closeModal('createAccountModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الاسم الكامل *</label>
+                    <input type="text" class="form-input" id="fullName" placeholder="أدخل اسمك الكامل" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني *</label>
+                    <input type="email" class="form-input" id="email" placeholder="example@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف *</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="05XXXXXXXX" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">نوع الهوية *</label>
+                        <select class="form-select" id="idType" required>
+                            <option value="">اختر نوع الهوية</option>
+                            <option value="national_id">هوية وطنية</option>
+                            <option value="passport">جواز سفر</option>
+                            <option value="residence">إقامة</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الهوية *</label>
+                        <input type="text" class="form-input" id="idNumber" placeholder="رقم الهوية" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">تاريخ الميلاد *</label>
+                    <input type="date" class="form-input" id="birthDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">العنوان</label>
+                    <textarea class="form-textarea" id="address" placeholder="العنوان التفصيلي"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور *</label>
+                    <input type="password" class="form-input" id="password" placeholder="كلمة مرور قوية" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">تأكيد كلمة المرور *</label>
+                    <input type="password" class="form-input" id="confirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('createAccountModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="createAccount()">إنشاء الحساب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة الإيداع -->
+        <div id="depositModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إيداع أموال</div>
+                    <button class="close-modal" onclick="closeModal('depositModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="depositAmount" placeholder="أدخل المبلغ بالريال اليمني" min="1000" step="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">طريقة الدفع *</label>
+                    <select class="form-select" id="depositMethod" required>
+                        <option value="">اختر طريقة الدفع</option>
+                        <option value="jawali">جوالي</option>
+                        <option value="jeeb">جيب</option>
+                        <option value="felousak">فلوسك</option>
+                        <option value="onecash">ون كاش</option>
+                        <option value="yemen_net">يمن نت</option>
+                        <option value="mobile_money">موبايل موني</option>
+                        <option value="kuraimi">محفظة الكريمي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم المحفظة *</label>
+                    <input type="text" class="form-input" id="depositWalletNumber" placeholder="أدخل رقم المحفظة" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من الإيداع</label>
+                    <select class="form-select" id="depositPurpose">
+                        <option value="general">رصيد عام</option>
+                        <option value="appointments">لدفع المواعيد</option>
+                        <option value="medications">لشراء الأدوية</option>
+                        <option value="consultations">للاستشارات الطبية</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('depositModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processDeposit()">إيداع</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة السحب -->
+        <div id="withdrawModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">سحب أموال</div>
+                    <button class="close-modal" onclick="closeModal('withdrawModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="withdrawAmount" placeholder="أدخل المبلغ بالريال اليمني" min="1000" step="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">طريقة السحب *</label>
+                    <select class="form-select" id="withdrawMethod" required onchange="showWithdrawDetails()">
+                        <option value="">اختر طريقة السحب</option>
+                        <option value="bank_transfer">تحويل بنكي</option>
+                        <option value="wallet">إلى محفظة رقمية</option>
+                        <option value="cash">سحب نقدي</option>
+                    </select>
+                </div>
+                
+                <div id="withdrawBankDetails" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">اسم البنك *</label>
+                        <input type="text" class="form-input" id="bankName" placeholder="اسم البنك">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الحساب البنكي *</label>
+                        <input type="text" class="form-input" id="bankAccount" placeholder="رقم الحساب">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">اسم صاحب الحساب *</label>
+                        <input type="text" class="form-input" id="accountHolder" placeholder="اسم صاحب الحساب">
+                    </div>
+                </div>
+                
+                <div id="withdrawWalletDetails" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">رقم المحفظة *</label>
+                        <input type="text" class="form-input" id="withdrawWalletNumber" placeholder="رقم المحفظة">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من السحب</label>
+                    <input type="text" class="form-input" id="withdrawPurpose" placeholder="الغرض من السحب">
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('withdrawModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processWithdrawal()">سحب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة التحويل -->
+        <div id="transferModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تحويل أموال</div>
+                    <button class="close-modal" onclick="closeModal('transferModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="transferAmount" placeholder="أدخل المبلغ بالريال اليمني" min="100" step="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">نوع المستلم *</label>
+                    <select class="form-select" id="recipientType" required>
+                        <option value="">اختر نوع المستلم</option>
+                        <option value="doctor">طبيب</option>
+                        <option value="hospital">مستشفى</option>
+                        <option value="pharmacy">صيدلية</option>
+                        <option value="lab">مختبر</option>
+                        <option value="individual">فرد</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم المستلم *</label>
+                    <input type="text" class="form-input" id="recipientName" placeholder="اسم المستلم" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم حساب المستلم *</label>
+                    <input type="text" class="form-input" id="recipientAccount" placeholder="رقم الحساب أو المحفظة" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من التحويل *</label>
+                    <input type="text" class="form-input" id="transferPurpose" placeholder="الغرض من التحويل" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية</label>
+                    <textarea class="form-textarea" id="transferNotes" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('transferModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processTransfer()">تحويل</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة ربط محفظة -->
+        <div id="linkWalletModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">ربط محفظة رقمية</div>
+                    <button class="close-modal" onclick="closeModal('linkWalletModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اختر نوع المحفظة *</label>
+                    <select class="form-select" id="walletType" required onchange="showWalletFields()">
+                        <option value="">اختر المحفظة</option>
+                        <option value="jawali">جوالي</option>
+                        <option value="jeeb">جيب</option>
+                        <option value="felousak">فلوسك</option>
+                        <option value="onecash">ون كاش</option>
+                        <option value="yemen_net">يمن نت</option>
+                        <option value="mobile_money">موبايل موني</option>
+                        <option value="kuraimi">محفظة الكريمي</option>
+                    </select>
+                </div>
+                
+                <div id="walletFields">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+                
+                <div class="wallet-verification">
+                    <h4 style="color: #92400e; margin-bottom: 15px;">تفعيل المحفظة</h4>
+                    <div class="verification-steps">
+                        <div class="verification-step">
+                            <div class="step-number active">1</div>
+                            <div class="step-label">إدخال البيانات</div>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">2</div>
+                            <div class="step-label">التحقق</div>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">3</div>
+                            <div class="step-label">مفعلة</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('linkWalletModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="linkWallet()">ربط المحفظة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة بطاقة -->
+        <div id="addCardModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة بطاقة دفع</div>
+                    <button class="close-modal" onclick="closeModal('addCardModal')">×</button>
+                </div>
+                
+                <div class="card-preview">
+                    <div class="card-logo">
+                        <i class="fab fa-cc-visa"></i>
+                    </div>
+                    <div class="card-chip"></div>
+                    <div class="card-number" id="previewCardNumber">**** **** **** ****</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <div>حامل البطاقة</div>
+                            <div id="previewCardHolder">الاسم الكامل</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div>انتهاء الصلاحية</div>
+                            <div id="previewCardExpiry">MM/YY</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم البطاقة *</label>
+                    <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                           maxlength="19" oninput="formatCardNumber()" onkeyup="updateCardPreview()" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">انتهاء الصلاحية *</label>
+                        <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" 
+                               maxlength="5" oninput="formatExpiry()" onkeyup="updateCardPreview()" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">CVV *</label>
+                        <input type="text" class="form-input" id="cardCvv" placeholder="123" 
+                               maxlength="3" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم حامل البطاقة *</label>
+                    <input type="text" class="form-input" id="cardHolder" placeholder="كما هو مدون على البطاقة" 
+                           onkeyup="updateCardPreview()" required>
+                </div>
+                
+                <div class="payment-security">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                        <span style="font-weight: 700; color: var(--text-primary);">مدفوعات آمنة</span>
+                    </div>
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <i class="fas fa-lock"></i>
+                            <span>مشفر بـ SSL</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-user-shield"></i>
+                            <span>حماية من الاحتيال</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>معتمد من PCI</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-clock"></i>
+                            <span>مراقبة 24/7</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="transaction-limits">
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للإيداع</span>
+                        <span class="limit-value">50,000 ر.ي</span>
+                    </div>
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للسحب</span>
+                        <span class="limit-value">20,000 ر.ي</span>
+                    </div>
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للتحويل</span>
+                        <span class="limit-value">30,000 ر.ي</span>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addCardModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="addCard()">إضافة البطاقة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تأكيد الدفع -->
+        <div id="paymentConfirmModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تأكيد العملية</div>
+                    <button class="close-modal" onclick="closeModal('paymentConfirmModal')">×</button>
+                </div>
+                
+                <div id="paymentDetails">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور *</label>
+                    <input type="password" class="form-input" id="transactionPassword" placeholder="أدخل كلمة المرور" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رمز التحقق *</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" class="form-input" id="verificationCode" placeholder="أدخل الرمز" style="flex: 1;" required>
+                        <button type="button" class="btn btn-secondary" onclick="sendVerificationCode()" style="white-space: nowrap;">
+                            إرسال الرمز
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('paymentConfirmModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="confirmPayment()">تأكيد العملية</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="appointments.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">المواعيد</div>
+            </a>
+            <a href="financial.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المال</div>
+            </a>
+            <a href="chat.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="nav-label">المحادثة</div>
+            </a>
+            <a href="settings.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <script>// نظام التكامل مع المحافظ والبطاقات
+class PaymentIntegration {
+    constructor() {
+        this.walletProviders = {
+            'jawali': {
+                name: 'جوالي',
+                logo: 'fa-mobile-alt',
+                verificationUrl: 'https://api.jawali.com/verify',
+                depositUrl: 'https://api.jawali.com/deposit',
+                withdrawUrl: 'https://api.jawali.com/withdraw',
+                limits: { daily: 50000, perTransaction: 10000 }
+            },
+            'jeeb': {
+                name: 'جيب',
+                logo: 'fa-money-bill-wave',
+                verificationUrl: 'https://api.jeeb.com/verify',
+                depositUrl: 'https://api.jeeb.com/deposit',
+                withdrawUrl: 'https://api.jeeb.com/withdraw',
+                limits: { daily: 40000, perTransaction: 8000 }
+            },
+            'felousak': {
+                name: 'فلوسك',
+                logo: 'fa-coins',
+                verificationUrl: 'https://api.felousak.com/verify',
+                depositUrl: 'https://api.felousak.com/deposit',
+                withdrawUrl: 'https://api.felousak.com/withdraw',
+                limits: { daily: 30000, perTransaction: 5000 }
+            },
+            'onecash': {
+                name: 'ون كاش',
+                logo: 'fa-qrcode',
+                verificationUrl: 'https://api.onecash.com/verify',
+                depositUrl: 'https://api.onecash.com/deposit',
+                withdrawUrl: 'https://api.onecash.com/withdraw',
+                limits: { daily: 45000, perTransaction: 9000 }
+            },
+            'yemen_net': {
+                name: 'يمن نت',
+                logo: 'fa-building',
+                verificationUrl: 'https://api.yemennet.com/verify',
+                depositUrl: 'https://api.yemennet.com/deposit',
+                withdrawUrl: 'https://api.yemennet.com/withdraw',
+                limits: { daily: 60000, perTransaction: 15000 }
+            },
+            'mobile_money': {
+                name: 'موبايل موني',
+                logo: 'fa-sim-card',
+                verificationUrl: 'https://api.mobilemoney.com/verify',
+                depositUrl: 'https://api.mobilemoney.com/deposit',
+                withdrawUrl: 'https://api.mobilemoney.com/withdraw',
+                limits: { daily: 35000, perTransaction: 7000 }
+            },
+            'kuraimi': {
+                name: 'محفظة الكريمي',
+                logo: 'fa-university',
+                verificationUrl: 'https://api.kuraimi.com/verify',
+                depositUrl: 'https://api.kuraimi.com/deposit',
+                withdrawUrl: 'https://api.kuraimi.com/withdraw',
+                limits: { daily: 55000, perTransaction: 12000 }
+            }
+        };
+
+        this.cardProcessors = {
+            'visa': {
+                name: 'Visa',
+                logo: 'fa-cc-visa',
+                processorUrl: 'https://api.visa.com/process',
+                verificationUrl: 'https://api.visa.com/verify'
+            },
+            'mastercard': {
+                name: 'MasterCard',
+                logo: 'fa-cc-mastercard',
+                processorUrl: 'https://api.mastercard.com/process',
+                verificationUrl: 'https://api.mastercard.com/verify'
+            }
+        };
+    }
+
+    // محاكاة الاتصال بمزود المحفظة
+    async verifyWallet(walletType, walletData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.2;
+                if (success) {
+                    resolve({
+                        success: true,
+                        message: 'تم التحقق من المحفظة بنجاح',
+                        walletId: 'W' + Date.now(),
+                        balance: Math.floor(Math.random() * 10000) + 1000
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل التحقق من المحفظة. يرجى التحقق من البيانات'
+                    });
+                }
+            }, 2000);
+        });
+    }
+
+    // محاكاة عملية الإيداع عبر المحفظة
+    async processWalletDeposit(walletType, amount, walletNumber) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.1;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'D' + Date.now(),
+                        amount: amount,
+                        fee: this.calculateFee(amount, 'deposit'),
+                        newBalance: amount - this.calculateFee(amount, 'deposit')
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية الإيداع. يرجى المحاولة لاحقاً'
+                    });
+                }
+            }, 3000);
+        });
+    }
+
+    // محاكاة عملية السحب عبر المحفظة
+    async processWalletWithdrawal(walletType, amount, walletNumber) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.1;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'W' + Date.now(),
+                        amount: amount,
+                        fee: this.calculateFee(amount, 'withdraw'),
+                        netAmount: amount - this.calculateFee(amount, 'withdraw')
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية السحب. يرجى التحقق من الرصيد'
+                    });
+                }
+            }, 3000);
+        });
+    }
+
+    // محاكاة التحقق من البطاقة
+    async verifyCard(cardData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const isValid = this.validateCardNumber(cardData.number.replace(/\s/g, ''));
+                if (isValid) {
+                    resolve({
+                        success: true,
+                        cardId: 'C' + Date.now(),
+                        processor: this.detectCardProcessor(cardData.number),
+                        message: 'تم التحقق من البطاقة بنجاح'
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'رقم البطاقة غير صحيح'
+                    });
+                }
+            }, 1500);
+        });
+    }
+
+    // محاكاية عملية الدفع بالبطاقة
+    async processCardPayment(cardData, amount) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.05;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'P' + Date.now(),
+                        amount: amount,
+                        authorizationCode: Math.random().toString(36).substr(2, 8).toUpperCase()
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية الدفع. يرجى التحقق من البيانات'
+                    });
+                }
+            }, 2500);
+        });
+    }
+
+    // حساب الرسوم
+    calculateFee(amount, type) {
+        const fees = {
+            'deposit': amount * 0.01,
+            'withdraw': amount * 0.015,
+            'transfer': amount * 0.005
+        };
+        return Math.max(fees[type] || 0, 100);
+    }
+
+    // التحقق من رقم البطاقة باستخدام خوارزمية Luhn
+    validateCardNumber(number) {
+        let sum = 0;
+        let isEven = false;
+        
+        for (let i = number.length - 1; i >= 0; i--) {
+            let digit = parseInt(number[i]);
+            
+            if (isEven) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            
+            sum += digit;
+            isEven = !isEven;
+        }
+        
+        return sum % 10 === 0;
+    }
+
+    // اكتشاف نوع البطاقة
+    detectCardProcessor(number) {
+        if (/^4/.test(number)) return 'visa';
+        if (/^5[1-5]/.test(number)) return 'mastercard';
+        return 'unknown';
+    }
+
+    // إنشاء رمز تحقق
+    generateVerificationCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    // محاكاة إرسال رمز التحقق
+    async sendVerificationCode(phone) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({
+                    success: true,
+                    code: this.generateVerificationCode(),
+                    message: 'تم إرسال رمز التحقق إلى هاتفك'
+                });
+            }, 1000);
+        });
+    }
+}
+
+// نظام إدارة الحساب المالي الأساسي
+class FinancialSystem {
+    constructor() {
+        this.userAccount = JSON.parse(localStorage.getItem('financialAccount')) || null;
+        this.transactions = JSON.parse(localStorage.getItem('financialTransactions')) || [];
+        this.activities = JSON.parse(localStorage.getItem('financialActivities')) || [];
+        this.init();
+    }
+
+    init() {
+        this.updateUI();
+        this.startLiveUpdates();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    updateUI() {
+        if (this.userAccount) {
+            document.getElementById('noAccountState').style.display = 'none';
+            document.getElementById('financialHeader').style.display = 'block';
+            document.getElementById('financialContent').style.display = 'block';
+            
+            document.getElementById('displayUserName').textContent = this.userAccount.fullName;
+            document.getElementById('displayAccountNumber').textContent = `رقم الحساب: ${this.userAccount.accountNumber}`;
+            document.getElementById('displayBalance').textContent = `${this.userAccount.balance.toLocaleString()} ر.ي`;
+            
+            this.renderPaymentMethods();
+            this.renderTransactions();
+            this.renderActivities();
+            this.updateFinancialReport();
+            this.initializeChart();
+        } else {
+            document.getElementById('noAccountState').style.display = 'block';
+            document.getElementById('financialHeader').style.display = 'none';
+            document.getElementById('financialContent').style.display = 'none';
+        }
+    }
+
+    createAccount(accountData) {
+        const accountNumber = 'SA' + Date.now().toString().slice(-8);
+        const newAccount = {
+            ...accountData,
+            accountNumber: accountNumber,
+            balance: 0,
+            createdAt: new Date().toISOString(),
+            status: 'active'
+        };
+
+        this.userAccount = newAccount;
+        localStorage.setItem('financialAccount', JSON.stringify(newAccount));
+        
+        this.addActivity('account_creation', 'إنشاء الحساب المالي', 0, 'الآن');
+        this.showNotification('تم إنشاء الحساب المالي بنجاح', 'success');
+        this.updateUI();
+        
+        return newAccount;
+    }
+
+    processDeposit(depositData) {
+        if (!this.userAccount) return false;
+
+        const transactionId = 'DP' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'deposit',
+            title: `إيداع عبر ${this.getPaymentMethodName(depositData.method)}`,
+            description: `إيداع إلى الحساب الرئيسي - ${depositData.purpose}`,
+            amount: depositData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-consultation',
+            method: depositData.method,
+            walletNumber: depositData.walletNumber
+        };
+
+        this.userAccount.balance += depositData.amount;
+        this.transactions.unshift(newTransaction);
+        this.addActivity('deposit', `إيداع عبر ${this.getPaymentMethodName(depositData.method)}`, depositData.amount, 'الآن');
+
+        this.saveData();
+        this.updateUI();
+        this.showNotification(`تم الإيداع بنجاح: ${depositData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    processWithdrawal(withdrawalData) {
+        if (!this.userAccount) return false;
+        if (this.userAccount.balance < withdrawalData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const transactionId = 'WD' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'withdrawal',
+            title: `سحب عبر ${withdrawalData.method}`,
+            description: `سحب من الحساب الرئيسي - ${withdrawalData.purpose}`,
+            amount: -withdrawalData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-hospital',
+            method: withdrawalData.method,
+            bankDetails: withdrawalData.bankDetails
+        };
+
+        this.userAccount.balance -= withdrawalData.amount;
+        this.transactions.unshift(newTransaction);
+        this.addActivity('withdrawal', `سحب عبر ${withdrawalData.method}`, -withdrawalData.amount, 'الآن');
+
+        this.saveData();
+        this.updateUI();
+        this.showNotification(`تم السحب بنجاح: ${withdrawalData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    processTransfer(transferData) {
+        if (!this.userAccount) return false;
+        if (this.userAccount.balance < transferData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const transactionId = 'TR' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'transfer',
+            title: `تحويل إلى ${transferData.recipientName}`,
+            description: `تحويل ${transferData.purpose} - ${transferData.notes || 'لا توجد ملاحظات'}`,
+            amount: -transferData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-appointment',
+            recipient: transferData.recipientName,
+            account: transferData.recipientAccount,
+            purpose: transferData.purpose
+        };
+
+        this.userAccount.balance -= transferData.amount;
+        this.transactions.unshift(newTransaction);
+        this.addActivity('transfer', `تحويل إلى ${transferData.recipientName}`, -transferData.amount, 'الآن');
+
+        this.saveData();
+        this.updateUI();
+        this.showNotification(`تم التحويل بنجاح: ${transferData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    getPaymentMethodName(methodId) {
+        const methods = {
+            'jawali': 'جوالي',
+            'jeeb': 'جيب',
+            'felousak': 'فلوسك',
+            'onecash': 'ون كاش',
+            'yemen_net': 'يمن نت',
+            'mobile_money': 'موبايل موني',
+            'kuraimi': 'محفظة الكريمي'
+        };
+        return methods[methodId] || methodId;
+    }
+
+    addActivity(type, title, amount, time) {
+        const activity = {
+            id: Date.now(),
+            type: type,
+            title: title,
+            amount: amount,
+            time: time,
+            icon: this.getActivityIcon(type)
+        };
+        
+        this.activities.unshift(activity);
+        if (this.activities.length > 10) {
+            this.activities.pop();
+        }
+        
+        localStorage.setItem('financialActivities', JSON.stringify(this.activities));
+    }
+
+    getActivityIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'withdrawal': 'fa-upload',
+            'transfer': 'fa-exchange-alt',
+            'account_creation': 'fa-user-plus',
+            'payment': 'fa-credit-card'
+        };
+        return icons[type] || 'fa-exchange-alt';
+    }
+
+    renderPaymentMethods() {
+        const container = document.getElementById('paymentMethods');
+        container.innerHTML = '';
+
+        // عرض طرق الدفع الأساسية
+        const paymentMethods = [
+            { id: 1, name: 'جوالي', icon: 'fa-mobile-alt', balance: 0, active: false },
+            { id: 2, name: 'جيب', icon: 'fa-money-bill-wave', balance: 0, active: false },
+            { id: 3, name: 'فلوسك', icon: 'fa-coins', balance: 0, active: false },
+            { id: 4, name: 'ون كاش', icon: 'fa-qrcode', balance: 0, active: false },
+            { id: 5, name: 'كاش', icon: 'fa-money-bill', balance: 0, active: false },
+            { id: 6, name: 'يمن نت', icon: 'fa-building', balance: 0, active: false }
+        ];
+
+        paymentMethods.forEach(method => {
+            const methodElement = document.createElement('div');
+            methodElement.className = `payment-method ${method.active ? 'active' : ''}`;
+            methodElement.onclick = () => this.selectPaymentMethod(method.id);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fas ${method.icon}"></i>
+                </div>
+                <div class="payment-name">${method.name}</div>
+                <div class="payment-balance">${method.balance > 0 ? method.balance.toLocaleString() + ' ر.ي' : 'غير مفعل'}</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        const createBtn = document.createElement('button');
+        createBtn.className = 'create-wallet-btn';
+        createBtn.innerHTML = `
+            <i class="fas fa-plus-circle"></i>
+            ربط محفظة أو بطاقة
+        `;
+        createBtn.onclick = () => openLinkWalletModal();
+        container.appendChild(createBtn);
+    }
+
+    renderTransactions(filter = 'all') {
+        const container = document.getElementById('transactionList');
+        container.innerHTML = '';
+
+        const filteredTransactions = filter === 'all' 
+            ? this.transactions 
+            : this.transactions.filter(t => t.type === filter);
+
+        this.updateFilterCounts();
+
+        if (filteredTransactions.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد معاملات</div>
+                </div>
+            `;
+            return;
+        }
+
+        filteredTransactions.forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.className = 'transaction-item';
+            transactionElement.onclick = () => this.showTransactionDetails(transaction);
+            
+            transactionElement.innerHTML = `
+                <div class="transaction-icon ${transaction.icon}">
+                    <i class="fas ${this.getTransactionIcon(transaction.type)}"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-title">${transaction.title}</div>
+                    <div class="transaction-description">${transaction.description}</div>
+                    <div class="transaction-meta">
+                        <span class="transaction-ref">${transaction.ref}</span>
+                        <span>${transaction.date} - ${transaction.time}</span>
+                    </div>
+                </div>
+                <div class="transaction-amount" style="color: ${transaction.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+                    ${transaction.amount >= 0 ? '+' : ''}${transaction.amount} ر.ي
+                </div>
+                <div class="transaction-status">مكتمل</div>
+            `;
+            
+            container.appendChild(transactionElement);
+        });
+    }
+
+    renderActivities() {
+        const container = document.getElementById('activityList');
+        container.innerHTML = '';
+
+        if (this.activities.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                    <i class="fas fa-history" style="font-size: 32px; margin-bottom: 8px;"></i>
+                    <div>لا توجد حركات حديثة</div>
+                </div>
+            `;
+            return;
+        }
+
+        this.activities.forEach(activity => {
+            const activityElement = document.createElement('div');
+            activityElement.className = 'activity-item';
+            
+            activityElement.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas ${activity.icon}"></i>
+                </div>
+                <div class="activity-details">
+                    <div class="activity-title">${activity.title}</div>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+                <div class="activity-amount ${activity.amount > 0 ? 'amount-positive' : 'amount-negative'}">
+                    ${activity.amount > 0 ? '+' : ''}${activity.amount} ر.ي
+                </div>
+            `;
+            
+            container.appendChild(activityElement);
+        });
+    }
+
+    updateFilterCounts() {
+        const counts = {
+            all: this.transactions.length,
+            appointments: this.transactions.filter(t => t.type === 'appointment').length,
+            consultations: this.transactions.filter(t => t.type === 'consultation').length,
+            pharmacy: this.transactions.filter(t => t.type === 'pharmacy').length
+        };
+
+        document.getElementById('countAll').textContent = counts.all;
+        document.getElementById('countAppointments').textContent = counts.appointments;
+        document.getElementById('countConsultations').textContent = counts.consultations;
+        document.getElementById('countPharmacy').textContent = counts.pharmacy;
+    }
+
+    updateFinancialReport() {
+        const currentMonth = new Date().getMonth();
+        const monthlyTransactions = this.transactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            return transactionDate.getMonth() === currentMonth;
+        });
+
+        const monthlyExpenses = monthlyTransactions
+            .filter(t => t.amount < 0)
+            .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+        const monthlyIncome = monthlyTransactions
+            .filter(t => t.amount > 0)
+            .reduce((sum, t) => sum + t.amount, 0);
+
+        document.getElementById('monthlyExpenses').textContent = monthlyExpenses.toLocaleString() + ' ر.ي';
+        document.getElementById('monthlyIncome').textContent = monthlyIncome.toLocaleString() + ' ر.ي';
+        document.getElementById('totalTransactions').textContent = this.transactions.length;
+        document.getElementById('digitalWallets').textContent = '0%';
+    }
+
+    initializeChart() {
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        
+        const expenseData = {
+            appointments: this.transactions.filter(t => t.type === 'appointment' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            consultations: this.transactions.filter(t => t.type === 'consultation' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            pharmacy: this.transactions.filter(t => t.type === 'pharmacy' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            hospital: this.transactions.filter(t => t.type === 'hospital' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0)
+        };
+
+        if (window.financeChart) {
+            window.financeChart.destroy();
+        }
+
+        window.financeChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['المواعيد', 'الاستشارات', 'الصيدليات', 'المستشفيات'],
+                datasets: [{
+                    data: [
+                        expenseData.appointments,
+                        expenseData.consultations,
+                        expenseData.pharmacy,
+                        expenseData.hospital
+                    ],
+                    backgroundColor: [
+                        '#8b5cf6',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#ef4444'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true,
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                family: 'Tajawal',
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+
+    selectPaymentMethod(methodId) {
+        this.showNotification('يرجى ربط المحفظة أولاً', 'info');
+    }
+
+    showTransactionDetails(transaction) {
+        let details = `تفاصيل المعاملة:\n\n`;
+        details += `الخدمة: ${transaction.title}\n`;
+        details += `الوصف: ${transaction.description}\n`;
+        details += `المبلغ: ${transaction.amount} ر.ي\n`;
+        details += `رقم المرجع: ${transaction.ref}\n`;
+        details += `التاريخ: ${transaction.date} ${transaction.time}\n`;
+        details += `الحالة: ${transaction.status}\n`;
+        
+        if (transaction.method) {
+            details += `طريقة الدفع: ${this.getPaymentMethodName(transaction.method)}\n`;
+        }
+        
+        if (transaction.recipient) {
+            details += `المستلم: ${transaction.recipient}\n`;
+        }
+
+        alert(details);
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 4000);
+    }
+
+    saveData() {
+        localStorage.setItem('financialAccount', JSON.stringify(this.userAccount));
+        localStorage.setItem('financialTransactions', JSON.stringify(this.transactions));
+        localStorage.setItem('financialActivities', JSON.stringify(this.activities));
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    startLiveUpdates() {
+        setInterval(() => {
+            if (this.userAccount && Math.random() > 0.7) {
+                const change = Math.floor(Math.random() * 100) - 30;
+                if (this.userAccount.balance + change >= 0) {
+                    this.userAccount.balance += change;
+                    this.saveData();
+                    this.updateUI();
+                }
+            }
+        }, 60000);
+    }
+
+    getTransactionIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'withdrawal': 'fa-upload',
+            'transfer': 'fa-exchange-alt',
+            'consultation': 'fa-user-md',
+            'appointment': 'fa-calendar-check',
+            'hospital': 'fa-hospital',
+            'pharmacy': 'fa-pills'
+        };
+        return icons[type] || 'fa-receipt';
+    }
+}
+
+// توسيع النظام المالي
+class AdvancedFinancialSystem extends FinancialSystem {
+    constructor() {
+        super();
+        this.paymentIntegration = new PaymentIntegration();
+        this.linkedWallets = JSON.parse(localStorage.getItem('linkedWallets')) || [];
+        this.linkedCards = JSON.parse(localStorage.getItem('linkedCards')) || [];
+    }
+
+    // ربط محفظة جديدة
+    async linkWallet(walletData) {
+        const verification = await this.paymentIntegration.verifyWallet(walletData.type, walletData);
+        
+        if (verification.success) {
+            const linkedWallet = {
+                id: verification.walletId,
+                type: walletData.type,
+                name: this.paymentIntegration.walletProviders[walletData.type].name,
+                number: walletData.number,
+                balance: verification.balance,
+                isVerified: true,
+                linkedAt: new Date().toISOString()
+            };
+            
+            this.linkedWallets.push(linkedWallet);
+            localStorage.setItem('linkedWallets', JSON.stringify(this.linkedWallets));
+            
+            this.showNotification(`تم ربط محفظة ${linkedWallet.name} بنجاح`, 'success');
+            return true;
+        } else {
+            this.showNotification(verification.message, 'error');
+            return false;
+        }
+    }
+
+    // إضافة بطاقة جديدة
+    async addCard(cardData) {
+        const verification = await this.paymentIntegration.verifyCard(cardData);
+        
+        if (verification.success) {
+            const linkedCard = {
+                id: verification.cardId,
+                number: this.maskCardNumber(cardData.number),
+                lastFour: cardData.number.slice(-4),
+                holder: cardData.holder,
+                expiry: cardData.expiry,
+                processor: verification.processor,
+                isVerified: true,
+                addedAt: new Date().toISOString()
+            };
+            
+            this.linkedCards.push(linkedCard);
+            localStorage.setItem('linkedCards', JSON.stringify(this.linkedCards));
+            
+            this.showNotification('تم إضافة البطاقة بنجاح', 'success');
+            return true;
+        } else {
+            this.showNotification(verification.message, 'error');
+            return false;
+        }
+    }
+
+    // إيداع عبر المحفظة
+    async processWalletDeposit(depositData) {
+        if (!this.userAccount) return false;
+
+        const wallet = this.linkedWallets.find(w => w.type === depositData.method);
+        if (!wallet) {
+            this.showNotification('المحفظة غير مربوطة', 'error');
+            return false;
+        }
+
+        this.showNotification('جاري معالجة الإيداع...', 'info');
+
+        const result = await this.paymentIntegration.processWalletDeposit(
+            depositData.method,
+            depositData.amount,
+            depositData.walletNumber
+        );
+
+        if (result.success) {
+            // تحديث رصيد المحفظة
+            const walletIndex = this.linkedWallets.findIndex(w => w.type === depositData.method);
+            this.linkedWallets[walletIndex].balance += result.newBalance;
+            
+            // تحديث رصيد الحساب الرئيسي
+            this.userAccount.balance += depositData.amount;
+            
+            // تسجيل المعاملة
+            const transaction = {
+                id: result.transactionId,
+                type: 'deposit',
+                title: `إيداع عبر ${wallet.name}`,
+                description: `إيداع من المحفظة - ${depositData.purpose}`,
+                amount: depositData.amount,
+                ref: result.transactionId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                status: 'completed',
+                icon: 'icon-consultation',
+                method: depositData.method,
+                walletNumber: depositData.walletNumber,
+                fee: result.fee
+            };
+
+            this.transactions.unshift(transaction);
+            this.addActivity('deposit', `إيداع عبر ${wallet.name}`, depositData.amount, 'الآن');
+            
+            this.saveData();
+            this.updateUI();
+            this.showNotification(`تم الإيداع بنجاح: ${depositData.amount.toLocaleString()} ر.ي`, 'success');
+            
+            return true;
+        } else {
+            this.showNotification(result.message, 'error');
+            return false;
+        }
+    }
+
+    // سحب عبر المحفظة
+    async processWalletWithdrawal(withdrawalData) {
+        if (!this.userAccount) return false;
+        if (this.userAccount.balance < withdrawalData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const wallet = this.linkedWallets.find(w => w.type === withdrawalData.method);
+        if (!wallet) {
+            this.showNotification('المحفظة غير مربوطة', 'error');
+            return false;
+        }
+
+        this.showNotification('جاري معالجة السحب...', 'info');
+
+        const result = await this.paymentIntegration.processWalletWithdrawal(
+            withdrawalData.method,
+            withdrawalData.amount,
+            withdrawalData.walletNumber
+        );
+
+        if (result.success) {
+            // تحديث رصيد المحفظة
+            const walletIndex = this.linkedWallets.findIndex(w => w.type === withdrawalData.method);
+            this.linkedWallets[walletIndex].balance += result.netAmount;
+            
+            // تحديث رصيد الحساب الرئيسي
+            this.userAccount.balance -= withdrawalData.amount;
+            
+            // تسجيل المعاملة
+            const transaction = {
+                id: result.transactionId,
+                type: 'withdrawal',
+                title: `سحب عبر ${wallet.name}`,
+                description: `سحب إلى المحفظة - ${withdrawalData.purpose}`,
+                amount: -withdrawalData.amount,
+                ref: result.transactionId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                status: 'completed',
+                icon: 'icon-hospital',
+                method: withdrawalData.method,
+                walletNumber: withdrawalData.walletNumber,
+                fee: result.fee,
+                netAmount: result.netAmount
+            };
+
+            this.transactions.unshift(transaction);
+            this.addActivity('withdrawal', `سحب عبر ${wallet.name}`, -withdrawalData.amount, 'الآن');
+            
+            this.saveData();
+            this.updateUI();
+            this.showNotification(`تم السحب بنجاح: ${withdrawalData.amount.toLocaleString()} ر.ي`, 'success');
+            
+            return true;
+        } else {
+            this.showNotification(result.message, 'error');
+            return false;
+        }
+    }
+
+    // دفع بالبطاقة
+    async processCardPayment(paymentData) {
+        if (!this.userAccount) return false;
+
+        const card = this.linkedCards.find(c => c.id === paymentData.cardId);
+        if (!card) {
+            this.showNotification('البطاقة غير مسجلة', 'error');
+            return false;
+        }
+
+        this.showNotification('جاري معالجة الدفع...', 'info');
+
+        const result = await this.paymentIntegration.processCardPayment(
+            card,
+            paymentData.amount
+        );
+
+        if (result.success) {
+            // تسجيل المعاملة
+            const transaction = {
+                id: result.transactionId,
+                type: 'payment',
+                title: `دفع بالبطاقة - ${card.processor}`,
+                description: `دفع ${paymentData.purpose}`,
+                amount: -paymentData.amount,
+                ref: result.transactionId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                status: 'completed',
+                icon: 'icon-pharmacy',
+                method: 'card',
+                cardType: card.processor,
+                authorizationCode: result.authorizationCode
+            };
+
+            this.transactions.unshift(transaction);
+            this.addActivity('payment', `دفع بالبطاقة`, -paymentData.amount, 'الآن');
+            
+            this.saveData();
+            this.updateUI();
+            this.showNotification(`تم الدفع بنجاح: ${paymentData.amount.toLocaleString()} ر.ي`, 'success');
+            
+            return true;
+        } else {
+            this.showNotification(result.message, 'error');
+            return false;
+        }
+    }
+
+    // إخفاء رقم البطاقة
+    maskCardNumber(number) {
+        return '**** **** **** ' + number.slice(-4);
+    }
+
+    // الحصول على المحافظ المربوطة
+    getLinkedWallets() {
+        return this.linkedWallets;
+    }
+
+    // الحصول على البطاقات المربوطة
+    getLinkedCards() {
+        return this.linkedCards;
+    }
+
+    // تحديث عرض طرق الدفع ليشمل المحافظ والبطاقات المربوطة
+    renderPaymentMethods() {
+        const container = document.getElementById('paymentMethods');
+        container.innerHTML = '';
+
+        // عرض المحافظ المربوطة
+        this.getLinkedWallets().forEach(wallet => {
+            const methodElement = document.createElement('div');
+            methodElement.className = 'payment-method active';
+            methodElement.onclick = () => this.selectPaymentMethod(wallet.id);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fas ${this.paymentIntegration.walletProviders[wallet.type].logo}"></i>
+                </div>
+                <div class="payment-name">${wallet.name}</div>
+                <div class="payment-balance">${wallet.balance.toLocaleString()} ر.ي</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        // عرض البطاقات المربوطة
+        this.getLinkedCards().forEach(card => {
+            const methodElement = document.createElement('div');
+            methodElement.className = 'payment-method active';
+            methodElement.onclick = () => this.selectPaymentMethod(card.id);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fab fa-cc-${card.processor}"></i>
+                </div>
+                <div class="payment-name">${card.processor}</div>
+                <div class="payment-balance">${card.lastFour}</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        // أزرار الإضافة
+        const addWalletBtn = document.createElement('div');
+        addWalletBtn.className = 'payment-method';
+        addWalletBtn.onclick = openLinkWalletModal;
+        addWalletBtn.innerHTML = `
+            <div class="payment-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="payment-name">ربط محفظة</div>
+            <div class="payment-balance">جديد</div>
+        `;
+        container.appendChild(addWalletBtn);
+
+        const addCardBtn = document.createElement('div');
+        addCardBtn.className = 'payment-method';
+        addCardBtn.onclick = openAddCardModal;
+        addCardBtn.innerHTML = `
+            <div class="payment-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-name">إضافة بطاقة</div>
+            <div class="payment-balance">جديد</div>
+        `;
+        container.appendChild(addCardBtn);
+    }
+}
+
+// تهيئة النظام المتقدم
+const advancedFinancialSystem = new AdvancedFinancialSystem();
+
+// وظائف الواجهة العامة
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function createAccount() {
+    const formData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        idType: document.getElementById('idType').value,
+        idNumber: document.getElementById('idNumber').value,
+        birthDate: document.getElementById('birthDate').value,
+        address: document.getElementById('address').value,
+        password: document.getElementById('password').value
+    };
+
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.idType || !formData.idNumber || !formData.birthDate || !formData.password) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (document.getElementById('password').value !== document.getElementById('confirmPassword').value) {
+        advancedFinancialSystem.showNotification('كلمات المرور غير متطابقة', 'error');
+        return;
+    }
+
+    advancedFinancialSystem.createAccount(formData);
+    closeModal('createAccountModal');
+}
+
+async function processDeposit() {
+    const depositData = {
+        amount: parseFloat(document.getElementById('depositAmount').value),
+        method: document.getElementById('depositMethod').value,
+        walletNumber: document.getElementById('depositWalletNumber').value,
+        purpose: document.getElementById('depositPurpose').value
+    };
+
+    if (!depositData.amount || !depositData.method || !depositData.walletNumber) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (depositData.amount < 1000) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للإيداع هو 1000 ر.ي', 'error');
+        return;
+    }
+
+    const success = await advancedFinancialSystem.processWalletDeposit(depositData);
+    if (success) {
+        closeModal('depositModal');
+        document.getElementById('depositAmount').value = '';
+        document.getElementById('depositWalletNumber').value = '';
+    }
+}
+
+async function processWithdrawal() {
+    const withdrawalData = {
+        amount: parseFloat(document.getElementById('withdrawAmount').value),
+        method: document.getElementById('withdrawMethod').value,
+        purpose: document.getElementById('withdrawPurpose').value,
+        walletNumber: document.getElementById('withdrawWalletNumber')?.value || ''
+    };
+
+    if (!withdrawalData.amount || !withdrawalData.method) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (withdrawalData.amount < 1000) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للسحب هو 1000 ر.ي', 'error');
+        return;
+    }
+
+    const success = await advancedFinancialSystem.processWalletWithdrawal(withdrawalData);
+    if (success) {
+        closeModal('withdrawModal');
+        document.getElementById('withdrawAmount').value = '';
+    }
+}
+
+function processTransfer() {
+    const transferData = {
+        amount: parseFloat(document.getElementById('transferAmount').value),
+        recipientType: document.getElementById('recipientType').value,
+        recipientName: document.getElementById('recipientName').value,
+        recipientAccount: document.getElementById('recipientAccount').value,
+        purpose: document.getElementById('transferPurpose').value,
+        notes: document.getElementById('transferNotes').value
+    };
+
+    if (!transferData.amount || !transferData.recipientType || !transferData.recipientName || !transferData.recipientAccount || !transferData.purpose) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (transferData.amount < 100) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للتحويل هو 100 ر.ي', 'error');
+        return;
+    }
+
+    const success = advancedFinancialSystem.processTransfer(transferData);
+    if (success) {
+        closeModal('transferModal');
+        document.getElementById('transferAmount').value = '';
+        document.getElementById('recipientName').value = '';
+        document.getElementById('recipientAccount').value = '';
+        document.getElementById('transferPurpose').value = '';
+        document.getElementById('transferNotes').value = '';
+    }
+}
+
+function filterTransactions(type) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    advancedFinancialSystem.renderTransactions(type);
+}
+
+function refreshTransactions() {
+    advancedFinancialSystem.showNotification('جاري تحديث البيانات...', 'info');
+    setTimeout(() => {
+        advancedFinancialSystem.renderTransactions();
+        advancedFinancialSystem.showNotification('تم تحديث البيانات', 'success');
+    }, 1000);
+}
+
+function downloadStatement() {
+    advancedFinancialSystem.showNotification('جاري تحميل كشف الحساب...', 'info');
+    setTimeout(() => {
+        advancedFinancialSystem.showNotification('تم تحميل كشف الحساب بنجاح', 'success');
+    }, 1500);
+}
+
+// وظائف المحافظ والبطاقات
+function showWalletFields() {
+    const walletType = document.getElementById('walletType').value;
+    const walletFields = document.getElementById('walletFields');
+    
+    if (!walletType) {
+        walletFields.innerHTML = '';
+        return;
+    }
+
+    const provider = advancedFinancialSystem.paymentIntegration.walletProviders[walletType];
+    
+    walletFields.innerHTML = `
+        <div class="form-group">
+            <label class="form-label">رقم المحفظة *</label>
+            <input type="text" class="form-input" id="walletNumber" placeholder="أدخل رقم ${provider.name}" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">اسم صاحب المحفظة *</label>
+            <input type="text" class="form-input" id="walletOwner" placeholder="اسم صاحب المحفظة" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">رقم الهاتف المسجل *</label>
+            <input type="tel" class="form-input" id="walletPhone" placeholder="05XXXXXXXX" required>
+        </div>
+    `;
+}
+
+async function linkWallet() {
+    const walletType = document.getElementById('walletType').value;
+    const walletNumber = document.getElementById('walletNumber').value;
+    const walletOwner = document.getElementById('walletOwner').value;
+    const walletPhone = document.getElementById('walletPhone').value;
+
+    if (!walletType || !walletNumber || !walletOwner || !walletPhone) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    const walletData = {
+        type: walletType,
+        number: walletNumber,
+        owner: walletOwner,
+        phone: walletPhone
+    };
+
+    const success = await advancedFinancialSystem.linkWallet(walletData);
+    if (success) {
+        closeModal('linkWalletModal');
+    }
+}
+
+function formatCardNumber() {
+    const input = document.getElementById('cardNumber');
+    let value = input.value.replace(/\s/g, '').replace(/\D/g, '');
+    
+    if (value.length > 16) {
+        value = value.substr(0, 16);
+    }
+    
+    let formatted = '';
+    for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+            formatted += ' ';
+        }
+        formatted += value[i];
+    }
+    
+    input.value = formatted;
+}
+
+function formatExpiry() {
+    const input = document.getElementById('cardExpiry');
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length > 4) {
+        value = value.substr(0, 4);
+    }
+    
+    if (value.length >= 2) {
+        value = value.substr(0, 2) + '/' + value.substr(2);
+    }
+    
+    input.value = value;
+}
+
+function updateCardPreview() {
+    const number = document.getElementById('cardNumber').value || '**** **** **** ****';
+    const expiry = document.getElementById('cardExpiry').value || 'MM/YY';
+    const holder = document.getElementById('cardHolder').value || 'الاسم الكامل';
+    
+    document.getElementById('previewCardNumber').textContent = number;
+    document.getElementById('previewCardExpiry').textContent = expiry;
+    document.getElementById('previewCardHolder').textContent = holder.toUpperCase();
+}
+
+async function addCard() {
+    const number = document.getElementById('cardNumber').value.replace(/\s/g, '');
+    const expiry = document.getElementById('cardExpiry').value;
+    const cvv = document.getElementById('cardCvv').value;
+    const holder = document.getElementById('cardHolder').value;
+
+    if (!number || !expiry || !cvv || !holder) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    if (number.replace(/\s/g, '').length !== 16) {
+        advancedFinancialSystem.showNotification('رقم البطاقة يجب أن يكون 16 رقماً', 'error');
+        return;
+    }
+
+    const cardData = {
+        number: number,
+        expiry: expiry,
+        cvv: cvv,
+        holder: holder
+    };
+
+    const success = await advancedFinancialSystem.addCard(cardData);
+    if (success) {
+        closeModal('addCardModal');
+    }
+}
+
+function openLinkWalletModal() {
+    openModal('linkWalletModal');
+}
+
+function openAddCardModal() {
+    openModal('addCardModal');
+}
+
+async function sendVerificationCode() {
+    const userAccount = advancedFinancialSystem.userAccount;
+    if (!userAccount) return;
+
+    const result = await advancedFinancialSystem.paymentIntegration.sendVerificationCode(userAccount.phone);
+    if (result.success) {
+        advancedFinancialSystem.showNotification('تم إرسال رمز التحقق إلى هاتفك', 'success');
+        console.log('Verification code:', result.code);
+    }
+}
+
+function showWithdrawDetails() {
+    const method = document.getElementById('withdrawMethod').value;
+    document.getElementById('withdrawBankDetails').style.display = method === 'bank_transfer' ? 'block' : 'none';
+    document.getElementById('withdrawWalletDetails').style.display = method === 'wallet' ? 'block' : 'none';
+}
+
+// إغلاق النوافذ بالضغط خارجها
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+}
+
+// منع إرسال النماذج
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+</body>
+</html>

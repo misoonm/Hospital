@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بياناتي الطبية - طبيب 24/7</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --primary-light: #dbeafe;
+            --secondary: #dc2626;
+            --accent: #f59e0b;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --dark: #1e1b4b;
+            --light: #f0f9ff;
+            --surface: #ffffff;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-light: #64748b;
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+            --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'El Messiri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* تصميم شريط الحالة المتميز */
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .status-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* التطبيق الرئيسي */
+        .premium-app {
+            max-width: 428px;
+            margin: 0 auto;
+            background: transparent;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* الخلفية الديناميكية */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* الهيدر المتقدم */
+        .profile-header {
+            background: var(--gradient-hospital);
+            color: white;
+            padding: 40px 24px 30px;
+            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            box-shadow: var(--shadow-glass);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #fff, #dbeafe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .completion-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* المحتوى الرئيسي */
+        .profile-content {
+            padding: 25px 20px;
+            padding-bottom: 120px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 30px 0 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient-hospital);
+            border-radius: 2px;
+        }
+
+        /* بطاقات الأقسام */
+        .profile-sections {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .section-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-hospital);
+            transform: scaleX(0);
+            transition: var(--transition-smooth);
+        }
+
+        .section-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .section-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section-card.active {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-color: var(--primary);
+        }
+
+        .section-card.active::before {
+            transform: scaleX(1);
+        }
+
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: var(--gradient-hospital);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+            transition: var(--transition-smooth);
+        }
+
+        .section-card:hover .section-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .section-name {
+            font-weight: 800;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .section-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .section-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* محتوى الأقسام */
+        .section-content {
+            display: none;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 25px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .section-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* النماذج */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition-smooth);
+            background: white;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* القوائم */
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .item-card {
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .item-title {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .item-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .tag.high {
+            background: #fecaca;
+            color: var(--error);
+        }
+
+        .tag.medium {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .tag.low {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        /* الخط الزمني */
+        .timeline {
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: -30px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* المستندات */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .document-card {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .document-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .document-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            background: var(--gradient-hospital);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .document-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+
+        .document-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* الأزرار */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-hospital);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text-primary);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav-premium {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            padding: 15px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            z-index: 1000;
+            max-width: 380px;
+            width: calc(100% - 40px);
+        }
+
+        .nav-item-premium {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            transition: var(--transition-bounce);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nav-item-premium.active {
+            background: var(--gradient-hospital);
+            color: white;
+            transform: translateY(-10px);
+        }
+
+        .nav-item-premium.active .nav-label {
+            color: white;
+        }
+
+        .nav-item-premium.active::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            width: 20px;
+            height: 3px;
+            background: var(--gradient-hospital);
+            border-radius: 2px;
+        }
+
+        .nav-icon-premium {
+            font-size: 20px;
+            margin-bottom: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-item-premium.active .nav-icon-premium {
+            transform: scale(1.2);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        /* النوافذ المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow-large);
+            animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .close-modal:hover {
+            color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        /* الإشعارات */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-large);
+            z-index: 3000;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        .notification.info {
+            background: var(--primary);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* حالات خاصة */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .security-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin: 15px 0;
+            color: #92400e;
+        }
+
+        .privacy-settings {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .privacy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .privacy-item:last-child {
+            border-bottom: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* التكيف مع الشاشات */
+        @media (max-width: 428px) {
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .documents-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .item-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="profile-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <div class="profile-avatar" onclick="openModal('avatarModal')">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1 class="profile-name" id="userName">محمد أحمد</h1>
+                <p class="profile-subtitle">الملف الطبي الشخصي</p>
+                
+                <div class="completion-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="profileCompletion">65%</div>
+                        <div class="stat-label">اكتمال الملف</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="medicalDocuments">12</div>
+                        <div class="stat-label">مستند طبي</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="activeMedications">5</div>
+                        <div class="stat-label">دواء نشط</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="profile-content">
+            <!-- أقسام البيانات -->
+            <div class="section-title">البيانات الطبية</div>
+            <div class="profile-sections">
+                <!-- الملف الشخصي -->
+                <div class="section-card active" onclick="showSection('personal')">
+                    <div class="section-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="section-name">الملف الشخصي</div>
+                    <div class="section-description">البيانات الأساسية والمعلومات الشخصية</div>
+                    <div class="section-badge" id="personalBadge">مكتمل 80%</div>
+                </div>
+
+                <!-- السجل الطبي -->
+                <div class="section-card" onclick="showSection('medical')">
+                    <div class="section-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="section-name">السجل الطبي</div>
+                    <div class="section-description">المستندات والتقارير الطبية</div>
+                    <div class="section-badge" id="medicalBadge">12 مستند</div>
+                </div>
+
+                <!-- الحساسيات -->
+                <div class="section-card" onclick="showSection('allergies')">
+                    <div class="section-icon">
+                        <i class="fas fa-allergies"></i>
+                    </div>
+                    <div class="section-name">الحساسيات</div>
+                    <div class="section-description">الحساسيات الغذائية والدوائية</div>
+                    <div class="section-badge" id="allergiesBadge">3 حساسية</div>
+                </div>
+
+                <!-- الأدوية -->
+                <div class="section-card" onclick="showSection('medications')">
+                    <div class="section-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div class="section-name">الأدوية</div>
+                    <div class="section-description">الأدوية الحالية والجرعات</div>
+                    <div class="section-badge" id="medicationsBadge">5 أدوية</div>
+                </div>
+
+                <!-- التاريخ المرضي -->
+                <div class="section-card" onclick="showSection('history')">
+                    <div class="section-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="section-name">التاريخ المرضي</div>
+                    <div class="section-description">الأمراض والعمليات السابقة</div>
+                    <div class="section-badge" id="historyBadge">8 أحداث</div>
+                </div>
+
+                <!-- الإعدادات -->
+                <div class="section-card" onclick="showSection('settings')">
+                    <div class="section-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="section-name">الإعدادات</div>
+                    <div class="section-description">الخصوصية والإشعارات</div>
+                    <div class="section-badge">إعدادات</div>
+                </div>
+            </div>
+
+            <!-- محتوى الأقسام -->
+            
+            <!-- الملف الشخصي -->
+            <div id="personalContent" class="section-content active">
+                <div class="form-group">
+                    <label class="form-label">الاسم الكامل</label>
+                    <input type="text" class="form-input" id="fullName" value="محمد أحمد" onchange="validateField('fullName')">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-input" id="email" value="mohamed@example.com" onchange="validateEmail()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-input" id="phone" value="+966500000000" onchange="validatePhone()">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">تاريخ الميلاد</label>
+                        <input type="date" class="form-input" id="birthDate" value="1985-06-15">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">فصيلة الدم</label>
+                        <select class="form-select" id="bloodType">
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">العنوان</label>
+                    <textarea class="form-textarea" id="address">الرياض، حي الملز، شارع الملك فهد</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات طبية</label>
+                    <textarea class="form-textarea" id="medicalNotes" placeholder="أي معلومات طبية إضافية..."></textarea>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="savePersonalInfo()">
+                    <i class="fas fa-save"></i>
+                    حفظ التغييرات
+                </button>
+            </div>
+
+            <!-- السجل الطبي -->
+            <div id="medicalContent" class="section-content">
+                <div class="security-warning">
+                    <i class="fas fa-shield-alt"></i>
+                    <strong>تنبيه أمان:</strong> هذه المستندات حساسة. تأكد من صلاحيات الوصول.
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="openModal('uploadDocumentModal')" style="margin-bottom: 20px;">
+                    <i class="fas fa-upload"></i>
+                    رفع مستند جديد
+                </button>
+                
+                <div class="documents-grid" id="documentsList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- الحساسيات -->
+            <div id="allergiesContent" class="section-content">
+                <div class="security-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>تنبيه مهم:</strong> سيتم تنبيهك إذا تم وصف دواء قد يسبب حساسية.
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="openModal('addAllergyModal')" style="margin-bottom: 20px;">
+                    <i class="fas fa-plus"></i>
+                    إضافة حساسية جديدة
+                </button>
+                
+                <div class="items-list" id="allergiesList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- الأدوية -->
+            <div id="medicationsContent" class="section-content">
+                <div class="security-warning">
+                    <i class="fas fa-pills"></i>
+                    <strong>تنبيه دوائي:</strong> سيتم التحقق من التفاعلات الدوائية عند إضافة أدوية جديدة.
+                </div>
+                
+                <div class="form-actions" style="margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="openModal('addMedicationModal')">
+                        <i class="fas fa-plus"></i>
+                        إضافة دواء
+                    </button>
+                    <button class="btn btn-secondary" onclick="scanBarcode()">
+                        <i class="fas fa-barcode"></i>
+                        مسح باركود
+                    </button>
+                </div>
+                
+                <div class="items-list" id="medicationsList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- التاريخ المرضي -->
+            <div id="historyContent" class="section-content">
+                <button class="btn btn-primary btn-full" onclick="openModal('addHistoryModal')" style="margin-bottom: 20px;">
+                    <i class="fas fa-plus"></i>
+                    إضافة حدث مرضي
+                </button>
+                
+                <div class="timeline" id="medicalHistory">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- الإعدادات -->
+            <div id="settingsContent" class="section-content">
+                <div class="privacy-settings">
+                    <h3 style="margin-bottom: 15px; color: var(--text-primary);">إعدادات الخصوصية</h3>
+                    
+                    <div class="privacy-item">
+                        <div>
+                            <strong>مشاركة البيانات مع الأطباء</strong>
+                            <p style="font-size: 12px; color: var(--text-secondary);">السماح للأطباء بالوصول لبياناتك عند الحاجة</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="shareWithDoctors" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div>
+                            <strong>الإشعارات الدوائية</strong>
+                            <p style="font-size: 12px; color: var(--text-secondary);">تنبيهات مواعيد الأدوية والتفاعلات</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="medicationAlerts" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div>
+                            <strong>نسخ احتياطي تلقائي</strong>
+                            <p style="font-size: 12px; color: var(--text-secondary);">حفظ بياناتك تلقائياً على السحابة</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoBackup" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions" style="margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i>
+                        حفظ الإعدادات
+                    </button>
+                    <button class="btn btn-danger" onclick="openModal('deleteAccountModal')">
+                        <i class="fas fa-trash"></i>
+                        حذف الحساب
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة رفع مستند -->
+        <div id="uploadDocumentModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">رفع مستند طبي</div>
+                    <button class="close-modal" onclick="closeModal('uploadDocumentModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">نوع المستند *</label>
+                    <select class="form-select" id="documentType" required>
+                        <option value="">اختر نوع المستند</option>
+                        <option value="report">تقرير طبي</option>
+                        <option value="scan">صورة أشعة</option>
+                        <option value="lab">تحليل مخبري</option>
+                        <option value="prescription">روشتة</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم المستند *</label>
+                    <input type="text" class="form-input" id="documentName" placeholder="اسم المستند" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">تاريخ المستند *</label>
+                    <input type="date" class="form-input" id="documentDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رفع الملف *</label>
+                    <input type="file" class="form-input" id="documentFile" accept=".pdf,.jpg,.jpeg,.png" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الأذونات</label>
+                    <select class="form-select" id="documentPermissions">
+                        <option value="private">خاص بي فقط</option>
+                        <option value="doctors">الأطباء المعالجين</option>
+                        <option value="emergency">الطوارئ فقط</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('uploadDocumentModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="uploadDocument()">رفع المستند</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة حساسية -->
+        <div id="addAllergyModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة حساسية جديدة</div>
+                    <button class="close-modal" onclick="closeModal('addAllergyModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">نوع الحساسية *</label>
+                    <select class="form-select" id="allergyType" required>
+                        <option value="">اختر النوع</option>
+                        <option value="food">طعام</option>
+                        <option value="medication">دواء</option>
+                        <option value="environment">بيئية</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المادة المسببة *</label>
+                    <input type="text" class="form-input" id="allergySubstance" placeholder="اسم المادة المسببة للحساسية" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">شدة الحساسية *</label>
+                    <select class="form-select" id="allergySeverity" required>
+                        <option value="low">منخفضة</option>
+                        <option value="medium">متوسطة</option>
+                        <option value="high">عالية</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">تاريخ الاكتشاف</label>
+                    <input type="date" class="form-input" id="allergyDate">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الأعراض</label>
+                    <textarea class="form-textarea" id="allergySymptoms" placeholder="الأعراض التي تظهر عند التعرض للحساسية"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addAllergyModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="addAllergy()">إضافة الحساسية</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة دواء -->
+        <div id="addMedicationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة دواء جديد</div>
+                    <button class="close-modal" onclick="closeModal('addMedicationModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم الدواء *</label>
+                    <input type="text" class="form-input" id="medicationName" placeholder="اسم الدواء" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الجرعة *</label>
+                    <input type="text" class="form-input" id="medicationDosage" placeholder="مثال: 500mg مرتين يومياً" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">تاريخ البدء *</label>
+                        <input type="date" class="form-input" id="medicationStartDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">تاريخ الانتهاء</label>
+                        <input type="date" class="form-input" id="medicationEndDate">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من الاستخدام</label>
+                    <input type="text" class="form-input" id="medicationPurpose" placeholder="السبب لاستخدام هذا الدواء">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات</label>
+                    <textarea class="form-textarea" id="medicationNotes" placeholder="أي ملاحظات إضافية عن الدواء"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addMedicationModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="addMedication()">إضافة الدواء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة حدث مرضي -->
+        <div id="addHistoryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة حدث مرضي</div>
+                    <button class="close-modal" onclick="closeModal('addHistoryModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">نوع الحدث *</label>
+                    <select class="form-select" id="historyType" required>
+                        <option value="">اختر النوع</option>
+                        <option value="surgery">عملية جراحية</option>
+                        <option value="chronic">مرض مزمن</option>
+                        <option value="infection">عدوى</option>
+                        <option value="injury">إصابة</option>
+                        <option value="vaccination">تطعيم</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم الحدث *</label>
+                    <input type="text" class="form-input" id="historyName" placeholder="اسم الحدث المرضي" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">تاريخ الحدث *</label>
+                    <input type="date" class="form-input" id="historyDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">التفاصيل</label>
+                    <textarea class="form-textarea" id="historyDetails" placeholder="تفاصيل الحدث المرضي"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ربط بمستند (اختياري)</label>
+                    <select class="form-select" id="historyDocument">
+                        <option value="">اختر مستند</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addHistoryModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="addMedicalHistory()">إضافة الحدث</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تأكيد الحذف -->
+        <div id="deleteAccountModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" style="color: var(--error);">تأكيد حذف الحساب</div>
+                    <button class="close-modal" onclick="closeModal('deleteAccountModal')">×</button>
+                </div>
+                
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 64px; color: var(--error); margin-bottom: 20px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 style="margin-bottom: 15px; color: var(--error);">تحذير!</h3>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">
+                        هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع بياناتك الطبية والملف الشخصي بشكل نهائي.
+                    </p>
+                    
+                    <div class="security-warning" style="text-align: right;">
+                        <strong>البيانات التي سيتم حذفها:</strong>
+                        <ul style="margin-top: 10px; padding-right: 20px;">
+                            <li>الملف الشخصي والبيانات الأساسية</li>
+                            <li>جميع المستندات الطبية</li>
+                            <li>سجل الحساسيات والأدوية</li>
+                            <li>التاريخ المرضي الكامل</li>
+                            <li>جميع المواعيد والاستشارات</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label class="form-label">اكتب "حذف" للتأكيد</label>
+                        <input type="text" class="form-input" id="deleteConfirmation" placeholder="اكتب 'حذف' هنا">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('deleteAccountModal')">إلغاء</button>
+                    <button class="btn btn-danger" onclick="deleteAccount()">حذف الحساب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="consultation.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="appointments.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">المواعيد</div>
+            </a>
+            <a href="wallet.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المال</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">بياناتي</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+    // نظام إدارة الملف الطبي الشخصي المتقدم
+class AdvancedProfileSystem {
+    constructor() {
+        this.currentSection = 'personal';
+        this.userData = this.loadUserData();
+        this.medicalDocuments = this.loadMedicalDocuments();
+        this.allergies = this.loadAllergies();
+        this.medications = this.loadMedications();
+        this.medicalHistory = this.loadMedicalHistory();
+        this.settings = this.loadSettings();
+        
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.updateUI();
+        this.updateTime();
+        this.calculateProfileCompletion();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // تحديث الحقول عند التغيير
+        document.getElementById('fullName')?.addEventListener('input', () => this.validateField('fullName'));
+        document.getElementById('email')?.addEventListener('input', () => this.validateEmail());
+        document.getElementById('phone')?.addEventListener('input', () => this.validatePhone());
+        
+        // إعدادات الخصوصية
+        document.getElementById('shareWithDoctors')?.addEventListener('change', () => this.toggleSetting('shareWithDoctors'));
+        document.getElementById('medicationAlerts')?.addEventListener('change', () => this.toggleSetting('medicationAlerts'));
+        document.getElementById('autoBackup')?.addEventListener('change', () => this.toggleSetting('autoBackup'));
+        
+        // منع إرسال النماذج
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => e.preventDefault());
+        });
+    }
+
+    loadUserData() {
+        const defaultData = {
+            fullName: 'محمد أحمد',
+            email: 'mohamed@example.com',
+            phone: '+966500000000',
+            birthDate: '1985-06-15',
+            bloodType: 'O+',
+            address: 'الرياض، حي الملز، شارع الملك فهد',
+            medicalNotes: '',
+            profileCompletion: 65
+        };
+        
+        return JSON.parse(localStorage.getItem('userProfile')) || defaultData;
+    }
+
+    loadMedicalDocuments() {
+        const defaultDocuments = [
+            {
+                id: 1,
+                name: 'تقرير تحاليل الدم',
+                type: 'lab',
+                date: '2024-01-15',
+                size: '2.4 MB',
+                permissions: 'doctors'
+            },
+            {
+                id: 2,
+                name: 'أشعة الصدر',
+                type: 'scan',
+                date: '2024-01-10',
+                size: '5.1 MB',
+                permissions: 'private'
+            },
+            {
+                id: 3,
+                name: 'تقرير طبي شامل',
+                type: 'report',
+                date: '2024-01-05',
+                size: '3.2 MB',
+                permissions: 'doctors'
+            }
+        ];
+        
+        return JSON.parse(localStorage.getItem('medicalDocuments')) || defaultDocuments;
+    }
+
+    loadAllergies() {
+        const defaultAllergies = [
+            {
+                id: 1,
+                type: 'medication',
+                substance: 'بنسلين',
+                severity: 'high',
+                date: '2018-03-10',
+                symptoms: 'طفح جلدي، صعوبة في التنفس'
+            },
+            {
+                id: 2,
+                type: 'food',
+                substance: 'المكسرات',
+                severity: 'medium',
+                date: '2020-07-15',
+                symptoms: 'حكة، تورم في الوجه'
+            }
+        ];
+        
+        return JSON.parse(localStorage.getItem('userAllergies')) || defaultAllergies;
+    }
+
+    loadMedications() {
+        const defaultMedications = [
+            {
+                id: 1,
+                name: 'أتورفاستاتين',
+                dosage: '20mg مرة يومياً',
+                startDate: '2024-01-01',
+                endDate: '2024-06-01',
+                purpose: 'خفض الكوليسترول',
+                notes: 'تناول مع الطعام'
+            },
+            {
+                id: 2,
+                name: 'ميتفورمين',
+                dosage: '500mg مرتين يومياً',
+                startDate: '2024-01-01',
+                endDate: '',
+                purpose: 'علاج السكري',
+                notes: 'قبل الوجبات'
+            }
+        ];
+        
+        return JSON.parse(localStorage.getItem('userMedications')) || defaultMedications;
+    }
+
+    loadMedicalHistory() {
+        const defaultHistory = [
+            {
+                id: 1,
+                type: 'surgery',
+                name: 'عملية الزائدة الدودية',
+                date: '2015-08-20',
+                details: 'عملية استئصال الزائدة الدودية الطارئة',
+                documentId: null
+            },
+            {
+                id: 2,
+                type: 'chronic',
+                name: 'تشخيص السكري النوع الثاني',
+                date: '2020-03-15',
+                details: 'تشخيص مبكر وبدء العلاج',
+                documentId: 1
+            }
+        ];
+        
+        return JSON.parse(localStorage.getItem('medicalHistory')) || defaultHistory;
+    }
+
+    loadSettings() {
+        const defaultSettings = {
+            shareWithDoctors: true,
+            medicationAlerts: true,
+            autoBackup: true,
+            emergencyAccess: false,
+            dataRetention: '1year'
+        };
+        
+        return JSON.parse(localStorage.getItem('profileSettings')) || defaultSettings;
+    }
+
+    updateUI() {
+        this.updatePersonalInfo();
+        this.updateMedicalDocuments();
+        this.updateAllergies();
+        this.updateMedications();
+        this.updateMedicalHistory();
+        this.updateSettings();
+        this.updateBadges();
+    }
+
+    updatePersonalInfo() {
+        const data = this.userData;
+        
+        document.getElementById('userName').textContent = data.fullName;
+        document.getElementById('fullName').value = data.fullName;
+        document.getElementById('email').value = data.email;
+        document.getElementById('phone').value = data.phone;
+        document.getElementById('birthDate').value = data.birthDate;
+        document.getElementById('bloodType').value = data.bloodType;
+        document.getElementById('address').value = data.address;
+        document.getElementById('medicalNotes').value = data.medicalNotes || '';
+        
+        document.getElementById('profileCompletion').textContent = data.profileCompletion + '%';
+    }
+
+    updateMedicalDocuments() {
+        const container = document.getElementById('documentsList');
+        if (!container) return;
+
+        if (this.medicalDocuments.length === 0) {
+            container.innerHTML = this.createEmptyState('medical', 'لا توجد مستندات طبية', 'fas fa-file-medical');
+            return;
+        }
+
+        container.innerHTML = this.medicalDocuments.map(doc => `
+            <div class="document-card" onclick="profileSystem.viewDocument(${doc.id})">
+                <div class="document-icon">
+                    <i class="fas ${this.getDocumentIcon(doc.type)}"></i>
+                </div>
+                <div class="document-name">${doc.name}</div>
+                <div class="document-meta">
+                    ${this.formatDate(doc.date)} • ${doc.size}
+                </div>
+                <div class="tag" style="margin-top: 8px;">
+                    ${this.getPermissionText(doc.permissions)}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    updateAllergies() {
+        const container = document.getElementById('allergiesList');
+        if (!container) return;
+
+        if (this.allergies.length === 0) {
+            container.innerHTML = this.createEmptyState('allergies', 'لا توجد حساسيات مسجلة', 'fas fa-allergies');
+            return;
+        }
+
+        container.innerHTML = this.allergies.map(allergy => `
+            <div class="item-card">
+                <div class="item-header">
+                    <div class="item-title">${allergy.substance}</div>
+                    <div class="item-actions">
+                        <button class="action-btn" onclick="event.stopPropagation(); profileSystem.editAllergy(${allergy.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" onclick="event.stopPropagation(); profileSystem.deleteAllergy(${allergy.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="item-details">
+                    <div class="detail-item">
+                        <span class="detail-label">النوع</span>
+                        <span class="detail-value">${this.getAllergyTypeText(allergy.type)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الشدة</span>
+                        <span class="detail-value">
+                            <span class="tag ${allergy.severity}">${this.getSeverityText(allergy.severity)}</span>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">التاريخ</span>
+                        <span class="detail-value">${this.formatDate(allergy.date)}</span>
+                    </div>
+                </div>
+                ${allergy.symptoms ? `
+                    <div class="detail-item">
+                        <span class="detail-label">الأعراض</span>
+                        <span class="detail-value">${allergy.symptoms}</span>
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+    }
+
+    updateMedications() {
+        const container = document.getElementById('medicationsList');
+        if (!container) return;
+
+        if (this.medications.length === 0) {
+            container.innerHTML = this.createEmptyState('medications', 'لا توجد أدوية مسجلة', 'fas fa-pills');
+            return;
+        }
+
+        container.innerHTML = this.medications.map(med => `
+            <div class="item-card">
+                <div class="item-header">
+                    <div class="item-title">${med.name}</div>
+                    <div class="item-actions">
+                        <button class="action-btn" onclick="event.stopPropagation(); profileSystem.editMedication(${med.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" onclick="event.stopPropagation(); profileSystem.deleteMedication(${med.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="item-details">
+                    <div class="detail-item">
+                        <span class="detail-label">الجرعة</span>
+                        <span class="detail-value">${med.dosage}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">من</span>
+                        <span class="detail-value">${this.formatDate(med.startDate)}</span>
+                    </div>
+                    ${med.endDate ? `
+                        <div class="detail-item">
+                            <span class="detail-label">إلى</span>
+                            <span class="detail-value">${this.formatDate(med.endDate)}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                ${med.purpose ? `
+                    <div class="detail-item">
+                        <span class="detail-label">الغرض</span>
+                        <span class="detail-value">${med.purpose}</span>
+                    </div>
+                ` : ''}
+                ${med.notes ? `
+                    <div class="detail-item">
+                        <span class="detail-label">ملاحظات</span>
+                        <span class="detail-value">${med.notes}</span>
+                    </div>
+                ` : ''}
+                <div class="item-tags">
+                    ${this.checkMedicationAlerts(med)}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    updateMedicalHistory() {
+        const container = document.getElementById('medicalHistory');
+        if (!container) return;
+
+        if (this.medicalHistory.length === 0) {
+            container.innerHTML = this.createEmptyState('history', 'لا توجد أحداث مرضية', 'fas fa-history');
+            return;
+        }
+
+        // ترتيب الأحداث من الأحدث إلى الأقدم
+        const sortedHistory = [...this.medicalHistory].sort((a, b) => 
+            new Date(b.date) - new Date(a.date)
+        );
+
+        container.innerHTML = sortedHistory.map(event => `
+            <div class="timeline-item">
+                <div class="timeline-date">${this.formatDate(event.date)}</div>
+                <div class="timeline-content">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <div>
+                            <strong>${event.name}</strong>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                                ${this.getHistoryTypeText(event.type)}
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); profileSystem.editHistory(${event.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" onclick="event.stopPropagation(); profileSystem.deleteHistory(${event.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${event.details ? `
+                        <div style="font-size: 14px; line-height: 1.5; margin-bottom: 10px;">
+                            ${event.details}
+                        </div>
+                    ` : ''}
+                    ${event.documentId ? `
+                        <button class="btn btn-sm btn-secondary" onclick="profileSystem.viewDocument(${event.documentId})">
+                            <i class="fas fa-file-medical"></i>
+                            عرض المستند
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    updateSettings() {
+        document.getElementById('shareWithDoctors').checked = this.settings.shareWithDoctors;
+        document.getElementById('medicationAlerts').checked = this.settings.medicationAlerts;
+        document.getElementById('autoBackup').checked = this.settings.autoBackup;
+    }
+
+    updateBadges() {
+        document.getElementById('personalBadge').textContent = `مكتمل ${this.userData.profileCompletion}%`;
+        document.getElementById('medicalBadge').textContent = `${this.medicalDocuments.length} مستند`;
+        document.getElementById('allergiesBadge').textContent = `${this.allergies.length} حساسية`;
+        document.getElementById('medicationsBadge').textContent = `${this.medications.length} دواء`;
+        document.getElementById('historyBadge').textContent = `${this.medicalHistory.length} أحداث`;
+        
+        document.getElementById('medicalDocuments').textContent = this.medicalDocuments.length;
+        document.getElementById('activeMedications').textContent = this.medications.length;
+    }
+
+    // التحقق من صحة الحقول
+    validateField(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (!field) return true;
+
+        let isValid = true;
+        let message = '';
+
+        switch (fieldId) {
+            case 'fullName':
+                isValid = field.value.trim().length >= 2;
+                message = isValid ? '' : 'الاسم يجب أن يكون على الأقل حرفين';
+                break;
+            case 'email':
+                isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+                message = isValid ? '' : 'البريد الإلكتروني غير صحيح';
+                break;
+            case 'phone':
+                isValid = /^[\+]?[0-9\s\-\(\)]{10,}$/.test(field.value);
+                message = isValid ? '' : 'رقم الهاتف غير صحيح';
+                break;
+        }
+
+        this.updateFieldValidation(field, isValid, message);
+        return isValid;
+    }
+
+    validateEmail() {
+        return this.validateField('email');
+    }
+
+    validatePhone() {
+        return this.validateField('phone');
+    }
+
+    updateFieldValidation(field, isValid, message) {
+        field.style.borderColor = isValid ? '#e2e8f0' : 'var(--error)';
+        
+        // إزالة رسالة الخطأ السابقة
+        let errorElement = field.parentNode.querySelector('.error-message');
+        if (errorElement) {
+            errorElement.remove();
+        }
+        
+        if (!isValid && message) {
+            errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.style.color = 'var(--error)';
+            errorElement.style.fontSize = '12px';
+            errorElement.style.marginTop = '5px';
+            errorElement.textContent = message;
+            field.parentNode.appendChild(errorElement);
+        }
+    }
+
+    // حفظ البيانات
+    savePersonalInfo() {
+        if (!this.validateField('fullName') || !this.validateField('email') || !this.validateField('phone')) {
+            this.showNotification('يرجى تصحيح الأخطاء في البيانات', 'error');
+            return;
+        }
+
+        this.userData = {
+            ...this.userData,
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            birthDate: document.getElementById('birthDate').value,
+            bloodType: document.getElementById('bloodType').value,
+            address: document.getElementById('address').value,
+            medicalNotes: document.getElementById('medicalNotes').value
+        };
+
+        this.calculateProfileCompletion();
+        localStorage.setItem('userProfile', JSON.stringify(this.userData));
+        
+        this.showNotification('تم حفظ البيانات الشخصية بنجاح', 'success');
+        this.updateUI();
+    }
+
+    saveSettings() {
+        this.settings = {
+            shareWithDoctors: document.getElementById('shareWithDoctors').checked,
+            medicationAlerts: document.getElementById('medicationAlerts').checked,
+            autoBackup: document.getElementById('autoBackup').checked
+        };
+
+        localStorage.setItem('profileSettings', JSON.stringify(this.settings));
+        this.showNotification('تم حفظ الإعدادات بنجاح', 'success');
+    }
+
+    // إدارة المستندات
+    uploadDocument() {
+        const type = document.getElementById('documentType').value;
+        const name = document.getElementById('documentName').value;
+        const date = document.getElementById('documentDate').value;
+        const file = document.getElementById('documentFile').files[0];
+        const permissions = document.getElementById('documentPermissions').value;
+
+        if (!type || !name || !date || !file) {
+            this.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+            return;
+        }
+
+        const newDocument = {
+            id: Date.now(),
+            name: name,
+            type: type,
+            date: date,
+            size: this.formatFileSize(file.size),
+            permissions: permissions,
+            fileName: file.name
+        };
+
+        this.medicalDocuments.unshift(newDocument);
+        localStorage.setItem('medicalDocuments', JSON.stringify(this.medicalDocuments));
+        
+        closeModal('uploadDocumentModal');
+        this.showNotification('تم رفع المستند بنجاح', 'success');
+        this.updateUI();
+        
+        // محاكاة تحميل الملف
+        this.simulateFileUpload(file);
+    }
+
+    // إدارة الحساسيات
+    addAllergy() {
+        const type = document.getElementById('allergyType').value;
+        const substance = document.getElementById('allergySubstance').value;
+        const severity = document.getElementById('allergySeverity').value;
+        const date = document.getElementById('allergyDate').value;
+        const symptoms = document.getElementById('allergySymptoms').value;
+
+        if (!type || !substance || !severity) {
+            this.showNotification('يرجى ملء الحقول الإلزامية', 'error');
+            return;
+        }
+
+        const newAllergy = {
+            id: Date.now(),
+            type: type,
+            substance: substance,
+            severity: severity,
+            date: date || new Date().toISOString().split('T')[0],
+            symptoms: symptoms
+        };
+
+        this.allergies.push(newAllergy);
+        localStorage.setItem('userAllergies', JSON.stringify(this.allergies));
+        
+        closeModal('addAllergyModal');
+        this.showNotification('تم إضافة الحساسية بنجاح', 'success');
+        
+        // التحقق من التفاعلات مع الأدوية
+        this.checkAllergyInteractions(newAllergy);
+        this.updateUI();
+    }
+
+    // إدارة الأدوية
+    addMedication() {
+        const name = document.getElementById('medicationName').value;
+        const dosage = document.getElementById('medicationDosage').value;
+        const startDate = document.getElementById('medicationStartDate').value;
+        const endDate = document.getElementById('medicationEndDate').value;
+        const purpose = document.getElementById('medicationPurpose').value;
+        const notes = document.getElementById('medicationNotes').value;
+
+        if (!name || !dosage || !startDate) {
+            this.showNotification('يرجى ملء الحقول الإلزامية', 'error');
+            return;
+        }
+
+        const newMedication = {
+            id: Date.now(),
+            name: name,
+            dosage: dosage,
+            startDate: startDate,
+            endDate: endDate,
+            purpose: purpose,
+            notes: notes
+        };
+
+        this.medications.push(newMedication);
+        localStorage.setItem('userMedications', JSON.stringify(this.medications));
+        
+        closeModal('addMedicationModal');
+        this.showNotification('تم إضافة الدواء بنجاح', 'success');
+        
+        // التحقق من التفاعلات الدوائية
+        this.checkDrugInteractions(newMedication);
+        this.updateUI();
+    }
+
+    // إدارة التاريخ المرضي
+    addMedicalHistory() {
+        const type = document.getElementById('historyType').value;
+        const name = document.getElementById('historyName').value;
+        const date = document.getElementById('historyDate').value;
+        const details = document.getElementById('historyDetails').value;
+        const documentId = document.getElementById('historyDocument').value;
+
+        if (!type || !name || !date) {
+            this.showNotification('يرجى ملء الحقول الإلزامية', 'error');
+            return;
+        }
+
+        const newHistory = {
+            id: Date.now(),
+            type: type,
+            name: name,
+            date: date,
+            details: details,
+            documentId: documentId || null
+        };
+
+        this.medicalHistory.push(newHistory);
+        localStorage.setItem('medicalHistory', JSON.stringify(this.medicalHistory));
+        
+        closeModal('addHistoryModal');
+        this.showNotification('تم إضافة الحدث المرضي بنجاح', 'success');
+        this.updateUI();
+    }
+
+    // التحقق من التفاعلات
+    checkAllergyInteractions(allergy) {
+        if (allergy.type === 'medication') {
+            this.showNotification(`تنبيه: تم إضافة حساسية من ${allergy.substance}. سيتم التحقق من الأدوية الموصوفة.`, 'warning');
+        }
+    }
+
+    checkDrugInteractions(medication) {
+        // محاكاة التحقق من التفاعلات الدوائية
+        const knownInteractions = {
+            'أتورفاستاتين': ['مضادات الفطريات', 'مضادات حيوية معينة'],
+            'ميتفورمين': ['أدوية القلب', 'مدرات البول']
+        };
+
+        if (knownInteractions[medication.name]) {
+            setTimeout(() => {
+                this.showNotification(
+                    `تنبيه: ${medication.name} قد يتفاعل مع ${knownInteractions[medication.name].join('، ')}`,
+                    'warning'
+                );
+            }, 1000);
+        }
+
+        // التحقق من الحساسيات
+        const allergyConflict = this.allergies.find(a => 
+            a.type === 'medication' && 
+            medication.name.toLowerCase().includes(a.substance.toLowerCase())
+        );
+
+        if (allergyConflict) {
+            setTimeout(() => {
+                this.showEmergencyAlert(
+                    `خطر! الدواء ${medication.name} يحتوي على ${allergyConflict.substance} الذي لديك حساسية منه`,
+                    'high'
+                );
+            }, 1500);
+        }
+    }
+
+    checkMedicationAlerts(medication) {
+        const alerts = [];
+        const today = new Date();
+        const endDate = medication.endDate ? new Date(medication.endDate) : null;
+
+        if (endDate && endDate < today) {
+            alerts.push('<span class="tag high">منتهي</span>');
+        } else if (endDate) {
+            const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+            if (daysLeft <= 7) {
+                alerts.push(`<span class="tag warning">ينتهي بعد ${daysLeft} يوم</span>`);
+            }
+        }
+
+        // تحقق إذا كان الدواء يحتاج إلى تجديد
+        const startDate = new Date(medication.startDate);
+        const daysSinceStart = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+        
+        if (daysSinceStart >= 30 && !endDate) {
+            alerts.push('<span class="tag medium">يحتاج مراجعة</span>');
+        }
+
+        return alerts.join('');
+    }
+
+    // أدوات مساعدة
+    getDocumentIcon(type) {
+        const icons = {
+            'report': 'fa-file-medical-alt',
+            'scan': 'fa-x-ray',
+            'lab': 'fa-flask',
+            'prescription': 'fa-prescription',
+            'other': 'fa-file'
+        };
+        return icons[type] || 'fa-file';
+    }
+
+    getPermissionText(permission) {
+        const texts = {
+            'private': 'خاص',
+            'doctors': 'للأطباء',
+            'emergency': 'للطوارئ'
+        };
+        return texts[permission] || permission;
+    }
+
+    getAllergyTypeText(type) {
+        const texts = {
+            'food': 'طعام',
+            'medication': 'دواء',
+            'environment': 'بيئية',
+            'other': 'أخرى'
+        };
+        return texts[type] || type;
+    }
+
+    getSeverityText(severity) {
+        const texts = {
+            'low': 'منخفضة',
+            'medium': 'متوسطة',
+            'high': 'عالية'
+        };
+        return texts[severity] || severity;
+    }
+
+    getHistoryTypeText(type) {
+        const texts = {
+            'surgery': 'عملية جراحية',
+            'chronic': 'مرض مزمن',
+            'infection': 'عدوى',
+            'injury': 'إصابة',
+            'vaccination': 'تطعيم',
+            'other': 'أخرى'
+        };
+        return texts[type] || type;
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return 'غير محدد';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    createEmptyState(section, message, icon) {
+        return `
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">${message}</div>
+                <p style="font-size: 14px; color: var(--text-secondary);">ابدأ بإضافة أول عنصر</p>
+            </div>
+        `;
+    }
+
+    calculateProfileCompletion() {
+        let completion = 0;
+        const data = this.userData;
+
+        // البيانات الأساسية (40%)
+        if (data.fullName && data.fullName.length >= 2) completion += 20;
+        if (data.email && this.validateField('email')) completion += 10;
+        if (data.phone && this.validateField('phone')) completion += 10;
+
+        // البيانات الطبية (30%)
+        if (data.bloodType) completion += 15;
+        if (data.birthDate) completion += 15;
+
+        // البيانات الإضافية (30%)
+        if (this.medicalDocuments.length > 0) completion += 10;
+        if (this.allergies.length > 0) completion += 10;
+        if (this.medications.length > 0) completion += 10;
+
+        this.userData.profileCompletion = completion;
+        localStorage.setItem('userProfile', JSON.stringify(this.userData));
+    }
+
+    toggleSetting(setting) {
+        this.settings[setting] = !this.settings[setting];
+        localStorage.setItem('profileSettings', JSON.stringify(this.settings));
+        
+        if (setting === 'medicationAlerts' && this.settings[setting]) {
+            this.showNotification('تم تفعيل التنبيهات الدوائية', 'success');
+        }
+    }
+
+    // المحاكاة
+    simulateFileUpload(file) {
+        this.showNotification('جاري معالجة الملف...', 'info');
+        
+        setTimeout(() => {
+            this.showNotification('تم تحميل الملف بنجاح', 'success');
+        }, 2000);
+    }
+
+    scanBarcode() {
+        this.showNotification('جاري فتح الكاميرا للمسح...', 'info');
+        
+        // محاكاة مسح الباركود
+        setTimeout(() => {
+            const mockMedication = {
+                name: 'باراسيتامول',
+                dosage: '500mg عند الحاجة',
+                purpose: 'مسكن للألم وخافض للحرارة'
+            };
+            
+            document.getElementById('medicationName').value = mockMedication.name;
+            document.getElementById('medicationDosage').value = mockMedication.dosage;
+            document.getElementById('medicationPurpose').value = mockMedication.purpose;
+            
+            openModal('addMedicationModal');
+            this.showNotification('تم التعرف على الدواء من الباركود', 'success');
+        }, 1500);
+    }
+
+    // التنبيهات الطارئة
+    showEmergencyAlert(message, severity) {
+        const alertContent = `
+            <div class="modal-header" style="border-bottom-color: var(--error);">
+                <div class="modal-title" style="color: var(--error);">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    تنبيه طبي عاجل
+                </div>
+                <button class="close-modal" onclick="closeModal('emergencyAlert')">×</button>
+            </div>
+            <div style="padding: 20px; text-align: center;">
+                <div style="font-size: 48px; color: var(--error); margin-bottom: 20px;">
+                    🚨
+                </div>
+                <h3 style="color: var(--error); margin-bottom: 15px;">تحذير سلامة</h3>
+                <p style="margin-bottom: 20px; line-height: 1.6;">${message}</p>
+                <div class="form-actions">
+                    <button class="btn btn-danger" onclick="closeModal('emergencyAlert')">
+                        <i class="fas fa-check"></i>
+                        فهمت
+                    </button>
+                </div>
+            </div>
+        `;
+
+        this.createModal('emergencyAlert', alertContent);
+        openModal('emergencyAlert');
+    }
+
+    // الوظائف العامة
+    showSection(section) {
+        // إخفاء جميع الأقسام
+        document.querySelectorAll('.section-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        document.querySelectorAll('.section-card').forEach(card => {
+            card.classList.remove('active');
+        });
+
+        // إظهار القسم المحدد
+        document.getElementById(section + 'Content').classList.add('active');
+        event.target.closest('.section-card').classList.add('active');
+        
+        this.currentSection = section;
+    }
+
+    createModal(modalId, content) {
+        let modal = document.getElementById(modalId);
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = modalId;
+            modal.className = 'modal';
+            modal.innerHTML = `<div class="modal-content">${content}</div>`;
+            document.body.appendChild(modal);
+        } else {
+            modal.querySelector('.modal-content').innerHTML = content;
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // إزالة أي إشعارات سابقة
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        });
+
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 4000);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    // وظائف الحذف (للاكتمال)
+    deleteAccount() {
+        const confirmation = document.getElementById('deleteConfirmation').value;
+        
+        if (confirmation !== 'حذف') {
+            this.showNotification('يرجى كتابة "حذف" للتأكيد', 'error');
+            return;
+        }
+
+        this.showNotification('جاري حذف الحساب...', 'info');
+        
+        // محاكاة الحذف
+        setTimeout(() => {
+            localStorage.clear();
+            this.showNotification('تم حذف الحساب بنجاح', 'success');
+            closeModal('deleteAccountModal');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }, 3000);
+    }
+
+    // وظائف العرض (للاكتمال)
+    viewDocument(documentId) {
+        this.showNotification('جاري فتح المستند...', 'info');
+        // في التطبيق الحقيقي، سيتم فتح المستند في نافذة جديدة أو عرضه
+    }
+
+    editAllergy(allergyId) {
+        this.showNotification('جاري تحميل بيانات الحساسية...', 'info');
+        // سيتم فتح نموذج التعديل
+    }
+
+    deleteAllergy(allergyId) {
+        if (confirm('هل أنت متأكد من حذف هذه الحساسية؟')) {
+            this.allergies = this.allergies.filter(a => a.id !== allergyId);
+            localStorage.setItem('userAllergies', JSON.stringify(this.allergies));
+            this.showNotification('تم حذف الحساسية', 'success');
+            this.updateUI();
+        }
+    }
+
+    editMedication(medicationId) {
+        this.showNotification('جاري تحميل بيانات الدواء...', 'info');
+        // سيتم فتح نموذج التعديل
+    }
+
+    deleteMedication(medicationId) {
+        if (confirm('هل أنت متأكد من حذف هذا الدواء؟')) {
+            this.medications = this.medications.filter(m => m.id !== medicationId);
+            localStorage.setItem('userMedications', JSON.stringify(this.medications));
+            this.showNotification('تم حذف الدواء', 'success');
+            this.updateUI();
+        }
+    }
+
+    editHistory(historyId) {
+        this.showNotification('جاري تحميل بيانات الحدث...', 'info');
+        // سيتم فتح نموذج التعديل
+    }
+
+    deleteHistory(historyId) {
+        if (confirm('هل أنت متأكد من حذف هذا الحدث؟')) {
+            this.medicalHistory = this.medicalHistory.filter(h => h.id !== historyId);
+            localStorage.setItem('medicalHistory', JSON.stringify(this.medicalHistory));
+            this.showNotification('تم حذف الحدث', 'success');
+            this.updateUI();
+        }
+    }
+}
+
+// وظائف الواجهة العامة
+function showSection(section) {
+    if (window.profileSystem) {
+        window.profileSystem.showSection(section);
+    }
+}
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function validateField(fieldId) {
+    if (window.profileSystem) {
+        return window.profileSystem.validateField(fieldId);
+    }
+    return true;
+}
+
+function validateEmail() {
+    return validateField('email');
+}
+
+function validatePhone() {
+    return validateField('phone');
+}
+
+function savePersonalInfo() {
+    if (window.profileSystem) {
+        window.profileSystem.savePersonalInfo();
+    }
+}
+
+function saveSettings() {
+    if (window.profileSystem) {
+        window.profileSystem.saveSettings();
+    }
+}
+
+function uploadDocument() {
+    if (window.profileSystem) {
+        window.profileSystem.uploadDocument();
+    }
+}
+
+function addAllergy() {
+    if (window.profileSystem) {
+        window.profileSystem.addAllergy();
+    }
+}
+
+function addMedication() {
+    if (window.profileSystem) {
+        window.profileSystem.addMedication();
+    }
+}
+
+function addMedicalHistory() {
+    if (window.profileSystem) {
+        window.profileSystem.addMedicalHistory();
+    }
+}
+
+function scanBarcode() {
+    if (window.profileSystem) {
+        window.profileSystem.scanBarcode();
+    }
+}
+
+function deleteAccount() {
+    if (window.profileSystem) {
+        window.profileSystem.deleteAccount();
+    }
+}
+
+// إغلاق النوافذ بالضغط خارجها
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// تهيئة النظام عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.profileSystem = new AdvancedProfileSystem();
+});
+
+// جعل النظام متاحاً globally
+window.AdvancedProfileSystem = AdvancedProfileSystem;
+</script>
+</body>
+</html>
