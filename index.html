@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - البوابة الرئيسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #c7d2fe;
+            --secondary: #06d6a0;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --surface: #ffffff;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-medical: linear-gradient(135deg, #6366f1 0%, #06d6a0 100%);
+            --gradient-pharmacy: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-delivery: linear-gradient(135deg, #6366f1 0%, #f59e0b 100%);
+            --gradient-hospital: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            --gradient-patient: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+            --gradient-pharma-company: linear-gradient(135deg, #6366f1 0%, #10b981 100%);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(99, 102, 241, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'El Messiri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #e0e7ff 100%);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* التطبيق الرئيسي */
+        .gateway-container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الهيدر */
+        .gateway-header {
+            background: var(--gradient-medical);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gateway-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .gateway-logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .gateway-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .gateway-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* المحتوى */
+        .gateway-content {
+            padding: 50px 30px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .welcome-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* شبكة الخيارات */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .option-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: var(--transition-smooth);
+        }
+
+        .option-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-soft);
+            border-color: var(--primary-light);
+        }
+
+        .option-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .option-card.doctor {
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+        }
+
+        .option-card.hospital {
+            background: linear-gradient(135deg, #f8fafc 0%, #fdf2f8 100%);
+        }
+
+        .option-card.pharmacy {
+            background: linear-gradient(135deg, #f8fafc 0%, #faf5ff 100%);
+        }
+
+        .option-card.delivery {
+            background: linear-gradient(135deg, #f8fafc 0%, #fffbeb 100%);
+        }
+
+        .option-card.patient {
+            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+        }
+
+        .option-card.pharma-company {
+            background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%);
+        }
+
+        .option-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .option-icon.doctor {
+            background: var(--gradient-medical);
+        }
+
+        .option-icon.hospital {
+            background: var(--gradient-hospital);
+        }
+
+        .option-icon.pharmacy {
+            background: var(--gradient-pharmacy);
+        }
+
+        .option-icon.delivery {
+            background: var(--gradient-delivery);
+        }
+
+        .option-icon.patient {
+            background: var(--gradient-patient);
+        }
+
+        .option-icon.pharma-company {
+            background: var(--gradient-pharma-company);
+        }
+
+        .option-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .option-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            border: 2px solid var(--primary);
+        }
+
+        .option-btn:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* قسم الأسئلة الشائعة */
+        .faq-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .faq-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .faq-item {
+            background: var(--light);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-question i {
+            color: var(--primary);
+        }
+
+        .faq-answer {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* التذييل */
+        .gateway-footer {
+            background: var(--light);
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* التكيف مع الشاشات */
+        @media (max-width: 768px) {
+            .gateway-container {
+                max-width: 100%;
+            }
+            
+            .gateway-header {
+                padding: 40px 20px;
+            }
+            
+            .gateway-content {
+                padding: 40px 20px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* تأثيرات إضافية */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="gateway-container">
+        <!-- الهيدر -->
+        <div class="gateway-header">
+            <div class="gateway-logo pulse">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1 class="gateway-title">طبيب 24/7</h1>
+            <p class="gateway-subtitle">منصة طبية متكاملة تربط بين مقدمي الخدمات الطبية والمرضى في مكان واحد</p>
+        </div>
+
+        <!-- المحتوى -->
+        <div class="gateway-content">
+            <div class="welcome-section">
+                <h2 class="welcome-title">مرحباً بك في منصة طبيب 24/7</h2>
+                <p class="welcome-text">
+                    نحن هنا لنساعدك في الوصول إلى الخدمات الطبية التي تحتاجها. اختر نوع حسابك من الخيارات أدناه للبدء في استخدام المنصة.
+                </p>
+            </div>
+
+            <!-- شبكة الخيارات -->
+            <div class="options-grid">
+                <!-- طبيب -->
+                <div class="option-card doctor" data-type="doctor">
+                    <div class="option-icon doctor">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="option-title">طبيب/ممارس صحي</h3>
+                    <p class="option-description">
+                        انضم كطبيب أو ممارس صحي لتقديم خدماتك الطبية وإدارة عيادتك والتفاعل مع المرضى عبر المنصة.
+                    </p>
+                    <a href="#" class="option-btn" id="doctorBtn">الدخول كطبيب</a>
+                </div>
+
+                <!-- مستشفى -->
+                <div class="option-card hospital" data-type="hospital">
+                    <div class="option-icon hospital">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3 class="option-title">مستشفى/مركز طبي</h3>
+                    <p class="option-description">
+                        سجل مؤسستك الطبية لعرض خدماتك وإدارة المواعيد والتفاعل مع المرضى والأطباء عبر المنصة.
+                    </p>
+                    <a href="#" class="option-btn" id="hospitalBtn">الدخول كمستشفى</a>
+                </div>
+
+                <!-- صيدلية -->
+                <div class="option-card pharmacy" data-type="pharmacy">
+                    <div class="option-icon pharmacy">
+                        <i class="fas fa-prescription-bottle-alt"></i>
+                    </div>
+                    <h3 class="option-title">صيدلية</h3>
+                    <p class="option-description">
+                        انضم كصيدلية لتقديم خدماتك في بيع الأدوية والمستلزمات الطبية وتلقي طلبات التوصيل.
+                    </p>
+                    <a href="#" class="option-btn" id="pharmacyBtn">الدخول كصيدلية</a>
+                </div>
+
+                <!-- توصيل وإسعاف -->
+                <div class="option-card delivery" data-type="delivery">
+                    <div class="option-icon delivery">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3 class="option-title">توصيل وإسعاف</h3>
+                    <p class="option-description">
+                        سجل كفرد أو مؤسسة لتقديم خدمات التوصيل الطبي والإسعاف ونقل المرضى عبر المنصة.
+                    </p>
+                    <a href="#" class="option-btn" id="deliveryBtn">الدخول للتوصيل</a>
+                </div>
+
+                <!-- قسم المرضى الجديد -->
+                <div class="option-card patient" data-type="patient">
+                    <div class="option-icon patient">
+                        <i class="fas fa-user-injured"></i>
+                    </div>
+                    <h3 class="option-title">مريض</h3>
+                    <p class="option-description">
+                        انضم كمرضى للبحث عن الأطباء، حجز المواعيد، إدارة سجلك الصحي، وتلقي الاستشارات الطبية عبر المنصة.
+                    </p>
+                    <a href="#" class="option-btn" id="patientBtn">الدخول كمريض</a>
+                </div>
+
+                <!-- قسم شركات الأدوية الجديد -->
+                <div class="option-card pharma-company" data-type="pharma-company">
+                    <div class="option-icon pharma-company">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3 class="option-title">شركات الأدوية</h3>
+                    <p class="option-description">
+                        سجل كشركة أدوية لتقديم منتجاتك، التفاعل مع الصيدليات والمستشفيات، وعرض عروضك الخاصة عبر المنصة.
+                    </p>
+                    <a href="#" class="option-btn" id="pharmaCompanyBtn">الدخول كشركة أدوية</a>
+                </div>
+            </div>
+
+            <!-- قسم الأسئلة الشائعة -->
+            <div class="faq-section">
+                <h3 class="faq-title">أسئلة شائعة</h3>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            كيف أبدأ باستخدام المنصة؟
+                        </div>
+                        <p class="faq-answer">
+                            اختر نوع حسابك المناسب من الأعلى، ثم قم بتسجيل الدخول إذا كان لديك حساب مسبق، أو إنشاء حساب جديد.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            هل الخدمة مجانية؟
+                        </div>
+                        <p class="faq-answer">
+                            نعم، التسجيل واستخدام المنصة الأساسي مجاني تماماً لجميع أنواع الحسابات.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            كيف أتأكد من أمان بياناتي؟
+                        </div>
+                        <p class="faq-answer">
+                            نستخدم أحدث تقنيات التشفير لحماية بياناتك، ولا نشارك معلوماتك مع أي جهة خارجية.
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            هل يمكنني تغيير نوع حسابي لاحقاً؟
+                        </div>
+                        <p class="faq-answer">
+                            نعم، يمكنك التواصل مع الدعم الفني لتغيير نوع حسابك أو إضافة أنواع حسابات إضافية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التذييل -->
+        <div class="gateway-footer">
+            <p class="footer-text">طبيب 24/7 - جميع الحقوق محفوظة © 2023</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">شروط الاستخدام</a>
+                <a href="#" class="footer-link">سياسة الخصوصية</a>
+                <a href="#" class="footer-link">اتصل بنا</a>
+                <a href="#" class="footer-link">الدعم الفني</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التحقق مما إذا كانت هذه أول زيارة للمستخدم
+        function isFirstVisit() {
+            return !localStorage.getItem('hasVisitedBefore');
+        }
+
+        // تعيين علامة أن المستخدم زار الصفحة من قبل
+        function markAsVisited() {
+            localStorage.setItem('hasVisitedBefore', 'true');
+        }
+
+        // توجيه المستخدم بناءً على نوع الحساب
+        function redirectToPage(userType) {
+            const pages = {
+                'doctor': 'doctor-login.html',
+                'hospital': 'hospital/index.html', 
+                'pharmacy': 'pharmacy/index.html',
+                'delivery': 'deleviry/index.html',
+                'patient': 'patient/index.html',
+                'pharma-company': 'pharma-company/index.html'
+            };
+            
+            if (pages[userType]) {
+                // حفظ اختيار المستخدم
+                localStorage.setItem('userType', userType);
+                
+                // توجيه إلى الصفحة المناسبة
+                window.location.href = pages[userType];
+            }
+        }
+
+        // معالجة النقر على بطاقات الخيارات
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const userType = this.getAttribute('data-type');
+                redirectToPage(userType);
+            });
+        });
+
+        // معالجة النقر على الأزرار
+        document.getElementById('doctorBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('doctor');
+        });
+
+        document.getElementById('hospitalBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('hospital');
+        });
+
+        document.getElementById('pharmacyBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('pharmacy');
+        });
+
+        document.getElementById('deliveryBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('delivery');
+        });
+
+        document.getElementById('patientBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('patient');
+        });
+
+        document.getElementById('pharmaCompanyBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            redirectToPage('pharma-company');
+        });
+
+        // التحقق من التوجيه التلقائي
+        function checkAutoRedirect() {
+            const savedUserType = localStorage.getItem('userType');
+            const hasVisitedBefore = localStorage.getItem('hasVisitedBefore');
+            
+            // إذا كان المستخدم قد زار من قبل وله نوع حساب محفوظ، يتم التوجيه تلقائياً
+            if (hasVisitedBefore && savedUserType) {
+                // عرض رسالة تأكيد قبل التوجيه التلقائي
+                if (confirm('هل تريد الانتقال مباشرة إلى صفحة ' + savedUserType + '؟')) {
+                    redirectToPage(savedUserType);
+                } else {
+                    // إذا رفض المستخدم، نتركه في الصفحة الحالية
+                    markAsVisited();
+                }
+            } else {
+                // إذا كانت الزيارة الأولى، نعرض الصفحة كاملة
+                markAsVisited();
+            }
+        }
+
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة تأثيرات ظهور متتالية للبطاقات
+            const cards = document.querySelectorAll('.option-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in');
+            });
+            
+            // التحقق من التوجيه التلقائي
+            checkAutoRedirect();
+            
+            // إضافة تأثيرات تفاعلية إضافية
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // إضافة تأثيرات صوتية بسيطة (اختياري)
+        function playClickSound() {
+            // يمكن إضافة صوت نقر خفيف هنا إذا رغب المستخدم
+        }
+
+        // إضافة تأثيرات الاهتزاز للهواتف (اختياري)
+        function vibrateIfSupported() {
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+
+        // ربط تأثيرات التفاعل مع الأحداث
+        document.querySelectorAll('.option-card, .option-btn').forEach(element => {
+            element.addEventListener('click', function() {
+                playClickSound();
+                vibrateIfSupported();
+            });
+        });
+    </script>
+</body>
+</html>
