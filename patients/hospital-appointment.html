@@ -1,0 +1,3552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز موعد مستشفى - طبيب 24/7</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+  :root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #dbeafe;
+    --secondary: #dc2626;
+    --accent: #f59e0b;
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --dark: #1e1b4b;
+    --light: #f0f9ff;
+    --surface: #ffffff;
+    --glass: rgba(255, 255, 255, 0.25);
+    --glass-dark: rgba(255, 255, 255, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+    --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', 'El Messiri', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* تصميم شريط الحالة المتميز */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1000;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* التطبيق الرئيسي */
+.premium-app {
+    max-width: 428px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الخلفية الديناميكية */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* الهيدر المتقدم */
+.appointment-header {
+    background: var(--gradient-hospital);
+    color: white;
+    padding: 40px 24px 30px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #fff, #dbeafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* المحتوى الرئيسي */
+.appointment-content {
+    padding: 25px 20px;
+    padding-bottom: 120px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-hospital);
+    border-radius: 2px;
+}
+
+/* خطوات الحجز */
+.booking-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+    padding: 0 10px;
+}
+
+.booking-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 10%;
+    left: 10%;
+    height: 3px;
+    background: #e2e8f0;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+    flex: 1;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    transition: var(--transition-smooth);
+    border: 3px solid white;
+}
+
+.step.active .step-number {
+    background: var(--gradient-hospital);
+    color: white;
+    transform: scale(1.1);
+}
+
+.step.completed .step-number {
+    background: var(--success);
+    color: white;
+}
+
+.step-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.step.active .step-label {
+    color: var(--primary);
+}
+
+/* محتوى الخطوات */
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* أزرار التنقل بين الخطوات */
+.step-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+}
+
+.btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--gradient-hospital);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--light);
+    color: var(--text-primary);
+    border: 2px solid #e2e8f0;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* البحث المتقدم */
+.search-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.search-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.filter-select {
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.filter-select:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* الخدمات */
+.services-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.service-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.service-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.service-card.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.service-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-hospital);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 20px;
+    color: white;
+}
+
+.service-name {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.service-count {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* المستشفيات */
+.hospitals-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.hospitals-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.hospital-card {
+    background: #f8fafc;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    border: 2px solid transparent;
+}
+
+.hospital-card:hover {
+    transform: translateX(-8px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-soft);
+}
+
+.hospital-card.selected {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.hospital-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-hospital);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.hospital-info {
+    flex: 1;
+}
+
+.hospital-name {
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.hospital-address {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.hospital-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.stars {
+    color: #f59e0b;
+}
+
+.rating-value {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.rating-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.hospital-features {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.feature-tag {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hospital-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+.select-btn {
+    background: var(--gradient-hospital);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.select-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* تفاصيل المستشفى المختار */
+.appointment-details-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 2px solid var(--primary);
+}
+
+.selected-hospital-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* التقويم */
+.calendar-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.current-month {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.nav-btn {
+    background: var(--light);
+    border: 2px solid #e2e8f0;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.nav-btn:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 8px 0;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.calendar-day:hover {
+    background: var(--primary-light);
+}
+
+.calendar-day.selected {
+    background: var(--gradient-hospital);
+    color: white;
+    transform: scale(1.1);
+}
+
+.calendar-day.disabled {
+    color: var(--text-light);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.calendar-day.today {
+    background: var(--accent);
+    color: white;
+}
+
+/* المواعيد المتاحة */
+.time-slots-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.time-slot {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.time-slot:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.time-slot.selected {
+    background: var(--gradient-hospital);
+    color: white;
+    border-color: var(--primary);
+}
+
+.time-slot.disabled {
+    background: #f1f5f9;
+    color: var(--text-light);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ملخص الحجز */
+.appointment-summary-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 2px solid var(--success);
+}
+
+.summary-header {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.summary-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* اختيار نوع الخدمة */
+.service-type-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.service-type-btn {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.service-type-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.service-type-btn.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.service-type-btn i {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.service-type-btn.active i {
+    color: white;
+}
+
+.service-type-btn span {
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* خيارات الخدمات */
+.service-options-section {
+    display: none;
+    margin-top: 25px;
+}
+
+.service-options-section.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.services-checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.service-checkbox {
+    position: relative;
+}
+
+.service-checkbox input {
+    display: none;
+}
+
+.service-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.service-checkbox input:checked + label {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.service-checkbox:hover label {
+    border-color: var(--primary);
+}
+
+.service-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-hospital);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.service-details {
+    flex: 1;
+}
+
+.service-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.service-price {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--primary);
+    margin-bottom: 2px;
+}
+
+.service-duration {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ملخص الخدمات المختارة */
+.selected-services-summary {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin: 25px 0;
+    border: 2px solid var(--success);
+}
+
+.selected-services-list {
+    margin: 15px 0;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.service-item:last-child {
+    border-bottom: none;
+}
+
+.service-item-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.service-item-price {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.no-services {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 20px;
+}
+
+.total-cost, .total-duration {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-weight: 800;
+    font-size: 16px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.total-cost {
+    color: var(--primary);
+}
+
+.total-duration {
+    color: var(--text-primary);
+}
+
+/* النماذج */
+.form-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+    background: white;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    position: relative;
+    transition: var(--transition-smooth);
+}
+
+.radio-label input {
+    display: none;
+}
+
+.radio-label input:checked + .radio-custom {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.radio-label input:checked + .radio-custom::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* الدفع */
+.payment-summary-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 2px solid var(--primary);
+}
+
+.appointment-number {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-family: monospace;
+    font-weight: 700;
+    text-align: center;
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+.services-breakdown {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+}
+
+.breakdown-header {
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.service-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.service-breakdown-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item.total {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    margin-top: 10px;
+    border: 2px solid var(--success);
+}
+
+.summary-item.total .summary-value {
+    font-size: 18px;
+    color: var(--success);
+}
+
+/* طرق الدفع */
+.payment-methods-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.payment-method {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.payment-method:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.payment-method.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.method-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-hospital);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 20px;
+    color: white;
+}
+
+.method-name {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.payment-details {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+}
+
+.balance-info {
+    background: var(--success);
+    color: white;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.cash-notice {
+    background: var(--warning);
+    color: white;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: 600;
+}
+
+/* التعليمات */
+.instructions-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.instructions-card {
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 20px;
+}
+
+.instructions-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    color: #92400e;
+}
+
+.instructions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+    position: relative;
+    padding-right: 20px;
+}
+
+.instructions-list li:last-child {
+    border-bottom: none;
+}
+
+.instructions-list li::before {
+    content: '•';
+    color: #f59e0b;
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow-large);
+    animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.close-modal:hover {
+    color: var(--error);
+    transform: rotate(90deg);
+}
+
+/* تأكيد الحجز */
+.confirmation-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    font-size: 64px;
+    color: var(--success);
+    margin-bottom: 20px;
+}
+
+.confirmation-content h3 {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.confirmation-content p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.appointment-details {
+    background: #f8fafc;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 20px 0;
+    text-align: right;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.reminder-notice {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 15px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+.preparation-notice {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    font-weight: 600;
+    margin: 15px 0;
+    border: 1px solid #f59e0b;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-premium {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    padding: 15px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    max-width: 380px;
+    width: calc(100% - 40px);
+}
+
+.nav-item-premium {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-bounce);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-item-premium.active {
+    background: var(--gradient-hospital);
+    color: white;
+    transform: translateY(-10px);
+}
+
+.nav-item-premium.active .nav-label {
+    color: white;
+}
+
+.nav-item-premium.active::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 3px;
+    background: var(--gradient-hospital);
+    border-radius: 2px;
+}
+
+.nav-icon-premium {
+    font-size: 20px;
+    margin-bottom: 6px;
+    transition: var(--transition-smooth);
+}
+
+.nav-item-premium.active .nav-icon-premium {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* الإشعارات */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--success);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-large);
+    z-index: 3000;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.notification.error {
+    background: var(--error);
+}
+
+.notification.warning {
+    background: var(--warning);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .search-filters {
+        grid-template-columns: 1fr;
+    }
+    
+    .time-slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-type-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .step-actions {
+        flex-direction: column;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .hospital-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hospital-actions {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="appointment-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <h1 class="header-title">حجز موعد مستشفى</h1>
+                <p class="header-subtitle">احجز موعدك للفحوصات والأشعة في أفضل المستشفيات</p>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">مستشفى معتمد</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">حجز إلكتروني</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">تقييم المرضى</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="appointment-content">
+            <!-- خطوات الحجز -->
+            <div class="booking-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">اختر المستشفى</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">حدد الموعد</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">اختر الخدمة</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">ادفع وأكد</div>
+                </div>
+            </div>
+
+            <!-- الخطوة 1: اختيار المستشفى -->
+            <div class="step-content active" id="step1">
+                <div class="section-title">اختر المستشفى</div>
+                
+                <!-- البحث المتقدم -->
+                <div class="search-section">
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="hospitalSearch" placeholder="ابحث عن مستشفى أو منطقة...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <div class="search-filters">
+                        <select class="filter-select" id="cityFilter">
+                            <option value="">جميع المدن</option>
+                            <option value="sanaa">صنعاء</option>
+                            <option value="aden">عدن</option>
+                            <option value="taiz">تعز</option>
+                            <option value="hodeidah">الحديدة</option>
+                            <option value="ibb">إب</option>
+                        </select>
+                        <select class="filter-select" id="specialtyFilter">
+                            <option value="">جميع التخصصات</option>
+                            <option value="radiology">الأشعة</option>
+                            <option value="lab">المختبر</option>
+                            <option value="surgery">الجراحة</option>
+                            <option value="internal">الباطنية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- التخصصات -->
+                <div class="section-title">أنواع الخدمات</div>
+                <div class="services-section">
+                    <div class="services-grid" id="servicesGrid">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+
+                <!-- المستشفيات -->
+                <div class="section-title">المستشفيات المتاحة</div>
+                <div class="hospitals-section">
+                    <div class="hospitals-grid" id="hospitalsGrid">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-primary next-step" data-next="2" disabled>
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- الخطوة 2: تحديد الموعد -->
+            <div class="step-content" id="step2">
+                <div class="section-title">حدد تاريخ ووقت الموعد</div>
+                
+                <div class="appointment-details-card">
+                    <div class="selected-hospital-info">
+                        <div class="hospital-avatar" id="selectedHospitalAvatar">🏥</div>
+                        <div class="hospital-info">
+                            <div class="hospital-name" id="selectedHospitalName">---</div>
+                            <div class="hospital-address" id="selectedHospitalAddress">---</div>
+                            <div class="hospital-rating">
+                                <span class="stars" id="selectedHospitalStars">★★★★★</span>
+                                <span class="rating-value" id="selectedHospitalRating">4.8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <button class="nav-btn prev-month"><i class="fas fa-chevron-right"></i></button>
+                        <div class="current-month" id="currentMonth">مارس 2024</div>
+                        <button class="nav-btn next-month"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+
+                <div class="time-slots-section">
+                    <div class="section-title">المواعيد المتاحة</div>
+                    <div class="time-slots-grid" id="timeSlotsGrid">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary prev-step" data-prev="1">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn btn-primary next-step" data-next="3" disabled>
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- الخطوة 3: اختيار الخدمة -->
+            <div class="step-content" id="step3">
+                <div class="section-title">اختر نوع الخدمة المطلوبة</div>
+                
+                <div class="appointment-summary-card">
+                    <div class="summary-header">ملخص الحجز</div>
+                    <div class="summary-item">
+                        <span class="summary-label">المستشفى:</span>
+                        <span class="summary-value" id="summaryHospital">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">التاريخ:</span>
+                        <span class="summary-value" id="summaryDate">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">الوقت:</span>
+                        <span class="summary-value" id="summaryTime">---</span>
+                    </div>
+                </div>
+
+                <div class="services-selection-section">
+                    <!-- نوع الخدمة -->
+                    <div class="form-group">
+                        <label class="form-label">نوع الخدمة المطلوبة *</label>
+                        <div class="service-type-buttons">
+                            <button class="service-type-btn active" data-type="radiology">
+                                <i class="fas fa-x-ray"></i>
+                                <span>الأشعة</span>
+                            </button>
+                            <button class="service-type-btn" data-type="lab">
+                                <i class="fas fa-flask"></i>
+                                <span>الفحوصات</span>
+                            </button>
+                            <button class="service-type-btn" data-type="other">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>خدمات أخرى</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- قائمة الأشعة -->
+                    <div class="service-options-section active" id="radiologyOptions">
+                        <div class="section-title">أنواع الأشعة المتاحة</div>
+                        <div class="services-checkbox-grid">
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="xray-chest" data-price="80" data-duration="30">
+                                <label for="xray-chest">
+                                    <div class="service-icon">
+                                        <i class="fas fa-lungs"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">أشعة الصدر</div>
+                                        <div class="service-price">80 ر.ي</div>
+                                        <div class="service-duration">30 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="xray-bones" data-price="120" data-duration="45">
+                                <label for="xray-bones">
+                                    <div class="service-icon">
+                                        <i class="fas fa-bone"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">أشعة العظام</div>
+                                        <div class="service-price">120 ر.ي</div>
+                                        <div class="service-duration">45 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="ct-scan" data-price="350" data-duration="60">
+                                <label for="ct-scan">
+                                    <div class="service-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">الأشعة المقطعية</div>
+                                        <div class="service-price">350 ر.ي</div>
+                                        <div class="service-duration">60 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="mri" data-price="600" data-duration="90">
+                                <label for="mri">
+                                    <div class="service-icon">
+                                        <i class="fas fa-magnet"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">الرنين المغناطيسي</div>
+                                        <div class="service-price">600 ر.ي</div>
+                                        <div class="service-duration">90 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="ultrasound" data-price="150" data-duration="40">
+                                <label for="ultrasound">
+                                    <div class="service-icon">
+                                        <i class="fas fa-baby"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">الموجات الصوتية</div>
+                                        <div class="service-price">150 ر.ي</div>
+                                        <div class="service-duration">40 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="mammogram" data-price="200" data-duration="50">
+                                <label for="mammogram">
+                                    <div class="service-icon">
+                                        <i class="fas fa-female"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">أشعة الثدي</div>
+                                        <div class="service-price">200 ر.ي</div>
+                                        <div class="service-duration">50 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- قائمة الفحوصات -->
+                    <div class="service-options-section" id="labOptions">
+                        <div class="section-title">أنواع الفحوصات المتاحة</div>
+                        <div class="services-checkbox-grid">
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="blood-test" data-price="50" data-duration="15">
+                                <label for="blood-test">
+                                    <div class="service-icon">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">فحص الدم الشامل</div>
+                                        <div class="service-price">50 ر.ي</div>
+                                        <div class="service-duration">15 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="sugar-test" data-price="30" data-duration="10">
+                                <label for="sugar-test">
+                                    <div class="service-icon">
+                                        <i class="fas fa-candy-cane"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">فحص السكر</div>
+                                        <div class="service-price">30 ر.ي</div>
+                                        <div class="service-duration">10 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="cholesterol" data-price="40" data-duration="10">
+                                <label for="cholesterol">
+                                    <div class="service-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">فحص الكوليسترول</div>
+                                        <div class="service-price">40 ر.ي</div>
+                                        <div class="service-duration">10 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="liver-test" data-price="70" data-duration="20">
+                                <label for="liver-test">
+                                    <div class="service-icon">
+                                        <i class="fas fa-liver"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">وظائف الكبد</div>
+                                        <div class="service-price">70 ر.ي</div>
+                                        <div class="service-duration">20 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="kidney-test" data-price="60" data-duration="20">
+                                <label for="kidney-test">
+                                    <div class="service-icon">
+                                        <i class="fas fa-kidneys"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">وظائف الكلى</div>
+                                        <div class="service-price">60 ر.ي</div>
+                                        <div class="service-duration">20 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="urine-test" data-price="25" data-duration="10">
+                                <label for="urine-test">
+                                    <div class="service-icon">
+                                        <i class="fas fa-vial"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">فحص البول</div>
+                                        <div class="service-price">25 ر.ي</div>
+                                        <div class="service-duration">10 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- خدمات أخرى -->
+                    <div class="service-options-section" id="otherOptions">
+                        <div class="section-title">خدمات أخرى</div>
+                        <div class="services-checkbox-grid">
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="ecg" data-price="100" data-duration="25">
+                                <label for="ecg">
+                                    <div class="service-icon">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">رسم القلب</div>
+                                        <div class="service-price">100 ر.ي</div>
+                                        <div class="service-duration">25 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="echo" data-price="250" data-duration="45">
+                                <label for="echo">
+                                    <div class="service-icon">
+                                        <i class="fas fa-wave-square"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">إيكو القلب</div>
+                                        <div class="service-price">250 ر.ي</div>
+                                        <div class="service-duration">45 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="service-checkbox">
+                                <input type="checkbox" id="endoscopy" data-price="400" data-duration="60">
+                                <label for="endoscopy">
+                                    <div class="service-icon">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <div class="service-name">منظار الجهاز الهضمي</div>
+                                        <div class="service-price">400 ر.ي</div>
+                                        <div class="service-duration">60 دقيقة</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ملخص الخدمات المختارة -->
+                    <div class="selected-services-summary">
+                        <div class="summary-header">الخدمات المختارة</div>
+                        <div class="selected-services-list" id="selectedServicesList">
+                            <div class="no-services">لم يتم اختيار أي خدمات</div>
+                        </div>
+                        <div class="total-cost">
+                            <span>المجموع:</span>
+                            <span id="totalCost">0 ر.ي</span>
+                        </div>
+                        <div class="total-duration">
+                            <span>الوقت المتوقع:</span>
+                            <span id="totalDuration">0 دقيقة</span>
+                        </div>
+                    </div>
+
+                    <!-- معلومات إضافية -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-label">التفاصيل الإضافية</label>
+                            <textarea class="form-textarea" id="additionalDetails" 
+                                      placeholder="أي معلومات إضافية أو تعليمات خاصة..." 
+                                      rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">هل تحتاج إلى مساعدة خاصة؟</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="specialAssistance" value="no">
+                                    <span class="radio-custom"></span>
+                                    لا
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="specialAssistance" value="wheelchair">
+                                    <span class="radio-custom"></span>
+                                    كرسي متحرك
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="specialAssistance" value="nurse">
+                                    <span class="radio-custom"></span>
+                                    مساعدة ممرض
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary prev-step" data-prev="2">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn btn-primary next-step" data-next="4">
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- الخطوة 4: الدفع والتأكيد -->
+            <div class="step-content" id="step4">
+                <div class="section-title">الدفع وتأكيد الحجز</div>
+                
+                <div class="payment-summary-card">
+                    <div class="summary-header">تفاصيل الحجز</div>
+                    <div class="appointment-number" id="appointmentNumber">HOS-2024-001</div>
+                    
+                    <div class="summary-item">
+                        <span class="summary-label">المستشفى:</span>
+                        <span class="summary-value" id="paymentHospital">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">الموعد:</span>
+                        <span class="summary-value" id="paymentDateTime">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">نوع الخدمة:</span>
+                        <span class="summary-value" id="paymentServiceType">---</span>
+                    </div>
+                    
+                    <div class="services-breakdown">
+                        <div class="breakdown-header">تفاصيل الخدمات:</div>
+                        <div class="services-list" id="paymentServicesList">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+                    
+                    <div class="summary-item total">
+                        <span class="summary-label">المبلغ المستحق:</span>
+                        <span class="summary-value" id="paymentAmount">--- ر.ي</span>
+                    </div>
+                </div>
+
+                <div class="payment-methods-section">
+                    <div class="section-title">طريقة الدفع</div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="wallet">
+                            <div class="method-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="method-name">المحفظة الرقمية</div>
+                        </div>
+                        <div class="payment-method" data-method="card">
+                            <div class="method-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="method-name">البطاقة الائتمانية</div>
+                        </div>
+                        <div class="payment-method" data-method="cash">
+                            <div class="method-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="method-name">الدفع في المستشفى</div>
+                        </div>
+                    </div>
+
+                    <div class="payment-details" id="walletPayment">
+                        <div class="form-group">
+                            <label class="form-label">اختر المحفظة</label>
+                            <select class="form-select" id="selectedWallet" required>
+                                <option value="">اختر المحفظة</option>
+                            </select>
+                        </div>
+                        <div class="balance-info">
+                            الرصيد المتاح: <span id="walletBalance">0 ر.ي</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-details" id="cardPayment" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">اختر البطاقة</label>
+                            <select class="form-select" id="selectedCard" required>
+                                <option value="">اختر البطاقة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="payment-details" id="cashPayment" style="display: none;">
+                        <div class="cash-notice">
+                            <i class="fas fa-info-circle"></i>
+                            سيتم حجز الموعد وسوف تقوم بالدفع نقداً في المستشفى عند وصولك.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instructions-section">
+                    <div class="instructions-card">
+                        <div class="instructions-header">
+                            <i class="fas fa-info-circle"></i>
+                            تعليمات مهمة
+                        </div>
+                        <ul class="instructions-list">
+                            <li>يرجى الحضور قبل الموعد بـ 15 دقيقة</li>
+                            <li>احضر معك الهوية الشخصية ونتائج الفحوصات السابقة إن وجدت</li>
+                            <li>بعض الفحوصات تتطلب صياماً مسبقاً</li>
+                            <li>يجب إلغاء الحجز قبل 24 ساعة إذا تعذر الحضور</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary prev-step" data-prev="3">
+                        <i class="fas fa-arrow-right"></i> السابق
+                    </button>
+                    <button class="btn btn-primary confirm-booking" id="confirmBooking">
+                        <i class="fas fa-check-circle"></i>
+                        تأكيد الحجز والدفع
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة تأكيد الحجز -->
+        <div id="confirmationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تم الحجز بنجاح</div>
+                    <button class="close-modal" onclick="closeModal('confirmationModal')">×</button>
+                </div>
+                
+                <div class="confirmation-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>تم تأكيد حجز موعدك في المستشفى</h3>
+                    <p>سنرسل لك رسالة تأكيد بالتفاصيل على بريدك الإلكتروني ورقم هاتفك</p>
+                    
+                    <div class="appointment-details">
+                        <div class="detail-item">
+                            <span class="detail-label">رقم الحجز:</span>
+                            <span class="detail-value" id="finalAppointmentNumber">HOS-2024-001</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">المستشفى:</span>
+                            <span class="detail-value" id="finalHospitalName">---</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">التاريخ والوقت:</span>
+                            <span class="detail-value" id="finalAppointmentTime">---</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">الخدمات:</span>
+                            <span class="detail-value" id="finalServices">---</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">المبلغ:</span>
+                            <span class="detail-value" id="finalAmount">--- ر.ي</span>
+                        </div>
+                    </div>
+
+                    <div class="reminder-notice">
+                        <i class="fas fa-bell"></i>
+                        <span>سيتم تذكيرك قبل الموعد بـ 24 ساعة و 2 ساعة</span>
+                    </div>
+
+                    <div class="preparation-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>يرجى قراءة تعليمات التحضير للفحص قبل الموعد</span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="closeModal('confirmationModal'); window.location.href='index.html'">
+                        <i class="fas fa-home"></i>
+                        العودة للرئيسية
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal('confirmationModal')">
+                        <i class="fas fa-print"></i>
+                        طباعة التفاصيل
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="consultation.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="hospital-appointment.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <div class="nav-label">حجز مستشفى</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+// نظام حجز مواعيد المستشفى المتكامل
+class HospitalAppointmentSystem {
+    constructor() {
+        this.services = [];
+        this.hospitals = [];
+        this.radiologyServices = [];
+        this.labServices = [];
+        this.otherServices = [];
+        this.userHospitalAppointments = JSON.parse(localStorage.getItem('userHospitalAppointments')) || [];
+        this.currentAppointment = {
+            hospital: null,
+            date: null,
+            time: null,
+            serviceType: 'radiology',
+            selectedServices: [],
+            additionalDetails: '',
+            specialAssistance: 'no',
+            paymentMethod: 'wallet'
+        };
+        this.currentStep = 1;
+        this.currentMonth = new Date();
+        this.init();
+    }
+
+    init() {
+        this.loadServices();
+        this.loadHospitals();
+        this.loadServiceOptions();
+        this.setupEventListeners();
+        this.updateTime();
+        this.loadUserData();
+        this.initializeCalendar();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // البحث في الوقت الحقيقي
+        const hospitalSearch = document.getElementById('hospitalSearch');
+        if (hospitalSearch) {
+            hospitalSearch.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+            });
+        }
+
+        // الفلاتر
+        const cityFilter = document.getElementById('cityFilter');
+        if (cityFilter) {
+            cityFilter.addEventListener('change', () => {
+                this.applyFilters();
+            });
+        }
+
+        const specialtyFilter = document.getElementById('specialtyFilter');
+        if (specialtyFilter) {
+            specialtyFilter.addEventListener('change', () => {
+                this.applyFilters();
+            });
+        }
+
+        // التنقل بين الخطوات
+        document.querySelectorAll('.next-step').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const nextStep = parseInt(e.target.closest('.next-step').dataset.next);
+                this.goToStep(nextStep);
+            });
+        });
+
+        document.querySelectorAll('.prev-step').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const prevStep = parseInt(e.target.closest('.prev-step').dataset.prev);
+                this.goToStep(prevStep);
+            });
+        });
+
+        // أنواع الخدمات
+        document.querySelectorAll('.service-type-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.selectServiceType(e.currentTarget.dataset.type);
+            });
+        });
+
+        // اختيار الخدمات
+        document.querySelectorAll('.service-checkbox input').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                this.toggleService(e.target);
+            });
+        });
+
+        // طرق الدفع
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', (e) => {
+                this.selectPaymentMethod(e.currentTarget.dataset.method);
+            });
+        });
+
+        // تأكيد الحجز
+        const confirmBooking = document.getElementById('confirmBooking');
+        if (confirmBooking) {
+            confirmBooking.addEventListener('click', () => {
+                this.confirmBooking();
+            });
+        }
+
+        // المساعدة الخاصة
+        document.querySelectorAll('input[name="specialAssistance"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.currentAppointment.specialAssistance = e.target.value;
+            });
+        });
+
+        // التنقل في التقويم
+        const prevMonth = document.querySelector('.prev-month');
+        const nextMonth = document.querySelector('.next-month');
+        
+        if (prevMonth) {
+            prevMonth.addEventListener('click', () => {
+                this.navigateMonth(-1);
+            });
+        }
+        
+        if (nextMonth) {
+            nextMonth.addEventListener('click', () => {
+                this.navigateMonth(1);
+            });
+        }
+
+        // التفاصيل الإضافية
+        const additionalDetails = document.getElementById('additionalDetails');
+        if (additionalDetails) {
+            additionalDetails.addEventListener('input', (e) => {
+                this.currentAppointment.additionalDetails = e.target.value;
+            });
+        }
+    }
+
+    loadUserData() {
+        this.userAccount = JSON.parse(localStorage.getItem('financialAccount'));
+        this.userWallets = JSON.parse(localStorage.getItem('linkedWallets')) || [];
+        this.userCards = JSON.parse(localStorage.getItem('linkedCards')) || [];
+    }
+
+    loadServices() {
+        this.services = [
+            {
+                id: 1,
+                name: 'الأشعة',
+                icon: 'fa-x-ray',
+                hospitalCount: 35,
+                color: '#3b82f6',
+                description: 'جميع أنواع الفحوصات الإشعاعية'
+            },
+            {
+                id: 2,
+                name: 'المختبر',
+                icon: 'fa-flask',
+                hospitalCount: 42,
+                color: '#10b981',
+                description: 'التحاليل والفحوصات المخبرية'
+            },
+            {
+                id: 3,
+                name: 'الجراحة',
+                icon: 'fa-syringe',
+                hospitalCount: 28,
+                color: '#ef4444',
+                description: 'عمليات جراحية وتشخيصية'
+            },
+            {
+                id: 4,
+                name: 'الباطنية',
+                icon: 'fa-stethoscope',
+                hospitalCount: 38,
+                color: '#8b5cf6',
+                description: 'فحوصات الأمراض الباطنية'
+            },
+            {
+                id: 5,
+                name: 'العيون',
+                icon: 'fa-eye',
+                hospitalCount: 22,
+                color: '#06b6d4',
+                description: 'فحوصات العيون والنظر'
+            },
+            {
+                id: 6,
+                name: 'القلب',
+                icon: 'fa-heartbeat',
+                hospitalCount: 25,
+                color: '#ec4899',
+                description: 'فحوصات القلب والشرايين'
+            }
+        ];
+        this.renderServices();
+    }
+
+    loadHospitals() {
+        this.hospitals = [
+            {
+                id: 1,
+                name: 'مستشفى الثورة',
+                city: 'sanaa',
+                specialties: ['radiology', 'lab', 'surgery'],
+                rating: 4.7,
+                ratingCount: 245,
+                address: 'شارع الزبيري، صنعاء',
+                phone: '017234567',
+                image: '🏥',
+                features: ['أشعة متقدمة', 'مختبر مركزي', 'طوارئ 24/7'],
+                availableSlots: this.generateTimeSlots(true),
+                services: {
+                    radiology: ['xray-chest', 'xray-bones', 'ct-scan', 'mri', 'ultrasound'],
+                    lab: ['blood-test', 'sugar-test', 'cholesterol', 'liver-test', 'kidney-test', 'urine-test'],
+                    other: ['ecg', 'echo']
+                }
+            },
+            {
+                id: 2,
+                name: 'مستشفى السبعين',
+                city: 'sanaa',
+                specialties: ['radiology', 'lab', 'internal'],
+                rating: 4.5,
+                ratingCount: 189,
+                address: 'حي السبعين، صنعاء',
+                phone: '017234568',
+                image: '🏥',
+                features: ['أشعة رقمية', 'مختبر حديث', 'عناية مركزة'],
+                availableSlots: this.generateTimeSlots(false),
+                services: {
+                    radiology: ['xray-chest', 'xray-bones', 'ultrasound', 'mammogram'],
+                    lab: ['blood-test', 'sugar-test', 'cholesterol', 'urine-test'],
+                    other: ['ecg']
+                }
+            },
+            {
+                id: 3,
+                name: 'مستشفى الجمهورية',
+                city: 'aden',
+                specialties: ['radiology', 'lab', 'surgery'],
+                rating: 4.6,
+                ratingCount: 176,
+                address: 'كريتر، عدن',
+                phone: '027234569',
+                image: '🏥',
+                features: ['أشعة مقطعية', 'جراحة متقدمة', 'طوارئ'],
+                availableSlots: this.generateTimeSlots(true),
+                services: {
+                    radiology: ['xray-chest', 'ct-scan', 'mri', 'ultrasound'],
+                    lab: ['blood-test', 'liver-test', 'kidney-test'],
+                    other: ['ecg', 'echo', 'endoscopy']
+                }
+            },
+            {
+                id: 4,
+                name: 'مستشفى ابن خلدون',
+                city: 'taiz',
+                specialties: ['radiology', 'lab'],
+                rating: 4.4,
+                ratingCount: 132,
+                address: 'شارع 26 سبتمبر، تعز',
+                phone: '047234570',
+                image: '🏥',
+                features: ['أشعة شاملة', 'مختبر متكامل', 'خدمات تشخيصية'],
+                availableSlots: this.generateTimeSlots(false),
+                services: {
+                    radiology: ['xray-chest', 'xray-bones', 'ultrasound'],
+                    lab: ['blood-test', 'sugar-test', 'cholesterol', 'urine-test'],
+                    other: ['ecg']
+                }
+            },
+            {
+                id: 5,
+                name: 'مستشفى البحر الأحمر',
+                city: 'hodeidah',
+                specialties: ['radiology', 'lab', 'internal'],
+                rating: 4.3,
+                ratingCount: 98,
+                address: 'الشارع الجديد، الحديدة',
+                phone: '037234571',
+                image: '🏥',
+                features: ['أشعة متنقلة', 'مختبر سريع', 'استقبال طوارئ'],
+                availableSlots: this.generateTimeSlots(true),
+                services: {
+                    radiology: ['xray-chest', 'ultrasound'],
+                    lab: ['blood-test', 'sugar-test', 'urine-test'],
+                    other: []
+                }
+            },
+            {
+                id: 6,
+                name: 'مستشفى إب التخصصي',
+                city: 'ibb',
+                specialties: ['radiology', 'lab'],
+                rating: 4.5,
+                ratingCount: 87,
+                address: 'حي المصينعة، إب',
+                phone: '057234572',
+                image: '🏥',
+                features: ['أشعة دقيقة', 'مختبر متطور', 'خدمات وقائية'],
+                availableSlots: this.generateTimeSlots(false),
+                services: {
+                    radiology: ['xray-chest', 'xray-bones', 'mammogram'],
+                    lab: ['blood-test', 'sugar-test', 'cholesterol', 'liver-test'],
+                    other: ['ecg']
+                }
+            }
+        ];
+        this.renderHospitals();
+    }
+
+    loadServiceOptions() {
+        // خدمات الأشعة
+        this.radiologyServices = [
+            { id: 'xray-chest', name: 'أشعة الصدر', price: 80, duration: 30 },
+            { id: 'xray-bones', name: 'أشعة العظام', price: 120, duration: 45 },
+            { id: 'ct-scan', name: 'الأشعة المقطعية', price: 350, duration: 60 },
+            { id: 'mri', name: 'الرنين المغناطيسي', price: 600, duration: 90 },
+            { id: 'ultrasound', name: 'الموجات الصوتية', price: 150, duration: 40 },
+            { id: 'mammogram', name: 'أشعة الثدي', price: 200, duration: 50 }
+        ];
+
+        // خدمات المختبر
+        this.labServices = [
+            { id: 'blood-test', name: 'فحص الدم الشامل', price: 50, duration: 15 },
+            { id: 'sugar-test', name: 'فحص السكر', price: 30, duration: 10 },
+            { id: 'cholesterol', name: 'فحص الكوليسترول', price: 40, duration: 10 },
+            { id: 'liver-test', name: 'وظائف الكبد', price: 70, duration: 20 },
+            { id: 'kidney-test', name: 'وظائف الكلى', price: 60, duration: 20 },
+            { id: 'urine-test', name: 'فحص البول', price: 25, duration: 10 }
+        ];
+
+        // خدمات أخرى
+        this.otherServices = [
+            { id: 'ecg', name: 'رسم القلب', price: 100, duration: 25 },
+            { id: 'echo', name: 'إيكو القلب', price: 250, duration: 45 },
+            { id: 'endoscopy', name: 'منظار الجهاز الهضمي', price: 400, duration: 60 }
+        ];
+    }
+
+    generateTimeSlots(isAvailableNow) {
+        const slots = [];
+        const now = new Date();
+        
+        if (isAvailableNow) {
+            // إضافة مواعيد اليوم
+            for (let i = 1; i <= 6; i++) {
+                const slotTime = new Date(now);
+                slotTime.setHours(8 + i * 2); // من 10 صباحاً
+                slotTime.setMinutes(0);
+                
+                if (slotTime > now) {
+                    slots.push({
+                        time: slotTime.toTimeString().slice(0, 5),
+                        display: slotTime.toLocaleTimeString('ar-EG', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            hour12: true 
+                        }),
+                        available: true
+                    });
+                }
+            }
+        } else {
+            // إضافة مواعيد الأسبوع
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+            for (let i = 1; i <= 3; i++) {
+                const slotDate = new Date(now);
+                slotDate.setDate(now.getDate() + i);
+                
+                for (let j = 0; j < 4; j++) {
+                    const slotTime = new Date(slotDate);
+                    slotTime.setHours(9 + j * 2);
+                    slotTime.setMinutes(0);
+                    
+                    slots.push({
+                        time: slotTime.toISOString(),
+                        display: `${days[slotDate.getDay()]} - ${slotTime.toLocaleTimeString('ar-EG', { 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            hour12: true 
+                        })}`,
+                        available: true
+                    });
+                }
+            }
+        }
+
+        return slots;
+    }
+
+    renderServices() {
+        const container = document.getElementById('servicesGrid');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        this.services.forEach(service => {
+            const serviceElement = document.createElement('div');
+            serviceElement.className = 'service-card';
+            serviceElement.onclick = () => this.filterByService(service.id);
+            serviceElement.title = service.description;
+            
+            serviceElement.innerHTML = `
+                <div class="service-icon" style="background: ${service.color}">
+                    <i class="fas ${service.icon}"></i>
+                </div>
+                <div class="service-name">${service.name}</div>
+                <div class="service-count">${service.hospitalCount} مستشفى</div>
+            `;
+            
+            container.appendChild(serviceElement);
+        });
+    }
+
+    renderHospitals(filteredHospitals = null) {
+        const container = document.getElementById('hospitalsGrid');
+        if (!container) return;
+
+        const hospitalsToShow = filteredHospitals || this.hospitals;
+
+        if (hospitalsToShow.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-hospital" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد نتائج</div>
+                    <p style="font-size: 14px; margin-top: 8px;">جرب تغيير معايير البحث</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = '';
+
+        hospitalsToShow.forEach(hospital => {
+            const hospitalElement = document.createElement('div');
+            hospitalElement.className = `hospital-card ${this.currentAppointment.hospital?.id === hospital.id ? 'selected' : ''}`;
+            hospitalElement.onclick = () => this.selectHospital(hospital);
+            
+            const stars = this.generateStars(hospital.rating);
+            const cityText = this.getCityText(hospital.city);
+            
+            hospitalElement.innerHTML = `
+                <div class="hospital-avatar">
+                    ${hospital.image}
+                </div>
+                <div class="hospital-info">
+                    <div class="hospital-name">${hospital.name}</div>
+                    <div class="hospital-address">${hospital.address}</div>
+                    <div class="hospital-rating">
+                        <div class="stars">${stars}</div>
+                        <div class="rating-value">${hospital.rating}</div>
+                        <div class="rating-count">(${hospital.ratingCount})</div>
+                    </div>
+                    <div class="hospital-features">
+                        ${hospital.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${cityText}
+                    </div>
+                </div>
+                <div class="hospital-actions">
+                    <button class="select-btn" onclick="event.stopPropagation(); hospitalSystem.selectHospital(${hospital.id})">
+                        <i class="fas fa-calendar-check"></i>
+                        اختر
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(hospitalElement);
+        });
+    }
+
+    getCityText(city) {
+        const cities = {
+            'sanaa': 'صنعاء',
+            'aden': 'عدن',
+            'taiz': 'تعز',
+            'hodeidah': 'الحديدة',
+            'ibb': 'إب'
+        };
+        return cities[city] || city;
+    }
+
+    generateStars(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+        
+        let stars = '';
+        
+        for (let i = 0; i < fullStars; i++) {
+            stars += '<i class="fas fa-star"></i>';
+        }
+        
+        if (halfStar) {
+            stars += '<i class="fas fa-star-half-alt"></i>';
+        }
+        
+        for (let i = 0; i < emptyStars; i++) {
+            stars += '<i class="far fa-star"></i>';
+        }
+        
+        return stars;
+    }
+
+    selectHospital(hospital) {
+        if (typeof hospital === 'number') {
+            hospital = this.hospitals.find(h => h.id === hospital);
+        }
+
+        if (!hospital) {
+            this.showNotification('المستشفى غير موجود', 'error');
+            return;
+        }
+
+        this.currentAppointment.hospital = hospital;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.hospital-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        
+        event.target.closest('.hospital-card').classList.add('selected');
+        
+        // تفعيل زر التالي
+        document.querySelector('.next-step[data-next="2"]').disabled = false;
+        
+        this.showNotification(`تم اختيار ${hospital.name}`, 'success');
+    }
+
+    handleSearch(query) {
+        if (query.length >= 2) {
+            const filteredHospitals = this.hospitals.filter(hospital => 
+                hospital.name.includes(query) || 
+                hospital.address.includes(query) ||
+                hospital.features.some(feature => feature.includes(query))
+            );
+            this.renderHospitals(filteredHospitals);
+        } else if (query.length === 0) {
+            this.renderHospitals();
+        }
+    }
+
+    applyFilters() {
+        const city = document.getElementById('cityFilter').value;
+        const specialty = document.getElementById('specialtyFilter').value;
+        
+        let filteredHospitals = this.hospitals;
+        
+        if (city) {
+            filteredHospitals = filteredHospitals.filter(hospital => 
+                hospital.city === city
+            );
+        }
+        
+        if (specialty) {
+            filteredHospitals = filteredHospitals.filter(hospital => 
+                hospital.specialties.includes(specialty)
+            );
+        }
+        
+        this.renderHospitals(filteredHospitals);
+    }
+
+    filterByService(serviceId) {
+        const service = this.services.find(s => s.id === serviceId);
+        if (!service) return;
+
+        const filteredHospitals = this.hospitals.filter(hospital => 
+            hospital.specialties.some(specialty => 
+                specialty === service.name.toLowerCase()
+            )
+        );
+        
+        this.renderHospitals(filteredHospitals);
+        
+        // تحديث حالة الخدمة النشطة
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        event.target.closest('.service-card').classList.add('active');
+        
+        this.showNotification(`تم عرض مستشفيات ${service.name}`, 'info');
+    }
+
+    goToStep(step) {
+        // التحقق من صحة البيانات قبل الانتقال
+        if (step > this.currentStep) {
+            if (!this.validateStep(this.currentStep)) {
+                this.showNotification('يرجى إكمال البيانات المطلوبة', 'error');
+                return;
+            }
+        }
+
+        // تحديث الخطوات
+        document.querySelectorAll('.step').forEach(stepElement => {
+            stepElement.classList.remove('active');
+            if (parseInt(stepElement.dataset.step) <= step) {
+                stepElement.classList.add('completed');
+            }
+        });
+        
+        document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+
+        // إخفاء جميع المحتويات
+        document.querySelectorAll('.step-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // إظهار المحتوى المطلوب
+        document.getElementById(`step${step}`).classList.add('active');
+
+        // تحديث البيانات إذا لزم الأمر
+        if (step === 2) {
+            this.updateSelectedHospitalInfo();
+            this.generateTimeSlotsForHospital();
+        } else if (step === 3) {
+            this.updateAppointmentSummary();
+            this.updateAvailableServices();
+        } else if (step === 4) {
+            this.updatePaymentSummary();
+            this.loadPaymentMethods();
+        }
+
+        this.currentStep = step;
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    validateStep(step) {
+        switch (step) {
+            case 1:
+                return !!this.currentAppointment.hospital;
+            case 2:
+                return !!this.currentAppointment.date && !!this.currentAppointment.time;
+            case 3:
+                return this.currentAppointment.selectedServices.length > 0;
+            default:
+                return true;
+        }
+    }
+
+    updateSelectedHospitalInfo() {
+        if (!this.currentAppointment.hospital) return;
+
+        const hospital = this.currentAppointment.hospital;
+        
+        document.getElementById('selectedHospitalAvatar').textContent = hospital.image;
+        document.getElementById('selectedHospitalName').textContent = hospital.name;
+        document.getElementById('selectedHospitalAddress').textContent = hospital.address;
+        document.getElementById('selectedHospitalStars').innerHTML = this.generateStars(hospital.rating);
+        document.getElementById('selectedHospitalRating').textContent = hospital.rating;
+    }
+
+    initializeCalendar() {
+        this.renderCalendar();
+    }
+
+    renderCalendar() {
+        const calendarGrid = document.getElementById('calendarGrid');
+        if (!calendarGrid) return;
+
+        const monthNames = [
+            'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+            'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+        ];
+
+        const year = this.currentMonth.getFullYear();
+        const month = this.currentMonth.getMonth();
+        
+        document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+        // رؤوس الأيام
+        const dayHeaders = ['أح', 'إث', 'ث', 'أر', 'خ', 'ج', 'س'];
+        let calendarHTML = '';
+
+        // إضافة رؤوس الأيام
+        dayHeaders.forEach(day => {
+            calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+        });
+
+        // الحصول على أول يوم في الشهر
+        const firstDay = new Date(year, month, 1);
+        const startingDay = firstDay.getDay(); // 0 = الأحد, 1 = الإثنين, etc.
+
+        // الحصول على عدد الأيام في الشهر
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // الأيام الفارغة قبل بداية الشهر
+        for (let i = 0; i < startingDay; i++) {
+            calendarHTML += `<div class="calendar-day disabled"></div>`;
+        }
+
+        // أيام الشهر
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const currentDate = new Date(year, month, day);
+            const isToday = currentDate.getTime() === today.getTime();
+            const isSelected = this.currentAppointment.date && 
+                              currentDate.toDateString() === new Date(this.currentAppointment.date).toDateString();
+            const isPast = currentDate < today;
+            const isAvailable = !isPast && currentDate.getDay() !== 5; // لا تظهر الجمعة
+
+            let dayClass = 'calendar-day';
+            if (isToday) dayClass += ' today';
+            if (isSelected) dayClass += ' selected';
+            if (!isAvailable) dayClass += ' disabled';
+
+            calendarHTML += `
+                <div class="${dayClass}" data-date="${currentDate.toISOString()}" 
+                     onclick="${isAvailable ? 'hospitalSystem.selectDate(this.dataset.date)' : ''}">
+                    ${day}
+                </div>
+            `;
+        }
+
+        calendarGrid.innerHTML = calendarHTML;
+    }
+
+    navigateMonth(direction) {
+        this.currentMonth.setMonth(this.currentMonth.getMonth() + direction);
+        this.renderCalendar();
+    }
+
+    selectDate(dateString) {
+        this.currentAppointment.date = dateString;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.classList.remove('selected');
+        });
+        
+        event.target.classList.add('selected');
+        
+        // توليد المواعيد المتاحة
+        this.generateTimeSlotsForHospital();
+        
+        this.showNotification('تم اختيار التاريخ', 'success');
+    }
+
+    generateTimeSlotsForHospital() {
+        if (!this.currentAppointment.hospital || !this.currentAppointment.date) return;
+
+        const timeSlotsGrid = document.getElementById('timeSlotsGrid');
+        if (!timeSlotsGrid) return;
+
+        const hospital = this.currentAppointment.hospital;
+        let timeSlotsHTML = '';
+
+        hospital.availableSlots.forEach(slot => {
+            const isSelected = this.currentAppointment.time === slot.time;
+            const slotClass = `time-slot ${isSelected ? 'selected' : ''}`;
+            
+            timeSlotsHTML += `
+                <div class="${slotClass}" data-time="${slot.time}" 
+                     onclick="hospitalSystem.selectTime('${slot.time}')">
+                    ${slot.display}
+                </div>
+            `;
+        });
+
+        timeSlotsGrid.innerHTML = timeSlotsHTML;
+        
+        // تفعيل زر التالي
+        document.querySelector('.next-step[data-next="3"]').disabled = false;
+    }
+
+    selectTime(time) {
+        this.currentAppointment.time = time;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.classList.remove('selected');
+        });
+        
+        event.target.classList.add('selected');
+        
+        this.showNotification('تم اختيار الوقت', 'success');
+    }
+
+    selectServiceType(serviceType) {
+        this.currentAppointment.serviceType = serviceType;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.service-type-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        event.target.classList.add('active');
+        
+        // إظهار الخيارات المناسبة
+        document.querySelectorAll('.service-options-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        
+        document.getElementById(`${serviceType}Options`).classList.add('active');
+        
+        this.showNotification(`تم اختيار ${this.getServiceTypeName(serviceType)}`, 'success');
+    }
+
+    getServiceTypeName(serviceType) {
+        const names = {
+            'radiology': 'الأشعة',
+            'lab': 'الفحوصات',
+            'other': 'خدمات أخرى'
+        };
+        return names[serviceType] || serviceType;
+    }
+
+    updateAvailableServices() {
+        if (!this.currentAppointment.hospital) return;
+
+        const hospital = this.currentAppointment.hospital;
+        
+        // تعطيل الخدمات غير المتاحة في هذا المستشفى
+        document.querySelectorAll('.service-checkbox input').forEach(checkbox => {
+            const serviceId = checkbox.id;
+            const isAvailable = hospital.services[this.currentAppointment.serviceType]?.includes(serviceId);
+            
+            checkbox.disabled = !isAvailable;
+            checkbox.checked = false;
+            
+            const label = checkbox.nextElementSibling;
+            if (!isAvailable) {
+                label.style.opacity = '0.5';
+                label.style.cursor = 'not-allowed';
+            } else {
+                label.style.opacity = '1';
+                label.style.cursor = 'pointer';
+            }
+        });
+
+        // مسح الخدمات المختارة سابقاً
+        this.currentAppointment.selectedServices = [];
+        this.updateSelectedServicesSummary();
+    }
+
+    toggleService(checkbox) {
+        const serviceId = checkbox.id;
+        const service = this.getServiceById(serviceId);
+        
+        if (!service) return;
+
+        if (checkbox.checked) {
+            this.currentAppointment.selectedServices.push(service);
+        } else {
+            this.currentAppointment.selectedServices = this.currentAppointment.selectedServices.filter(
+                s => s.id !== serviceId
+            );
+        }
+
+        this.updateSelectedServicesSummary();
+    }
+
+    getServiceById(serviceId) {
+        const allServices = [...this.radiologyServices, ...this.labServices, ...this.otherServices];
+        return allServices.find(service => service.id === serviceId);
+    }
+
+    updateSelectedServicesSummary() {
+        const container = document.getElementById('selectedServicesList');
+        const totalCostElement = document.getElementById('totalCost');
+        const totalDurationElement = document.getElementById('totalDuration');
+
+        if (this.currentAppointment.selectedServices.length === 0) {
+            container.innerHTML = '<div class="no-services">لم يتم اختيار أي خدمات</div>';
+            totalCostElement.textContent = '0 ر.ي';
+            totalDurationElement.textContent = '0 دقيقة';
+            return;
+        }
+
+        let totalCost = 0;
+        let totalDuration = 0;
+        let servicesHTML = '';
+
+        this.currentAppointment.selectedServices.forEach(service => {
+            totalCost += service.price;
+            totalDuration += service.duration;
+            
+            servicesHTML += `
+                <div class="service-item">
+                    <span class="service-item-name">${service.name}</span>
+                    <span class="service-item-price">${service.price} ر.ي</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = servicesHTML;
+        totalCostElement.textContent = `${totalCost} ر.ي`;
+        totalDurationElement.textContent = `${totalDuration} دقيقة`;
+    }
+
+    updateAppointmentSummary() {
+        if (!this.currentAppointment.hospital || !this.currentAppointment.date || !this.currentAppointment.time) return;
+
+        const hospital = this.currentAppointment.hospital;
+        const date = new Date(this.currentAppointment.date);
+        const time = this.currentAppointment.time;
+
+        const formattedDate = date.toLocaleDateString('ar-EG', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const formattedTime = new Date(`2000-01-01T${time}`).toLocaleTimeString('ar-EG', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        document.getElementById('summaryHospital').textContent = hospital.name;
+        document.getElementById('summaryDate').textContent = formattedDate;
+        document.getElementById('summaryTime').textContent = formattedTime;
+    }
+
+    updatePaymentSummary() {
+        if (!this.currentAppointment.hospital || !this.currentAppointment.date || !this.currentAppointment.time) return;
+
+        const hospital = this.currentAppointment.hospital;
+        const date = new Date(this.currentAppointment.date);
+        const time = this.currentAppointment.time;
+
+        const formattedDateTime = date.toLocaleDateString('ar-EG', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        const totalCost = this.currentAppointment.selectedServices.reduce((sum, service) => sum + service.price, 0);
+
+        document.getElementById('paymentHospital').textContent = hospital.name;
+        document.getElementById('paymentDateTime').textContent = formattedDateTime;
+        document.getElementById('paymentServiceType').textContent = this.getServiceTypeName(this.currentAppointment.serviceType);
+        document.getElementById('paymentAmount').textContent = totalCost + ' ر.ي';
+
+        // تحديث تفاصيل الخدمات
+        const servicesList = document.getElementById('paymentServicesList');
+        servicesList.innerHTML = '';
+
+        this.currentAppointment.selectedServices.forEach(service => {
+            servicesList.innerHTML += `
+                <div class="service-breakdown-item">
+                    <span>${service.name}</span>
+                    <span>${service.price} ر.ي</span>
+                </div>
+            `;
+        });
+
+        // تحديث رقم الحجز
+        const appointmentNumber = 'HOS-' + new Date().getFullYear() + '-' + String(this.userHospitalAppointments.length + 1).padStart(3, '0');
+        document.getElementById('appointmentNumber').textContent = appointmentNumber;
+    }
+
+    selectPaymentMethod(method) {
+        this.currentAppointment.paymentMethod = method;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.payment-method').forEach(m => {
+            m.classList.remove('active');
+        });
+        
+        event.target.closest('.payment-method').classList.add('active');
+        
+        // إظهار تفاصيل طريقة الدفع المختارة
+        document.querySelectorAll('.payment-details').forEach(details => {
+            details.style.display = 'none';
+        });
+        
+        document.getElementById(`${method}Payment`).style.display = 'block';
+    }
+
+    loadPaymentMethods() {
+        this.loadUserData();
+        
+        const walletSelect = document.getElementById('selectedWallet');
+        const cardSelect = document.getElementById('selectedCard');
+        
+        walletSelect.innerHTML = '<option value="">اختر المحفظة</option>';
+        cardSelect.innerHTML = '<option value="">اختر البطاقة</option>';
+        
+        this.userWallets.forEach(wallet => {
+            walletSelect.innerHTML += `<option value="${wallet.id}">${wallet.name} - ${wallet.balance} ر.ي</option>`;
+        });
+        
+        this.userCards.forEach(card => {
+            cardSelect.innerHTML += `<option value="${card.id}">${card.processor} - ${card.lastFour}</option>`;
+        });
+
+        // تحديث رصيد المحفظة
+        const walletBalance = document.getElementById('walletBalance');
+        if (walletBalance && this.userAccount) {
+            walletBalance.textContent = this.userAccount.balance + ' ر.ي';
+        }
+
+        // إذا لم تكن هناك محافظ أو بطاقات، عرض رسالة
+        if (this.userWallets.length === 0 && this.userCards.length === 0) {
+            document.getElementById('selectedWallet').innerHTML = '<option value="">لا توجد محافظ مرتبطة</option>';
+        }
+    }
+
+    async confirmBooking() {
+        // التحقق من البيانات
+        if (!this.validateStep(4)) {
+            this.showNotification('يرجى إكمال جميع البيانات المطلوبة', 'error');
+            return;
+        }
+
+        // التحقق من طريقة الدفع
+        if (this.currentAppointment.paymentMethod === 'wallet') {
+            const selectedWallet = document.getElementById('selectedWallet').value;
+            if (!selectedWallet) {
+                this.showNotification('يرجى اختيار المحفظة', 'error');
+                return;
+            }
+
+            // التحقق من الرصيد
+            const totalCost = this.currentAppointment.selectedServices.reduce((sum, service) => sum + service.price, 0);
+            if (this.userAccount.balance < totalCost) {
+                this.showNotification('رصيدك غير كافي، يرجى شحن الحساب', 'error');
+                setTimeout(() => {
+                    window.location.href = 'financial.html';
+                }, 2000);
+                return;
+            }
+        } else if (this.currentAppointment.paymentMethod === 'card') {
+            const selectedCard = document.getElementById('selectedCard').value;
+            if (!selectedCard) {
+                this.showNotification('يرجى اختيار البطاقة', 'error');
+                return;
+            }
+        }
+
+        this.showNotification('جاري تأكيد الحجز...', 'info');
+
+        try {
+            const paymentResult = await this.processPayment();
+            
+            if (paymentResult.success) {
+                this.finalizeAppointment(paymentResult);
+            } else {
+                this.showNotification(paymentResult.message, 'error');
+            }
+        } catch (error) {
+            this.showNotification('حدث خطأ أثناء المعالجة', 'error');
+        }
+    }
+
+    async processPayment() {
+        const totalCost = this.currentAppointment.selectedServices.reduce((sum, service) => sum + service.price, 0);
+        
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.1; // 90% success rate
+                
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'TXN' + Date.now(),
+                        amount: totalCost,
+                        method: this.currentAppointment.paymentMethod
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية الدفع. يرجى المحاولة مرة أخرى'
+                    });
+                }
+            }, 2000);
+        });
+    }
+
+    finalizeAppointment(paymentResult) {
+        const totalCost = this.currentAppointment.selectedServices.reduce((sum, service) => sum + service.price, 0);
+        const totalDuration = this.currentAppointment.selectedServices.reduce((sum, service) => sum + service.duration, 0);
+
+        const appointment = {
+            id: Date.now(),
+            number: document.getElementById('appointmentNumber').textContent,
+            hospital: this.currentAppointment.hospital,
+            date: this.currentAppointment.date,
+            time: this.currentAppointment.time,
+            serviceType: this.currentAppointment.serviceType,
+            selectedServices: this.currentAppointment.selectedServices,
+            additionalDetails: this.currentAppointment.additionalDetails,
+            specialAssistance: this.currentAppointment.specialAssistance,
+            status: 'confirmed',
+            createdAt: new Date().toISOString(),
+            totalCost: totalCost,
+            totalDuration: totalDuration,
+            payment: paymentResult,
+            reminderSent: false
+        };
+        
+        // تحديث رصيد المستخدم إذا كان الدفع من المحفظة
+        if (this.currentAppointment.paymentMethod === 'wallet' && this.userAccount) {
+            this.userAccount.balance -= totalCost;
+            localStorage.setItem('financialAccount', JSON.stringify(this.userAccount));
+        }
+        
+        // إضافة إلى سجل المواعيد
+        this.userHospitalAppointments.unshift(appointment);
+        localStorage.setItem('userHospitalAppointments', JSON.stringify(this.userHospitalAppointments));
+        
+        // إضافة إلى سجل المعاملات إذا كان الدفع إلكتروني
+        if (this.currentAppointment.paymentMethod !== 'cash') {
+            this.addToTransactionHistory(appointment, paymentResult);
+        }
+        
+        this.showNotification(`تم الحجز بنجاح: ${totalCost} ر.ي`, 'success');
+        
+        // عرض تأكيد الحجز
+        this.showConfirmationModal(appointment);
+    }
+
+    addToTransactionHistory(appointment, paymentResult) {
+        const transactions = JSON.parse(localStorage.getItem('financialTransactions')) || [];
+        
+        const transaction = {
+            id: paymentResult.transactionId,
+            type: 'hospital',
+            title: `موعد مستشفى - ${appointment.hospital.name}`,
+            description: `${this.getServiceTypeName(appointment.serviceType)} - ${appointment.selectedServices.length} خدمة`,
+            amount: -appointment.totalCost,
+            ref: appointment.number,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-hospital',
+            method: paymentResult.method,
+            hospital: appointment.hospital.name
+        };
+        
+        transactions.unshift(transaction);
+        localStorage.setItem('financialTransactions', JSON.stringify(transactions));
+    }
+
+    showConfirmationModal(appointment) {
+        document.getElementById('finalAppointmentNumber').textContent = appointment.number;
+        document.getElementById('finalHospitalName').textContent = appointment.hospital.name;
+        
+        const dateTime = new Date(appointment.date + 'T' + appointment.time);
+        const formattedDateTime = dateTime.toLocaleDateString('ar-EG', { 
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        
+        document.getElementById('finalAppointmentTime').textContent = formattedDateTime;
+        document.getElementById('finalAmount').textContent = appointment.totalCost + ' ر.ي';
+        
+        const servicesText = appointment.selectedServices.map(service => service.name).join('، ');
+        document.getElementById('finalServices').textContent = servicesText;
+        
+        openModal('confirmationModal');
+    }
+
+    showNotification(message, type = 'info') {
+        // إزالة أي إشعارات سابقة
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        });
+
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 4000);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+}
+
+// وظائف الواجهة العامة
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// إغلاق النوافذ بالضغط خارجها
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// منع إرسال النماذج
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    });
+});
+
+// تهيئة النظام عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.hospitalSystem = new HospitalAppointmentSystem();
+    
+    // إضافة تأثيرات تحميل أولية
+    setTimeout(() => {
+        if (window.hospitalSystem) {
+            window.hospitalSystem.showNotification('مرحباً بك في نظام حجز مواعيد المستشفى!', 'success');
+        }
+    }, 1000);
+});
+
+// جعل النظام متاحاً globally
+window.HospitalAppointmentSystem = HospitalAppointmentSystem;
+</script>
+</body>
+</html>
