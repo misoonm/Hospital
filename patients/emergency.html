@@ -1,0 +1,3130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمات الطوارئ - طبيب 24/7</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary: #dc2626;
+    --primary-dark: #b91c1c;
+    --primary-light: #fecaca;
+    --secondary: #1e40af;
+    --accent: #f59e0b;
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --dark: #1e1b4b;
+    --light: #fef2f2;
+    --surface: #ffffff;
+    --glass: rgba(255, 255, 255, 0.25);
+    --glass-dark: rgba(255, 255, 255, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    --gradient-emergency: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-glass: 0 8px 32px rgba(220, 38, 38, 0.2);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', 'El Messiri', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #fef2f2 0%, #fecaca 50%, #fca5a5 100%);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* تصميم شريط الحالة المتميز */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1000;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* التطبيق الرئيسي */
+.premium-app {
+    max-width: 428px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الخلفية الديناميكية */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-emergency);
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* الهيدر المتقدم */
+.emergency-header {
+    background: var(--gradient-emergency);
+    color: white;
+    padding: 40px 24px 30px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #fff, #fecaca);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* المحتوى الرئيسي */
+.emergency-content {
+    padding: 25px 20px;
+    padding-bottom: 120px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-emergency);
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+/* التبويبات */
+.emergency-tabs {
+    display: flex;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+.tab-btn.active {
+    background: var(--gradient-emergency);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* زر الطوارئ الرئيسي */
+.emergency-button-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.emergency-btn {
+    background: var(--gradient-emergency);
+    color: white;
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 30px 20px;
+    width: 100%;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+}
+
+.emergency-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(220, 38, 38, 0.4);
+}
+
+.emergency-btn:active {
+    transform: translateY(-2px) scale(1.01);
+}
+
+.emergency-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.emergency-text {
+    text-align: right;
+    flex: 1;
+}
+
+.emergency-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.emergency-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* الإسعافات الأولية */
+.first-aid-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.first-aid-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.first-aid-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 15px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+}
+
+.first-aid-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+}
+
+.first-aid-card.active {
+    background: var(--gradient-emergency);
+    color: white;
+    border-color: var(--primary);
+}
+
+.first-aid-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-emergency);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 18px;
+    color: white;
+}
+
+.first-aid-card.active .first-aid-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.first-aid-name {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+/* الأعراض الشائعة */
+.symptoms-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.symptoms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.symptom-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.symptom-item:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.symptom-item.selected {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.symptom-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.symptom-item.selected .symptom-checkbox {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.symptom-item.selected .symptom-checkbox i {
+    color: white;
+    font-size: 12px;
+}
+
+.symptom-details {
+    flex: 1;
+}
+
+.symptom-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.symptom-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.symptom-priority {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.symptom-priority.high {
+    background: #fef2f2;
+    color: var(--error);
+}
+
+.symptom-priority.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.symptoms-actions {
+    text-align: center;
+}
+
+/* المستشفيات القريبة */
+.hospitals-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.hospitals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.hospital-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    transition: var(--transition-smooth);
+}
+
+.hospital-card:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.hospital-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.hospital-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.hospital-distance {
+    font-size: 14px;
+    color: var(--success);
+    font-weight: 700;
+}
+
+.hospital-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.hospital-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.hospital-detail i {
+    color: var(--primary);
+    width: 16px;
+}
+
+.hospital-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* نموذج طلب الإسعاف */
+.ambulance-form-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.emergency-level {
+    margin-bottom: 25px;
+}
+
+.level-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.level-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.level-option:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.level-option.active {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.level-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-emergency);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.level-details {
+    flex: 1;
+}
+
+.level-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.level-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.ambulance-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+    background: white;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.location-actions {
+    margin-bottom: 10px;
+}
+
+.ambulance-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.confirm-ambulance {
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 18px;
+    background: var(--gradient-emergency);
+}
+
+.confirm-ambulance:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-large);
+}
+
+/* اتصالات الطوارئ */
+.emergency-contacts-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.emergency-contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.emergency-contact-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-smooth);
+}
+
+.emergency-contact-card:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-emergency);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.contact-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.contact-number {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.contact-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.contact-call-btn {
+    background: var(--gradient-emergency);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.contact-call-btn:hover {
+    transform: scale(1.1);
+}
+
+/* جهات الاتصال الشخصية */
+.personal-contacts-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.personal-contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.personal-contact-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-smooth);
+}
+
+.personal-contact-card:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.personal-contact-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.personal-contact-details {
+    flex: 1;
+}
+
+.personal-contact-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.personal-contact-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.personal-contact-relationship {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.add-contact-section {
+    text-align: center;
+}
+
+/* سجل الطوارئ */
+.emergency-history-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.emergency-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.emergency-history-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    transition: var(--transition-smooth);
+}
+
+.emergency-history-card:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.history-type {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.history-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.history-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.history-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.history-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.status-completed {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow-large);
+    animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.close-modal:hover {
+    color: var(--error);
+    transform: rotate(90deg);
+}
+
+/* محتوى الإسعافات الأولية */
+.first-aid-content {
+    margin-bottom: 25px;
+}
+
+.first-aid-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.first-aid-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border-right: 4px solid var(--primary);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.step-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.warning-note {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.warning-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #92400e;
+}
+
+/* تأكيد طلب الإسعاف */
+.ambulance-summary {
+    margin-bottom: 25px;
+}
+
+.ambulance-number {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-family: monospace;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.summary-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.summary-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.case-info, .location-info, .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.case-info-item, .location-info-item, .contact-info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.case-info-item:last-child, .location-info-item:last-child, .contact-info-item:last-child {
+    border-bottom: none;
+}
+
+.estimated-time {
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.eta-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.eta-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--success);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* نجاح طلب الإسعاف */
+.success-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    font-size: 64px;
+    color: var(--success);
+    margin-bottom: 20px;
+}
+
+.success-content h3 {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.success-content p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.ambulance-details {
+    background: #f8fafc;
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 20px 0;
+    text-align: right;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tracking-info {
+    margin: 25px 0;
+}
+
+.tracking-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 20px;
+}
+
+.tracking-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    left: 50px;
+    height: 3px;
+    background: #e2e8f0;
+    z-index: 1;
+}
+
+.tracking-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+    flex: 1;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: var(--transition-smooth);
+}
+
+.tracking-step.active .step-icon {
+    background: var(--gradient-emergency);
+    color: white;
+    transform: scale(1.1);
+}
+
+.step-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.tracking-step.active .step-label {
+    color: var(--primary);
+}
+
+.emergency-instructions {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: right;
+    margin: 20px 0;
+}
+
+.instructions-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #92400e;
+}
+
+.emergency-instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.emergency-instructions li {
+    padding: 6px 0;
+    position: relative;
+    padding-right: 20px;
+}
+
+.emergency-instructions li::before {
+    content: '•';
+    color: #f59e0b;
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+}
+
+/* نموذج إضافة جهة اتصال */
+.add-contact-form {
+    margin-bottom: 25px;
+}
+
+/* الأزرار */
+.btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--gradient-emergency);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--light);
+    color: var(--text-primary);
+    border: 2px solid #e2e8f0;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-premium {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    padding: 15px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    max-width: 380px;
+    width: calc(100% - 40px);
+}
+
+.nav-item-premium {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-bounce);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-item-premium.active {
+    background: var(--gradient-emergency);
+    color: white;
+    transform: translateY(-10px);
+}
+
+.nav-item-premium.active .nav-label {
+    color: white;
+}
+
+.nav-item-premium.active::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 3px;
+    background: var(--gradient-emergency);
+    border-radius: 2px;
+}
+
+.nav-icon-premium {
+    font-size: 20px;
+    margin-bottom: 6px;
+    transition: var(--transition-smooth);
+}
+
+.nav-item-premium.active .nav-icon-premium {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .first-aid-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .hospital-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .history-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .emergency-btn {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .tracking-steps {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .tracking-steps::before {
+        display: none;
+    }
+    
+    .level-options {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="emergency-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <h1 class="header-title">خدمات الطوارئ</h1>
+                <p class="header-subtitle">خدمات طبية طارئة على مدار 24 ساعة</p>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">5 دقائق</div>
+                        <div class="stat-label">متوسط الاستجابة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">خدمة مستمرة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">تقييم العملاء</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="emergency-content">
+            <!-- التبويبات -->
+            <div class="emergency-tabs">
+                <button class="tab-btn active" data-tab="quick-help">
+                    <i class="fas fa-first-aid"></i>
+                    مساعدة سريعة
+                </button>
+                <button class="tab-btn" data-tab="ambulance">
+                    <i class="fas fa-ambulance"></i>
+                    طلب إسعاف
+                </button>
+                <button class="tab-btn" data-tab="emergency-contacts">
+                    <i class="fas fa-phone-alt"></i>
+                    اتصالات الطوارئ
+                </button>
+            </div>
+
+            <!-- تبويب المساعدة السريعة -->
+            <div class="tab-content active" id="quick-help">
+                <!-- زر الطوارئ الرئيسي -->
+                <div class="emergency-button-section">
+                    <div class="section-title">طلب مساعدة طارئة</div>
+                    <button class="emergency-btn" id="emergencyCallBtn">
+                        <div class="emergency-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="emergency-text">
+                            <div class="emergency-title">اتصال طارئ</div>
+                            <div class="emergency-subtitle">اضغط للاتصال بالطوارئ</div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- الإسعافات الأولية -->
+                <div class="first-aid-section">
+                    <div class="section-title">الإسعافات الأولية</div>
+                    <div class="first-aid-grid">
+                        <div class="first-aid-card" data-emergency="heart-attack">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="first-aid-name">نوبة قلبية</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="bleeding">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="first-aid-name">نزيف حاد</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="choking">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-lungs"></i>
+                            </div>
+                            <div class="first-aid-name">اختناق</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="burn">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="first-aid-name">حروق</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="fracture">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-bone"></i>
+                            </div>
+                            <div class="first-aid-name">كسر</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="poisoning">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-skull-crossbones"></i>
+                            </div>
+                            <div class="first-aid-name">تسمم</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="stroke">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="first-aid-name">سكتة دماغية</div>
+                        </div>
+                        <div class="first-aid-card" data-emergency="all">
+                            <div class="first-aid-icon">
+                                <i class="fas fa-book-medical"></i>
+                            </div>
+                            <div class="first-aid-name">دليل الإسعافات</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الأعراض الشائعة -->
+                <div class="symptoms-section">
+                    <div class="section-title">تقييم الحالة الطارئة</div>
+                    <div class="symptoms-list">
+                        <div class="symptom-item" data-symptom="chest-pain">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">ألم في الصدر</div>
+                                <div class="symptom-description">ألم ضاغط في منتصف الصدر</div>
+                            </div>
+                            <div class="symptom-priority high">عالية</div>
+                        </div>
+                        <div class="symptom-item" data-symptom="breathing-difficulty">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">صعوبة في التنفس</div>
+                                <div class="symptom-description">عدم القدرة على التنفس بشكل طبيعي</div>
+                            </div>
+                            <div class="symptom-priority high">عالية</div>
+                        </div>
+                        <div class="symptom-item" data-symptom="severe-bleeding">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">نزيف شديد</div>
+                                <div class="symptom-description">نزيف لا يتوقف بالضغط</div>
+                            </div>
+                            <div class="symptom-priority high">عالية</div>
+                        </div>
+                        <div class="symptom-item" data-symptom="unconsciousness">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">فقدان الوعي</div>
+                                <div class="symptom-description">عدم الاستجابة للمنبهات</div>
+                            </div>
+                            <div class="symptom-priority high">عالية</div>
+                        </div>
+                        <div class="symptom-item" data-symptom="severe-pain">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">ألم شديد</div>
+                                <div class="symptom-description">ألم لا يحتمل في أي منطقة</div>
+                            </div>
+                            <div class="symptom-priority medium">متوسطة</div>
+                        </div>
+                        <div class="symptom-item" data-symptom="vomiting">
+                            <div class="symptom-checkbox">
+                                <i class="far fa-circle"></i>
+                            </div>
+                            <div class="symptom-details">
+                                <div class="symptom-name">قيء مستمر</div>
+                                <div class="symptom-description">قيء متكرر أو مصحوب بدم</div>
+                            </div>
+                            <div class="symptom-priority medium">متوسطة</div>
+                        </div>
+                    </div>
+
+                    <div class="symptoms-actions">
+                        <button class="btn btn-secondary" id="assessSymptomsBtn">
+                            <i class="fas fa-stethoscope"></i>
+                            تقييم الحالة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- المستشفيات القريبة -->
+                <div class="hospitals-section">
+                    <div class="section-title">أقرب المستشفيات</div>
+                    <div class="hospitals-list" id="hospitalsList">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب طلب إسعاف -->
+            <div class="tab-content" id="ambulance">
+                <!-- نموذج طلب الإسعاف -->
+                <div class="ambulance-form-section">
+                    <div class="section-title">طلب خدمة الإسعاف</div>
+                    
+                    <div class="emergency-level">
+                        <div class="section-subtitle">مستوى الطوارئ</div>
+                        <div class="level-options">
+                            <div class="level-option active" data-level="critical">
+                                <div class="level-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="level-details">
+                                    <div class="level-title">حرجة</div>
+                                    <div class="level-description">حالة تهدد الحياة</div>
+                                </div>
+                            </div>
+                            <div class="level-option" data-level="urgent">
+                                <div class="level-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="level-details">
+                                    <div class="level-title">عاجلة</div>
+                                    <div class="level-description">حالة تحتاج عناية سريعة</div>
+                                </div>
+                            </div>
+                            <div class="level-option" data-level="non-urgent">
+                                <div class="level-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="level-details">
+                                    <div class="level-title">غير عاجلة</div>
+                                    <div class="level-description">نقل روتيني للمستشفى</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ambulance-form">
+                        <div class="form-group">
+                            <label class="form-label">نوع الحالة</label>
+                            <select class="form-select" id="caseType">
+                                <option value="">اختر نوع الحالة</option>
+                                <option value="heart-attack">نوبة قلبية</option>
+                                <option value="accident">حادث مروري</option>
+                                <option value="fall">سقوط وإصابة</option>
+                                <option value="breathing">مشكلة تنفس</option>
+                                <option value="bleeding">نزيف</option>
+                                <option value="poisoning">تسمم</option>
+                                <option value="burn">حروق</option>
+                                <option value="other">حالة أخرى</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">عدد المصابين</label>
+                            <select class="form-select" id="patientsCount">
+                                <option value="1">شخص واحد</option>
+                                <option value="2">شخصين</option>
+                                <option value="3">3 أشخاص</option>
+                                <option value="4">4 أشخاص أو أكثر</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">الموقع الحالي</label>
+                            <div class="location-actions">
+                                <button class="btn btn-secondary" id="detectLocationBtn">
+                                    <i class="fas fa-location-arrow"></i>
+                                    تحديد الموقع تلقائياً
+                                </button>
+                            </div>
+                            <input type="text" class="form-input" id="locationInput" placeholder="أدخل العنوان يدوياً">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تفاصيل الحالة</label>
+                            <textarea class="form-textarea" id="caseDetails" placeholder="صف الحالة بالتفصيل..." rows="4"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">معلومات الاتصال</label>
+                            <input type="text" class="form-input" id="contactName" placeholder="اسم الشخص المتصل">
+                            <input type="tel" class="form-input" id="contactPhone" placeholder="رقم الهاتف" style="margin-top: 10px;">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">ملاحظات إضافية</label>
+                            <textarea class="form-textarea" id="additionalNotes" placeholder="أي معلومات إضافية قد تساعد فريق الإسعاف..." rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="ambulance-actions">
+                        <button class="btn btn-primary confirm-ambulance" id="confirmAmbulance">
+                            <i class="fas fa-ambulance"></i>
+                            تأكيد طلب الإسعاف
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب اتصالات الطوارئ -->
+            <div class="tab-content" id="emergency-contacts">
+                <!-- جهات الاتصال الطارئة -->
+                <div class="emergency-contacts-section">
+                    <div class="section-title">أرقام الطوارئ</div>
+                    
+                    <div class="emergency-contacts-list">
+                        <div class="emergency-contact-card" data-number="997">
+                            <div class="contact-icon">
+                                <i class="fas fa-ambulance"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">الإسعاف</div>
+                                <div class="contact-number">997</div>
+                                <div class="contact-description">للحالات الطبية الطارئة</div>
+                            </div>
+                            <button class="contact-call-btn" onclick="emergencySystem.makeEmergencyCall('997')">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+
+                        <div class="emergency-contact-card" data-number="998">
+                            <div class="contact-icon">
+                                <i class="fas fa-fire-extinguisher"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">الدفاع المدني</div>
+                                <div class="contact-number">998</div>
+                                <div class="contact-description">للحرائق والإنقاذ</div>
+                            </div>
+                            <button class="contact-call-btn" onclick="emergencySystem.makeEmergencyCall('998')">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+
+                        <div class="emergency-contact-card" data-number="999">
+                            <div class="contact-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">الشرطة</div>
+                                <div class="contact-number">999</div>
+                                <div class="contact-description">للأمن والسلامة</div>
+                            </div>
+                            <button class="contact-call-btn" onclick="emergencySystem.makeEmergencyCall('999')">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+
+                        <div class="emergency-contact-card" data-number="1919">
+                            <div class="contact-icon">
+                                <i class="fas fa-car-crash"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">مرور الطوارئ</div>
+                                <div class="contact-number">1919</div>
+                                <div class="contact-description">لحوادث الطرق</div>
+                            </div>
+                            <button class="contact-call-btn" onclick="emergencySystem.makeEmergencyCall('1919')">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- جهات الاتصال الخاصة -->
+                <div class="personal-contacts-section">
+                    <div class="section-title">جهات اتصال شخصية</div>
+                    
+                    <div class="personal-contacts-list" id="personalContactsList">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+
+                    <div class="add-contact-section">
+                        <button class="btn btn-secondary" onclick="emergencySystem.showAddContactModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة جهة اتصال
+                        </button>
+                    </div>
+                </div>
+
+                <!-- سجل الطوارئ -->
+                <div class="emergency-history-section">
+                    <div class="section-title">سجل الطلبات الطارئة</div>
+                    
+                    <div class="emergency-history-list" id="emergencyHistoryList">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة الإسعافات الأولية -->
+        <div id="firstAidModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">الإسعافات الأولية</div>
+                    <button class="close-modal" onclick="closeModal('firstAidModal')">×</button>
+                </div>
+                
+                <div class="first-aid-content" id="firstAidContent">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('firstAidModal')">
+                        إغلاق
+                    </button>
+                    <button class="btn btn-primary" onclick="emergencySystem.callAmbulance()">
+                        <i class="fas fa-ambulance"></i>
+                        طلب الإسعاف
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تأكيد طلب الإسعاف -->
+        <div id="ambulanceConfirmationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تأكيد طلب الإسعاف</div>
+                    <button class="close-modal" onclick="closeModal('ambulanceConfirmationModal')">×</button>
+                </div>
+                
+                <div class="ambulance-summary">
+                    <div class="ambulance-number" id="ambulanceNumber">AMB-2024-001</div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">تفاصيل الحالة</div>
+                        <div class="case-info" id="caseInfo">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="summary-section">
+                        <div class="summary-title">معلومات الموقع</div>
+                        <div class="location-info" id="ambulanceLocationInfo">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="summary-section">
+                        <div class="summary-title">معلومات الاتصال</div>
+                        <div class="contact-info" id="ambulanceContactInfo">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="estimated-time">
+                        <div class="eta-label">وقت الوصول المتوقع:</div>
+                        <div class="eta-value" id="etaValue">5-7 دقائق</div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('ambulanceConfirmationModal')">
+                        تعديل الطلب
+                    </button>
+                    <button class="btn btn-primary" onclick="emergencySystem.confirmAmbulance()">
+                        <i class="fas fa-check-circle"></i>
+                        تأكيد الطلب
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة نجاح طلب الإسعاف -->
+        <div id="ambulanceSuccessModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تم إرسال طلب الإسعاف</div>
+                    <button class="close-modal" onclick="closeModal('ambulanceSuccessModal')">×</button>
+                </div>
+                
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3>تم استلام طلبك!</h3>
+                    <p>سيصل فريق الإسعاف إلى موقعك في أقرب وقت ممكن</p>
+                    
+                    <div class="ambulance-details">
+                        <div class="detail-item">
+                            <span class="detail-label">رقم الطلب:</span>
+                            <span class="detail-value" id="successAmbulanceNumber">AMB-2024-001</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">وقت الوصول المتوقع:</span>
+                            <span class="detail-value" id="successETA">5-7 دقائق</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">رقم فريق الإسعاف:</span>
+                            <span class="detail-value" id="ambulanceTeamNumber">771234567</span>
+                        </div>
+                    </div>
+
+                    <div class="tracking-info">
+                        <div class="tracking-steps">
+                            <div class="tracking-step active">
+                                <div class="step-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="step-label">تم استلام الطلب</div>
+                            </div>
+                            <div class="tracking-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="step-label">فريق في الطريق</div>
+                            </div>
+                            <div class="tracking-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="step-label">الوصول للموقع</div>
+                            </div>
+                            <div class="tracking-step">
+                                <div class="step-icon">
+                                    <i class="fas fa-hospital"></i>
+                                </div>
+                                <div class="step-label">النقل للمستشفى</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="emergency-instructions">
+                        <div class="instructions-title">تعليمات مهمة أثناء الانتظار:</div>
+                        <ul>
+                            <li>ابق هادئاً ولا تتحرك المصاب unnecessarily</li>
+                            <li>افتح الطريق لفريق الإسعاف</li>
+                            <li>جهز معلومات المريض الأساسية</li>
+                            <li>لا تعطِ المريض أي طعام أو شراب</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="closeModal('ambulanceSuccessModal')">
+                        <i class="fas fa-phone"></i>
+                        الاتصال بالفريق
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal('ambulanceSuccessModal')">
+                        <i class="fas fa-share"></i>
+                        مشاركة الموقع
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة جهة اتصال -->
+        <div id="addContactModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة جهة اتصال طارئة</div>
+                    <button class="close-modal" onclick="closeModal('addContactModal')">×</button>
+                </div>
+                
+                <div class="add-contact-form">
+                    <div class="form-group">
+                        <label class="form-label">اسم جهة الاتصال</label>
+                        <input type="text" class="form-input" id="contactNameInput" placeholder="أدخل الاسم">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-input" id="contactPhoneInput" placeholder="أدخل رقم الهاتف">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">العلاقة</label>
+                        <select class="form-select" id="contactRelationship">
+                            <option value="family">أحد أفراد العائلة</option>
+                            <option value="friend">صديق</option>
+                            <option value="neighbor">جار</option>
+                            <option value="doctor">طبيب</option>
+                            <option value="other">آخر</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">ملاحظات</label>
+                        <textarea class="form-textarea" id="contactNotes" placeholder="ملاحظات إضافية..." rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addContactModal')">
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" onclick="emergencySystem.saveEmergencyContact()">
+                        <i class="fas fa-save"></i>
+                        حفظ جهة الاتصال
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="consultation.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="emergency.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-ambulance"></i>
+                </div>
+                <div class="nav-label">الطوارئ</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+// نظام خدمات الطوارئ المتكامل
+class EmergencySystem {
+    constructor() {
+        this.hospitals = [];
+        this.emergencyContacts = JSON.parse(localStorage.getItem('emergencyContacts')) || [];
+        this.emergencyHistory = JSON.parse(localStorage.getItem('emergencyHistory')) || [];
+        this.currentTab = 'quick-help';
+        this.emergencyLevel = 'critical';
+        this.selectedSymptoms = [];
+        this.userLocation = null;
+        this.init();
+    }
+
+    init() {
+        this.loadHospitals();
+        this.setupEventListeners();
+        this.updateTime();
+        this.renderEmergencyContacts();
+        this.renderEmergencyHistory();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.currentTarget.dataset.tab);
+            });
+        });
+
+        // زر الطوارئ الرئيسي
+        const emergencyCallBtn = document.getElementById('emergencyCallBtn');
+        if (emergencyCallBtn) {
+            emergencyCallBtn.addEventListener('click', () => {
+                this.makeEmergencyCall('997');
+            });
+        }
+
+        // الإسعافات الأولية
+        document.querySelectorAll('.first-aid-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                this.showFirstAid(e.currentTarget.dataset.emergency);
+            });
+        });
+
+        // الأعراض
+        document.querySelectorAll('.symptom-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                this.toggleSymptom(e.currentTarget.dataset.symptom);
+            });
+        });
+
+        // تقييم الأعراض
+        const assessSymptomsBtn = document.getElementById('assessSymptomsBtn');
+        if (assessSymptomsBtn) {
+            assessSymptomsBtn.addEventListener('click', () => {
+                this.assessSymptoms();
+            });
+        }
+
+        // مستوى الطوارئ
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                this.selectEmergencyLevel(e.currentTarget.dataset.level);
+            });
+        });
+
+        // تحديد الموقع
+        const detectLocationBtn = document.getElementById('detectLocationBtn');
+        if (detectLocationBtn) {
+            detectLocationBtn.addEventListener('click', () => {
+                this.detectLocation();
+            });
+        }
+
+        // تأكيد طلب الإسعاف
+        const confirmAmbulance = document.getElementById('confirmAmbulance');
+        if (confirmAmbulance) {
+            confirmAmbulance.addEventListener('click', () => {
+                this.showAmbulanceConfirmation();
+            });
+        }
+    }
+
+    loadHospitals() {
+        this.hospitals = [
+            {
+                id: 1,
+                name: 'مستشفى الثورة العام',
+                address: 'شارع الزبيري، صنعاء',
+                phone: '017234567',
+                distance: '2.5 كم',
+                emergency: true,
+                specialties: ['طوارئ', 'جراحة', 'باطنية'],
+                waitingTime: '10 دقائق'
+            },
+            {
+                id: 2,
+                name: 'مستشفى السبعين',
+                address: 'حي السبعين، صنعاء',
+                phone: '017234568',
+                distance: '3.8 كم',
+                emergency: true,
+                specialties: ['طوارئ', 'أطفال', 'نسائية'],
+                waitingTime: '15 دقائق'
+            },
+            {
+                id: 3,
+                name: 'مستشفى العلوم والتكنولوجيا',
+                address: 'حي المعافر، صنعاء',
+                phone: '017234569',
+                distance: '5.2 كم',
+                emergency: true,
+                specialties: ['طوارئ', 'عظام', 'عيون'],
+                waitingTime: '20 دقائق'
+            },
+            {
+                id: 4,
+                name: 'مستشفى اليمن السعيد',
+                address: 'شارع حدة، صنعاء',
+                phone: '017234570',
+                distance: '4.1 كم',
+                emergency: true,
+                specialties: ['طوارئ', 'قلب', 'أعصاب'],
+                waitingTime: '12 دقائق'
+            }
+        ];
+        this.renderHospitals();
+    }
+
+    renderHospitals() {
+        const container = document.getElementById('hospitalsList');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        this.hospitals.forEach(hospital => {
+            const hospitalElement = document.createElement('div');
+            hospitalElement.className = 'hospital-card';
+            
+            hospitalElement.innerHTML = `
+                <div class="hospital-header">
+                    <div class="hospital-name">${hospital.name}</div>
+                    <div class="hospital-distance">${hospital.distance}</div>
+                </div>
+                <div class="hospital-details">
+                    <div class="hospital-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${hospital.address}</span>
+                    </div>
+                    <div class="hospital-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>${hospital.phone}</span>
+                    </div>
+                    <div class="hospital-detail">
+                        <i class="fas fa-clock"></i>
+                        <span>وقت الانتظار: ${hospital.waitingTime}</span>
+                    </div>
+                    <div class="hospital-detail">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>${hospital.specialties.join('، ')}</span>
+                    </div>
+                </div>
+                <div class="hospital-actions">
+                    <button class="action-btn" onclick="emergencySystem.callHospital(${hospital.id})">
+                        <i class="fas fa-phone"></i>
+                        الاتصال
+                    </button>
+                    <button class="action-btn primary" onclick="emergencySystem.getDirections(${hospital.id})">
+                        <i class="fas fa-directions"></i>
+                        الاتجاهات
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(hospitalElement);
+        });
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+
+        // تحديث المحتوى
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    // الإسعافات الأولية
+    showFirstAid(emergencyType) {
+        if (emergencyType === 'all') {
+            this.showFirstAidGuide();
+            return;
+        }
+
+        const firstAidData = this.getFirstAidData(emergencyType);
+        this.createFirstAidModal(firstAidData);
+        this.openModal('firstAidModal');
+    }
+
+    getFirstAidData(emergencyType) {
+        const firstAidData = {
+            'heart-attack': {
+                title: 'الإسعافات الأولية للنوبة القلبية',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'اطلب المساعدة فوراً',
+                        description: 'اتصل بالإسعاف على الرقم 997 وأخبرهم أنك تشك في نوبة قلبية'
+                    },
+                    {
+                        number: 2,
+                        title: 'اجعل المريض في وضع مريح',
+                        description: 'اجعل المريض يجلس في وضع مريح مع رفع الرأس والكتفين'
+                    },
+                    {
+                        number: 3,
+                        title: 'خفف الملابس الضيقة',
+                        description: 'افك الأزرار والأحزمة الضيقة لتسهيل التنفس'
+                    },
+                    {
+                        number: 4,
+                        title: 'أعطِ الأسبرين إذا كان متوفراً',
+                        description: 'إذا كان المريض ليس لديه حساسية من الأسبرين، أعطه حبة واحدة'
+                    },
+                    {
+                        number: 5,
+                        title: 'راقب العلامات الحيوية',
+                        description: 'راقب التنفس والنبض حتى وصول الإسعاف'
+                    }
+                ],
+                warning: 'لا تترك المريض وحده. إذا توقف التنفس، ابدأ الإنعاش القلبي الرئوي فوراً.'
+            },
+            'bleeding': {
+                title: 'الإسعافات الأولية للنزيف الحاد',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'اضغط مباشرة على الجرح',
+                        description: 'استخدم ضمادة نظيفة أو قطعة قماش واضغط بقوة على مكان النزيف'
+                    },
+                    {
+                        number: 2,
+                        title: 'ارفع الطرف المصاب',
+                        description: 'ارفع الطرف المصاب فوق مستوى القلب إن أمكن'
+                    },
+                    {
+                        number: 3,
+                        title: 'استمر في الضغط',
+                        description: 'استمر في الضغط حتى يتوقف النزيف أو وصول المساعدة'
+                    },
+                    {
+                        number: 4,
+                        title: 'لا تزيل الضمادة',
+                        description: 'إذا تشبعت الضمادة بالدم، أضف ضمادات أخرى فوقها'
+                    },
+                    {
+                        number: 5,
+                        title: 'اطلب المساعدة الطبية',
+                        description: 'اتصل بالإسعاف إذا كان النزيف شديداً أو لا يتوقف'
+                    }
+                ],
+                warning: 'لا تستخدم العاصبة إلا في حالات النزيف الشديد الذي يهدد الحياة.'
+            },
+            'choking': {
+                title: 'الإسعافات الأولية للاختناق',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'اسأل "هل تختنق؟"',
+                        description: 'إذا كان الشخص لا يستطيع الكلام أو السعال، فهو يختنق'
+                    },
+                    {
+                        number: 2,
+                        title: 'اضغطات البطن (مناورة هيمليك)',
+                        description: 'قف خلف الشخص، امسك بيديك حول وسطه واضغط بقوة إلى الداخل والأعلى'
+                    },
+                    {
+                        number: 3,
+                        title: 'استمر في المحاولة',
+                        description: 'كرر الضغطات حتى يخرج الجسم الغريب أو يفقد الشخص وعيه'
+                    },
+                    {
+                        number: 4,
+                        title: 'للحوامل والبدناء',
+                        description: 'استخدم ضغطات الصدر بدلاً من ضغطات البطن'
+                    },
+                    {
+                        number: 5,
+                        title: 'اطلب المساعدة',
+                        description: 'إذا فقد الشخص وعيه، ابدأ الإنعاش القلبي الرئوي واتصل بالإسعاف'
+                    }
+                ],
+                warning: 'لا تضرب الشخص على الظهر أثناء الوقوف، فقد يدفع الجسم الغريب إلى عمق أكبر.'
+            },
+            'burn': {
+                title: 'الإسعافات الأولية للحروق',
+                steps: [
+                    {
+                        number: 1,
+                        title: 'تبريد الحرق',
+                        description: 'ضع المنطقة المصابة تحت ماء جاري بارد لمدة 10-20 دقيقة'
+                    },
+                    {
+                        number: 2,
+                        title: 'نظف برفق',
+                        description: 'نظف الحرق بالماء والصابون المعتدل، لا تفرك'
+                    },
+                    {
+                        number: 3,
+                        title: 'غطِ الحرق',
+                        description: 'استخدم ضمادة غير لاصقة معقمة لتغطية الحرق'
+                    },
+                    {
+                        number: 4,
+                        title: 'لا تفقع البثور',
+                        description: 'لا تحاول فقع البثور التي تتكون على الحرق'
+                    },
+                    {
+                        number: 5,
+                        title: 'اطلب العناية الطبية',
+                        description: 'اطلب المساعدة إذا كان الحرق كبيراً أو عميقاً أو في مناطق حساسة'
+                    }
+                ],
+                warning: 'لا تضع الثلج مباشرة على الحرق، ولا تستخدم الزبدة أو الزيوت على المنطقة المصابة.'
+            }
+        };
+
+        return firstAidData[emergencyType] || firstAidData['heart-attack'];
+    }
+
+    createFirstAidModal(data) {
+        const content = document.getElementById('firstAidContent');
+        if (!content) return;
+
+        content.innerHTML = `
+            <h3 style="margin-bottom: 20px; text-align: center; color: var(--text-primary);">${data.title}</h3>
+            <div class="first-aid-steps">
+                ${data.steps.map(step => `
+                    <div class="first-aid-step">
+                        <div class="step-number">${step.number}</div>
+                        <div class="step-content">
+                            <div class="step-title">${step.title}</div>
+                            <div class="step-description">${step.description}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="warning-note">
+                <div class="warning-title">⚠️ تنبيه مهم</div>
+                <div class="warning-description">${data.warning}</div>
+            </div>
+        `;
+    }
+
+    showFirstAidGuide() {
+        const content = document.getElementById('firstAidContent');
+        if (!content) return;
+
+        content.innerHTML = `
+            <h3 style="margin-bottom: 20px; text-align: center; color: var(--text-primary);">دليل الإسعافات الأولية الشامل</h3>
+            <div class="first-aid-steps">
+                <div class="first-aid-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">تقييم الموقف</div>
+                        <div class="step-description">تأكد من أن المكان آمن لك وللمصاب قبل تقديم المساعدة</div>
+                    </div>
+                </div>
+                <div class="first-aid-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">طلب المساعدة</div>
+                        <div class="step-description">اتصل بالإسعاف فوراً وأعطهم المعلومات الدقيقة عن الحالة</div>
+                    </div>
+                </div>
+                <div class="first-aid-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">فحص المصاب</div>
+                        <div class="step-description">افحص التنفس والنبض والاستجابة، ابحث عن أي إصابات واضحة</div>
+                    </div>
+                </div>
+                <div class="first-aid-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">تقديم الإسعافات</div>
+                        <div class="step-description">قدم الإسعافات الأولية المناسبة للحالة مع الحفاظ على هدوئك</div>
+                    </div>
+                </div>
+                <div class="first-aid-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">المراقبة المستمرة</div>
+                        <div class="step-description">راقب العلامات الحيوية حتى وصول فريق الإسعاف</div>
+                    </div>
+                </div>
+            </div>
+            <div class="warning-note">
+                <div class="warning-title">نصائح عامة</div>
+                <div class="warning-description">
+                    • حافظ على هدوئك في جميع المواقف<br>
+                    • لا تحرك المصاب إلا إذا كان في خطر<br>
+                    • استخدم معدات الحماية الشخصية إذا كانت متوفرة<br>
+                    • اتبع تعليمات مشغل الطوارئ عبر الهاتف
+                </div>
+            </div>
+        `;
+
+        this.openModal('firstAidModal');
+    }
+
+    // إدارة الأعراض
+    toggleSymptom(symptom) {
+        const index = this.selectedSymptoms.indexOf(symptom);
+        const symptomItem = document.querySelector(`.symptom-item[data-symptom="${symptom}"]`);
+        
+        if (index === -1) {
+            this.selectedSymptoms.push(symptom);
+            symptomItem.classList.add('selected');
+            symptomItem.querySelector('.symptom-checkbox i').className = 'fas fa-check';
+        } else {
+            this.selectedSymptoms.splice(index, 1);
+            symptomItem.classList.remove('selected');
+            symptomItem.querySelector('.symptom-checkbox i').className = 'far fa-circle';
+        }
+    }
+
+    assessSymptoms() {
+        if (this.selectedSymptoms.length === 0) {
+            this.showNotification('يرجى اختيار الأعراض أولاً', 'error');
+            return;
+        }
+
+        let priority = 'medium';
+        let message = '';
+
+        // تحليل شدة الأعراض
+        const highPrioritySymptoms = ['chest-pain', 'breathing-difficulty', 'severe-bleeding', 'unconsciousness'];
+        const hasHighPriority = this.selectedSymptoms.some(symptom => highPrioritySymptoms.includes(symptom));
+
+        if (hasHighPriority) {
+            priority = 'high';
+            message = '⚠️ حالة طارئة! يرجى طلب الإسعاف فوراً. الأعراض تشير إلى حالة تهدد الحياة.';
+        } else {
+            priority = 'medium';
+            message = '🟡 حالة تحتاج عناية طبية. يوصى بمراجعة الطبيب في أقرب وقت ممكن.';
+        }
+
+        this.showNotification(message, priority === 'high' ? 'error' : 'warning');
+
+        // إذا كانت الحالة حرجة، اقترح طلب الإسعاف
+        if (priority === 'high') {
+            setTimeout(() => {
+                if (confirm('الأعراض تشير إلى حالة طارئة. هل تريد طلب الإسعاف؟')) {
+                    this.switchTab('ambulance');
+                }
+            }, 2000);
+        }
+    }
+
+    // طلب الإسعاف
+    selectEmergencyLevel(level) {
+        this.emergencyLevel = level;
+        
+        // تحديث الواجهة
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.classList.remove('active');
+        });
+        
+        document.querySelector(`.level-option[data-level="${level}"]`).classList.add('active');
+    }
+
+    detectLocation() {
+        this.showNotification('جاري تحديد موقعك...', 'info');
+        
+        // محاكاة تحديد الموقع
+        setTimeout(() => {
+            this.userLocation = 'شارع الزبيري، صنعاء (موقع افتراضي)';
+            document.getElementById('locationInput').value = this.userLocation;
+            this.showNotification('تم تحديد موقعك بنجاح', 'success');
+        }, 2000);
+    }
+
+    showAmbulanceConfirmation() {
+        const caseType = document.getElementById('caseType').value;
+        const patientsCount = document.getElementById('patientsCount').value;
+        const location = document.getElementById('locationInput').value;
+        const caseDetails = document.getElementById('caseDetails').value;
+        const contactName = document.getElementById('contactName').value;
+        const contactPhone = document.getElementById('contactPhone').value;
+
+        if (!caseType || !location || !contactName || !contactPhone) {
+            this.showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        this.prepareAmbulanceSummary();
+        this.openModal('ambulanceConfirmationModal');
+    }
+
+    prepareAmbulanceSummary() {
+        // توليد رقم طلب عشوائي
+        const ambulanceNumber = 'AMB-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        document.getElementById('ambulanceNumber').textContent = ambulanceNumber;
+        document.getElementById('successAmbulanceNumber').textContent = ambulanceNumber;
+
+        // تحديث تفاصيل الحالة
+        const caseInfo = document.getElementById('caseInfo');
+        caseInfo.innerHTML = '';
+        
+        const caseType = document.getElementById('caseType');
+        const patientsCount = document.getElementById('patientsCount');
+        const caseDetails = document.getElementById('caseDetails');
+
+        caseInfo.innerHTML = `
+            <div class="case-info-item">
+                <span>مستوى الطوارئ:</span>
+                <span>${this.getEmergencyLevelText(this.emergencyLevel)}</span>
+            </div>
+            <div class="case-info-item">
+                <span>نوع الحالة:</span>
+                <span>${caseType.options[caseType.selectedIndex].text}</span>
+            </div>
+            <div class="case-info-item">
+                <span>عدد المصابين:</span>
+                <span>${patientsCount.value} أشخاص</span>
+            </div>
+            <div class="case-info-item">
+                <span>تفاصيل الحالة:</span>
+                <span>${caseDetails.value || 'لا توجد تفاصيل إضافية'}</span>
+            </div>
+        `;
+
+        // تحديث معلومات الموقع
+        const locationInfo = document.getElementById('ambulanceLocationInfo');
+        locationInfo.innerHTML = '';
+        
+        const location = document.getElementById('locationInput').value;
+
+        locationInfo.innerHTML = `
+            <div class="location-info-item">
+                <span>الموقع:</span>
+                <span>${location}</span>
+            </div>
+        `;
+
+        // تحديث معلومات الاتصال
+        const contactInfo = document.getElementById('ambulanceContactInfo');
+        contactInfo.innerHTML = '';
+        
+        const contactName = document.getElementById('contactName').value;
+        const contactPhone = document.getElementById('contactPhone').value;
+
+        contactInfo.innerHTML = `
+            <div class="contact-info-item">
+                <span>اسم المتصل:</span>
+                <span>${contactName}</span>
+            </div>
+            <div class="contact-info-item">
+                <span>رقم الهاتف:</span>
+                <span>${contactPhone}</span>
+            </div>
+        `;
+
+        // تحديث وقت الوصول المتوقع
+        const eta = this.calculateETA(this.emergencyLevel);
+        document.getElementById('etaValue').textContent = eta;
+        document.getElementById('successETA').textContent = eta;
+    }
+
+    getEmergencyLevelText(level) {
+        const levels = {
+            'critical': 'حرجة 🚨',
+            'urgent': 'عاجلة ⚠️',
+            'non-urgent': 'غير عاجلة ℹ️'
+        };
+        return levels[level] || levels['critical'];
+    }
+
+    calculateETA(level) {
+        const etas = {
+            'critical': '5-7 دقائق',
+            'urgent': '10-15 دقيقة',
+            'non-urgent': '20-30 دقيقة'
+        };
+        return etas[level] || etas['critical'];
+    }
+
+    confirmAmbulance() {
+        const ambulanceNumber = document.getElementById('ambulanceNumber').textContent;
+        
+        // تسجيل الطلب في السجل
+        const emergencyRequest = {
+            id: Date.now(),
+            number: ambulanceNumber,
+            type: 'طلب إسعاف',
+            level: this.emergencyLevel,
+            location: document.getElementById('locationInput').value,
+            timestamp: new Date().toISOString(),
+            status: 'pending'
+        };
+
+        this.emergencyHistory.unshift(emergencyRequest);
+        localStorage.setItem('emergencyHistory', JSON.stringify(this.emergencyHistory));
+
+        // إغلاق النافذة الحالية وفتح نافذة النجاح
+        this.closeModal('ambulanceConfirmationModal');
+        this.openModal('ambulanceSuccessModal');
+
+        this.showNotification('تم إرسال طلب الإسعاف بنجاح', 'success');
+        
+        // تحديث السجل
+        this.renderEmergencyHistory();
+    }
+
+    // اتصالات الطوارئ
+    makeEmergencyCall(number) {
+        this.showNotification(`جاري الاتصال بالرقم ${number}...`, 'info');
+        
+        // محاكاة الاتصال
+        setTimeout(() => {
+            this.showNotification(`تم الاتصال بالرقم ${number}`, 'success');
+            
+            // تسجيل المكالمة في السجل
+            const callRecord = {
+                id: Date.now(),
+                type: 'مكالمة طارئة',
+                number: number,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+
+            this.emergencyHistory.unshift(callRecord);
+            localStorage.setItem('emergencyHistory', JSON.stringify(this.emergencyHistory));
+            this.renderEmergencyHistory();
+        }, 2000);
+    }
+
+    renderEmergencyContacts() {
+        const container = document.getElementById('personalContactsList');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        if (this.emergencyContacts.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-address-book" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد جهات اتصال</div>
+                    <p style="font-size: 14px; margin-top: 8px;">أضف جهات اتصال للطوارئ</p>
+                </div>
+            `;
+            return;
+        }
+
+        this.emergencyContacts.forEach(contact => {
+            const contactElement = document.createElement('div');
+            contactElement.className = 'personal-contact-card';
+            
+            contactElement.innerHTML = `
+                <div class="personal-contact-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="personal-contact-details">
+                    <div class="personal-contact-name">${contact.name}</div>
+                    <div class="personal-contact-number">${contact.phone}</div>
+                    <div class="personal-contact-relationship">${this.getRelationshipText(contact.relationship)}</div>
+                </div>
+                <button class="contact-call-btn" onclick="emergencySystem.makeEmergencyCall('${contact.phone}')">
+                    <i class="fas fa-phone"></i>
+                </button>
+            `;
+            
+            container.appendChild(contactElement);
+        });
+    }
+
+    getRelationshipText(relationship) {
+        const relationships = {
+            'family': 'أحد أفراد العائلة',
+            'friend': 'صديق',
+            'neighbor': 'جار',
+            'doctor': 'طبيب',
+            'other': 'آخر'
+        };
+        return relationships[relationship] || relationships['other'];
+    }
+
+    showAddContactModal() {
+        this.openModal('addContactModal');
+    }
+
+    saveEmergencyContact() {
+        const name = document.getElementById('contactNameInput').value;
+        const phone = document.getElementById('contactPhoneInput').value;
+        const relationship = document.getElementById('contactRelationship').value;
+        const notes = document.getElementById('contactNotes').value;
+
+        if (!name || !phone) {
+            this.showNotification('يرجى ملء الاسم ورقم الهاتف', 'error');
+            return;
+        }
+
+        const newContact = {
+            id: Date.now(),
+            name: name,
+            phone: phone,
+            relationship: relationship,
+            notes: notes
+        };
+
+        this.emergencyContacts.push(newContact);
+        localStorage.setItem('emergencyContacts', JSON.stringify(this.emergencyContacts));
+
+        this.closeModal('addContactModal');
+        this.renderEmergencyContacts();
+        this.showNotification('تم إضافة جهة الاتصال بنجاح', 'success');
+    }
+
+    // سجل الطوارئ
+    renderEmergencyHistory() {
+        const container = document.getElementById('emergencyHistoryList');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        if (this.emergencyHistory.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-history" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد سجلات طارئة</div>
+                    <p style="font-size: 14px; margin-top: 8px;">سيظهر هنا سجل طلباتك الطارئة</p>
+                </div>
+            `;
+            return;
+        }
+
+        this.emergencyHistory.forEach(record => {
+            const historyElement = document.createElement('div');
+            historyElement.className = 'emergency-history-card';
+            
+            let statusClass = '';
+            let statusText = '';
+            
+            switch (record.status) {
+                case 'completed':
+                    statusClass = 'status-completed';
+                    statusText = 'مكتمل';
+                    break;
+                case 'pending':
+                    statusClass = 'status-pending';
+                    statusText = 'قيد المعالجة';
+                    break;
+                case 'cancelled':
+                    statusClass = 'status-cancelled';
+                    statusText = 'ملغي';
+                    break;
+            }
+
+            historyElement.innerHTML = `
+                <div class="history-header">
+                    <div class="history-type">${record.type}</div>
+                    <div class="history-date">${new Date(record.timestamp).toLocaleDateString('ar-YE')}</div>
+                </div>
+                <div class="history-details">
+                    <div class="history-detail">
+                        <div class="detail-label">رقم المرجع</div>
+                        <div class="detail-value">${record.number || '---'}</div>
+                    </div>
+                    <div class="history-detail">
+                        <div class="detail-label">التوقيت</div>
+                        <div class="detail-value">${new Date(record.timestamp).toLocaleTimeString('ar-YE')}</div>
+                    </div>
+                    ${record.location ? `
+                    <div class="history-detail">
+                        <div class="detail-label">الموقع</div>
+                        <div class="detail-value">${record.location}</div>
+                    </div>
+                    ` : ''}
+                    ${record.level ? `
+                    <div class="history-detail">
+                        <div class="detail-label">المستوى</div>
+                        <div class="detail-value">${this.getEmergencyLevelText(record.level)}</div>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="history-status ${statusClass}">${statusText}</div>
+            `;
+            
+            container.appendChild(historyElement);
+        });
+    }
+
+    // خدمات إضافية
+    callHospital(hospitalId) {
+        const hospital = this.hospitals.find(h => h.id === hospitalId);
+        if (!hospital) return;
+
+        this.makeEmergencyCall(hospital.phone);
+    }
+
+    getDirections(hospitalId) {
+        const hospital = this.hospitals.find(h => h.id === hospitalId);
+        if (!hospital) return;
+
+        this.showNotification(`جاري فتح الخريطة إلى ${hospital.name}`, 'info');
+        // في التطبيق الحقيقي، سيتم فتح تطبيق الخرائط
+    }
+
+    callAmbulance() {
+        this.closeModal('firstAidModal');
+        this.switchTab('ambulance');
+    }
+
+    updateTime() {
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('ar-YE', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+    }
+
+    openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // إنشاء عنصر الإشعار
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // إضافة الأنماط
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--error)' : 'var(--primary)'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-large);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+        `;
+
+        document.body.appendChild(notification);
+
+        // إزالة الإشعار بعد 3 ثوان
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// الدوال العامة
+function closeModal(modalId) {
+    emergencySystem.closeModal(modalId);
+}
+
+// تهيئة النظام عند تحميل الصفحة
+let emergencySystem;
+document.addEventListener('DOMContentLoaded', function() {
+    emergencySystem = new EmergencySystem();
+});
+
+// إضافة أنماط CSS للرسوم المتحركة
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .notification {
+        font-family: 'Tajawal', sans-serif;
+        font-weight: 500;
+    }
+    
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .notification-content i {
+        font-size: 18px;
+    }
+    
+    .action-btn {
+        padding: 10px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: var(--radius-md);
+        background: white;
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    
+    .action-btn.primary {
+        background: var(--gradient-emergency);
+        color: white;
+        border-color: var(--primary);
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .fa-lungs:before {
+        content: "😮";
+    }
+    
+    .fa-bone:before {
+        content: "🦴";
+    }
+    
+    .fa-skull-crossbones:before {
+        content: "☠️";
+    }
+    
+    .fa-brain:before {
+        content: "🧠";
+    }
+    
+    .fa-book-medical:before {
+        content: "📚";
+    }
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
