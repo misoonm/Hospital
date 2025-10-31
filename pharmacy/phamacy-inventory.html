@@ -1,0 +1,3120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المخزون - طبيب 24/7 - قسم الصيدليات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+:root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #dbeafe;
+    --secondary: #dc2626;
+    --accent: #f59e0b;
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --dark: #1e1b4b;
+    --light: #f0f9ff;
+    --surface: #ffffff;
+    --glass: rgba(255, 255, 255, 0.25);
+    --glass-dark: rgba(255, 255, 255, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+    --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --gradient-pharmacy: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', 'El Messiri', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* تصميم شريط الحالة المتميز */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1000;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* التطبيق الرئيسي */
+.premium-app {
+    max-width: 428px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الخلفية الديناميكية */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* الهيدر المتقدم */
+.pharmacy-header {
+    background: var(--gradient-pharmacy);
+    color: white;
+    padding: 40px 24px 30px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #fff, #dbeafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* المحتوى الرئيسي */
+.pharmacy-content {
+    padding: 25px 20px;
+    padding-bottom: 120px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+/* التبويبات */
+.pharmacy-tabs {
+    display: flex;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    min-width: 120px;
+}
+
+.tab-btn.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* الإجراءات السريعة */
+.quick-actions {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 25px;
+    border: 1px solid #f1f5f9;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+/* بطاقات الإحصائيات */
+.inventory-stats-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 2px solid transparent;
+}
+
+.stat-card.warning {
+    border-color: var(--warning);
+}
+
+.stat-card.error {
+    border-color: var(--error);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.stat-icon.total { background: var(--gradient-pharmacy); }
+.stat-icon.value { background: var(--gradient-success); }
+.stat-icon.low { background: var(--gradient-hospital); }
+.stat-icon.out { background: var(--error); }
+.stat-icon.urgent { background: #f59e0b; }
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-card .stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.stat-card .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* عناصر التحكم */
+.inventory-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+}
+
+.view-controls {
+    display: flex;
+    gap: 8px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    padding: 4px;
+}
+
+.view-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.view-btn.active {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-soft);
+}
+
+/* عرض الشبكة */
+.grid-view {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.medicine-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.medicine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+}
+
+.medicine-card.low-stock {
+    border-right: 4px solid var(--warning);
+}
+
+.medicine-card.out-of-stock {
+    border-right: 4px solid var(--error);
+}
+
+.medicine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.medicine-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.medicine-scientific {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.medicine-price {
+    font-weight: 800;
+    color: var(--success);
+    font-size: 16px;
+}
+
+.medicine-category {
+    display: inline-block;
+    background: #f1f5f9;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.medicine-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.medicine-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.stock-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.stock-level {
+    flex: 1;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stock-progress {
+    height: 100%;
+    background: var(--success);
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+.stock-progress.low {
+    background: var(--warning);
+}
+
+.stock-progress.out {
+    background: var(--error);
+    width: 0% !important;
+}
+
+.stock-text {
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 60px;
+    text-align: left;
+}
+
+.stock-text.low {
+    color: var(--warning);
+}
+
+.stock-text.out {
+    color: var(--error);
+}
+
+.medicine-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* لائحة التحذيرات */
+.warning-banner {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #92400e;
+}
+
+.warning-banner.error {
+    background: #fee2e2;
+    border-color: var(--error);
+    color: #991b1b;
+}
+
+.warning-banner i {
+    font-size: 20px;
+}
+
+/* التصنيفات */
+.categories-actions {
+    margin-bottom: 20px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.category-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.category-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+}
+
+.category-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.category-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.category-stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.category-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow-large);
+    animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.close-modal:hover {
+    color: var(--error);
+    transform: rotate(90deg);
+}
+
+/* النماذج */
+.medicine-form, .category-form {
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.required {
+    color: var(--error);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+    background: white;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #e2e8f0;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.color-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-smooth);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.active {
+    border-color: var(--text-primary);
+}
+
+/* تحديث المخزون السريع */
+.quick-stock-content {
+    margin-bottom: 25px;
+}
+
+.quick-stock-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.quick-stock-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.quick-stock-info {
+    flex: 1;
+}
+
+.quick-stock-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.quick-stock-current {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    text-align: center;
+}
+
+/* خيارات التصدير */
+.export-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.export-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.export-option:hover {
+    border-color: var(--primary);
+    transform: translateX(-5px);
+}
+
+.option-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-pharmacy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.option-details {
+    flex: 1;
+}
+
+.option-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.option-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.export-settings {
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+/* تفاصيل الدواء */
+.medicine-details-content {
+    margin-bottom: 25px;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-section:last-child {
+    border-bottom: none;
+}
+
+.detail-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-title i {
+    color: var(--primary);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.detail-value {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.stock-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.status-available { background: #d1fae5; color: #065f46; }
+.status-low { background: #fef3c7; color: #92400e; }
+.status-out { background: #fee2e2; color: #991b1b; }
+
+/* الأزرار */
+.btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--gradient-pharmacy);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--light);
+    color: var(--text-primary);
+    border: 2px solid #e2e8f0;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.action-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.action-btn.primary {
+    background: var(--gradient-pharmacy);
+    color: white;
+    border-color: var(--primary);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-premium {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    padding: 15px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    max-width: 380px;
+    width: calc(100% - 40px);
+}
+
+.nav-item-premium {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-bounce);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-item-premium.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-10px);
+}
+
+.nav-item-premium.active .nav-label {
+    color: white;
+}
+
+.nav-item-premium.active::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 3px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+.nav-icon-premium {
+    font-size: 20px;
+    margin-bottom: 6px;
+    transition: var(--transition-smooth);
+}
+
+.nav-item-premium.active .nav-icon-premium {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* الإشعارات */
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 15px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-large);
+    z-index: 10000;
+    animation: slideInRight 0.3s ease-out;
+    max-width: 400px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+}
+
+.notification.error {
+    background: var(--error);
+}
+
+.notification.warning {
+    background: var(--warning);
+}
+
+.notification.info {
+    background: var(--primary);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-content i {
+    font-size: 18px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .pharmacy-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .tab-btn {
+        min-width: 120px;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .inventory-stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-view {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .inventory-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .medicine-actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="pharmacy-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <h1 class="header-title">إدارة المخزون</h1>
+                <p class="header-subtitle">مراقبة وإدارة مخزون الأدوية بالصيدلية</p>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalMedicines">0</div>
+                        <div class="stat-label">إجمالي الأدوية</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalValue">0</div>
+                        <div class="stat-label">قيمة المخزون</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="outOfStock">0</div>
+                        <div class="stat-label">نفذ من المخزون</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="pharmacy-content">
+            <!-- التبويبات -->
+            <div class="pharmacy-tabs">
+                <button class="tab-btn active" data-tab="all-medicines">
+                    <i class="fas fa-capsules"></i>
+                    جميع الأدوية
+                </button>
+                <button class="tab-btn" data-tab="low-stock">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    منخفضة المخزون
+                </button>
+                <button class="tab-btn" data-tab="out-of-stock">
+                    <i class="fas fa-times-circle"></i>
+                    نفذت من المخزون
+                </button>
+                <button class="tab-btn" data-tab="categories">
+                    <i class="fas fa-tags"></i>
+                    التصنيفات
+                </button>
+            </div>
+
+            <!-- شريط الإجراءات السريعة -->
+            <div class="quick-actions">
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="inventorySystem.openAddMedicineModal()">
+                        <i class="fas fa-plus"></i>
+                        إضافة دواء جديد
+                    </button>
+                    <button class="btn btn-secondary" onclick="inventorySystem.quickStockUpdate()">
+                        <i class="fas fa-boxes"></i>
+                        تحديث سريع للمخزون
+                    </button>
+                    <button class="btn btn-secondary" onclick="inventorySystem.showExportOptions()">
+                        <i class="fas fa-file-export"></i>
+                        تصدير البيانات
+                    </button>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" id="inventorySearch" placeholder="ابحث عن دواء بالاسم أو التصنيف...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+
+            <!-- تبويب جميع الأدوية -->
+            <div class="tab-content active" id="all-medicines">
+                <div class="section-title">جميع الأدوية في المخزون</div>
+                
+                <div class="inventory-stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="allTotalMedicines">0</div>
+                            <div class="stat-label">إجمالي الأدوية</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon value">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="allTotalValue">0 ر.ي</div>
+                            <div class="stat-label">القيمة الإجمالية</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon low">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="allLowStock">0</div>
+                            <div class="stat-label">منخفضة المخزون</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon out">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="allOutOfStock">0</div>
+                            <div class="stat-label">نفذت من المخزون</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inventory-controls">
+                    <div class="filter-controls">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="">جميع التصنيفات</option>
+                        </select>
+                        <select class="form-select" id="sortBy">
+                            <option value="name">ترتيب حسب الاسم</option>
+                            <option value="quantity">ترتيب حسب الكمية</option>
+                            <option value="price">ترتيب حسب السعر</option>
+                            <option value="category">ترتيب حسب التصنيف</option>
+                        </select>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="inventory-view grid-view" id="inventoryView">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- تبويب منخفضة المخزون -->
+            <div class="tab-content" id="low-stock">
+                <div class="section-title">الأدوية منخفضة المخزون</div>
+                
+                <div class="warning-banner">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>تنبيه:</strong> هذه الأدوية على وشك النفاد من المخزون
+                    </div>
+                </div>
+
+                <div class="inventory-stats-cards">
+                    <div class="stat-card warning">
+                        <div class="stat-icon low">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="lowStockCount">0</div>
+                            <div class="stat-label">أدوية منخفضة المخزون</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon urgent">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="urgentRestock">0</div>
+                            <div class="stat-label">تحتاج إعادة تخزين عاجلة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inventory-view grid-view" id="lowStockView">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- تبويب نفذت من المخزون -->
+            <div class="tab-content" id="out-of-stock">
+                <div class="section-title">الأدوية التي نفذت من المخزون</div>
+                
+                <div class="warning-banner error">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <strong>تنبيه:</strong> هذه الأدوية نفذت تماماً من المخزون
+                    </div>
+                </div>
+
+                <div class="inventory-stats-cards">
+                    <div class="stat-card error">
+                        <div class="stat-icon out">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="outOfStockCount">0</div>
+                            <div class="stat-label">أدوية نفذت من المخزون</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon value">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="lostSales">0 ر.ي</div>
+                            <div class="stat-label">خسارة مبيعات محتملة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inventory-view grid-view" id="outOfStockView">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- تبويب التصنيفات -->
+            <div class="tab-content" id="categories">
+                <div class="section-title">إدارة تصنيفات الأدوية</div>
+                
+                <div class="categories-actions">
+                    <button class="btn btn-primary" onclick="inventorySystem.openAddCategoryModal()">
+                        <i class="fas fa-plus"></i>
+                        إضافة تصنيف جديد
+                    </button>
+                </div>
+
+                <div class="categories-stats">
+                    <div class="categories-grid" id="categoriesGrid">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة إضافة/تعديل دواء -->
+        <div id="medicineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="medicineModalTitle">إضافة دواء جديد</div>
+                    <button class="close-modal" onclick="inventorySystem.closeModal('medicineModal')">×</button>
+                </div>
+                
+                <div class="medicine-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">اسم الدواء <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="medicineName" placeholder="أدخل اسم الدواء التجاري">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الاسم العلمي</label>
+                            <input type="text" class="form-input" id="medicineScientific" placeholder="الاسم العلمي للدواء">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">السعر (ر.ي) <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="medicinePrice" placeholder="0.00" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الكمية المتاحة <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="medicineQuantity" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">التصنيف <span class="required">*</span></label>
+                            <select class="form-select" id="medicineCategory">
+                                <option value="">اختر التصنيف</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">حد التنبيه <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="medicineAlert" placeholder="10" min="1" value="10">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">الشركة المصنعة</label>
+                            <input type="text" class="form-input" id="medicineCompany" placeholder="اسم الشركة المصنعة">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رقم التسجيل</label>
+                            <input type="text" class="form-input" id="medicineRegistration" placeholder="رقم تسجيل الدواء">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الوصف</label>
+                        <textarea class="form-textarea" id="medicineDescription" placeholder="وصف الدواء، الاستخدامات، التحذيرات..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">صورة الدواء (اختياري)</label>
+                        <div class="image-upload">
+                            <input type="file" id="medicineImage" accept="image/*" style="display: none;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('medicineImage').click()">
+                                <i class="fas fa-upload"></i>
+                                رفع صورة
+                            </button>
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="inventorySystem.closeModal('medicineModal')">
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveMedicineBtn" onclick="inventorySystem.saveMedicine()">
+                        <i class="fas fa-save"></i>
+                        حفظ الدواء
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تحديث المخزون السريع -->
+        <div id="quickStockModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تحديث المخزون السريع</div>
+                    <button class="close-modal" onclick="inventorySystem.closeModal('quickStockModal')">×</button>
+                </div>
+                
+                <div class="quick-stock-content">
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="quickStockSearch" placeholder="ابحث عن دواء لتحديث كميته...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    
+                    <div class="quick-stock-list" id="quickStockList">
+                        <!-- سيتم تعبئتها بالجافاسكربت -->
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="inventorySystem.closeModal('quickStockModal')">
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" onclick="inventorySystem.saveQuickStockUpdates()">
+                        <i class="fas fa-save"></i>
+                        حفظ جميع التغييرات
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة خيارات التصدير -->
+        <div id="exportModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تصدير بيانات المخزون</div>
+                    <button class="close-modal" onclick="inventorySystem.closeModal('exportModal')">×</button>
+                </div>
+                
+                <div class="export-options">
+                    <div class="export-option" onclick="inventorySystem.exportInventory('csv')">
+                        <div class="option-icon">
+                            <i class="fas fa-file-csv"></i>
+                        </div>
+                        <div class="option-details">
+                            <div class="option-title">تصدير CSV</div>
+                            <div class="option-description">ملف Excel يمكن فتحه في جداول البيانات</div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" onclick="inventorySystem.exportInventory('json')">
+                        <div class="option-icon">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <div class="option-details">
+                            <div class="option-title">تصدير JSON</div>
+                            <div class="option-description">نسخة احتياطية لبيانات المخزون</div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" onclick="inventorySystem.exportInventory('pdf')">
+                        <div class="option-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="option-details">
+                            <div class="option-title">تقرير PDF</div>
+                            <div class="option-description">تقرير مفصل بصيغة PDF</div>
+                        </div>
+                    </div>
+                    
+                    <div class="export-option" onclick="inventorySystem.exportInventory('detailed')">
+                        <div class="option-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="option-details">
+                            <div class="option-title">تقرير مفصل</div>
+                            <div class="option-description">تقرير نصي شامل بالمخزون</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="export-settings">
+                    <div class="form-group">
+                        <label class="form-label">نطاق التصدير</label>
+                        <select class="form-select" id="exportScope">
+                            <option value="all">جميع الأدوية</option>
+                            <option value="low-stock">الأدوية منخفضة المخزون فقط</option>
+                            <option value="out-of-stock">الأدوية التي نفذت فقط</option>
+                            <option value="category">حسب التصنيف</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="categoryExportGroup" style="display: none;">
+                        <label class="form-label">اختر التصنيف</label>
+                        <select class="form-select" id="exportCategory">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة/تعديل تصنيف -->
+        <div id="categoryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="categoryModalTitle">إضافة تصنيف جديد</div>
+                    <button class="close-modal" onclick="inventorySystem.closeModal('categoryModal')">×</button>
+                </div>
+                
+                <div class="category-form">
+                    <div class="form-group">
+                        <label class="form-label">اسم التصنيف <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="categoryName" placeholder="أدخل اسم التصنيف">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">لون التصنيف</label>
+                        <div class="color-picker">
+                            <div class="color-option" data-color="#1e40af" style="background-color: #1e40af;"></div>
+                            <div class="color-option" data-color="#dc2626" style="background-color: #dc2626;"></div>
+                            <div class="color-option" data-color="#059669" style="background-color: #059669;"></div>
+                            <div class="color-option" data-color="#d97706" style="background-color: #d97706;"></div>
+                            <div class="color-option" data-color="#7c3aed" style="background-color: #7c3aed;"></div>
+                            <div class="color-option" data-color="#db2777" style="background-color: #db2777;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">وصف التصنيف</label>
+                        <textarea class="form-textarea" id="categoryDescription" placeholder="وصف مختصر للتصنيف..." rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="inventorySystem.closeModal('categoryModal')">
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveCategoryBtn" onclick="inventorySystem.saveCategory()">
+                        <i class="fas fa-save"></i>
+                        حفظ التصنيف
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تفاصيل الدواء -->
+        <div id="medicineDetailsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تفاصيل الدواء</div>
+                    <button class="close-modal" onclick="inventorySystem.closeModal('medicineDetailsModal')">×</button>
+                </div>
+                
+                <div class="medicine-details-content" id="medicineDetailsContent">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="inventorySystem.closeModal('medicineDetailsModal')">
+                        إغلاق
+                    </button>
+                    <button class="btn btn-primary" onclick="inventorySystem.editSelectedMedicine()">
+                        <i class="fas fa-edit"></i>
+                        تعديل الدواء
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index1.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="nav-label">الإحصائيات</div>
+            </a>
+            <a href="pharmacies-order.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="pharmacy-inventory.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <div class="nav-label">المخزون</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">الصيدلية</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة المخزون المتكامل للصيدليات
+class PharmacyInventorySystem {
+    constructor() {
+        this.inventory = JSON.parse(localStorage.getItem('pharmacyInventory')) || this.getSampleInventory();
+        this.categories = JSON.parse(localStorage.getItem('pharmacyCategories')) || this.getSampleCategories();
+        this.currentTab = 'all-medicines';
+        this.currentView = 'grid';
+        this.selectedMedicine = null;
+        this.editingMedicine = null;
+        this.editingCategory = null;
+        this.quickStockUpdates = {};
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.updateTime();
+        this.updateHeaderStats();
+        this.renderAllMedicines();
+        this.setupCategoryFilter();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.currentTarget.dataset.tab);
+            });
+        });
+
+        // البحث
+        const inventorySearch = document.getElementById('inventorySearch');
+        if (inventorySearch) {
+            inventorySearch.addEventListener('input', (e) => {
+                this.handleSearch(e.target.value);
+            });
+        }
+
+        // البحث في التحديث السريع
+        const quickStockSearch = document.getElementById('quickStockSearch');
+        if (quickStockSearch) {
+            quickStockSearch.addEventListener('input', (e) => {
+                this.handleQuickStockSearch(e.target.value);
+            });
+        }
+
+        // تغيير طريقة العرض
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchView(e.currentTarget.dataset.view);
+            });
+        });
+
+        // تغيير التصنيف
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', (e) => {
+                this.filterByCategory(e.target.value);
+            });
+        }
+
+        // تغيير الترتيب
+        const sortBy = document.getElementById('sortBy');
+        if (sortBy) {
+            sortBy.addEventListener('change', (e) => {
+                this.sortMedicines(e.target.value);
+            });
+        }
+
+        // نطاق التصدير
+        const exportScope = document.getElementById('exportScope');
+        if (exportScope) {
+            exportScope.addEventListener('change', (e) => {
+                this.toggleExportCategory(e.target.value);
+            });
+        }
+
+        // رفع صورة الدواء
+        const medicineImage = document.getElementById('medicineImage');
+        if (medicineImage) {
+            medicineImage.addEventListener('change', (e) => {
+                this.handleImageUpload(e);
+            });
+        }
+
+        // منتقي الألوان
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                this.selectColor(e.target);
+            });
+        });
+    }
+
+    getSampleInventory() {
+        return [
+            {
+                id: 1,
+                name: 'بانادول أزرق',
+                scientificName: 'Paracetamol 500mg',
+                price: 8,
+                quantity: 45,
+                alertLevel: 10,
+                category: 'مسكنات',
+                company: 'شركة جلاكسو سميث كلاين',
+                registration: '12345',
+                description: 'مسكن للألم وخافض للحرارة. يستخدم لعلاج الصداع، آلام الأسنان، آلام العضلات، والحمى.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 2,
+                name: 'فولتارين',
+                scientificName: 'Diclofenac Sodium 50mg',
+                price: 12,
+                quantity: 22,
+                alertLevel: 10,
+                category: 'مسكنات',
+                company: 'نوفارتس',
+                registration: '12346',
+                description: 'مسكن للآلام ومضاد للالتهابات. يستخدم لعلاج التهاب المفاصل، آلام الظهر، والتشنجات العضلية.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 3,
+                name: 'أموكسيسيلين',
+                scientificName: 'Amoxicillin 500mg',
+                price: 15,
+                quantity: 8,
+                alertLevel: 10,
+                category: 'مضادات حيوية',
+                company: 'بيوفارما',
+                registration: '12347',
+                description: 'مضاد حيوي واسع الطيف لعلاج الالتهابات البكتيرية مثل التهابات الجهاز التنفسي، الأذن، والجلد.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 4,
+                name: 'فنتولين',
+                scientificName: 'Salbutamol Inhaler',
+                price: 25,
+                quantity: 15,
+                alertLevel: 5,
+                category: 'جهاز تنفسي',
+                company: 'جلاكسو سميث كلاين',
+                registration: '12348',
+                description: 'موسع للشعب الهوائية يستخدم لتخفيف نوبات الربو وضيق التنفس.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 5,
+                name: 'أدول',
+                scientificName: 'Ibuprofen 400mg',
+                price: 10,
+                quantity: 0,
+                alertLevel: 10,
+                category: 'مسكنات',
+                company: 'حائل',
+                registration: '12349',
+                description: 'مسكن للآلام ومضاد للالتهابات وخافض للحرارة.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 6,
+                name: 'فيتامين سي',
+                scientificName: 'Vitamin C 1000mg',
+                price: 20,
+                quantity: 32,
+                alertLevel: 10,
+                category: 'فيتامينات',
+                company: 'ناتورال',
+                registration: '12350',
+                description: 'مكمل غذائي لتقوية المناعة ومضاد للأكسدة.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 7,
+                name: 'أوميغا 3',
+                scientificName: 'Omega-3 1000mg',
+                price: 35,
+                quantity: 18,
+                alertLevel: 10,
+                category: 'مكملات غذائية',
+                company: 'ناتورال',
+                registration: '12351',
+                description: 'مكمل غذائي لصحة القلب والدماغ.',
+                image: null,
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 8,
+                name: 'كريم هايدروكورتيزون',
+                scientificName: 'Hydrocortisone Cream 1%',
+                price: 18,
+                quantity: 12,
+                alertLevel: 5,
+                category: 'مستحضرات جلدية',
+                company: 'بيوفارما',
+                registration: '12352',
+                description: 'كريم لعلاج الالتهابات الجلدية والحكة.',
+                image: null,
+                createdAt: new Date().toISOString()
+            }
+        ];
+    }
+
+    getSampleCategories() {
+        return [
+            { id: 1, name: 'مسكنات', color: '#1e40af', description: 'مسكنات الألم وخوافض الحرارة', icon: 'fa-pills' },
+            { id: 2, name: 'مضادات حيوية', color: '#dc2626', description: 'مضادات الالتهابات البكتيرية', icon: 'fa-bacteria' },
+            { id: 3, name: 'فيتامينات', color: '#059669', description: 'مكملات الفيتامينات والمعادن', icon: 'fa-apple-alt' },
+            { id: 4, name: 'مستحضرات جلدية', color: '#d97706', description: 'كريمات ومراهم الجلد', icon: 'fa-hand-holding-medical' },
+            { id: 5, name: 'جهاز تنفسي', color: '#7c3aed', description: 'أدوية الجهاز التنفسي', icon: 'fa-lungs' },
+            { id: 6, name: 'مكملات غذائية', color: '#db2777', description: 'مكملات غذائية متنوعة', icon: 'fa-capsules' }
+        ];
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+
+        // تحديث المحتوى
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        document.getElementById(tabName).classList.add('active');
+
+        // تحميل البيانات المناسبة
+        switch(tabName) {
+            case 'all-medicines':
+                this.renderAllMedicines();
+                break;
+            case 'low-stock':
+                this.renderLowStock();
+                break;
+            case 'out-of-stock':
+                this.renderOutOfStock();
+                break;
+            case 'categories':
+                this.renderCategories();
+                break;
+        }
+    }
+
+    switchView(viewType) {
+        this.currentView = viewType;
+        
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.querySelector(`.view-btn[data-view="${viewType}"]`).classList.add('active');
+
+        // تغيير طريقة العرض
+        const containers = document.querySelectorAll('.inventory-view');
+        containers.forEach(container => {
+            container.className = `inventory-view ${viewType}-view`;
+        });
+
+        // إعادة عرض البيانات
+        this.refreshCurrentView();
+    }
+
+    refreshCurrentView() {
+        switch(this.currentTab) {
+            case 'all-medicines':
+                this.renderAllMedicines();
+                break;
+            case 'low-stock':
+                this.renderLowStock();
+                break;
+            case 'out-of-stock':
+                this.renderOutOfStock();
+                break;
+        }
+    }
+
+    updateHeaderStats() {
+        const totalMedicines = document.getElementById('totalMedicines');
+        const totalValue = document.getElementById('totalValue');
+        const outOfStock = document.getElementById('outOfStock');
+        
+        if (totalMedicines) totalMedicines.textContent = this.inventory.length;
+        
+        const totalValueAmount = this.inventory.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        if (totalValue) totalValue.textContent = totalValueAmount.toFixed(0) + ' ر.ي';
+        
+        const outOfStockCount = this.inventory.filter(item => item.quantity === 0).length;
+        if (outOfStock) outOfStock.textContent = outOfStockCount;
+    }
+
+    updateTabStats() {
+        // إحصائيات جميع الأدوية
+        const allTotalMedicines = document.getElementById('allTotalMedicines');
+        const allTotalValue = document.getElementById('allTotalValue');
+        const allLowStock = document.getElementById('allLowStock');
+        const allOutOfStock = document.getElementById('allOutOfStock');
+        
+        if (allTotalMedicines) allTotalMedicines.textContent = this.inventory.length;
+        
+        const allTotalValueAmount = this.inventory.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        if (allTotalValue) allTotalValue.textContent = allTotalValueAmount.toFixed(0) + ' ر.ي';
+        
+        const allLowStockCount = this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        ).length;
+        if (allLowStock) allLowStock.textContent = allLowStockCount;
+        
+        const allOutOfStockCount = this.inventory.filter(item => item.quantity === 0).length;
+        if (allOutOfStock) allOutOfStock.textContent = allOutOfStockCount;
+
+        // إحصائيات منخفضة المخزون
+        const lowStockCount = document.getElementById('lowStockCount');
+        const urgentRestock = document.getElementById('urgentRestock');
+        
+        const lowStockMedicines = this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        );
+        
+        if (lowStockCount) lowStockCount.textContent = lowStockMedicines.length;
+        
+        const urgentCount = lowStockMedicines.filter(item => item.quantity <= 3).length;
+        if (urgentRestock) urgentRestock.textContent = urgentCount;
+
+        // إحصائيات نفذت من المخزون
+        const outOfStockCount = document.getElementById('outOfStockCount');
+        const lostSales = document.getElementById('lostSales');
+        
+        const outOfStockMedicines = this.inventory.filter(item => item.quantity === 0);
+        
+        if (outOfStockCount) outOfStockCount.textContent = outOfStockMedicines.length;
+        
+        const lostSalesAmount = outOfStockMedicines.reduce((sum, item) => sum + (item.price * 10), 0); // تقدير خسارة 10 وحدات لكل دواء
+        if (lostSales) lostSales.textContent = lostSalesAmount.toFixed(0) + ' ر.ي';
+    }
+
+    renderAllMedicines() {
+        const container = document.getElementById('inventoryView');
+        if (!container) return;
+
+        let filteredMedicines = [...this.inventory];
+
+        // تطبيق التصفية حسب التصنيف
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (categoryFilter && categoryFilter.value) {
+            filteredMedicines = filteredMedicines.filter(medicine => 
+                medicine.category === categoryFilter.value
+            );
+        }
+
+        // تطبيق الترتيب
+        const sortBy = document.getElementById('sortBy');
+        if (sortBy) {
+            this.sortMedicinesList(filteredMedicines, sortBy.value);
+        }
+
+        this.renderMedicinesList(container, filteredMedicines);
+        this.updateTabStats();
+    }
+
+    renderLowStock() {
+        const container = document.getElementById('lowStockView');
+        if (!container) return;
+
+        const lowStockMedicines = this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        );
+
+        this.renderMedicinesList(container, lowStockMedicines);
+        this.updateTabStats();
+    }
+
+    renderOutOfStock() {
+        const container = document.getElementById('outOfStockView');
+        if (!container) return;
+
+        const outOfStockMedicines = this.inventory.filter(item => item.quantity === 0);
+
+        this.renderMedicinesList(container, outOfStockMedicines);
+        this.updateTabStats();
+    }
+
+    renderMedicinesList(container, medicines) {
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        if (medicines.length === 0) {
+            let message = '';
+            switch(this.currentTab) {
+                case 'all-medicines':
+                    message = 'لا توجد أدوية في المخزون';
+                    break;
+                case 'low-stock':
+                    message = 'لا توجد أدوية منخفضة المخزون';
+                    break;
+                case 'out-of-stock':
+                    message = 'لا توجد أدوية نفذت من المخزون';
+                    break;
+            }
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">
+                    <i class="fas fa-capsules" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>${message}</div>
+                    <p style="font-size: 14px; margin-top: 8px;">${this.currentTab === 'all-medicines' ? 'يمكنك البدء بإضافة أدوية جديدة' : 'جميع الأدوية في حالة جيدة'}</p>
+                </div>
+            `;
+            return;
+        }
+
+        medicines.forEach(medicine => {
+            const medicineElement = this.createMedicineCard(medicine);
+            container.appendChild(medicineElement);
+        });
+    }
+
+    createMedicineCard(medicine) {
+        const medicineElement = document.createElement('div');
+        
+        let stockClass = '';
+        let stockText = '';
+        let progressWidth = 0;
+        let progressClass = '';
+        let statusClass = '';
+        
+        if (medicine.quantity === 0) {
+            stockClass = 'out-of-stock';
+            stockText = 'نفذ من المخزون';
+            progressClass = 'out';
+            statusClass = 'status-out';
+        } else if (medicine.quantity <= medicine.alertLevel) {
+            stockClass = 'low-stock';
+            stockText = 'منخفض';
+            progressWidth = (medicine.quantity / medicine.alertLevel) * 100;
+            progressClass = 'low';
+            statusClass = 'status-low';
+        } else {
+            stockText = 'متوفر';
+            progressWidth = Math.min((medicine.quantity / (medicine.alertLevel * 3)) * 100, 100);
+            statusClass = 'status-available';
+        }
+        
+        const category = this.categories.find(cat => cat.name === medicine.category);
+        const categoryColor = category ? category.color : '#6b7280';
+        
+        medicineElement.className = `medicine-card ${stockClass}`;
+        medicineElement.innerHTML = `
+            <div class="medicine-header">
+                <div>
+                    <div class="medicine-name">${medicine.name}</div>
+                    <div class="medicine-scientific">${medicine.scientificName}</div>
+                </div>
+                <div class="medicine-price">${medicine.price} ر.ي</div>
+            </div>
+            
+            <div class="medicine-category" style="background-color: ${categoryColor}20; color: ${categoryColor}; border: 1px solid ${categoryColor}30;">
+                ${medicine.category}
+            </div>
+            
+            <div class="medicine-details">
+                <div class="medicine-detail">
+                    <div class="detail-label">الكمية</div>
+                    <div class="detail-value">${medicine.quantity} وحدة</div>
+                </div>
+                <div class="medicine-detail">
+                    <div class="detail-label">حد التنبيه</div>
+                    <div class="detail-value">${medicine.alertLevel}</div>
+                </div>
+            </div>
+            
+            <div class="stock-info">
+                <div class="stock-level">
+                    <div class="stock-progress ${progressClass}" style="width: ${progressWidth}%"></div>
+                </div>
+                <div class="stock-text ${stockClass.replace('-stock', '')}">${stockText}</div>
+            </div>
+            
+            <div class="medicine-actions">
+                <button class="action-btn" onclick="inventorySystem.viewMedicineDetails(${medicine.id})">
+                    <i class="fas fa-eye"></i>
+                    تفاصيل
+                </button>
+                <button class="action-btn primary" onclick="inventorySystem.editMedicine(${medicine.id})">
+                    <i class="fas fa-edit"></i>
+                    تعديل
+                </button>
+            </div>
+        `;
+        
+        return medicineElement;
+    }
+
+    sortMedicinesList(medicines, sortBy) {
+        switch(sortBy) {
+            case 'name':
+                medicines.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'quantity':
+                medicines.sort((a, b) => b.quantity - a.quantity);
+                break;
+            case 'price':
+                medicines.sort((a, b) => b.price - a.price);
+                break;
+            case 'category':
+                medicines.sort((a, b) => a.category.localeCompare(b.category));
+                break;
+        }
+    }
+
+    setupCategoryFilter() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const exportCategory = document.getElementById('exportCategory');
+        
+        if (!categoryFilter || !exportCategory) return;
+
+        categoryFilter.innerHTML = '<option value="">جميع التصنيفات</option>';
+        exportCategory.innerHTML = '<option value="">اختر التصنيف</option>';
+        
+        this.categories.forEach(category => {
+            categoryFilter.innerHTML += `<option value="${category.name}">${category.name}</option>`;
+            exportCategory.innerHTML += `<option value="${category.name}">${category.name}</option>`;
+        });
+    }
+
+    filterByCategory(categoryName) {
+        this.renderAllMedicines();
+    }
+
+    sortMedicines(sortBy) {
+        this.renderAllMedicines();
+    }
+
+    handleSearch(query) {
+        if (query.length >= 2) {
+            const filteredMedicines = this.inventory.filter(medicine => 
+                medicine.name.includes(query) || 
+                medicine.scientificName.includes(query) ||
+                medicine.category.includes(query) ||
+                medicine.company.includes(query)
+            );
+            
+            const container = document.getElementById('inventoryView');
+            if (container) {
+                this.renderMedicinesList(container, filteredMedicines);
+            }
+        } else if (query.length === 0) {
+            this.renderAllMedicines();
+        }
+    }
+
+    // إدارة الأدوية
+    openAddMedicineModal() {
+        this.editingMedicine = null;
+        document.getElementById('medicineModalTitle').textContent = 'إضافة دواء جديد';
+        document.getElementById('saveMedicineBtn').textContent = 'إضافة الدواء';
+        
+        // تفريغ الحقول
+        document.getElementById('medicineName').value = '';
+        document.getElementById('medicineScientific').value = '';
+        document.getElementById('medicinePrice').value = '';
+        document.getElementById('medicineQuantity').value = '';
+        document.getElementById('medicineCategory').value = '';
+        document.getElementById('medicineAlert').value = '10';
+        document.getElementById('medicineCompany').value = '';
+        document.getElementById('medicineRegistration').value = '';
+        document.getElementById('medicineDescription').value = '';
+        document.getElementById('imagePreview').innerHTML = '';
+        
+        // تعبئة قائمة التصنيفات
+        this.populateCategorySelect();
+        
+        this.openModal('medicineModal');
+    }
+
+    populateCategorySelect() {
+        const categorySelect = document.getElementById('medicineCategory');
+        if (!categorySelect) return;
+
+        categorySelect.innerHTML = '<option value="">اختر التصنيف</option>';
+        this.categories.forEach(category => {
+            categorySelect.innerHTML += `<option value="${category.name}">${category.name}</option>`;
+        });
+    }
+
+    editMedicine(medicineId) {
+        const medicine = this.inventory.find(m => m.id === medicineId);
+        if (!medicine) return;
+
+        this.editingMedicine = medicine;
+        
+        document.getElementById('medicineModalTitle').textContent = 'تعديل الدواء';
+        document.getElementById('saveMedicineBtn').textContent = 'حفظ التعديلات';
+        
+        // تعبئة الحقول
+        document.getElementById('medicineName').value = medicine.name;
+        document.getElementById('medicineScientific').value = medicine.scientificName || '';
+        document.getElementById('medicinePrice').value = medicine.price;
+        document.getElementById('medicineQuantity').value = medicine.quantity;
+        document.getElementById('medicineCategory').value = medicine.category;
+        document.getElementById('medicineAlert').value = medicine.alertLevel || 10;
+        document.getElementById('medicineCompany').value = medicine.company || '';
+        document.getElementById('medicineRegistration').value = medicine.registration || '';
+        document.getElementById('medicineDescription').value = medicine.description || '';
+        
+        // تعبئة قائمة التصنيفات
+        this.populateCategorySelect();
+        
+        this.openModal('medicineModal');
+    }
+
+    viewMedicineDetails(medicineId) {
+        const medicine = this.inventory.find(m => m.id === medicineId);
+        if (!medicine) return;
+
+        this.selectedMedicine = medicine;
+        this.createMedicineDetailsModal(medicine);
+        this.openModal('medicineDetailsModal');
+    }
+
+    createMedicineDetailsModal(medicine) {
+        const content = document.getElementById('medicineDetailsContent');
+        if (!content) return;
+
+        let statusText = '';
+        let statusClass = '';
+        
+        if (medicine.quantity === 0) {
+            statusText = 'نفذ من المخزون';
+            statusClass = 'status-out';
+        } else if (medicine.quantity <= medicine.alertLevel) {
+            statusText = 'منخفض المخزون';
+            statusClass = 'status-low';
+        } else {
+            statusText = 'متوفر';
+            statusClass = 'status-available';
+        }
+
+        const category = this.categories.find(cat => cat.name === medicine.category);
+        const categoryColor = category ? category.color : '#6b7280';
+
+        content.innerHTML = `
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-info-circle"></i>
+                    المعلومات الأساسية
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">اسم الدواء</div>
+                        <div class="detail-value">${medicine.name}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">الاسم العلمي</div>
+                        <div class="detail-value">${medicine.scientificName || 'غير محدد'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">التصنيف</div>
+                        <div class="detail-value" style="color: ${categoryColor};">${medicine.category}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">السعر</div>
+                        <div class="detail-value">${medicine.price} ر.ي</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-industry"></i>
+                    معلومات التصنيع
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">الشركة المصنعة</div>
+                        <div class="detail-value">${medicine.company || 'غير محدد'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">رقم التسجيل</div>
+                        <div class="detail-value">${medicine.registration || 'غير محدد'}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-boxes"></i>
+                    حالة المخزون
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">الكمية المتاحة</div>
+                        <div class="detail-value">${medicine.quantity} وحدة</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">حد التنبيه</div>
+                        <div class="detail-value">${medicine.alertLevel}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">الحالة</div>
+                        <div class="detail-value">
+                            <span class="stock-status ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">القيمة الإجمالية</div>
+                        <div class="detail-value">${(medicine.price * medicine.quantity).toFixed(2)} ر.ي</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-file-medical-alt"></i>
+                    الوصف والاستخدام
+                </div>
+                <div class="detail-item">
+                    <div class="detail-value">${medicine.description || 'لا يوجد وصف متوفر'}</div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">
+                    <i class="fas fa-history"></i>
+                    معلومات الإضافة
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">تاريخ الإضافة</div>
+                        <div class="detail-value">${new Date(medicine.createdAt).toLocaleDateString('ar-YE')}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">آخر تحديث</div>
+                        <div class="detail-value">${new Date().toLocaleDateString('ar-YE')}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    editSelectedMedicine() {
+        if (this.selectedMedicine) {
+            this.closeModal('medicineDetailsModal');
+            this.editMedicine(this.selectedMedicine.id);
+        }
+    }
+
+    handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = `<img src="${e.target.result}" alt="صورة الدواء">`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    saveMedicine() {
+        const name = document.getElementById('medicineName').value;
+        const scientific = document.getElementById('medicineScientific').value;
+        const price = parseFloat(document.getElementById('medicinePrice').value);
+        const quantity = parseInt(document.getElementById('medicineQuantity').value);
+        const category = document.getElementById('medicineCategory').value;
+        const alertLevel = parseInt(document.getElementById('medicineAlert').value);
+        const company = document.getElementById('medicineCompany').value;
+        const registration = document.getElementById('medicineRegistration').value;
+        const description = document.getElementById('medicineDescription').value;
+
+        if (!name || !price || isNaN(quantity) || !category) {
+            this.showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        if (this.editingMedicine) {
+            // تحديث الدواء الحالي
+            this.editingMedicine.name = name;
+            this.editingMedicine.scientificName = scientific;
+            this.editingMedicine.price = price;
+            this.editingMedicine.quantity = quantity;
+            this.editingMedicine.category = category;
+            this.editingMedicine.alertLevel = alertLevel;
+            this.editingMedicine.company = company;
+            this.editingMedicine.registration = registration;
+            this.editingMedicine.description = description;
+        } else {
+            // إضافة دواء جديد
+            const newMedicine = {
+                id: Date.now(),
+                name,
+                scientificName: scientific,
+                price,
+                quantity,
+                category,
+                alertLevel,
+                company,
+                registration,
+                description,
+                image: null,
+                createdAt: new Date().toISOString()
+            };
+            this.inventory.push(newMedicine);
+        }
+
+        localStorage.setItem('pharmacyInventory', JSON.stringify(this.inventory));
+        
+        this.closeModal('medicineModal');
+        this.updateHeaderStats();
+        this.refreshCurrentView();
+        this.showNotification(this.editingMedicine ? 'تم تحديث الدواء بنجاح' : 'تم إضافة الدواء بنجاح', 'success');
+    }
+
+    // التحديث السريع للمخزون
+    quickStockUpdate() {
+        this.quickStockUpdates = {};
+        this.renderQuickStockList();
+        this.openModal('quickStockModal');
+    }
+
+    renderQuickStockList() {
+        const container = document.getElementById('quickStockList');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        this.inventory.forEach(medicine => {
+            const item = document.createElement('div');
+            item.className = 'quick-stock-item';
+            item.innerHTML = `
+                <div class="quick-stock-info">
+                    <div class="quick-stock-name">${medicine.name}</div>
+                    <div class="quick-stock-current">الكمية الحالية: ${medicine.quantity}</div>
+                </div>
+                <input type="number" 
+                       class="quantity-input" 
+                       value="${medicine.quantity}" 
+                       min="0"
+                       onchange="inventorySystem.updateQuickStock(${medicine.id}, this.value)">
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    handleQuickStockSearch(query) {
+        const container = document.getElementById('quickStockList');
+        if (!container) return;
+
+        const items = container.getElementsByClassName('quick-stock-item');
+        
+        for (let item of items) {
+            const medicineName = item.querySelector('.quick-stock-name').textContent;
+            if (medicineName.includes(query)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        }
+    }
+
+    updateQuickStock(medicineId, newQuantity) {
+        this.quickStockUpdates[medicineId] = parseInt(newQuantity);
+    }
+
+    saveQuickStockUpdates() {
+        let updatedCount = 0;
+        
+        for (const [medicineId, newQuantity] of Object.entries(this.quickStockUpdates)) {
+            const medicine = this.inventory.find(m => m.id === parseInt(medicineId));
+            if (medicine && !isNaN(newQuantity)) {
+                medicine.quantity = newQuantity;
+                updatedCount++;
+            }
+        }
+
+        if (updatedCount > 0) {
+            localStorage.setItem('pharmacyInventory', JSON.stringify(this.inventory));
+            this.closeModal('quickStockModal');
+            this.updateHeaderStats();
+            this.refreshCurrentView();
+            this.showNotification(`تم تحديث ${updatedCount} دواء في المخزون`, 'success');
+        } else {
+            this.showNotification('لم يتم تحديث أي كميات', 'warning');
+        }
+    }
+
+    // إدارة التصنيفات
+    renderCategories() {
+        const container = document.getElementById('categoriesGrid');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        this.categories.forEach(category => {
+            const medicinesInCategory = this.inventory.filter(medicine => medicine.category === category.name);
+            const lowStockCount = medicinesInCategory.filter(medicine => 
+                medicine.quantity > 0 && medicine.quantity <= medicine.alertLevel
+            ).length;
+            const outOfStockCount = medicinesInCategory.filter(medicine => medicine.quantity === 0).length;
+            const totalValue = medicinesInCategory.reduce((sum, medicine) => sum + (medicine.price * medicine.quantity), 0);
+
+            const categoryElement = document.createElement('div');
+            categoryElement.className = 'category-card';
+            categoryElement.innerHTML = `
+                <div class="category-header">
+                    <div class="category-icon" style="background-color: ${category.color};">
+                        <i class="fas ${category.icon}"></i>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                </div>
+                
+                <div class="category-stats">
+                    <div class="category-stat">
+                        <div class="stat-number">${medicinesInCategory.length}</div>
+                        <div class="stat-label">أدوية</div>
+                    </div>
+                    <div class="category-stat">
+                        <div class="stat-number">${lowStockCount}</div>
+                        <div class="stat-label">منخفضة</div>
+                    </div>
+                    <div class="category-stat">
+                        <div class="stat-number">${outOfStockCount}</div>
+                        <div class="stat-label">نفذت</div>
+                    </div>
+                </div>
+                
+                <div class="category-description">${category.description}</div>
+                
+                <div class="medicine-actions" style="margin-top: 15px;">
+                    <button class="action-btn" onclick="inventorySystem.viewCategoryMedicines('${category.name}')">
+                        <i class="fas fa-eye"></i>
+                        عرض الأدوية
+                    </button>
+                    <button class="action-btn primary" onclick="inventorySystem.editCategory(${category.id})">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(categoryElement);
+        });
+    }
+
+    openAddCategoryModal() {
+        this.editingCategory = null;
+        document.getElementById('categoryModalTitle').textContent = 'إضافة تصنيف جديد';
+        document.getElementById('saveCategoryBtn').textContent = 'إضافة التصنيف';
+        
+        // تفريغ الحقول
+        document.getElementById('categoryName').value = '';
+        document.getElementById('categoryDescription').value = '';
+        
+        // إعادة تعيين منتقي الألوان
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('active');
+        });
+        
+        this.openModal('categoryModal');
+    }
+
+    editCategory(categoryId) {
+        const category = this.categories.find(c => c.id === categoryId);
+        if (!category) return;
+
+        this.editingCategory = category;
+        
+        document.getElementById('categoryModalTitle').textContent = 'تعديل التصنيف';
+        document.getElementById('saveCategoryBtn').textContent = 'حفظ التعديلات';
+        
+        // تعبئة الحقول
+        document.getElementById('categoryName').value = category.name;
+        document.getElementById('categoryDescription').value = category.description || '';
+        
+        // تحديد اللون
+        document.querySelectorAll('.color-option').forEach(option => {
+            if (option.dataset.color === category.color) {
+                option.classList.add('active');
+            } else {
+                option.classList.remove('active');
+            }
+        });
+        
+        this.openModal('categoryModal');
+    }
+
+    selectColor(colorElement) {
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('active');
+        });
+        colorElement.classList.add('active');
+    }
+
+    saveCategory() {
+        const name = document.getElementById('categoryName').value;
+        const description = document.getElementById('categoryDescription').value;
+        const selectedColor = document.querySelector('.color-option.active');
+        
+        if (!name || !selectedColor) {
+            this.showNotification('يرجى إدخال اسم التصنيف واختيار لون', 'error');
+            return;
+        }
+
+        if (this.editingCategory) {
+            // تحديث التصنيف الحالي
+            this.editingCategory.name = name;
+            this.editingCategory.description = description;
+            this.editingCategory.color = selectedColor.dataset.color;
+        } else {
+            // إضافة تصنيف جديد
+            const newCategory = {
+                id: Date.now(),
+                name,
+                description,
+                color: selectedColor.dataset.color,
+                icon: 'fa-tag'
+            };
+            this.categories.push(newCategory);
+        }
+
+        localStorage.setItem('pharmacyCategories', JSON.stringify(this.categories));
+        
+        this.closeModal('categoryModal');
+        this.setupCategoryFilter();
+        this.renderCategories();
+        this.showNotification(this.editingCategory ? 'تم تحديث التصنيف بنجاح' : 'تم إضافة التصنيف بنجاح', 'success');
+    }
+
+    viewCategoryMedicines(categoryName) {
+        // تغيير إلى تبويب جميع الأدوية وتطبيق التصفية
+        this.switchTab('all-medicines');
+        
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (categoryFilter) {
+            categoryFilter.value = categoryName;
+            this.filterByCategory(categoryName);
+        }
+    }
+
+    // خيارات التصدير
+    showExportOptions() {
+        this.openModal('exportModal');
+    }
+
+    toggleExportCategory(scope) {
+        const categoryGroup = document.getElementById('categoryExportGroup');
+        if (categoryGroup) {
+            categoryGroup.style.display = scope === 'category' ? 'block' : 'none';
+        }
+    }
+
+    exportInventory(format) {
+        let exportData = [];
+        const scope = document.getElementById('exportScope').value;
+        const category = document.getElementById('exportCategory').value;
+
+        // تحديد البيانات المراد تصديرها
+        switch(scope) {
+            case 'all':
+                exportData = this.inventory;
+                break;
+            case 'low-stock':
+                exportData = this.inventory.filter(item => 
+                    item.quantity > 0 && item.quantity <= item.alertLevel
+                );
+                break;
+            case 'out-of-stock':
+                exportData = this.inventory.filter(item => item.quantity === 0);
+                break;
+            case 'category':
+                exportData = this.inventory.filter(item => item.category === category);
+                break;
+        }
+
+        this.closeModal('exportModal');
+        
+        switch(format) {
+            case 'csv':
+                this.exportToCSV(exportData);
+                break;
+            case 'json':
+                this.exportToJSON(exportData);
+                break;
+            case 'pdf':
+                this.exportToPDF(exportData);
+                break;
+            case 'detailed':
+                this.exportDetailedReport(exportData);
+                break;
+        }
+    }
+
+    exportToCSV(data) {
+        this.showNotification('جاري تحضير ملف CSV...', 'info');
+        
+        let csvContent = 'اسم الدواء,الاسم العلمي,التصنيف,السعر,الكمية,حد التنبيه,الشركة,رقم التسجيل,الحالة\n';
+        
+        data.forEach(medicine => {
+            let status = '';
+            if (medicine.quantity === 0) {
+                status = 'نفذ من المخزون';
+            } else if (medicine.quantity <= medicine.alertLevel) {
+                status = 'منخفض المخزون';
+            } else {
+                status = 'متوفر';
+            }
+            
+            csvContent += `"${medicine.name}","${medicine.scientificName || ''}","${medicine.category}",${medicine.price},${medicine.quantity},${medicine.alertLevel},"${medicine.company || ''}","${medicine.registration || ''}","${status}"\n`;
+        });
+        
+        this.downloadFile(csvContent, 'مخزون-الصيدلية', 'csv');
+    }
+
+    exportToJSON(data) {
+        this.showNotification('جاري تحضير ملف JSON...', 'info');
+        
+        const exportData = {
+            exportDate: new Date().toISOString(),
+            pharmacy: 'صيدلية طبيب 24/7',
+            totalMedicines: data.length,
+            inventory: data
+        };
+        
+        this.downloadFile(JSON.stringify(exportData, null, 2), 'مخزون-الصيدلية', 'json');
+    }
+
+    exportToPDF(data) {
+        this.showNotification('جاري إنشاء تقرير PDF...', 'info');
+        
+        // محاكاة إنشاء PDF (في التطبيق الحقيقي سيتم استخدام مكتبة مثل jsPDF)
+        let pdfContent = 'تقرير مخزون الصيدلية - PDF\n';
+        pdfContent += '='.repeat(50) + '\n\n';
+        pdfContent += `تاريخ التقرير: ${new Date().toLocaleDateString('ar-YE')}\n\n`;
+        
+        data.forEach((medicine, index) => {
+            pdfContent += `${index + 1}. ${medicine.name} - ${medicine.quantity} وحدة - ${medicine.price} ر.ي\n`;
+        });
+        
+        this.downloadFile(pdfContent, 'تقرير-المخزون', 'txt');
+        this.showNotification('تم إنشاء التقرير بنجاح', 'success');
+    }
+
+    exportDetailedReport(data) {
+        this.showNotification('جاري إنشاء التقرير المفصل...', 'info');
+        
+        const now = new Date();
+        let reportContent = 'تقرير مفصل لمخزون الصيدلية\n';
+        reportContent += '='.repeat(50) + '\n\n';
+        reportContent += `تاريخ التقرير: ${now.toLocaleDateString('ar-YE')}\n`;
+        reportContent += `وقت التقرير: ${now.toLocaleTimeString('ar-YE')}\n\n`;
+        
+        reportContent += 'تفاصيل المخزون:\n';
+        reportContent += '-'.repeat(30) + '\n';
+        
+        data.forEach((medicine, index) => {
+            let status = '';
+            if (medicine.quantity === 0) {
+                status = 'نفذ من المخزون';
+            } else if (medicine.quantity <= medicine.alertLevel) {
+                status = 'منخفض المخزون';
+            } else {
+                status = 'متوفر';
+            }
+            
+            reportContent += `\n${index + 1}. ${medicine.name}\n`;
+            reportContent += `   الاسم العلمي: ${medicine.scientificName || 'غير محدد'}\n`;
+            reportContent += `   التصنيف: ${medicine.category}\n`;
+            reportContent += `   السعر: ${medicine.price} ر.ي\n`;
+            reportContent += `   الكمية: ${medicine.quantity} وحدة\n`;
+            reportContent += `   حد التنبيه: ${medicine.alertLevel}\n`;
+            reportContent += `   الحالة: ${status}\n`;
+            reportContent += `   الشركة: ${medicine.company || 'غير محدد'}\n`;
+            reportContent += `   القيمة: ${(medicine.price * medicine.quantity).toFixed(2)} ر.ي\n`;
+        });
+        
+        // الإحصائيات
+        const totalValue = data.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const lowStockCount = data.filter(item => item.quantity > 0 && item.quantity <= item.alertLevel).length;
+        const outOfStockCount = data.filter(item => item.quantity === 0).length;
+        
+        reportContent += '\n\nالإحصائيات:\n';
+        reportContent += '-'.repeat(30) + '\n';
+        reportContent += `إجمالي الأدوية: ${data.length}\n`;
+        reportContent += `الأدوية منخفضة المخزون: ${lowStockCount}\n`;
+        reportContent += `الأدوية التي نفذت: ${outOfStockCount}\n`;
+        reportContent += `القيمة الإجمالية: ${totalValue.toFixed(2)} ر.ي\n`;
+        
+        this.downloadFile(reportContent, 'تقرير-مفصل-المخزون', 'txt');
+    }
+
+    downloadFile(content, fileName, fileType) {
+        try {
+            // إنشاء Blob من المحتوى
+            const blob = new Blob(['\uFEFF' + content], { 
+                type: this.getMimeType(fileType) 
+            });
+            
+            // إنشاء رابط تنزيل
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // تحديد اسم الملف مع التاريخ
+            const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            link.download = `${fileName}-${timestamp}.${fileType}`;
+            
+            // إضافة الرابط إلى الصفحة والنقر عليه برمجياً
+            document.body.appendChild(link);
+            link.click();
+            
+            // تنظيف الموارد
+            setTimeout(() => {
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                this.showNotification('تم التصدير بنجاح', 'success');
+            }, 100);
+            
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            this.showNotification('حدث خطأ أثناء التصدير', 'error');
+        }
+    }
+
+    getMimeType(fileType) {
+        const mimeTypes = {
+            'csv': 'text/csv;charset=utf-8;',
+            'txt': 'text/plain;charset=utf-8;',
+            'json': 'application/json;charset=utf-8;',
+            'pdf': 'application/pdf'
+        };
+        
+        return mimeTypes[fileType] || 'text/plain;charset=utf-8;';
+    }
+
+    updateTime() {
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('ar-YE', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+    }
+
+    openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // إنشاء عنصر الإشعار
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // إزالة الإشعار بعد 3 ثوان
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// تهيئة النظام عند تحميل الصفحة
+let inventorySystem;
+document.addEventListener('DOMContentLoaded', function() {
+    inventorySystem = new PharmacyInventorySystem();
+});
+</script>
+</body>
+</html>ript>
+</body>
+</html>

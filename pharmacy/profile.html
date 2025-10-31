@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - طبيب 24/7 - قسم الصيدليات</title>
+    <link rel="stylesheet" href="pharmacy-profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #dbeafe;
+    --secondary: #dc2626;
+    --accent: #f59e0b;
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --dark: #1e1b4b;
+    --light: #f0f9ff;
+    --surface: #ffffff;
+    --glass: rgba(255, 255, 255, 0.25);
+    --glass-dark: rgba(255, 255, 255, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+    --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --gradient-pharmacy: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', 'El Messiri', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* تصميم شريط الحالة المتميز */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1000;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* التطبيق الرئيسي */
+.premium-app {
+    max-width: 428px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الخلفية الديناميكية */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* الهيدر المتقدم */
+.pharmacy-header {
+    background: var(--gradient-pharmacy);
+    color: white;
+    padding: 40px 24px 30px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-avatar {
+    position: relative;
+}
+
+.profile-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.avatar-edit-btn:hover {
+    transform: scale(1.1);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    background: linear-gradient(45deg, #fff, #dbeafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 12px;
+}
+
+.profile-status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: rgba(5, 150, 105, 0.3);
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.rating i {
+    color: #fbbf24;
+}
+
+/* المحتوى الرئيسي */
+.pharmacy-content {
+    padding: 25px 20px;
+    padding-bottom: 120px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+/* تبويبات الملف الشخصي */
+.profile-tabs {
+    display: flex;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    min-width: 120px;
+}
+
+.tab-btn.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* أقسام الإعدادات */
+.settings-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.section-header i {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-pharmacy);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* النماذج */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: var(--transition-smooth);
+    background: white;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* عناصر النطاق */
+.form-range {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e2e8f0;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.form-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: var(--shadow-soft);
+}
+
+.range-value {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 8px;
+}
+
+/* أوقات العمل */
+.working-hours {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.day-schedule {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.day-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.time-slots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-select {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+.time-separator {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* عناصر الاختيار */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.checkbox-input:checked + .checkmark {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkbox-input:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* المفاتيح */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e2e8f0;
+    transition: var(--transition-smooth);
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition-smooth);
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* قوائم الإشعارات والأمان */
+.notifications-list, .security-settings, .privacy-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notification-item, .security-item, .privacy-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.notification-info, .security-info, .privacy-info {
+    flex: 1;
+}
+
+.notification-title, .security-title, .privacy-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.notification-description, .security-description, .privacy-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* جلسات التسجيل */
+.sessions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.session-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.session-item.active {
+    border-color: var(--primary);
+}
+
+.session-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.session-device {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.session-device i {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-pharmacy);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+}
+
+.device-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.session-location {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.session-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.session-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.session-status.current {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* إعدادات الدفع */
+.wallet-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.wallet-balance {
+    text-align: right;
+}
+
+.balance-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.balance-amount {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--success);
+}
+
+.currency {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.wallet-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* البطاقات المصرفية */
+.payment-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.card-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+    transition: var(--transition-smooth);
+}
+
+.card-item.primary {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-pharmacy);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.card-info {
+    flex: 1;
+}
+
+.card-number {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.card-expiry {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.primary-badge {
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* معلومات الفواتير */
+.billing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.billing-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.billing-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.billing-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.billing-status {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.billing-status.active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* سجل المعاملات */
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: var(--text-primary);
+}
+
+.transaction-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.transaction-amount {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.transaction-amount.positive {
+    color: var(--success);
+}
+
+.transaction-amount.negative {
+    color: var(--error);
+}
+
+/* الإجراءات العامة */
+.global-actions {
+    margin-top: 30px;
+}
+
+.action-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+}
+
+.action-card.danger {
+    border-color: #fecaca;
+}
+
+.action-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.action-info i {
+    width: 50px;
+    height: 50px;
+    background: var(--error);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.action-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.action-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* الأزرار */
+.btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--gradient-pharmacy);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--light);
+    color: var(--text-primary);
+    border: 2px solid #e2e8f0;
+}
+
+.btn-danger {
+    background: var(--error);
+    color: white;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid #e2e8f0;
+}
+
+.btn-outline-danger {
+    background: transparent;
+    color: var(--error);
+    border: 2px solid var(--error);
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* إجراءات الإعدادات */
+.settings-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f1f5f9;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow-large);
+    animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.close-modal:hover {
+    color: var(--error);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    margin-bottom: 25px;
+}
+
+/* خيارات الصورة الرمزية */
+.avatar-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.avatar-option {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition-smooth);
+}
+
+.avatar-option:hover {
+    transform: scale(1.1);
+    border-color: var(--primary);
+}
+
+.avatar-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-option {
+    text-align: center;
+}
+
+/* رسالة التحذير */
+.warning-message {
+    text-align: center;
+    color: var(--error);
+}
+
+.warning-message i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--error);
+}
+
+.warning-message h3 {
+    margin-bottom: 16px;
+    color: var(--error);
+}
+
+.warning-message p {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    text-align: right;
+}
+
+.warning-message ul {
+    text-align: right;
+    margin-bottom: 20px;
+    padding-right: 20px;
+}
+
+.warning-message li {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* العناصر المختلفة */
+.phone-verified {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.verified-badge {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-premium {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    padding: 15px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    max-width: 380px;
+    width: calc(100% - 40px);
+}
+
+.nav-item-premium {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-bounce);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-item-premium.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-10px);
+}
+
+.nav-item-premium.active .nav-label {
+    color: white;
+}
+
+.nav-item-premium.active::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 3px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+.nav-icon-premium {
+    font-size: 20px;
+    margin-bottom: 6px;
+    transition: var(--transition-smooth);
+}
+
+.nav-item-premium.active .nav-icon-premium {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .tab-btn {
+        min-width: 120px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .wallet-info {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .wallet-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .session-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+    }
+    
+    .avatar-options {
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="pharmacy-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <div class="profile-section">
+                    <div class="profile-avatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231e40af'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eص%3C/text%3E%3C/svg%3E" 
+                             alt="صيدلية" id="pharmacyAvatar">
+                        <button class="avatar-edit-btn" onclick="profileSystem.changeAvatar()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="header-title" id="pharmacyName">صيدلية النخبة</h1>
+                        <p class="header-subtitle" id="pharmacyEmail">elite.pharmacy@doctor247.com</p>
+                        <div class="profile-status">
+                            <span class="status-badge active">
+                                <i class="fas fa-check-circle"></i>
+                                نشطة
+                            </span>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                4.8 (124 تقييم)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="pharmacy-content">
+            <!-- التبويبات -->
+            <div class="profile-tabs">
+                <button class="tab-btn active" data-tab="general">
+                    <i class="fas fa-cog"></i>
+                    عام
+                </button>
+                <button class="tab-btn" data-tab="notifications">
+                    <i class="fas fa-bell"></i>
+                    الإشعارات
+                </button>
+                <button class="tab-btn" data-tab="security">
+                    <i class="fas fa-shield-alt"></i>
+                    الأمان
+                </button>
+                <button class="tab-btn" data-tab="payment">
+                    <i class="fas fa-credit-card"></i>
+                    الدفع
+                </button>
+            </div>
+
+            <!-- تبويب الإعدادات العامة -->
+            <div class="tab-content active" id="general">
+                <div class="section-title">الإعدادات العامة</div>
+                
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-store"></i>
+                        <h3>معلومات الصيدلية</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">اسم الصيدلية</label>
+                                <input type="text" class="form-input" id="pharmacyNameInput" value="صيدلية النخبة">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">رقم السجل التجاري</label>
+                                <input type="text" class="form-input" id="commercialRegister" value="123456789">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">وصف الصيدلية</label>
+                            <textarea class="form-textarea" id="pharmacyDescription" rows="3">صيدلية متكاملة تقدم جميع الأدوية والمستلزمات الطبية مع خدمة التوصيل السريع</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" class="form-input" id="pharmacyPhone" value="+966501234567">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-input" id="pharmacyEmailInput" value="elite.pharmacy@doctor247.com">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>موقع الصيدلية</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">العنوان</label>
+                            <input type="text" class="form-input" id="pharmacyAddress" value="شارع الزبيري، صنعاء، اليمن">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">خط العرض</label>
+                                <input type="text" class="form-input" id="pharmacyLat" value="15.3694">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">خط الطول</label>
+                                <input type="text" class="form-input" id="pharmacyLng" value="44.1910">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">نطاق التوصيل (كم)</label>
+                            <input type="range" class="form-range" id="deliveryRange" min="1" max="50" value="15">
+                            <div class="range-value">
+                                <span id="rangeValue">15</span> كم
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>أوقات العمل</h3>
+                    </div>
+                    <div class="working-hours">
+                        <div class="day-schedule">
+                            <div class="day-name">الأحد - الخميس</div>
+                            <div class="time-slots">
+                                <select class="time-select" id="weekdaysStart">
+                                    <option value="08:00">8:00 ص</option>
+                                    <option value="09:00" selected>9:00 ص</option>
+                                    <option value="10:00">10:00 ص</option>
+                                </select>
+                                <span class="time-separator">إلى</span>
+                                <select class="time-select" id="weekdaysEnd">
+                                    <option value="20:00">8:00 م</option>
+                                    <option value="21:00">9:00 م</option>
+                                    <option value="22:00" selected>10:00 م</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="day-schedule">
+                            <div class="day-name">الجمعة</div>
+                            <div class="time-slots">
+                                <select class="time-select" id="fridayStart">
+                                    <option value="14:00">2:00 م</option>
+                                    <option value="15:00">3:00 م</option>
+                                    <option value="16:00" selected>4:00 م</option>
+                                </select>
+                                <span class="time-separator">إلى</span>
+                                <select class="time-select" id="fridayEnd">
+                                    <option value="22:00">10:00 م</option>
+                                    <option value="23:00">11:00 م</option>
+                                    <option value="24:00" selected>12:00 ص</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="day-schedule">
+                            <div class="day-name">السبت</div>
+                            <div class="time-slots">
+                                <select class="time-select" id="saturdayStart">
+                                    <option value="08:00">8:00 ص</option>
+                                    <option value="09:00">9:00 ص</option>
+                                    <option value="10:00" selected>10:00 ص</option>
+                                </select>
+                                <span class="time-separator">إلى</span>
+                                <select class="time-select" id="saturdayEnd">
+                                    <option value="20:00">8:00 م</option>
+                                    <option value="21:00">9:00 م</option>
+                                    <option value="22:00" selected>10:00 م</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="24hours" class="checkbox-input">
+                                <span class="checkmark"></span>
+                                متاح 24 ساعة
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-truck"></i>
+                        <h3>إعدادات التوصيل</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">رسوم التوصيل الأساسية (ر.ي)</label>
+                            <input type="number" class="form-input" id="deliveryFee" value="10" min="0" step="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">الحد الأدنى للطلب (ر.ي)</label>
+                            <input type="number" class="form-input" id="minOrder" value="20" min="0" step="5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">وقت التوصيل المتوقع (دقيقة)</label>
+                            <input type="number" class="form-input" id="deliveryTime" value="60" min="15" step="5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="freeDelivery" class="checkbox-input" checked>
+                                <span class="checkmark"></span>
+                                توصيل مجاني للطلبات فوق 100 ر.ي
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button class="btn btn-secondary" onclick="profileSystem.resetSettings()">
+                        <i class="fas fa-undo"></i>
+                        إعادة التعيين
+                    </button>
+                    <button class="btn btn-primary" onclick="profileSystem.saveGeneralSettings()">
+                        <i class="fas fa-save"></i>
+                        حفظ الإعدادات
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويب الإشعارات -->
+            <div class="tab-content" id="notifications">
+                <div class="section-title">إعدادات الإشعارات</div>
+                
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>إشعارات الطلبات</h3>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">طلبات جديدة</div>
+                                <div class="notification-description">إشعار فوري عند استلام طلب جديد</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="newOrdersNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">تحديث حالة الطلب</div>
+                                <div class="notification-description">إشعارات بتغيير حالة الطلبات</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="orderUpdatesNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">طلبات التوصيل</div>
+                                <div class="notification-description">إشعارات خاصة بطلبات التوصيل</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="deliveryOrdersNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-capsules"></i>
+                        <h3>إشعارات المخزون</h3>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">منخفضة المخزون</div>
+                                <div class="notification-description">تنبيه عند انخفاض كمية الأدوية</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="lowStockNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">نفاد المخزون</div>
+                                <div class="notification-description">تنبيه عند نفاد الأدوية من المخزون</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="outOfStockNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">تحديثات المخزون</div>
+                                <div class="notification-description">إشعارات بتغييرات المخزون اليومية</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="inventoryUpdatesNotify">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>إشعارات الأداء</h3>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">التقارير اليومية</div>
+                                <div class="notification-description">ملخص يومي عن أداء الصيدلية</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="dailyReportsNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">التقارير الأسبوعية</div>
+                                <div class="notification-description">تقرير أسبوعي مفصل</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="weeklyReportsNotify">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">إشعارات الإيرادات</div>
+                                <div class="notification-description">تنبيهات بالإيرادات والإنجازات</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="revenueNotify" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-bell-slash"></i>
+                        <h3>كتم الإشعارات</h3>
+                    </div>
+                    <div class="notifications-list">
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <div class="notification-title">كتم مؤقت</div>
+                                <div class="notification-description">إيقاف جميع الإشعارات لمدة محددة</div>
+                            </div>
+                            <select class="form-select" id="muteDuration">
+                                <option value="">مفعل</option>
+                                <option value="1h">ساعة واحدة</option>
+                                <option value="4h">4 ساعات</option>
+                                <option value="8h">8 ساعات</option>
+                                <option value="24h">24 ساعة</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button class="btn btn-secondary" onclick="profileSystem.resetNotifications()">
+                        <i class="fas fa-undo"></i>
+                        تعيين تلقائي
+                    </button>
+                    <button class="btn btn-primary" onclick="profileSystem.saveNotificationSettings()">
+                        <i class="fas fa-save"></i>
+                        حفظ الإعدادات
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويب الأمان -->
+            <div class="tab-content" id="security">
+                <div class="section-title">إعدادات الأمان</div>
+                
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>حساب المستخدم</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-input" id="userEmail" value="manager@elitepharmacy.com">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">كلمة المرور الحالية</label>
+                                <input type="password" class="form-input" id="currentPassword" placeholder="أدخل كلمة المرور الحالية">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">كلمة المرور الجديدة</label>
+                                <input type="password" class="form-input" id="newPassword" placeholder="كلمة المرور الجديدة">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="profileSystem.changePassword()">
+                            <i class="fas fa-key"></i>
+                            تغيير كلمة المرور
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>المصادقة الثنائية</h3>
+                    </div>
+                    <div class="security-settings">
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-title">المصادقة الثنائية</div>
+                                <div class="security-description">تفعيل التحقق بخطوتين لتسجيل الدخول</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="twoFactorAuth">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="security-item">
+                            <div class="security-info">
+                                <div class="security-title">رقم الهاتف</div>
+                                <div class="security-description">رقم الهاتف المستخدم للتحقق</div>
+                            </div>
+                            <div class="phone-verified">
+                                <span>+966501234567</span>
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    مفعل
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-lock"></i>
+                        <h3>جلسات التسجيل</h3>
+                    </div>
+                    <div class="sessions-list">
+                        <div class="session-item active">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <div>
+                                        <div class="device-name">iPhone 13 Pro</div>
+                                        <div class="session-location">صنعاء، اليمن</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">الآن</div>
+                            </div>
+                            <div class="session-status current">الحالية</div>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="fas fa-laptop"></i>
+                                    <div>
+                                        <div class="device-name">MacBook Pro</div>
+                                        <div class="session-location">صنعاء، اليمن</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">منذ 2 يوم</div>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="profileSystem.logoutSession(this)">
+                                <i class="fas fa-sign-out-alt"></i>
+                                إنهاء الجلسة
+                            </button>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="fas fa-tablet-alt"></i>
+                                    <div>
+                                        <div class="device-name">iPad Air</div>
+                                        <div class="session-location">عدن، اليمن</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">منذ أسبوع</div>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="profileSystem.logoutSession(this)">
+                                <i class="fas fa-sign-out-alt"></i>
+                                إنهاء الجلسة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-full" onclick="profileSystem.logoutAllSessions()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        إنهاء جميع الجلسات
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>الخصوصية</h3>
+                    </div>
+                    <div class="privacy-settings">
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <div class="privacy-title">مشاركة البيانات</div>
+                                <div class="privacy-description">السماح بمشاركة بيانات الأدوية مع المنصة</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="dataSharing" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <div class="privacy-title">تحليل الاستخدام</div>
+                                <div class="privacy-description">مساعدتنا في تحسين الخدمة</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="usageAnalytics">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب الدفع -->
+            <div class="tab-content" id="payment">
+                <div class="section-title">إعدادات الدفع</div>
+                
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-wallet"></i>
+                        <h3>المحفظة الرقمية</h3>
+                    </div>
+                    <div class="wallet-info">
+                        <div class="wallet-balance">
+                            <div class="balance-label">الرصيد المتاح</div>
+                            <div class="balance-amount">5,250 <span class="currency">ر.ي</span></div>
+                        </div>
+                        <div class="wallet-actions">
+                            <button class="btn btn-primary" onclick="profileSystem.showAddFundsModal()">
+                                <i class="fas fa-plus"></i>
+                                إضافة رصيد
+                            </button>
+                            <button class="btn btn-secondary" onclick="profileSystem.showWithdrawModal()">
+                                <i class="fas fa-download"></i>
+                                سحب الأموال
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>البطاقات المصرفية</h3>
+                    </div>
+                    <div class="payment-cards">
+                        <div class="card-item primary">
+                            <div class="card-icon">
+                                <i class="fab fa-cc-visa"></i>
+                            </div>
+                            <div class="card-info">
+                                <div class="card-number">•••• •••• •••• 4512</div>
+                                <div class="card-expiry">12/25</div>
+                            </div>
+                            <div class="card-actions">
+                                <span class="primary-badge">افتراضي</span>
+                                <button class="btn btn-sm btn-outline" onclick="profileSystem.removeCard(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card-item">
+                            <div class="card-icon">
+                                <i class="fab fa-cc-mastercard"></i>
+                            </div>
+                            <div class="card-info">
+                                <div class="card-number">•••• •••• •••• 7890</div>
+                                <div class="card-expiry">08/24</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn btn-sm btn-outline" onclick="profileSystem.setPrimaryCard(this)">
+                                    تعيين افتراضي
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="profileSystem.removeCard(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-full" onclick="profileSystem.showAddCardModal()">
+                        <i class="fas fa-plus"></i>
+                        إضافة بطاقة جديدة
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-receipt"></i>
+                        <h3>الفواتير والاشتراكات</h3>
+                    </div>
+                    <div class="billing-info">
+                        <div class="billing-item">
+                            <div class="billing-info">
+                                <div class="billing-title">الاشتراك الحالي</div>
+                                <div class="billing-description">باقة Premium - 199 ر.ي/شهر</div>
+                            </div>
+                            <div class="billing-status active">نشط</div>
+                        </div>
+                        
+                        <div class="billing-item">
+                            <div class="billing-info">
+                                <div class="billing-title">تاريخ التجديد</div>
+                                <div class="billing-description">15 يناير 2024</div>
+                            </div>
+                            <button class="btn btn-outline" onclick="profileSystem.manageSubscription()">
+                                إدارة الاشتراك
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <i class="fas fa-history"></i>
+                        <h3>سجل المعاملات</h3>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">شحن رصيد</div>
+                                <div class="transaction-date">15 ديسمبر 2023</div>
+                            </div>
+                            <div class="transaction-amount positive">+500 ر.ي</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">رسوم الاشتراك</div>
+                                <div class="transaction-date">15 ديسمبر 2023</div>
+                            </div>
+                            <div class="transaction-amount negative">-199 ر.ي</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-title">سحب أموال</div>
+                                <div class="transaction-date">10 ديسمبر 2023</div>
+                            </div>
+                            <div class="transaction-amount negative">-1,000 ر.ي</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-full" onclick="profileSystem.viewAllTransactions()">
+                        <i class="fas fa-list"></i>
+                        عرض جميع المعاملات
+                    </button>
+                </div>
+            </div>
+
+            <!-- الإجراءات العامة -->
+            <div class="global-actions">
+                <div class="action-card danger">
+                    <div class="action-info">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <div class="action-title">منطقة الخطر</div>
+                            <div class="action-description">إجراءات لا يمكن التراجع عنها</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline-danger" onclick="profileSystem.exportData()">
+                            <i class="fas fa-download"></i>
+                            تصدير البيانات
+                        </button>
+                        <button class="btn btn-danger" onclick="profileSystem.showDeleteModal()">
+                            <i class="fas fa-trash"></i>
+                            حذف الحساب
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index1.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="nav-label">الإحصائيات</div>
+            </a>
+            <a href="pharmacies-order.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="pharmacy-inventory.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <div class="nav-label">المخزون</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">الصيدلية</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">تغيير صورة الصيدلية</div>
+                <button class="close-modal" onclick="profileSystem.closeModal('avatarModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="avatar-options">
+                    <div class="avatar-option" onclick="profileSystem.selectAvatar('1')">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231e40af'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eص%3C/text%3E%3C/svg%3E" alt="صيدلية 1">
+                    </div>
+                    <div class="avatar-option" onclick="profileSystem.selectAvatar('2')">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23dc2626'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eد%3C/text%3E%3C/svg%3E" alt="صيدلية 2">
+                    </div>
+                    <div class="avatar-option" onclick="profileSystem.selectAvatar('3')">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23059669'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eف%3C/text%3E%3C/svg%3E" alt="صيدلية 3">
+                    </div>
+                </div>
+                <div class="upload-option">
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <button class="btn btn-secondary btn-full" onclick="document.getElementById('avatarUpload').click()">
+                        <i class="fas fa-upload"></i>
+                        رفع صورة من الجهاز
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">حذف الحساب</div>
+                <button class="close-modal" onclick="profileSystem.closeModal('deleteModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>تنبيه مهم!</h3>
+                    <p>حذف الحساب هو إجراء دائم لا يمكن التراجع عنه. سيتم فقدان جميع البيانات بما في ذلك:</p>
+                    <ul>
+                        <li>جميع الطلبات والسجلات</li>
+                        <li>بيانات المخزون والأدوية</li>
+                        <li>الإحصائيات والتقارير</li>
+                        <li>إعدادات الصيدلية</li>
+                    </ul>
+                    <p>هل أنت متأكد من رغبتك في متابعة حذف الحساب؟</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">اكتب "حذف" للتأكيد</label>
+                    <input type="text" class="form-input" id="deleteConfirm" placeholder="اكتب حذف هنا">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="profileSystem.closeModal('deleteModal')">
+                    إلغاء
+                </button>
+                <button class="btn btn-danger" onclick="profileSystem.confirmDelete()" disabled>
+                    <i class="fas fa-trash"></i>
+                    حذف الحساب نهائياً
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إعدادات الصيدلية
+class PharmacyProfileSystem {
+    constructor() {
+        this.settings = JSON.parse(localStorage.getItem('pharmacySettings')) || this.getDefaultSettings();
+        this.notifications = JSON.parse(localStorage.getItem('notificationSettings')) || this.getDefaultNotifications();
+        this.security = JSON.parse(localStorage.getItem('securitySettings')) || this.getDefaultSecurity();
+        this.payment = JSON.parse(localStorage.getItem('paymentSettings')) || this.getDefaultPayment();
+        this.currentTab = 'general';
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.updateTime();
+        this.loadSettings();
+        this.setupValidation();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.currentTarget.dataset.tab);
+            });
+        });
+
+        // نطاق التوصيل
+        const deliveryRange = document.getElementById('deliveryRange');
+        if (deliveryRange) {
+            deliveryRange.addEventListener('input', (e) => {
+                document.getElementById('rangeValue').textContent = e.target.value;
+            });
+        }
+
+        // تأكيد الحذف
+        const deleteConfirm = document.getElementById('deleteConfirm');
+        if (deleteConfirm) {
+            deleteConfirm.addEventListener('input', (e) => {
+                const deleteBtn = document.querySelector('#deleteModal .btn-danger');
+                deleteBtn.disabled = e.target.value !== 'حذف';
+            });
+        }
+
+        // رفع الصورة
+        const avatarUpload = document.getElementById('avatarUpload');
+        if (avatarUpload) {
+            avatarUpload.addEventListener('change', (e) => {
+                this.handleAvatarUpload(e);
+            });
+        }
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+
+        // تحديث المحتوى
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    updateTime() {
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('ar-YE', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+    }
+
+    getDefaultSettings() {
+        return {
+            pharmacyName: 'صيدلية النخبة',
+            commercialRegister: '123456789',
+            description: 'صيدلية متكاملة تقدم جميع الأدوية والمستلزمات الطبية مع خدمة التوصيل السريع',
+            phone: '+966501234567',
+            email: 'elite.pharmacy@doctor247.com',
+            address: 'شارع الزبيري، صنعاء، اليمن',
+            lat: '15.3694',
+            lng: '44.1910',
+            deliveryRange: 15,
+            workingHours: {
+                weekdays: { start: '09:00', end: '22:00' },
+                friday: { start: '16:00', end: '24:00' },
+                saturday: { start: '10:00', end: '22:00' },
+                is24Hours: false
+            },
+            deliverySettings: {
+                fee: 10,
+                minOrder: 20,
+                deliveryTime: 60,
+                freeDelivery: true
+            },
+            avatar: '1'
+        };
+    }
+
+    getDefaultNotifications() {
+        return {
+            orders: {
+                newOrders: true,
+                orderUpdates: true,
+                deliveryOrders: true
+            },
+            inventory: {
+                lowStock: true,
+                outOfStock: true,
+                inventoryUpdates: false
+            },
+            performance: {
+                dailyReports: true,
+                weeklyReports: false,
+                revenue: true
+            },
+            muteDuration: ''
+        };
+    }
+
+    getDefaultSecurity() {
+        return {
+            email: 'manager@elitepharmacy.com',
+            twoFactorAuth: false,
+            dataSharing: true,
+            usageAnalytics: false
+        };
+    }
+
+    getDefaultPayment() {
+        return {
+            balance: 5250,
+            cards: [
+                { number: '4512', type: 'visa', expiry: '12/25', primary: true },
+                { number: '7890', type: 'mastercard', expiry: '08/24', primary: false }
+            ],
+            subscription: {
+                plan: 'Premium',
+                price: 199,
+                renewalDate: '2024-01-15',
+                status: 'active'
+            }
+        };
+    }
+
+    loadSettings() {
+        // تحميل الإعدادات العامة
+        document.getElementById('pharmacyNameInput').value = this.settings.pharmacyName;
+        document.getElementById('commercialRegister').value = this.settings.commercialRegister;
+        document.getElementById('pharmacyDescription').value = this.settings.description;
+        document.getElementById('pharmacyPhone').value = this.settings.phone;
+        document.getElementById('pharmacyEmailInput').value = this.settings.email;
+        document.getElementById('pharmacyAddress').value = this.settings.address;
+        document.getElementById('pharmacyLat').value = this.settings.lat;
+        document.getElementById('pharmacyLng').value = this.settings.lng;
+        document.getElementById('deliveryRange').value = this.settings.deliveryRange;
+        document.getElementById('rangeValue').textContent = this.settings.deliveryRange;
+
+        // أوقات العمل
+        document.getElementById('weekdaysStart').value = this.settings.workingHours.weekdays.start;
+        document.getElementById('weekdaysEnd').value = this.settings.workingHours.weekdays.end;
+        document.getElementById('fridayStart').value = this.settings.workingHours.friday.start;
+        document.getElementById('fridayEnd').value = this.settings.workingHours.friday.end;
+        document.getElementById('saturdayStart').value = this.settings.workingHours.saturday.start;
+        document.getElementById('saturdayEnd').value = this.settings.workingHours.saturday.end;
+        document.getElementById('24hours').checked = this.settings.workingHours.is24Hours;
+
+        // إعدادات التوصيل
+        document.getElementById('deliveryFee').value = this.settings.deliverySettings.fee;
+        document.getElementById('minOrder').value = this.settings.deliverySettings.minOrder;
+        document.getElementById('deliveryTime').value = this.settings.deliverySettings.deliveryTime;
+        document.getElementById('freeDelivery').checked = this.settings.deliverySettings.freeDelivery;
+
+        // تحديث واجهة المستخدم
+        this.updateUI();
+    }
+
+    updateUI() {
+        // تحديث الهيدر
+        document.getElementById('pharmacyName').textContent = this.settings.pharmacyName;
+        document.getElementById('pharmacyEmail').textContent = this.settings.email;
+        
+        // تحديث الصورة الرمزية
+        const avatarUrl = this.getAvatarUrl(this.settings.avatar);
+        document.getElementById('pharmacyAvatar').src = avatarUrl;
+
+        // تحميل إعدادات الإشعارات
+        document.getElementById('newOrdersNotify').checked = this.notifications.orders.newOrders;
+        document.getElementById('orderUpdatesNotify').checked = this.notifications.orders.orderUpdates;
+        document.getElementById('deliveryOrdersNotify').checked = this.notifications.orders.deliveryOrders;
+        document.getElementById('lowStockNotify').checked = this.notifications.inventory.lowStock;
+        document.getElementById('outOfStockNotify').checked = this.notifications.inventory.outOfStock;
+        document.getElementById('inventoryUpdatesNotify').checked = this.notifications.inventory.inventoryUpdates;
+        document.getElementById('dailyReportsNotify').checked = this.notifications.performance.dailyReports;
+        document.getElementById('weeklyReportsNotify').checked = this.notifications.performance.weeklyReports;
+        document.getElementById('revenueNotify').checked = this.notifications.performance.revenue;
+        document.getElementById('muteDuration').value = this.notifications.muteDuration;
+
+        // تحميل إعدادات الأمان
+        document.getElementById('userEmail').value = this.security.email;
+        document.getElementById('twoFactorAuth').checked = this.security.twoFactorAuth;
+        document.getElementById('dataSharing').checked = this.security.dataSharing;
+        document.getElementById('usageAnalytics').checked = this.security.usageAnalytics;
+    }
+
+    getAvatarUrl(avatarId) {
+        const avatars = {
+            '1': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231e40af'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eص%3C/text%3E%3C/svg%3E",
+            '2': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23dc2626'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eد%3C/text%3E%3C/svg%3E",
+            '3': "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23059669'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'%3Eف%3C/text%3E%3C/svg%3E"
+        };
+        return avatars[avatarId] || avatars['1'];
+    }
+
+    setupValidation() {
+        // إعداد التحقق من صحة كلمة المرور
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        if (newPassword && confirmPassword) {
+            confirmPassword.addEventListener('input', (e) => {
+                if (newPassword.value !== e.target.value) {
+                    e.target.setCustomValidity('كلمات المرور غير متطابقة');
+                } else {
+                    e.target.setCustomValidity('');
+                }
+            });
+        }
+    }
+
+    // الإعدادات العامة
+    saveGeneralSettings() {
+        const settings = {
+            pharmacyName: document.getElementById('pharmacyNameInput').value,
+            commercialRegister: document.getElementById('commercialRegister').value,
+            description: document.getElementById('pharmacyDescription').value,
+            phone: document.getElementById('pharmacyPhone').value,
+            email: document.getElementById('pharmacyEmailInput').value,
+            address: document.getElementById('pharmacyAddress').value,
+            lat: document.getElementById('pharmacyLat').value,
+            lng: document.getElementById('pharmacyLng').value,
+            deliveryRange: parseInt(document.getElementById('deliveryRange').value),
+            workingHours: {
+                weekdays: {
+                    start: document.getElementById('weekdaysStart').value,
+                    end: document.getElementById('weekdaysEnd').value
+                },
+                friday: {
+                    start: document.getElementById('fridayStart').value,
+                    end: document.getElementById('fridayEnd').value
+                },
+                saturday: {
+                    start: document.getElementById('saturdayStart').value,
+                    end: document.getElementById('saturdayEnd').value
+                },
+                is24Hours: document.getElementById('24hours').checked
+            },
+            deliverySettings: {
+                fee: parseInt(document.getElementById('deliveryFee').value),
+                minOrder: parseInt(document.getElementById('minOrder').value),
+                deliveryTime: parseInt(document.getElementById('deliveryTime').value),
+                freeDelivery: document.getElementById('freeDelivery').checked
+            },
+            avatar: this.settings.avatar
+        };
+
+        this.settings = settings;
+        localStorage.setItem('pharmacySettings', JSON.stringify(settings));
+        this.updateUI();
+        this.showNotification('تم حفظ الإعدادات العامة بنجاح', 'success');
+    }
+
+    resetSettings() {
+        if (confirm('هل تريد حقاً إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟')) {
+            this.settings = this.getDefaultSettings();
+            this.loadSettings();
+            this.showNotification('تم إعادة تعيين الإعدادات بنجاح', 'success');
+        }
+    }
+
+    // الإشعارات
+    saveNotificationSettings() {
+        const notifications = {
+            orders: {
+                newOrders: document.getElementById('newOrdersNotify').checked,
+                orderUpdates: document.getElementById('orderUpdatesNotify').checked,
+                deliveryOrders: document.getElementById('deliveryOrdersNotify').checked
+            },
+            inventory: {
+                lowStock: document.getElementById('lowStockNotify').checked,
+                outOfStock: document.getElementById('outOfStockNotify').checked,
+                inventoryUpdates: document.getElementById('inventoryUpdatesNotify').checked
+            },
+            performance: {
+                dailyReports: document.getElementById('dailyReportsNotify').checked,
+                weeklyReports: document.getElementById('weeklyReportsNotify').checked,
+                revenue: document.getElementById('revenueNotify').checked
+            },
+            muteDuration: document.getElementById('muteDuration').value
+        };
+
+        this.notifications = notifications;
+        localStorage.setItem('notificationSettings', JSON.stringify(notifications));
+        this.showNotification('تم حفظ إعدادات الإشعارات بنجاح', 'success');
+    }
+
+    resetNotifications() {
+        this.notifications = this.getDefaultNotifications();
+        this.updateUI();
+        this.showNotification('تم تعيين إعدادات الإشعارات تلقائياً', 'success');
+    }
+
+    // الأمان
+    changePassword() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            this.showNotification('يرجى ملء جميع الحقول', 'error');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            this.showNotification('كلمات المرور غير متطابقة', 'error');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            this.showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+            return;
+        }
+
+        // محاكاة تغيير كلمة المرور
+        setTimeout(() => {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            this.showNotification('تم تغيير كلمة المرور بنجاح', 'success');
+        }, 1000);
+    }
+
+    logoutSession(button) {
+        const sessionItem = button.closest('.session-item');
+        if (sessionItem) {
+            sessionItem.style.opacity = '0.5';
+            setTimeout(() => {
+                sessionItem.remove();
+                this.showNotification('تم إنهاء الجلسة بنجاح', 'success');
+            }, 500);
+        }
+    }
+
+    logoutAllSessions() {
+        if (confirm('هل تريد إنهاء جميع جلسات التسجيل على جميع الأجهزة؟')) {
+            const sessions = document.querySelectorAll('.session-item:not(.active)');
+            sessions.forEach(session => {
+                session.style.opacity = '0.5';
+                setTimeout(() => session.remove(), 500);
+            });
+            this.showNotification('تم إنهاء جميع الجلسات بنجاح', 'success');
+        }
+    }
+
+    // الصورة الرمزية
+    changeAvatar() {
+        this.openModal('avatarModal');
+    }
+
+    selectAvatar(avatarId) {
+        this.settings.avatar = avatarId;
+        localStorage.setItem('pharmacySettings', JSON.stringify(this.settings));
+        this.updateUI();
+        this.closeModal('avatarModal');
+        this.showNotification('تم تغيير صورة الصيدلية بنجاح', 'success');
+    }
+
+    handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            this.showNotification('يرجى اختيار ملف صورة', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById('pharmacyAvatar').src = e.target.result;
+            this.closeModal('avatarModal');
+            this.showNotification('تم رفع صورة الصيدلية بنجاح', 'success');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // الدفع
+    showAddFundsModal() {
+        this.showNotification('سيتم فتح نافذة إضافة الرصيد قريباً', 'info');
+    }
+
+    showWithdrawModal() {
+        this.showNotification('سيتم فتح نافذة سحب الأموال قريباً', 'info');
+    }
+
+    showAddCardModal() {
+        this.showNotification('سيتم فتح نافذة إضافة بطاقة جديدة قريباً', 'info');
+    }
+
+    setPrimaryCard(button) {
+        const cardItem = button.closest('.card-item');
+        const allCards = document.querySelectorAll('.card-item');
+        
+        allCards.forEach(card => {
+            card.classList.remove('primary');
+            const badge = card.querySelector('.primary-badge');
+            if (badge) badge.remove();
+        });
+
+        cardItem.classList.add('primary');
+        
+        const actions = cardItem.querySelector('.card-actions');
+        const primaryBadge = document.createElement('span');
+        primaryBadge.className = 'primary-badge';
+        primaryBadge.textContent = 'افتراضي';
+        actions.insertBefore(primaryBadge, actions.firstChild);
+
+        button.remove();
+        
+        this.showNotification('تم تعيين البطاقة كافتراضية بنجاح', 'success');
+    }
+
+    removeCard(button) {
+        const cardItem = button.closest('.card-item');
+        if (cardItem && confirm('هل تريد حقاً حذف هذه البطاقة؟')) {
+            cardItem.style.transform = 'translateX(100%)';
+            cardItem.style.opacity = '0';
+            setTimeout(() => {
+                cardItem.remove();
+                this.showNotification('تم حذف البطاقة بنجاح', 'success');
+            }, 500);
+        }
+    }
+
+    manageSubscription() {
+        this.showNotification('سيتم فتح نافذة إدارة الاشتراك قريباً', 'info');
+    }
+
+    viewAllTransactions() {
+        this.showNotification('سيتم فتح سجل المعاملات الكامل قريباً', 'info');
+    }
+
+    // الإجراءات العامة
+    exportData() {
+        this.showNotification('جاري تحضير بيانات التصدير...', 'info');
+        
+        const exportData = {
+            settings: this.settings,
+            notifications: this.notifications,
+            security: this.security,
+            payment: this.payment,
+            exportDate: new Date().toISOString()
+        };
+
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `pharmacy-backup-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        setTimeout(() => {
+            this.showNotification('تم تصدير البيانات بنجاح', 'success');
+        }, 1000);
+    }
+
+    showDeleteModal() {
+        this.openModal('deleteModal');
+    }
+
+    confirmDelete() {
+        const confirmText = document.getElementById('deleteConfirm').value;
+        if (confirmText !== 'حذف') {
+            this.showNotification('يرجى كتابة "حذف" للتأكيد', 'error');
+            return;
+        }
+
+        if (confirm('هل أنت متأكد تماماً من رغبتك في حذف الحساب نهائياً؟ لا يمكن التراجع عن هذا الإجراء!')) {
+            this.showNotification('جاري حذف الحساب...', 'info');
+            
+            // محاكاة حذف الحساب
+            setTimeout(() => {
+                localStorage.clear();
+                this.showNotification('تم حذف الحساب بنجاح', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 3000);
+        }
+    }
+
+    // النوافذ المنبثقة
+    openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // إنشاء عنصر الإشعار
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // إزالة الإشعار بعد 3 ثوان
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// تهيئة النظام عند تحميل الصفحة
+let profileSystem;
+document.addEventListener('DOMContentLoaded', function() {
+    profileSystem = new PharmacyProfileSystem();
+});
+</script>
+</body>
+</html>ript>
+</body>
+</html>

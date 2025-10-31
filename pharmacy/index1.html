@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - طبيب 24/7 - قسم الصيدليات</title>
+    <style>
+:root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #dbeafe;
+    --secondary: #dc2626;
+    --accent: #f59e0b;
+    --success: #059669;
+    --warning: #d97706;
+    --error: #dc2626;
+    --dark: #1e1b4b;
+    --light: #f0f9ff;
+    --surface: #ffffff;
+    --glass: rgba(255, 255, 255, 0.25);
+    --glass-dark: rgba(255, 255, 255, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-light: #64748b;
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --gradient-hospital: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+    --gradient-premium: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #7c3aed 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --gradient-pharmacy: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --shadow-glass: 0 8px 32px rgba(30, 64, 175, 0.2);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --radius-xl: 24px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', 'El Messiri', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* تصميم شريط الحالة المتميز */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1000;
+}
+
+.status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
+
+/* التطبيق الرئيسي */
+.premium-app {
+    max-width: 428px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* الخلفية الديناميكية */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* الهيدر المتقدم */
+.pharmacy-header {
+    background: var(--gradient-pharmacy);
+    color: white;
+    padding: 40px 24px 30px;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #fff, #dbeafe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.date-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* المحتوى الرئيسي */
+.pharmacy-content {
+    padding: 25px 20px;
+    padding-bottom: 120px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 30px 0 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+/* البطاقات السريعة */
+.quick-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.quick-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.quick-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.card-icon.primary { background: var(--gradient-pharmacy); }
+.card-icon.success { background: var(--gradient-success); }
+.card-icon.warning { background: var(--gradient-hospital); }
+.card-icon.danger { background: var(--error); }
+
+.card-content {
+    flex: 1;
+}
+
+.card-value {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.card-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.card-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.card-trend.positive {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.card-trend.negative {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* تبويبات اللوحة */
+.dashboard-tabs {
+    display: flex;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    min-width: 120px;
+}
+
+.tab-btn.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* شبكة النظرة العامة */
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* البطاقات العامة */
+.chart-card, .stats-card, .alerts-card, .performance-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+}
+
+.chart-card.full {
+    grid-column: 1 / -1;
+}
+
+.stats-card.half {
+    grid-column: span 1;
+}
+
+/* رأس المخططات */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.chart-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.chart-period {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    background: white;
+    cursor: pointer;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legend-color.delivery { background: var(--primary); }
+.legend-color.pickup { background: var(--success); }
+
+/* حاوية المخططات */
+.chart-container {
+    position: relative;
+    height: 200px;
+    width: 100%;
+}
+
+/* البطاقات الإحصائية */
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.stats-header i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+/* الأدوية الأكثر مبيعاً */
+.top-medicines {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.top-medicine-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.medicine-rank {
+    width: 24px;
+    height: 24px;
+    background: var(--gradient-pharmacy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
+}
+
+.medicine-info {
+    flex: 1;
+}
+
+.medicine-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.medicine-sales {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.medicine-revenue {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--success);
+}
+
+/* الطلبات الحديثة */
+.recent-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.order-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-pharmacy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+}
+
+.order-info {
+    flex: 1;
+}
+
+.order-customer {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.order-details {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.order-amount {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--success);
+}
+
+/* تنبيهات المخزون */
+.alerts-card {
+    border-right: 4px solid var(--warning);
+}
+
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.alerts-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.alerts-header i {
+    color: var(--warning);
+    font-size: 18px;
+}
+
+.alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #fef3c7;
+    border-radius: var(--radius-md);
+    border: 1px solid #f59e0b;
+}
+
+.alert-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+}
+
+.alert-info {
+    flex: 1;
+}
+
+.alert-message {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: #92400e;
+}
+
+.alert-details {
+    font-size: 12px;
+    color: #b45309;
+}
+
+/* أداء الصيدلية */
+.performance-card {
+    background: var(--gradient-pharmacy);
+    color: white;
+}
+
+.performance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.performance-title {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.performance-header i {
+    font-size: 18px;
+}
+
+.performance-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.performance-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.performance-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.performance-value {
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.performance-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.performance-progress {
+    height: 100%;
+    background: white;
+    border-radius: 3px;
+    transition: var(--transition-smooth);
+}
+
+/* إحصائيات الطلبات والإيرادات والمخزون */
+.orders-stats, .revenue-stats, .inventory-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card.large {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-card.large .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.stat-card.large .stat-icon.success { background: var(--gradient-success); }
+.stat-card.large .stat-icon.warning { background: var(--gradient-hospital); }
+.stat-card.large .stat-icon.danger { background: var(--error); }
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-card.large .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.stat-card.large .stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.stat-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.stat-change.positive {
+    color: var(--success);
+}
+
+.stat-change.negative {
+    color: var(--error);
+}
+
+/* صفوف المخططات والإحصائيات */
+.charts-row {
+    margin-bottom: 25px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* إحصائيات التسليم والدفع */
+.delivery-stats, .payment-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.delivery-stat, .payment-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.stat-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.stat-percentage {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary);
+}
+
+.stat-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* الإيرادات حسب التصنيف */
+.category-revenue {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.category-revenue-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.category-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.category-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.category-amount {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--success);
+}
+
+/* أعلى الأدوية ربحاً */
+.top-revenue-medicines {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.revenue-medicine-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.revenue-medicine-info {
+    flex: 1;
+}
+
+.revenue-medicine-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.revenue-medicine-sales {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.revenue-medicine-profit {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--success);
+}
+
+/* قيمة المخزون وحركته */
+.inventory-value-stats, .inventory-movement {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.value-stat, .movement-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+}
+
+.value-label, .movement-label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.value-amount, .movement-amount {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.value-amount { color: var(--success); }
+.movement-amount.positive { color: var(--success); }
+.movement-amount.negative { color: var(--error); }
+
+/* شريط التنقل السفلي */
+.bottom-nav-premium {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    padding: 15px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    max-width: 380px;
+    width: calc(100% - 40px);
+}
+
+.nav-item-premium {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-bounce);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-item-premium.active {
+    background: var(--gradient-pharmacy);
+    color: white;
+    transform: translateY(-10px);
+}
+
+.nav-item-premium.active .nav-label {
+    color: white;
+}
+
+.nav-item-premium.active::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 3px;
+    background: var(--gradient-pharmacy);
+    border-radius: 2px;
+}
+
+.nav-icon-premium {
+    font-size: 20px;
+    margin-bottom: 6px;
+    transition: var(--transition-smooth);
+}
+
+.nav-item-premium.active .nav-icon-premium {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* الإشعارات */
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 15px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-large);
+    z-index: 10000;
+    animation: slideInRight 0.3s ease-out;
+    max-width: 400px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+}
+
+.notification.error {
+    background: var(--error);
+}
+
+.notification.warning {
+    background: var(--warning);
+}
+
+.notification.info {
+    background: var(--primary);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-content i {
+    font-size: 18px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .quick-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .orders-stats, .revenue-stats, .inventory-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .tab-btn {
+        min-width: 120px;
+    }
+    
+    .chart-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .chart-legend {
+        align-self: flex-end;
+    }
+}
+</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- الهيدر -->
+        <div class="pharmacy-header">
+            <div class="header-background"></div>
+            <div class="header-content">
+                <div class="welcome-section">
+                    <h1 class="header-title">مرحباً بك!</h1>
+                    <p class="header-subtitle">إحصائيات وأداء الصيدلية</p>
+                    <div class="date-display">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate">الاثنين، 1 يناير 2024</span>
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="todayOrders">0</div>
+                        <div class="stat-label">طلبات اليوم</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="todayRevenue">0</div>
+                        <div class="stat-label">إيرادات اليوم</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="pendingOrders">0</div>
+                        <div class="stat-label">طلبات جديدة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="pharmacy-content">
+            <!-- البطاقات السريعة -->
+            <div class="quick-cards">
+                <div class="quick-card" onclick="dashboardSystem.showTab('orders')">
+                    <div class="card-icon primary">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="totalOrders">0</div>
+                        <div class="card-label">إجمالي الطلبات</div>
+                    </div>
+                    <div class="card-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12%</span>
+                    </div>
+                </div>
+                
+                <div class="quick-card" onclick="dashboardSystem.showTab('revenue')">
+                    <div class="card-icon success">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="totalRevenue">0 ر.ي</div>
+                        <div class="card-label">إجمالي الإيرادات</div>
+                    </div>
+                    <div class="card-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+                
+                <div class="quick-card" onclick="dashboardSystem.showTab('inventory')">
+                    <div class="card-icon warning">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="totalMedicines">0</div>
+                        <div class="card-label">إجمالي الأدوية</div>
+                    </div>
+                    <div class="card-trend negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3%</span>
+                    </div>
+                </div>
+                
+                <div class="quick-card" onclick="dashboardSystem.showTab('alerts')">
+                    <div class="card-icon danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="alertsCount">0</div>
+                        <div class="card-label">تنبيهات المخزون</div>
+                    </div>
+                    <div class="card-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>5%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التبويبات الرئيسية -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    نظرة عامة
+                </button>
+                <button class="tab-btn" data-tab="orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    الطلبات
+                </button>
+                <button class="tab-btn" data-tab="revenue">
+                    <i class="fas fa-chart-line"></i>
+                    الإيرادات
+                </button>
+                <button class="tab-btn" data-tab="inventory">
+                    <i class="fas fa-capsules"></i>
+                    المخزون
+                </button>
+            </div>
+
+            <!-- تبويب النظرة العامة -->
+            <div class="tab-content active" id="overview">
+                <div class="section-title">نظرة عامة على الأداء</div>
+                
+                <div class="overview-grid">
+                    <!-- مخطط الإيرادات -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">الإيرادات الشهرية</div>
+                            <select class="chart-period" id="revenuePeriod">
+                                <option value="week">أسبوع</option>
+                                <option value="month" selected>شهر</option>
+                                <option value="quarter">ربع سنوي</option>
+                                <option value="year">سنوي</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- توزيع الطلبات -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">توزيع الطلبات</div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color delivery"></span>
+                                    <span>توصيل</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color pickup"></span>
+                                    <span>استلام</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="ordersChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- الأدوية الأكثر مبيعاً -->
+                    <div class="stats-card">
+                        <div class="stats-header">
+                            <div class="stats-title">الأدوية الأكثر مبيعاً</div>
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="top-medicines" id="topMedicines">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <!-- الطلبات الحديثة -->
+                    <div class="stats-card">
+                        <div class="stats-header">
+                            <div class="stats-title">أحدث الطلبات</div>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="recent-orders" id="recentOrders">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <!-- تنبيهات المخزون -->
+                    <div class="alerts-card">
+                        <div class="alerts-header">
+                            <div class="alerts-title">تنبيهات المخزون</div>
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="alerts-list" id="inventoryAlerts">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <!-- أداء الصيدلية -->
+                    <div class="performance-card">
+                        <div class="performance-header">
+                            <div class="performance-title">أداء الصيدلية</div>
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="performance-stats">
+                            <div class="performance-item">
+                                <div class="performance-label">معدل إكمال الطلبات</div>
+                                <div class="performance-value">98%</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 98%"></div>
+                                </div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-label">رضا العملاء</div>
+                                <div class="performance-value">4.8/5</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 96%"></div>
+                                </div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-label">متوسط وقت التوصيل</div>
+                                <div class="performance-value">45 دقيقة</div>
+                                <div class="performance-bar">
+                                    <div class="performance-progress" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب الطلبات -->
+            <div class="tab-content" id="orders">
+                <div class="section-title">إحصائيات الطلبات</div>
+                
+                <div class="orders-stats">
+                    <div class="stat-card large">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="ordersTotal">0</div>
+                            <div class="stat-label">إجمالي الطلبات</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="completedOrders">0</div>
+                            <div class="stat-label">طلبات مكتملة</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="pendingStats">0</div>
+                            <div class="stat-label">طلبات قيد المعالجة</div>
+                            <div class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>5% انخفاض عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="cancelledOrders">0</div>
+                            <div class="stat-label">طلبات ملغية</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>15% انخفاض عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card full">
+                        <div class="chart-header">
+                            <div class="chart-title">تطور الطلبات خلال الشهر</div>
+                            <select class="chart-period" id="ordersPeriod">
+                                <option value="week">أسبوع</option>
+                                <option value="month" selected>شهر</option>
+                                <option value="quarter">ربع سنوي</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="ordersTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">طرق التسليم</div>
+                        </div>
+                        <div class="delivery-stats" id="deliveryStats">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">طرق الدفع</div>
+                        </div>
+                        <div class="payment-stats" id="paymentStats">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب الإيرادات -->
+            <div class="tab-content" id="revenue">
+                <div class="section-title">إحصائيات الإيرادات</div>
+                
+                <div class="revenue-stats">
+                    <div class="stat-card large">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="revenueTotal">0 ر.ي</div>
+                            <div class="stat-label">إجمالي الإيرادات</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>18% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon success">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="averageOrder">0 ر.ي</div>
+                            <div class="stat-label">متوسط قيمة الطلب</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>7% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="deliveryRevenue">0 ر.ي</div>
+                            <div class="stat-label">إيرادات التوصيل</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>22% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="refundAmount">0 ر.ي</div>
+                            <div class="stat-label">المبالغ المستردة</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>12% انخفاض عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card full">
+                        <div class="chart-header">
+                            <div class="chart-title">الإيرادات الشهرية</div>
+                            <select class="chart-period" id="revenueTrendPeriod">
+                                <option value="3months">3 أشهر</option>
+                                <option value="6months">6 أشهر</option>
+                                <option value="year" selected>سنة</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">الإيرادات حسب التصنيف</div>
+                        </div>
+                        <div class="category-revenue" id="categoryRevenue">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">أعلى الأدوية ربحاً</div>
+                        </div>
+                        <div class="top-revenue-medicines" id="topRevenueMedicines">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب المخزون -->
+            <div class="tab-content" id="inventory">
+                <div class="section-title">إحصائيات المخزون</div>
+                
+                <div class="inventory-stats">
+                    <div class="stat-card large">
+                        <div class="stat-icon">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="inventoryTotal">0</div>
+                            <div class="stat-label">إجمالي الأدوية</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>5% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="availableMedicines">0</div>
+                            <div class="stat-label">أدوية متوفرة</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="lowStockStats">0</div>
+                            <div class="stat-label">أدوية منخفضة المخزون</div>
+                            <div class="stat-change negative">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12% زيادة عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card large">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="outOfStockStats">0</div>
+                            <div class="stat-label">أدوية نفذت من المخزون</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>15% انخفاض عن الشهر الماضي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-card full">
+                        <div class="chart-header">
+                            <div class="chart-title">توزيع المخزون حسب التصنيف</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="inventoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">قيمة المخزون</div>
+                        </div>
+                        <div class="inventory-value-stats" id="inventoryValueStats">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+
+                    <div class="stats-card half">
+                        <div class="stats-header">
+                            <div class="stats-title">حركة المخزون</div>
+                        </div>
+                        <div class="inventory-movement" id="inventoryMovement">
+                            <!-- سيتم تعبئتها بالجافاسكربت -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index1.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="nav-label">الإحصائيات</div>
+            </a>
+            <a href="pharmacies-order.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="pharmacy-inventory.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <div class="nav-label">المخزون</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">الصيدلية</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+// نظام لوحة تحكم الصيدلية
+class PharmacyDashboardSystem {
+    constructor() {
+        this.orders = JSON.parse(localStorage.getItem('pharmacyOrders')) || [];
+        this.inventory = JSON.parse(localStorage.getItem('pharmacyInventory')) || [];
+        this.categories = JSON.parse(localStorage.getItem('pharmacyCategories')) || [];
+        this.currentTab = 'overview';
+        this.charts = {};
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.updateTime();
+        this.updateDate();
+        this.calculateStats();
+        this.initCharts();
+        this.renderData();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    setupEventListeners() {
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.currentTarget.dataset.tab);
+            });
+        });
+
+        // تغيير فترة المخططات
+        const periodSelects = document.querySelectorAll('.chart-period');
+        periodSelects.forEach(select => {
+            select.addEventListener('change', (e) => {
+                this.updateCharts();
+            });
+        });
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+
+        // تحديث المحتوى
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        document.getElementById(tabName).classList.add('active');
+
+        // تحديث المخططات عند التبديل
+        if (this.charts[tabName]) {
+            setTimeout(() => {
+                this.updateCharts();
+            }, 100);
+        }
+    }
+
+    showTab(tabName) {
+        this.switchTab(tabName);
+    }
+
+    updateTime() {
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('ar-YE', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+    }
+
+    updateDate() {
+        const dateElement = document.getElementById('currentDate');
+        if (dateElement) {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            dateElement.textContent = now.toLocaleDateString('ar-YE', options);
+        }
+    }
+
+    calculateStats() {
+        const now = new Date();
+        const today = now.toDateString();
+        
+        // طلبات اليوم
+        const todayOrders = this.orders.filter(order => 
+            new Date(order.createdAt).toDateString() === today
+        );
+        
+        // إيرادات اليوم
+        const todayRevenue = todayOrders
+            .filter(order => order.status === 'delivered')
+            .reduce((sum, order) => sum + order.total, 0);
+        
+        // طلبات جديدة
+        const pendingOrders = this.orders.filter(order => order.status === 'new').length;
+        
+        // تحديث الهيدر
+        document.getElementById('todayOrders').textContent = todayOrders.length;
+        document.getElementById('todayRevenue').textContent = todayRevenue.toFixed(0);
+        document.getElementById('pendingOrders').textContent = pendingOrders;
+        
+        // البطاقات السريعة
+        document.getElementById('totalOrders').textContent = this.orders.length;
+        document.getElementById('totalRevenue').textContent = this.calculateTotalRevenue().toFixed(0) + ' ر.ي';
+        document.getElementById('totalMedicines').textContent = this.inventory.length;
+        document.getElementById('alertsCount').textContent = this.calculateAlertsCount();
+    }
+
+    calculateTotalRevenue() {
+        return this.orders
+            .filter(order => order.status === 'delivered')
+            .reduce((sum, order) => sum + order.total, 0);
+    }
+
+    calculateAlertsCount() {
+        return this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        ).length;
+    }
+
+    initCharts() {
+        this.initRevenueChart();
+        this.initOrdersChart();
+        this.initOrdersTrendChart();
+        this.initRevenueTrendChart();
+        this.initInventoryChart();
+    }
+
+    initRevenueChart() {
+        const ctx = document.getElementById('revenueChart');
+        if (!ctx) return;
+
+        this.charts.revenue = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+                datasets: [{
+                    label: 'الإيرادات',
+                    data: [1200, 1900, 1500, 2100, 1800, 2500, 2200],
+                    borderColor: '#1e40af',
+                    backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' ر.ي';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initOrdersChart() {
+        const ctx = document.getElementById('ordersChart');
+        if (!ctx) return;
+
+        this.charts.orders = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['توصيل', 'استلام'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: ['#1e40af', '#059669'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    initOrdersTrendChart() {
+        const ctx = document.getElementById('ordersTrendChart');
+        if (!ctx) return;
+
+        this.charts.ordersTrend = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                datasets: [{
+                    label: 'طلبات التوصيل',
+                    data: [45, 52, 48, 60],
+                    backgroundColor: '#1e40af',
+                    borderWidth: 0,
+                    borderRadius: 8
+                }, {
+                    label: 'طلبات الاستلام',
+                    data: [25, 30, 28, 35],
+                    backgroundColor: '#059669',
+                    borderWidth: 0,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        rtl: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initRevenueTrendChart() {
+        const ctx = document.getElementById('revenueTrendChart');
+        if (!ctx) return;
+
+        this.charts.revenueTrend = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                datasets: [{
+                    label: 'الإيرادات',
+                    data: [45000, 52000, 48000, 61000, 55000, 68000, 72000, 65000, 70000, 75000, 80000, 85000],
+                    borderColor: '#1e40af',
+                    backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000) + ' ألف';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initInventoryChart() {
+        const ctx = document.getElementById('inventoryChart');
+        if (!ctx) return;
+
+        // تجميع البيانات حسب التصنيف
+        const categoryData = {};
+        this.inventory.forEach(medicine => {
+            if (!categoryData[medicine.category]) {
+                categoryData[medicine.category] = 0;
+            }
+            categoryData[medicine.category]++;
+        });
+
+        const colors = ['#1e40af', '#dc2626', '#059669', '#d97706', '#7c3aed', '#db2777'];
+
+        this.charts.inventory = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(categoryData),
+                datasets: [{
+                    data: Object.values(categoryData),
+                    backgroundColor: colors,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true
+                    }
+                }
+            }
+        });
+    }
+
+    updateCharts() {
+        // يمكن إضافة تحديث ديناميكي للمخططات هنا
+        Object.values(this.charts).forEach(chart => {
+            chart.update();
+        });
+    }
+
+    renderData() {
+        this.renderTopMedicines();
+        this.renderRecentOrders();
+        this.renderInventoryAlerts();
+        this.renderOrdersStats();
+        this.renderRevenueStats();
+        this.renderInventoryStats();
+        this.renderDeliveryStats();
+        this.renderPaymentStats();
+        this.renderCategoryRevenue();
+        this.renderTopRevenueMedicines();
+        this.renderInventoryValueStats();
+        this.renderInventoryMovement();
+    }
+
+    renderTopMedicines() {
+        const container = document.getElementById('topMedicines');
+        if (!container) return;
+
+        // محاكاة بيانات الأدوية الأكثر مبيعاً
+        const topMedicines = [
+            { name: 'بانادول أزرق', sales: 45, revenue: 360 },
+            { name: 'أموكسيسيلين', sales: 38, revenue: 570 },
+            { name: 'فيتامين سي', sales: 32, revenue: 640 },
+            { name: 'فولتارين', sales: 28, revenue: 336 },
+            { name: 'أدول', sales: 25, revenue: 250 }
+        ];
+
+        container.innerHTML = '';
+
+        topMedicines.forEach((medicine, index) => {
+            const item = document.createElement('div');
+            item.className = 'top-medicine-item';
+            item.innerHTML = `
+                <div class="medicine-rank">${index + 1}</div>
+                <div class="medicine-info">
+                    <div class="medicine-name">${medicine.name}</div>
+                    <div class="medicine-sales">${medicine.sales} عملية بيع</div>
+                </div>
+                <div class="medicine-revenue">${medicine.revenue} ر.ي</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    renderRecentOrders() {
+        const container = document.getElementById('recentOrders');
+        if (!container) return;
+
+        const recentOrders = this.orders
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
+
+        container.innerHTML = '';
+
+        if (recentOrders.length === 0) {
+            container.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد طلبات حديثة</div>';
+            return;
+        }
+
+        recentOrders.forEach(order => {
+            const initial = order.customer.charAt(0);
+            const item = document.createElement('div');
+            item.className = 'recent-order-item';
+            item.innerHTML = `
+                <div class="order-avatar">${initial}</div>
+                <div class="order-info">
+                    <div class="order-customer">${order.customer}</div>
+                    <div class="order-details">${order.medicines.length} دواء</div>
+                </div>
+                <div class="order-amount">${order.total} ر.ي</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    renderInventoryAlerts() {
+        const container = document.getElementById('inventoryAlerts');
+        if (!container) return;
+
+        const lowStockMedicines = this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        ).slice(0, 3);
+
+        container.innerHTML = '';
+
+        if (lowStockMedicines.length === 0) {
+            container.innerHTML = '<div style="text-align: center; color: #b45309; padding: 20px;">لا توجد تنبيهات للمخزون</div>';
+            return;
+        }
+
+        lowStockMedicines.forEach(medicine => {
+            const item = document.createElement('div');
+            item.className = 'alert-item';
+            item.innerHTML = `
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <div class="alert-info">
+                    <div class="alert-message">${medicine.name}</div>
+                    <div class="alert-details">${medicine.quantity} وحدة متبقية</div>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    renderOrdersStats() {
+        const totalOrders = this.orders.length;
+        const completedOrders = this.orders.filter(order => order.status === 'delivered').length;
+        const pendingOrders = this.orders.filter(order => 
+            order.status === 'new' || order.status === 'preparing' || order.status === 'onway'
+        ).length;
+        const cancelledOrders = this.orders.filter(order => order.status === 'cancelled').length;
+
+        document.getElementById('ordersTotal').textContent = totalOrders;
+        document.getElementById('completedOrders').textContent = completedOrders;
+        document.getElementById('pendingStats').textContent = pendingOrders;
+        document.getElementById('cancelledOrders').textContent = cancelledOrders;
+    }
+
+    renderRevenueStats() {
+        const totalRevenue = this.calculateTotalRevenue();
+        const averageOrder = totalRevenue / this.orders.filter(order => order.status === 'delivered').length || 0;
+        const deliveryRevenue = this.orders
+            .filter(order => order.status === 'delivered' && order.deliveryType === 'delivery')
+            .reduce((sum, order) => sum + 10, 0); // رسوم التوصيل
+        const refundAmount = this.orders
+            .filter(order => order.status === 'cancelled')
+            .reduce((sum, order) => sum + order.total, 0);
+
+        document.getElementById('revenueTotal').textContent = totalRevenue.toFixed(0) + ' ر.ي';
+        document.getElementById('averageOrder').textContent = averageOrder.toFixed(0) + ' ر.ي';
+        document.getElementById('deliveryRevenue').textContent = deliveryRevenue.toFixed(0) + ' ر.ي';
+        document.getElementById('refundAmount').textContent = refundAmount.toFixed(0) + ' ر.ي';
+    }
+
+    renderInventoryStats() {
+        const totalMedicines = this.inventory.length;
+        const availableMedicines = this.inventory.filter(item => item.quantity > item.alertLevel).length;
+        const lowStockMedicines = this.inventory.filter(item => 
+            item.quantity > 0 && item.quantity <= item.alertLevel
+        ).length;
+        const outOfStockMedicines = this.inventory.filter(item => item.quantity === 0).length;
+
+        document.getElementById('inventoryTotal').textContent = totalMedicines;
+        document.getElementById('availableMedicines').textContent = availableMedicines;
+        document.getElementById('lowStockStats').textContent = lowStockMedicines;
+        document.getElementById('outOfStockStats').textContent = outOfStockMedicines;
+    }
+
+    renderDeliveryStats() {
+        const container = document.getElementById('deliveryStats');
+        if (!container) return;
+
+        const deliveryOrders = this.orders.filter(order => order.deliveryType === 'delivery').length;
+        const pickupOrders = this.orders.filter(order => order.deliveryType === 'pickup').length;
+        const totalOrders = this.orders.length;
+
+        const deliveryPercentage = totalOrders > 0 ? (deliveryOrders / totalOrders * 100) : 0;
+        const pickupPercentage = totalOrders > 0 ? (pickupOrders / totalOrders * 100) : 0;
+
+        container.innerHTML = `
+            <div class="delivery-stat">
+                <div class="stat-name">توصيل</div>
+                <div class="stat-percentage">${deliveryPercentage.toFixed(1)}%</div>
+                <div class="stat-count">${deliveryOrders} طلب</div>
+            </div>
+            <div class="delivery-stat">
+                <div class="stat-name">استلام</div>
+                <div class="stat-percentage">${pickupPercentage.toFixed(1)}%</div>
+                <div class="stat-count">${pickupOrders} طلب</div>
+            </div>
+        `;
+    }
+
+    renderPaymentStats() {
+        const container = document.getElementById('paymentStats');
+        if (!container) return;
+
+        const cashOrders = this.orders.filter(order => order.paymentMethod === 'cash').length;
+        const walletOrders = this.orders.filter(order => order.paymentMethod === 'wallet').length;
+        const cardOrders = this.orders.filter(order => order.paymentMethod === 'card').length;
+        const totalOrders = this.orders.length;
+
+        const cashPercentage = totalOrders > 0 ? (cashOrders / totalOrders * 100) : 0;
+        const walletPercentage = totalOrders > 0 ? (walletOrders / totalOrders * 100) : 0;
+        const cardPercentage = totalOrders > 0 ? (cardOrders / totalOrders * 100) : 0;
+
+        container.innerHTML = `
+            <div class="payment-stat">
+                <div class="stat-name">نقدي</div>
+                <div class="stat-percentage">${cashPercentage.toFixed(1)}%</div>
+                <div class="stat-count">${cashOrders} طلب</div>
+            </div>
+            <div class="payment-stat">
+                <div class="stat-name">محفظة</div>
+                <div class="stat-percentage">${walletPercentage.toFixed(1)}%</div>
+                <div class="stat-count">${walletOrders} طلب</div>
+            </div>
+            <div class="payment-stat">
+                <div class="stat-name">بطاقة</div>
+                <div class="stat-percentage">${cardPercentage.toFixed(1)}%</div>
+                <div class="stat-count">${cardOrders} طلب</div>
+            </div>
+        `;
+    }
+
+    renderCategoryRevenue() {
+        const container = document.getElementById('categoryRevenue');
+        if (!container) return;
+
+        // محاكاة بيانات الإيرادات حسب التصنيف
+        const categoryRevenue = [
+            { name: 'مسكنات', amount: 12500, color: '#1e40af' },
+            { name: 'مضادات حيوية', amount: 9800, color: '#dc2626' },
+            { name: 'فيتامينات', amount: 7600, color: '#059669' },
+            { name: 'مستحضرات جلدية', amount: 4200, color: '#d97706' },
+            { name: 'جهاز تنفسي', amount: 3100, color: '#7c3aed' }
+        ];
+
+        container.innerHTML = '';
+
+        categoryRevenue.forEach(category => {
+            const item = document.createElement('div');
+            item.className = 'category-revenue-item';
+            item.innerHTML = `
+                <div class="category-color" style="background-color: ${category.color};"></div>
+                <div class="category-name">${category.name}</div>
+                <div class="category-amount">${category.amount.toLocaleString()} ر.ي</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    renderTopRevenueMedicines() {
+        const container = document.getElementById('topRevenueMedicines');
+        if (!container) return;
+
+        // محاكاة بيانات أعلى الأدوية ربحاً
+        const topRevenueMedicines = [
+            { name: 'أموكسيسيلين', sales: 38, profit: 5700 },
+            { name: 'فيتامين سي', sales: 32, profit: 4800 },
+            { name: 'أوميغا 3', sales: 25, profit: 3750 },
+            { name: 'بانادول أزرق', sales: 45, profit: 3600 },
+            { name: 'فنتولين', sales: 18, profit: 2700 }
+        ];
+
+        container.innerHTML = '';
+
+        topRevenueMedicines.forEach(medicine => {
+            const item = document.createElement('div');
+            item.className = 'revenue-medicine-item';
+            item.innerHTML = `
+                <div class="revenue-medicine-info">
+                    <div class="revenue-medicine-name">${medicine.name}</div>
+                    <div class="revenue-medicine-sales">${medicine.sales} عملية بيع</div>
+                </div>
+                <div class="revenue-medicine-profit">${medicine.profit.toLocaleString()} ر.ي</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    renderInventoryValueStats() {
+        const container = document.getElementById('inventoryValueStats');
+        if (!container) return;
+
+        const totalValue = this.inventory.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const averageValue = this.inventory.length > 0 ? totalValue / this.inventory.length : 0;
+        const maxValueItem = this.inventory.reduce((max, item) => 
+            (item.price * item.quantity) > (max.price * max.quantity) ? item : max, this.inventory[0] || { price: 0, quantity: 0 }
+        );
+
+        container.innerHTML = `
+            <div class="value-stat">
+                <div class="value-label">القيمة الإجمالية</div>
+                <div class="value-amount">${totalValue.toFixed(0)} ر.ي</div>
+            </div>
+            <div class="value-stat">
+                <div class="value-label">متوسط قيمة الدواء</div>
+                <div class="value-amount">${averageValue.toFixed(0)} ر.ي</div>
+            </div>
+            <div class="value-stat">
+                <div class="value-label">أعلى دواء قيمة</div>
+                <div class="value-amount">${(maxValueItem.price * maxValueItem.quantity).toFixed(0)} ر.ي</div>
+            </div>
+        `;
+    }
+
+    renderInventoryMovement() {
+        const container = document.getElementById('inventoryMovement');
+        if (!container) return;
+
+        // محاكاة بيانات حركة المخزون
+        const inventoryMovement = [
+            { label: 'مبيعات الشهر', amount: 45, type: 'negative' },
+            { label: 'مشتريات الشهر', amount: 28, type: 'positive' },
+            { label: 'صافي الحركة', amount: -17, type: 'negative' },
+            { label: 'معدل الدوران', amount: 1.2, type: 'positive' }
+        ];
+
+        container.innerHTML = '';
+
+        inventoryMovement.forEach(item => {
+            const amountClass = item.type === 'positive' ? 'positive' : 'negative';
+            const itemElement = document.createElement('div');
+            itemElement.className = 'movement-stat';
+            itemElement.innerHTML = `
+                <div class="movement-label">${item.label}</div>
+                <div class="movement-amount ${amountClass}">${item.amount} ${item.label.includes('معدل') ? '' : 'دواء'}</div>
+            `;
+            container.appendChild(itemElement);
+        });
+    }
+
+    showNotification(message, type = 'info') {
+        // إنشاء عنصر الإشعار
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // إزالة الإشعار بعد 3 ثوان
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// تهيئة النظام عند تحميل الصفحة
+let dashboardSystem;
+document.addEventListener('DOMContentLoaded', function() {
+    dashboardSystem = new PharmacyDashboardSystem();
+});
+</script>
+</body>
+</html>ript>
+</body>
+</html>
