@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - لوحة التحكم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.company-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* الإجراءات السريعة */
+.quick-actions-section {
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 0 16px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.section-badge {
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: auto;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.quick-action-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border: 2px solid transparent;
+}
+
+.quick-action-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+}
+
+.action-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 20px;
+}
+
+.action-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.action-subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* محتوى الرئيسية */
+.dashboard-content {
+    padding: 0 20px;
+}
+
+.content-section {
+    margin-bottom: 30px;
+}
+
+/* نظرة على المبيعات */
+.sales-overview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.sales-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sales-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.sales-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.sales-info {
+    flex: 1;
+}
+
+.sales-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.sales-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.sales-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.sales-trend.positive {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.sales-trend.negative {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+/* قائمة الطلبات */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-item:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.order-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+}
+
+.order-icon.pending {
+    background: var(--warning);
+}
+
+.order-icon.processing {
+    background: var(--info);
+}
+
+.order-icon.completed {
+    background: var(--success);
+}
+
+.order-details {
+    flex: 1;
+}
+
+.order-id {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.order-customer {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.order-date {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.order-amount {
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* قائمة الإشعارات */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-item:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.notification-icon.info {
+    background: var(--info);
+}
+
+.notification-icon.warning {
+    background: var(--warning);
+}
+
+.notification-icon.success {
+    background: var(--success);
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.notification-message {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* المؤشرات الرئيسية */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.metric-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.metric-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.metric-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.metric-info {
+    flex: 1;
+}
+
+.metric-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* الإنتاج */
+.production-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.production-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+}
+
+.production-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.production-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.production-header i {
+    color: var(--primary);
+}
+
+.production-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--primary-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    min-width: 30px;
+}
+
+.production-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.notifications-modal-list {
+    padding: 20px;
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 400px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sales-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bottom-nav-dock {
+        max-width: 320px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>PharmaHub 💼</h1>
+                    <p>لوحة تحكم شركات الأدوية</p>
+                </div>
+                <div class="company-actions">
+                    <button class="action-icon liquid-transition" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationsBadge">3</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="quickActionsBtn">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الإجراءات السريعة -->
+        <div class="quick-actions-section">
+            <div class="section-title">
+                <i class="fas fa-bolt"></i>
+                الإجراءات السريعة
+            </div>
+            <div class="quick-actions-grid">
+                <a href="products.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div class="action-title">إدارة المنتجات</div>
+                    <div class="action-subtitle">156 منتج نشط</div>
+                </a>
+
+                <a href="orders.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="action-title">إدارة الطلبات</div>
+                    <div class="action-subtitle">24 طلب جديد</div>
+                </a>
+
+                <a href="customers.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="action-title">إدارة العملاء</div>
+                    <div class="action-subtitle">1,248 عميل</div>
+                </a>
+
+                <a href="finance.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="action-title">الحساب المالي</div>
+                    <div class="action-subtitle">45,800 ر.س</div>
+                </a>
+
+                <a href="inventory.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="action-title">إدارة المخزون</div>
+                    <div class="action-subtitle">12 منتج منخفض</div>
+                </a>
+
+                <a href="marketing.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="action-title">المبيعات والتسويق</div>
+                    <div class="action-subtitle">5 حملات نشطة</div>
+                </a>
+
+                <a href="shipping.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <div class="action-title">الشحن والتوصيل</div>
+                    <div class="action-subtitle">18 طلب للتوصيل</div>
+                </a>
+
+                <a href="invoices.html" class="quick-action-card liquid-transition">
+                    <div class="action-icon-wrapper">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="action-title">الفواتير</div>
+                    <div class="action-subtitle">3 فواتير معلقة</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- محتوى الرئيسية -->
+        <div class="dashboard-content">
+            <!-- نظرة على المبيعات اليومية -->
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    نظرة على المبيعات اليومية
+                </div>
+                <div class="sales-overview">
+                    <div class="sales-card liquid-transition">
+                        <div class="sales-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="sales-info">
+                            <div class="sales-value">8,450 ر.س</div>
+                            <div class="sales-label">إجمالي المبيعات</div>
+                        </div>
+                        <div class="sales-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            12%
+                        </div>
+                    </div>
+
+                    <div class="sales-card liquid-transition">
+                        <div class="sales-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="sales-info">
+                            <div class="sales-value">42</div>
+                            <div class="sales-label">عدد الطلبات</div>
+                        </div>
+                        <div class="sales-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            8%
+                        </div>
+                    </div>
+
+                    <div class="sales-card liquid-transition">
+                        <div class="sales-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="sales-info">
+                            <div class="sales-value">156</div>
+                            <div class="sales-label">منتجات مباعة</div>
+                        </div>
+                        <div class="sales-trend negative">
+                            <i class="fas fa-arrow-down"></i>
+                            3%
+                        </div>
+                    </div>
+
+                    <div class="sales-card liquid-transition">
+                        <div class="sales-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="sales-info">
+                            <div class="sales-value">89%</div>
+                            <div class="sales-label">معدل الرضا</div>
+                        </div>
+                        <div class="sales-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            5%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الطلبات الجديدة -->
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-shopping-cart"></i>
+                    الطلبات الجديدة
+                    <span class="section-badge">24</span>
+                </div>
+                <div class="orders-list" id="ordersList">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- الإشعارات -->
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-bell"></i>
+                    الإشعارات
+                    <span class="section-badge">3</span>
+                </div>
+                <div class="notifications-list" id="notificationsList">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- المؤشرات الرئيسية -->
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    المؤشرات الرئيسية
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card liquid-transition">
+                        <div class="metric-icon" style="background: var(--primary-light); color: var(--primary-dark);">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="metric-info">
+                            <div class="metric-value">1,248</div>
+                            <div class="metric-label">إجمالي المنتجات</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card liquid-transition">
+                        <div class="metric-icon" style="background: #E3F2FD; color: #1976D2;">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="metric-info">
+                            <div class="metric-value">156</div>
+                            <div class="metric-label">طلبات هذا الشهر</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card liquid-transition">
+                        <div class="metric-icon" style="background: #E8F5E8; color: #388E3C;">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="metric-info">
+                            <div class="metric-value">124,800 ر.س</div>
+                            <div class="metric-label">إيرادات الشهر</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card liquid-transition">
+                        <div class="metric-icon" style="background: #FFF3E0; color: #F57C00;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-info">
+                            <div class="metric-value">5,248</div>
+                            <div class="metric-label">عملاء نشطين</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الإنتاج -->
+            <div class="content-section">
+                <div class="section-title">
+                    <i class="fas fa-industry"></i>
+                    الإنتاج
+                </div>
+                <div class="production-stats">
+                    <div class="production-card liquid-transition">
+                        <div class="production-header">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>خط الإنتاج 1</span>
+                        </div>
+                        <div class="production-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                            <span class="progress-text">85%</span>
+                        </div>
+                        <div class="production-details">
+                            <span>باراسيتامول 500 مجم</span>
+                            <span>2,500/3,000 عبوة</span>
+                        </div>
+                    </div>
+
+                    <div class="production-card liquid-transition">
+                        <div class="production-header">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>خط الإنتاج 2</span>
+                        </div>
+                        <div class="production-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                            <span class="progress-text">60%</span>
+                        </div>
+                        <div class="production-details">
+                            <span>فيتامين سي 1000 مجم</span>
+                            <span>1,200/2,000 عبوة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+            <a href="production.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div class="nav-label">الإنتاج</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة الإشعارات -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <span class="close" onclick="dashboard.closeNotifications()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-modal-list" id="notificationsModalList">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام لوحة تحكم شركات الأدوية
+class Dashboard {
+    constructor() {
+        this.orders = [];
+        this.notifications = [];
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.renderOrders();
+        this.renderNotifications();
+        this.updateTime();
+        this.setupRealTimeUpdates();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedOrders = localStorage.getItem('pharma_orders');
+        const savedNotifications = localStorage.getItem('pharma_notifications');
+
+        if (savedOrders) {
+            this.orders = JSON.parse(savedOrders);
+        } else {
+            this.orders = this.getDefaultOrders();
+        }
+
+        if (savedNotifications) {
+            this.notifications = JSON.parse(savedNotifications);
+        } else {
+            this.notifications = this.getDefaultNotifications();
+        }
+
+        this.saveData();
+    }
+
+    getDefaultOrders() {
+        return [
+            {
+                id: 'ORD-001',
+                customer: 'أحمد محمد',
+                amount: 245,
+                status: 'pending',
+                date: '2024-01-15',
+                items: 5
+            },
+            {
+                id: 'ORD-002',
+                customer: 'فاطمة علي',
+                amount: 120,
+                status: 'processing',
+                date: '2024-01-15',
+                items: 3
+            },
+            {
+                id: 'ORD-003',
+                customer: 'خالد عبدالله',
+                amount: 89,
+                status: 'completed',
+                date: '2024-01-14',
+                items: 2
+            },
+            {
+                id: 'ORD-004',
+                customer: 'نورة السعد',
+                amount: 356,
+                status: 'pending',
+                date: '2024-01-14',
+                items: 7
+            }
+        ];
+    }
+
+    getDefaultNotifications() {
+        return [
+            {
+                id: 1,
+                title: 'طلب جديد',
+                message: 'تم استلام طلب جديد من العميل أحمد محمد بقيمة 245 ر.س',
+                type: 'info',
+                time: '2024-01-15T10:30:00',
+                read: false
+            },
+            {
+                id: 2,
+                title: 'منتج منخفض المخزون',
+                message: 'مخزون باراسيتامول 500 مجم منخفض. الكمية المتبقية: 25 عبوة',
+                type: 'warning',
+                time: '2024-01-15T09:15:00',
+                read: false
+            },
+            {
+                id: 3,
+                title: 'شحن ناجح',
+                message: 'تم شحن طلب ORD-003 بنجاح إلى العميل خالد عبدالله',
+                type: 'success',
+                time: '2024-01-15T08:45:00',
+                read: false
+            },
+            {
+                id: 4,
+                title: 'تقرير المبيعات',
+                message: 'تقرير مبيعات الأسبوع جاهز للعرض',
+                type: 'info',
+                time: '2024-01-14T18:00:00',
+                read: true
+            }
+        ];
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_orders', JSON.stringify(this.orders));
+        localStorage.setItem('pharma_notifications', JSON.stringify(this.notifications));
+    }
+
+    setupEventListeners() {
+        // زر الإشعارات
+        const notificationsBtn = document.getElementById('notificationsBtn');
+        if (notificationsBtn) {
+            notificationsBtn.addEventListener('click', () => {
+                this.showNotificationsModal();
+            });
+        }
+
+        // زر الإجراءات السريعة
+        const quickActionsBtn = document.getElementById('quickActionsBtn');
+        if (quickActionsBtn) {
+            quickActionsBtn.addEventListener('click', () => {
+                this.showQuickActions();
+            });
+        }
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة بالنقر خارجها
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const dateString = now.toLocaleDateString('ar-EG', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    renderOrders() {
+        const ordersList = document.getElementById('ordersList');
+        if (!ordersList) return;
+
+        let ordersHTML = '';
+        this.orders.slice(0, 4).forEach(order => {
+            const statusText = this.getOrderStatusText(order.status);
+            const statusIcon = this.getOrderStatusIcon(order.status);
+            
+            ordersHTML += `
+                <div class="order-item liquid-transition">
+                    <div class="order-icon ${order.status}">
+                        <i class="fas ${statusIcon}"></i>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-id">${order.id}</div>
+                        <div class="order-customer">${order.customer}</div>
+                        <div class="order-date">${this.formatDate(order.date)}</div>
+                    </div>
+                    <div class="order-amount">${order.amount} ر.س</div>
+                </div>
+            `;
+        });
+
+        ordersList.innerHTML = ordersHTML;
+    }
+
+    renderNotifications() {
+        const notificationsList = document.getElementById('notificationsList');
+        if (!notificationsList) return;
+
+        const unreadNotifications = this.notifications.filter(n => !n.read).slice(0, 3);
+        
+        let notificationsHTML = '';
+        unreadNotifications.forEach(notification => {
+            notificationsHTML += `
+                <div class="notification-item liquid-transition">
+                    <div class="notification-icon ${notification.type}">
+                        <i class="fas ${this.getNotificationIcon(notification.type)}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">${this.formatTime(notification.time)}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        notificationsList.innerHTML = notificationsHTML;
+
+        // تحديث العداد
+        const unreadCount = this.notifications.filter(n => !n.read).length;
+        const badge = document.getElementById('notificationsBadge');
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+
+    showNotificationsModal() {
+        const modal = document.getElementById('notificationsModal');
+        const modalList = document.getElementById('notificationsModalList');
+        
+        let notificationsHTML = '';
+        this.notifications.forEach(notification => {
+            notificationsHTML += `
+                <div class="notification-item liquid-transition ${notification.read ? 'read' : ''}">
+                    <div class="notification-icon ${notification.type}">
+                        <i class="fas ${this.getNotificationIcon(notification.type)}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-message">${notification.message}</div>
+                        <div class="notification-time">${this.formatTime(notification.time)}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        modalList.innerHTML = notificationsHTML;
+        modal.style.display = 'block';
+
+        // تحديث الإشعارات كمقروءة
+        this.notifications.forEach(notification => notification.read = true);
+        this.saveData();
+        this.renderNotifications();
+    }
+
+    closeNotifications() {
+        document.getElementById('notificationsModal').style.display = 'none';
+    }
+
+    showQuickActions() {
+        // يمكن إضافة نافذة منبثقة للإجراءات السريعة الإضافية
+        this.showToast('الإجراءات السريعة متاحة في الشريط العلوي');
+    }
+
+    getOrderStatusText(status) {
+        const statusMap = {
+            'pending': 'قيد الانتظار',
+            'processing': 'قيد المعالجة',
+            'completed': 'مكتمل',
+            'cancelled': 'ملغي'
+        };
+        return statusMap[status] || status;
+    }
+
+    getOrderStatusIcon(status) {
+        const iconMap = {
+            'pending': 'fa-clock',
+            'processing': 'fa-cog',
+            'completed': 'fa-check',
+            'cancelled': 'fa-times'
+        };
+        return iconMap[status] || 'fa-question';
+    }
+
+    getNotificationIcon(type) {
+        const iconMap = {
+            'info': 'fa-info-circle',
+            'warning': 'fa-exclamation-triangle',
+            'success': 'fa-check-circle',
+            'error': 'fa-times-circle'
+        };
+        return iconMap[type] || 'fa-bell';
+    }
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            day: 'numeric',
+            month: 'short'
+        });
+    }
+
+    formatTime(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffMins < 1) {
+            return 'الآن';
+        } else if (diffMins < 60) {
+            return `منذ ${diffMins} دقيقة`;
+        } else if (diffHours < 24) {
+            return `منذ ${diffHours} ساعة`;
+        } else if (diffDays < 7) {
+            return `منذ ${diffDays} يوم`;
+        } else {
+            return date.toLocaleDateString('ar-EG');
+        }
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 30000); // كل 30 ثانية
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة طلب جديد عشوائي
+        if (Math.random() > 0.7) {
+            const customers = ['محمد أحمد', 'سارة خالد', 'عبدالله ناصر', 'لينا فارس'];
+            const amounts = [89, 120, 156, 245, 320, 189];
+            
+            const newOrder = {
+                id: `ORD-${String(this.orders.length + 1).padStart(3, '0')}`,
+                customer: customers[Math.floor(Math.random() * customers.length)],
+                amount: amounts[Math.floor(Math.random() * amounts.length)],
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0],
+                items: Math.floor(Math.random() * 5) + 1
+            };
+
+            this.orders.unshift(newOrder);
+            
+            const newNotification = {
+                id: this.notifications.length + 1,
+                title: 'طلب جديد',
+                message: `تم استلام طلب جديد من العميل ${newOrder.customer} بقيمة ${newOrder.amount} ر.س`,
+                type: 'info',
+                time: new Date().toISOString(),
+                read: false
+            };
+
+            this.notifications.unshift(newNotification);
+            
+            this.saveData();
+            this.renderOrders();
+            this.renderNotifications();
+            
+            this.showToast('طلب جديد تم استلامه!');
+        }
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    navigateTo(page) {
+        // في التطبيق الحقيقي، سيتم توجيه المستخدم إلى الصفحة المطلوبة
+        this.showToast(`سيتم توجيهك إلى ${page}`);
+    }
+}
+
+// تهيئة لوحة التحكم عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.dashboard = new Dashboard();
+});
+</script>
+</body>
+</html>
