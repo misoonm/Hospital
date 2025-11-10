@@ -584,7 +584,7 @@
                 'pharmacy': 'pharmacy/index.html',
                 'delivery': 'deleviry/index.html',
                 'patient': 'patients/index.html',
-                'pharma-company': 'hub/index.html'
+                'hub': 'hub/index.html'
             };
             
             if (pages[userType]) {
@@ -632,7 +632,7 @@
 
         document.getElementById('pharmaCompanyBtn').addEventListener('click', function(e) {
             e.stopPropagation();
-            redirectToPage('pharma-company');
+            redirectToPage('hub');
         });
 
         // التحقق من التوجيه التلقائي
