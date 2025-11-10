@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - إدارة الطلبات</title>
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة الطلبات 🛒</h1>
+                    <p>إدارة كاملة لطلبات العملاء والشحن</p>
+                </div>
+                <div class="order-actions">
+                    <button class="action-icon liquid-transition" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="addOrderBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث برقم الطلب، العميل، أو المنتج..." id="searchInput">
+                <button class="action-icon liquid-transition" onclick="orders.toggleSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-bar">
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('all')">
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">إجمالي الطلبات</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('pending')">
+                    <div class="stat-value" id="pendingOrders">0</div>
+                    <div class="stat-label">قيد الانتظار</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('processing')">
+                    <div class="stat-value" id="processingOrders">0</div>
+                    <div class="stat-label">قيد المعالجة</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('shipped')">
+                    <div class="stat-value" id="shippedOrders">0</div>
+                    <div class="stat-label">تم الشحن</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('delivered')">
+                    <div class="stat-value" id="deliveredOrders">0</div>
+                    <div class="stat-label">تم التسليم</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="orders.filterByStatus('cancelled')">
+                    <div class="stat-value" id="cancelledOrders">0</div>
+                    <div class="stat-label">ملغية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويبات -->
+        <div class="tabs-section">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="all" onclick="orders.switchTab('all')">
+                    <i class="fas fa-th-large"></i>
+                    الكل
+                </button>
+                <button class="tab-btn" data-tab="today" onclick="orders.switchTab('today')">
+                    <i class="fas fa-calendar-day"></i>
+                    اليوم
+                </button>
+                <button class="tab-btn" data-tab="urgent" onclick="orders.switchTab('urgent')">
+                    <i class="fas fa-exclamation-circle"></i>
+                    عاجلة
+                </button>
+                <button class="tab-btn" data-tab="pending_payment" onclick="orders.switchTab('pending_payment')">
+                    <i class="fas fa-money-bill-wave"></i>
+                    بانتظار الدفع
+                </button>
+            </div>
+        </div>
+
+        <!-- قائمة الطلبات -->
+        <div class="orders-management">
+            <!-- شريط الأدوات -->
+            <div class="toolbar">
+                <div class="view-options">
+                    <button class="view-option active" data-view="list" onclick="orders.changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-option" data-view="grid" onclick="orders.changeView('grid')">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sortSelect" onchange="orders.sortOrders()">
+                        <option value="date_desc">الأحدث أولاً</option>
+                        <option value="date_asc">الأقدم أولاً</option>
+                        <option value="amount_desc">الأعلى قيمة</option>
+                        <option value="amount_asc">الأقل قيمة</option>
+                        <option value="customer_asc">العميل (أ-ي)</option>
+                        <option value="customer_desc">العميل (ي-أ)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- حاوية الطلبات -->
+            <div class="orders-container">
+                <div class="orders-list" id="ordersList">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="orders-grid" id="ordersGrid" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- تحميل المزيد -->
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn" onclick="orders.loadMore()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <!-- زر الإضافة العائم -->
+        <button class="floating-action-btn liquid-transition" onclick="orders.showAddOrderModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="orders.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة/تعديل الطلب -->
+    <div id="orderFormModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="orderFormTitle">إنشاء طلب جديد</h2>
+                <span class="close" onclick="orders.closeOrderForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm" class="order-form">
+                    <div class="form-section">
+                        <h3>معلومات العميل</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="orderCustomer">العميل *</label>
+                                <select id="orderCustomer" name="customer" required>
+                                    <option value="">اختر العميل</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderPhone">رقم الهاتف *</label>
+                                <input type="tel" id="orderPhone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderEmail">البريد الإلكتروني</label>
+                                <input type="email" id="orderEmail" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="orderAddress">عنوان التوصيل *</label>
+                                <textarea id="orderAddress" name="address" rows="2" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>تفاصيل الطلب</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="orderPriority">أولوية الطلب</label>
+                                <select id="orderPriority" name="priority">
+                                    <option value="normal">عادية</option>
+                                    <option value="high">عالية</option>
+                                    <option value="urgent">عاجلة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderPaymentMethod">طريقة الدفع</label>
+                                <select id="orderPaymentMethod" name="paymentMethod">
+                                    <option value="cash">نقدي عند الاستلام</option>
+                                    <option value="card">بطاقة ائتمان</option>
+                                    <option value="transfer">تحويل بنكي</option>
+                                    <option value="wallet">محفظة إلكترونية</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderPaymentStatus">حالة الدفع</label>
+                                <select id="orderPaymentStatus" name="paymentStatus">
+                                    <option value="pending">بانتظار الدفع</option>
+                                    <option value="paid">مدفوع</option>
+                                    <option value="failed">فشل الدفع</option>
+                                    <option value="refunded">تم الاسترداد</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderStatus">حالة الطلب</label>
+                                <select id="orderStatus" name="status">
+                                    <option value="pending">قيد الانتظار</option>
+                                    <option value="confirmed">تم التأكيد</option>
+                                    <option value="processing">قيد المعالجة</option>
+                                    <option value="shipped">تم الشحن</option>
+                                    <option value="delivered">تم التسليم</option>
+                                    <option value="cancelled">ملغي</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>منتجات الطلب</h3>
+                        <div class="products-selection">
+                            <div class="search-products">
+                                <input type="text" id="productSearch" placeholder="ابحث عن منتج..." class="search-input">
+                                <button type="button" class="btn-neumorphism" onclick="orders.searchProducts()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="products-list-selection" id="productsListSelection">
+                                <!-- سيتم تعبئتها بالجافاسكريبت -->
+                            </div>
+                            <div class="selected-products" id="selectedProducts">
+                                <h4>المنتجات المختارة</h4>
+                                <div class="selected-items" id="selectedItems">
+                                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                </div>
+                                <div class="order-summary">
+                                    <div class="summary-row">
+                                        <span>المجموع الفرعي:</span>
+                                        <span id="subtotalAmount">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>ضريبة القيمة المضافة (15%):</span>
+                                        <span id="taxAmount">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>رسوم الشحن:</span>
+                                        <span id="shippingAmount">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>المجموع الكلي:</span>
+                                        <span id="totalAmount">0.00 ر.س</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>ملاحظات إضافية</h3>
+                        <div class="form-group">
+                            <label for="orderNotes">ملاحظات الطلب</label>
+                            <textarea id="orderNotes" name="notes" rows="3" placeholder="أي ملاحظات إضافية حول الطلب..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-neumorphism" onclick="orders.closeOrderForm()">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-neumorphism btn-primary-neumorphism">
+                            <i class="fas fa-save"></i>
+                            حفظ الطلب
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الطلب -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="orderDetailsTitle">تفاصيل الطلب</h2>
+                <span class="close" onclick="orders.closeOrderDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="order-details-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+                        <button class="tab-btn" data-tab="products">المنتجات</button>
+                        <button class="tab-btn" data-tab="tracking">تتبع الشحن</button>
+                        <button class="tab-btn" data-tab="history">السجل</button>
+                    </div>
+
+                    <div class="tabs-content">
+                        <!-- تبويب النظرة العامة -->
+                        <div class="tab-pane active" id="overviewTab">
+                            <div class="order-overview">
+                                <div class="order-header">
+                                    <div class="order-info">
+                                        <h3 id="detailOrderId"></h3>
+                                        <div class="order-meta">
+                                            <span id="detailOrderDate"></span>
+                                            <span id="detailOrderCustomer"></span>
+                                            <span id="detailOrderPhone"></span>
+                                        </div>
+                                        <div class="order-status">
+                                            <span class="status-badge" id="detailOrderStatus"></span>
+                                            <span class="priority-badge" id="detailOrderPriority"></span>
+                                            <span class="payment-badge" id="detailOrderPayment"></span>
+                                        </div>
+                                    </div>
+                                    <div class="order-amount">
+                                        <div class="amount-value" id="detailOrderAmount"></div>
+                                        <div class="amount-label">المجموع الكلي</div>
+                                    </div>
+                                </div>
+
+                                <div class="order-specs-grid">
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailCustomerName"></div>
+                                            <div class="spec-label">العميل</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailCustomerPhone"></div>
+                                            <div class="spec-label">الهاتف</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailDeliveryArea"></div>
+                                            <div class="spec-label">منطقة التوصيل</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailShippingMethod"></div>
+                                            <div class="spec-label">طريقة الشحن</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="order-details-section">
+                                    <h4>عنوان التوصيل</h4>
+                                    <p id="detailShippingAddress"></p>
+                                </div>
+
+                                <div class="order-details-section">
+                                    <h4>ملاحظات الطلب</h4>
+                                    <p id="detailOrderNotes"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب المنتجات -->
+                        <div class="tab-pane" id="productsTab">
+                            <div class="order-products-management">
+                                <div class="products-table">
+                                    <div class="table-header">
+                                        <div class="col-product">المنتج</div>
+                                        <div class="col-price">السعر</div>
+                                        <div class="col-quantity">الكمية</div>
+                                        <div class="col-total">المجموع</div>
+                                    </div>
+                                    <div class="table-body" id="orderProductsList">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                                
+                                <div class="order-summary-detailed">
+                                    <div class="summary-row">
+                                        <span>المجموع الفرعي:</span>
+                                        <span id="detailSubtotal">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>ضريبة القيمة المضافة:</span>
+                                        <span id="detailTax">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>رسوم الشحن:</span>
+                                        <span id="detailShipping">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row">
+                                        <span>الخصم:</span>
+                                        <span id="detailDiscount">0.00 ر.س</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>المجموع الكلي:</span>
+                                        <span id="detailTotal">0.00 ر.س</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب تتبع الشحن -->
+                        <div class="tab-pane" id="trackingTab">
+                            <div class="order-tracking">
+                                <div class="tracking-steps">
+                                    <div class="tracking-step active">
+                                        <div class="step-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div class="step-info">
+                                            <div class="step-title">تم استلام الطلب</div>
+                                            <div class="step-date" id="stepOrdered"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-step" id="stepConfirmed">
+                                        <div class="step-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="step-info">
+                                            <div class="step-title">تم تأكيد الطلب</div>
+                                            <div class="step-date"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-step" id="stepProcessing">
+                                        <div class="step-icon">
+                                            <i class="fas fa-cog"></i>
+                                        </div>
+                                        <div class="step-info">
+                                            <div class="step-title">قيد المعالجة</div>
+                                            <div class="step-date"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-step" id="stepShipped">
+                                        <div class="step-icon">
+                                            <i class="fas fa-shipping-fast"></i>
+                                        </div>
+                                        <div class="step-info">
+                                            <div class="step-title">تم الشحن</div>
+                                            <div class="step-date"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-step" id="stepDelivered">
+                                        <div class="step-icon">
+                                            <i class="fas fa-home"></i>
+                                        </div>
+                                        <div class="step-info">
+                                            <div class="step-title">تم التسليم</div>
+                                            <div class="step-date"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tracking-info">
+                                    <h4>معلومات الشحن</h4>
+                                    <div class="tracking-details">
+                                        <div class="tracking-item">
+                                            <span>شركة الشحن:</span>
+                                            <span id="trackingCompany">-</span>
+                                        </div>
+                                        <div class="tracking-item">
+                                            <span>رقم التتبع:</span>
+                                            <span id="trackingNumber">-</span>
+                                        </div>
+                                        <div class="tracking-item">
+                                            <span>الوقت المتوقع للتسليم:</span>
+                                            <span id="estimatedDelivery">-</span>
+                                        </div>
+                                        <div class="tracking-item">
+                                            <span>سائق التوصيل:</span>
+                                            <span id="deliveryDriver">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب السجل -->
+                        <div class="tab-pane" id="historyTab">
+                            <div class="order-history">
+                                <div class="history-list" id="orderHistoryList">
+                                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-actions-footer">
+                    <button class="btn-neumorphism" onclick="orders.editOrder()">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-neumorphism btn-secondary-neumorphism" onclick="orders.updateOrderStatus()">
+                        <i class="fas fa-sync-alt"></i>
+                        تحديث الحالة
+                    </button>
+                    <button class="btn-neumorphism btn-danger-neumorphism" onclick="orders.cancelOrder()">
+                        <i class="fas fa-times"></i>
+                        إلغاء الطلب
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="orders.printOrder()">
+                        <i class="fas fa-print"></i>
+                        طباعة الفاتورة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تحديث حالة الطلب -->
+    <div id="statusUpdateModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="modal-header">
+                <h2>تحديث حالة الطلب</h2>
+                <span class="close" onclick="orders.closeStatusUpdate()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="status-update-form">
+                    <div class="form-group">
+                        <label for="newOrderStatus">الحالة الجديدة</label>
+                        <select id="newOrderStatus">
+                            <option value="pending">قيد الانتظار</option>
+                            <option value="confirmed">تم التأكيد</option>
+                            <option value="processing">قيد المعالجة</option>
+                            <option value="shipped">تم الشحن</option>
+                            <option value="delivered">تم التسليم</option>
+                            <option value="cancelled">ملغي</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusNotes">ملاحظات</label>
+                        <textarea id="statusNotes" rows="3" placeholder="أضف ملاحظات حول تحديث الحالة..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-neumorphism" onclick="orders.closeStatusUpdate()">
+                            إلغاء
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="orders.confirmStatusUpdate()">
+                            <i class="fas fa-check"></i>
+                            تأكيد التحديث
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلترة -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية الطلبات</h2>
+                <span class="close" onclick="orders.closeFilter()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <div class="filter-title">حالة الطلب</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="pending" checked>
+                                <span>قيد الانتظار</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="confirmed">
+                                <span>تم التأكيد</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="processing">
+                                <span>قيد المعالجة</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="shipped">
+                                <span>تم الشحن</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="delivered">
+                                <span>تم التسليم</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="cancelled">
+                                <span>ملغية</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">حالة الدفع</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="payment" value="pending" checked>
+                                <span>بانتظار الدفع</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="payment" value="paid">
+                                <span>مدفوع</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="payment" value="failed">
+                                <span>فشل الدفع</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="payment" value="refunded">
+                                <span>تم الاسترداد</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">الفترة الزمنية</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="radio" name="period" value="today" checked>
+                                <span>اليوم</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="period" value="week">
+                                <span>أخر 7 أيام</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="period" value="month">
+                                <span>أخر 30 يوم</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="period" value="all">
+                                <span>كل الفترات</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">نطاق السعر</div>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" class="price-input" id="filterMinAmount" placeholder="الحد الأدنى" value="0">
+                                <input type="number" class="price-input" id="filterMaxAmount" placeholder="الحد الأقصى" value="10000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-neumorphism" onclick="orders.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="orders.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>جاري المعالجة...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="orders.js"></script>
+</body>
+</html>
