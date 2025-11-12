@@ -1,0 +1,2958 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - التقارير المتقدمة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.company-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+/* شريط التحكم */
+.control-bar {
+    padding: 0 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.period-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.period-select {
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    min-width: 140px;
+    transition: var(--transition-liquid);
+}
+
+.period-select:focus {
+    outline: none;
+    box-shadow: var(--shadow-inset);
+}
+
+.custom-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-input {
+    background: var(--bg-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 12px;
+    transition: var(--transition-liquid);
+}
+
+.date-input:focus {
+    outline: none;
+    box-shadow: var(--shadow-inset);
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.btn-primary:active {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(2px);
+}
+
+/* تبويبات التقارير */
+.reports-tabs {
+    padding: 0 20px 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 4px;
+    gap: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+/* محتوى التقارير */
+.reports-content {
+    padding: 0 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* بطاقات الإحصائيات */
+.stats-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+}
+
+.stat-card.primary::before { background: var(--primary); }
+.stat-card.success::before { background: var(--success); }
+.stat-card.warning::before { background: var(--warning); }
+.stat-card.info::before { background: var(--info); }
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.stat-card.primary .stat-icon { background: var(--primary); }
+.stat-card.success .stat-icon { background: var(--success); }
+.stat-card.warning .stat-icon { background: var(--warning); }
+.stat-card.info .stat-icon { background: var(--info); }
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.stat-trend.positive {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.stat-trend.negative {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+/* المخططات */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.chart-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    transition: var(--transition-liquid);
+}
+
+.chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.chart-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.chart-select {
+    background: var(--bg-light);
+    border: none;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.chart-container {
+    height: 200px;
+    position: relative;
+}
+
+.chart-card.full-width .chart-container {
+    height: 250px;
+}
+
+/* البطاقات العامة */
+.section-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+}
+
+/* ترتيب المنتجات */
+.products-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.rank-number {
+    width: 24px;
+    height: 24px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.rank-number.top-3 {
+    background: var(--secondary);
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.product-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.product-stats {
+    text-align: left;
+}
+
+.product-revenue {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.product-sales {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* تحليلات الشبكة */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.analysis-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    transition: var(--transition-liquid);
+}
+
+.analysis-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.comparison-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comparison-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.comparison-item.trend {
+    border-bottom: none;
+    padding-top: 8px;
+}
+
+.comparison-item .value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.comparison-item .value.positive {
+    color: var(--success);
+}
+
+.comparison-item .value.negative {
+    color: var(--danger);
+}
+
+.metric-large {
+    text-align: center;
+}
+
+.metric-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.peak-times {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.peak-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.peak-item i {
+    color: var(--primary);
+    width: 16px;
+}
+
+/* الفلاتر */
+.filters-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-select {
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    flex: 1;
+    transition: var(--transition-liquid);
+}
+
+.filter-select:focus {
+    outline: none;
+    box-shadow: var(--shadow-inset);
+}
+
+/* الجداول */
+.table-container {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.data-table th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* التقارير المالية */
+.financial-reports {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.report-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+}
+
+.report-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.financial-statement {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.statement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.statement-item.subtotal {
+    border-bottom: 2px solid var(--primary);
+    padding-top: 8px;
+}
+
+.statement-item.total {
+    border-bottom: none;
+    padding-top: 8px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.statement-item .amount {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ratios-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.ratio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ratio-item:last-child {
+    border-bottom: none;
+}
+
+.ratio-value {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ترتيب العملاء */
+.customers-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.customer-rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.customer-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.customer-info {
+    flex: 1;
+}
+
+.customer-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.customer-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.customer-value {
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.export-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.export-option label {
+    display: block;
+    cursor: pointer;
+}
+
+.export-option input {
+    display: none;
+}
+
+.export-option input:checked + .option-content {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.option-content {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.option-content i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.export-range {
+    margin-bottom: 24px;
+}
+
+.export-range h4 {
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.form-select {
+    width: 100%;
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.export-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
+    transition: var(--transition-liquid);
+}
+
+.btn-secondary:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 400px) {
+    .stats-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .financial-reports {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .period-selector {
+        flex-direction: column;
+    }
+    
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1 0 45%;
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>التقارير المتقدمة 📊</h1>
+                    <p>تحليلات شاملة لأداء الصيدلية</p>
+                </div>
+                <div class="company-actions">
+                    <button class="action-icon liquid-transition" id="exportBtn">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط البحث والتحكم -->
+        <div class="control-bar">
+            <div class="period-selector">
+                <select id="reportPeriod" class="period-select">
+                    <option value="today">اليوم</option>
+                    <option value="week">هذا الأسبوع</option>
+                    <option value="month" selected>هذا الشهر</option>
+                    <option value="quarter">هذا الربع</option>
+                    <option value="year">هذا العام</option>
+                    <option value="custom">مخصص</option>
+                </select>
+                <div id="customDateRange" class="custom-range" style="display: none;">
+                    <input type="date" id="startDate" class="date-input">
+                    <span>إلى</span>
+                    <input type="date" id="endDate" class="date-input">
+                </div>
+            </div>
+            <div class="report-actions">
+                <button class="btn-primary" id="generateReportBtn">
+                    <i class="fas fa-chart-bar"></i>
+                    توليد التقرير
+                </button>
+            </div>
+        </div>
+
+        <!-- تبويبات التقارير -->
+        <div class="reports-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    النظرة العامة
+                </button>
+                <button class="tab-btn" data-tab="sales">
+                    <i class="fas fa-shopping-cart"></i>
+                    المبيعات
+                </button>
+                <button class="tab-btn" data-tab="products">
+                    <i class="fas fa-pills"></i>
+                    المنتجات
+                </button>
+                <button class="tab-btn" data-tab="customers">
+                    <i class="fas fa-users"></i>
+                    العملاء
+                </button>
+                <button class="tab-btn" data-tab="financial">
+                    <i class="fas fa-money-bill-wave"></i>
+                    المالية
+                </button>
+            </div>
+        </div>
+
+        <!-- محتوى التقارير -->
+        <div class="reports-content">
+            
+            <!-- تبويب النظرة العامة -->
+            <div id="overviewTab" class="tab-pane active">
+                <!-- بطاقات الإحصائيات السريعة -->
+                <div class="stats-cards-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalRevenue">0 ر.س</div>
+                            <div class="stat-label">إجمالي الإيرادات</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="revenueTrend">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalOrders">0</div>
+                            <div class="stat-label">عدد الطلبات</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="ordersTrend">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="productsSold">0</div>
+                            <div class="stat-label">منتجات مباعة</div>
+                            <div class="stat-trend negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span id="productsTrend">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="newCustomers">0</div>
+                            <div class="stat-label">عملاء جدد</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="customersTrend">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المخططات الرئيسية -->
+                <div class="charts-grid">
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>الإيرادات والمبيعات</h3>
+                            <select id="revenueChartType" class="chart-select">
+                                <option value="line">خطي</option>
+                                <option value="bar">أعمدة</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>توزيع الفئات</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="categoriesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>قنوات البيع</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="channelsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أفضل المنتجات -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3>أفضل المنتجات أداءً</h3>
+                        <button class="btn-text" id="viewAllProductsBtn">
+                            عرض الكل
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="products-ranking" id="topProductsList">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب تقارير المبيعات -->
+            <div id="salesTab" class="tab-pane">
+                <div class="charts-grid">
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>اتجاه المبيعات اليومية</h3>
+                            <select id="salesChartPeriod" class="chart-select">
+                                <option value="7d">7 أيام</option>
+                                <option value="30d" selected>30 يوم</option>
+                                <option value="90d">90 يوم</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesTrendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>المبيعات حسب الوقت</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="hourlySalesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>المبيعات حسب الأيام</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weeklySalesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تحليل المبيعات -->
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h4>مقارنة المبيعات</h4>
+                        <div class="comparison-stats">
+                            <div class="comparison-item">
+                                <span>هذا الشهر</span>
+                                <span class="value" id="currentMonthSales">0 ر.س</span>
+                            </div>
+                            <div class="comparison-item">
+                                <span>الشهر الماضي</span>
+                                <span class="value" id="lastMonthSales">0 ر.س</span>
+                            </div>
+                            <div class="comparison-item trend">
+                                <span>التغيير</span>
+                                <span class="value positive" id="salesChange">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h4>متوسط قيمة الطلب</h4>
+                        <div class="metric-large">
+                            <div class="metric-value" id="avgOrderValue">0 ر.س</div>
+                            <div class="metric-label">زيادة 5% عن الشهر الماضي</div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h4>أوقات الذروة</h4>
+                        <div class="peak-times">
+                            <div class="peak-item">
+                                <i class="fas fa-clock"></i>
+                                <span>2:00 - 4:00 مساءً</span>
+                            </div>
+                            <div class="peak-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>السبت والأحد</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب تقارير المنتجات -->
+            <div id="productsTab" class="tab-pane">
+                <div class="filters-row">
+                    <select id="productCategoryFilter" class="filter-select">
+                        <option value="all">جميع الفئات</option>
+                        <option value="مسكنات">مسكنات</option>
+                        <option value="فيتامينات">فيتامينات</option>
+                        <option value="مضادات حيوية">مضادات حيوية</option>
+                    </select>
+                    <select id="productSortBy" class="filter-select">
+                        <option value="revenue">حسب الإيرادات</option>
+                        <option value="quantity">حسب الكمية</option>
+                        <option value="profit">حسب الربح</option>
+                    </select>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>أعلى المنتجات ربحاً</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="profitProductsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>المخزون والطلب</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="inventoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>أداء المنتجات عبر الوقت</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="productsPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- جدول تحليل المنتجات -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3>تحليل مفصل للمنتجات</h3>
+                        <button class="btn-text" id="exportProductsBtn">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="productsAnalysisTable">
+                            <thead>
+                                <tr>
+                                    <th>المنتج</th>
+                                    <th>المبيعات</th>
+                                    <th>الإيرادات</th>
+                                    <th>الربح</th>
+                                    <th>معدل البيع</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم تعبئتها بالجافاسكريبت -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب تقارير العملاء -->
+            <div id="customersTab" class="tab-pane">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>توزيع العملاء</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="customersSegmentationChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>معدل الاحتفاظ</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="retentionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>تحليل القيمة الدائمة</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="lifetimeValueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إحصائيات العملاء -->
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h4>العملاء النشطين</h4>
+                        <div class="metric-large">
+                            <div class="metric-value" id="activeCustomers">0</div>
+                            <div class="metric-label">+12 هذا الشهر</div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h4>متوسط الإنفاق</h4>
+                        <div class="metric-large">
+                            <div class="metric-value" id="avgCustomerSpend">0 ر.س</div>
+                            <div class="metric-label">لكل عميل</div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h4>معدل التحويل</h4>
+                        <div class="metric-large">
+                            <div class="metric-value" id="conversionRate">0%</div>
+                            <div class="metric-label">من زائر إلى عميل</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أفضل العملاء -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3>أفضل العملاء قيمة</h3>
+                    </div>
+                    <div class="customers-ranking" id="topCustomersList">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب التقارير المالية -->
+            <div id="financialTab" class="tab-pane">
+                <div class="charts-grid">
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>التدفق المالي</h3>
+                            <select id="cashflowPeriod" class="chart-select">
+                                <option value="monthly">شهري</option>
+                                <option value="quarterly">ربع سنوي</option>
+                                <option value="yearly">سنوي</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="cashflowChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>هيكل المصروفات</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="expensesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>مؤشرات الربحية</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="profitabilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التقارير المالية -->
+                <div class="financial-reports">
+                    <div class="report-card">
+                        <h4>قائمة الدخل</h4>
+                        <div class="financial-statement">
+                            <div class="statement-item">
+                                <span>الإيرادات</span>
+                                <span class="amount" id="totalRevenueFinancial">0 ر.س</span>
+                            </div>
+                            <div class="statement-item">
+                                <span>تكلفة البضاعة المباعة</span>
+                                <span class="amount" id="cogs">0 ر.س</span>
+                            </div>
+                            <div class="statement-item subtotal">
+                                <span>إجمالي الربح</span>
+                                <span class="amount" id="grossProfit">0 ر.س</span>
+                            </div>
+                            <div class="statement-item">
+                                <span>المصروفات التشغيلية</span>
+                                <span class="amount" id="operatingExpenses">0 ر.س</span>
+                            </div>
+                            <div class="statement-item total">
+                                <span>صافي الربح</span>
+                                <span class="amount" id="netProfit">0 ر.س</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <h4>النسب المالية</h4>
+                        <div class="ratios-grid">
+                            <div class="ratio-item">
+                                <span>هامش الربح الصافي</span>
+                                <span class="ratio-value" id="netMargin">0%</span>
+                            </div>
+                            <div class="ratio-item">
+                                <span>العائد على الاستثمار</span>
+                                <span class="ratio-value" id="roi">0%</span>
+                            </div>
+                            <div class="ratio-item">
+                                <span>نسبة التداول</span>
+                                <span class="ratio-value" id="currentRatio">0.0</span>
+                            </div>
+                            <div class="ratio-item">
+                                <span>دورة التحصيل</span>
+                                <span class="ratio-value" id="collectionPeriod">0 يوم</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="customers.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="nav-label">العملاء</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تصدير التقارير -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصدير التقرير</h2>
+                <span class="close" onclick="reports.closeExportModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-option">
+                        <label>
+                            <input type="radio" name="exportFormat" value="pdf" checked>
+                            <div class="option-content">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>PDF</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <label>
+                            <input type="radio" name="exportFormat" value="excel">
+                            <div class="option-content">
+                                <i class="fas fa-file-excel"></i>
+                                <span>Excel</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <label>
+                            <input type="radio" name="exportFormat" value="csv">
+                            <div class="option-content">
+                                <i class="fas fa-file-csv"></i>
+                                <span>CSV</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="export-range">
+                    <h4>الفترة الزمنية</h4>
+                    <select id="exportPeriod" class="form-select">
+                        <option value="current">الفترة الحالية</option>
+                        <option value="last_month">الشهر الماضي</option>
+                        <option value="last_quarter">الربع الماضي</option>
+                        <option value="last_year">العام الماضي</option>
+                        <option value="custom">مخصص</option>
+                    </select>
+                </div>
+                <div class="export-actions">
+                    <button class="btn-secondary" onclick="reports.closeExportModal()">إلغاء</button>
+                    <button class="btn-primary" onclick="reports.exportReport()">
+                        <i class="fas fa-download"></i>
+                        تصدير التقرير
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام التقارير المتقدمة
+class AdvancedReports {
+    constructor() {
+        this.currentTab = 'overview';
+        this.currentPeriod = 'month';
+        this.charts = {};
+        this.reportData = {};
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.setupTabs();
+        this.generateReport();
+        this.updateTime();
+        this.setupRealTimeUpdates();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedReports = localStorage.getItem('pharma_reports_data');
+        
+        if (savedReports) {
+            this.reportData = JSON.parse(savedReports);
+        } else {
+            this.reportData = this.generateSampleData();
+        }
+    }
+
+    generateSampleData() {
+        // بيانات نموذجية للتقارير
+        return {
+            overview: {
+                totalRevenue: 85600,
+                totalOrders: 156,
+                productsSold: 1248,
+                newCustomers: 24,
+                revenueTrend: 12.5,
+                ordersTrend: 8.2,
+                productsTrend: -3.1,
+                customersTrend: 15.7
+            },
+            sales: {
+                dailyTrend: this.generateDailySales(30),
+                hourlyPattern: this.generateHourlySales(),
+                weeklyPattern: this.generateWeeklySales(),
+                currentMonth: 85600,
+                lastMonth: 76200,
+                avgOrderValue: 548.72
+            },
+            products: {
+                topProducts: this.generateTopProducts(),
+                categories: this.generateCategoryData(),
+                performance: this.generateProductPerformance()
+            },
+            customers: {
+                segmentation: this.generateCustomerSegmentation(),
+                retention: this.generateRetentionData(),
+                lifetimeValue: this.generateLTVData(),
+                activeCustomers: 1248,
+                avgSpend: 685.50,
+                conversionRate: 3.2
+            },
+            financial: {
+                cashflow: this.generateCashflowData(),
+                expenses: this.generateExpensesData(),
+                profitability: this.generateProfitabilityData(),
+                incomeStatement: this.generateIncomeStatement(),
+                financialRatios: this.generateFinancialRatios()
+            }
+        };
+    }
+
+    generateDailySales(days) {
+        const data = [];
+        const baseValue = 2000;
+        
+        for (let i = 0; i < days; i++) {
+            const variation = Math.random() * 800 - 400;
+            const trend = i * 25;
+            const dayOfWeek = (i % 7);
+            const weekendBoost = (dayOfWeek === 5 || dayOfWeek === 6) ? 300 : 0;
+            
+            data.push(Math.max(500, baseValue + variation + trend + weekendBoost));
+        }
+        
+        return data;
+    }
+
+    generateHourlySales() {
+        return {
+            labels: ['8-10', '10-12', '12-2', '2-4', '4-6', '6-8', '8-10'],
+            data: [45, 120, 185, 210, 175, 130, 85]
+        };
+    }
+
+    generateWeeklySales() {
+        return {
+            labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+            data: [12500, 13200, 11800, 14500, 12800, 11000, 9800]
+        };
+    }
+
+    generateTopProducts() {
+        return [
+            { name: 'باراسيتامول 500 مجم', revenue: 3675, sales: 245, trend: 12 },
+            { name: 'فيتامين سي 1000 مجم', revenue: 8505, sales: 189, trend: 8 },
+            { name: 'أوميغا 3 كبسولات', revenue: 11700, sales: 156, trend: 15 },
+            { name: 'كريم هيدروكورتيزون', revenue: 2156, sales: 98, trend: -5 },
+            { name: 'أموكسيسيلين 500 مجم', revenue: 2450, sales: 70, trend: 3 }
+        ];
+    }
+
+    generateCategoryData() {
+        return {
+            labels: ['مسكنات', 'فيتامينات', 'مضادات حيوية', 'مكملات', 'أدوية مزمنة', 'أخرى'],
+            data: [25, 20, 15, 18, 12, 10]
+        };
+    }
+
+    generateProductPerformance() {
+        const products = ['باراسيتامول', 'فيتامين سي', 'أوميغا 3', 'هيدروكورتيزون', 'أموكسيسيلين'];
+        const weeks = ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'];
+        
+        return {
+            labels: weeks,
+            datasets: products.map((product, index) => ({
+                label: product,
+                data: weeks.map(() => Math.floor(Math.random() * 100) + 50 + (index * 20)),
+                borderColor: this.getChartColor(index),
+                backgroundColor: this.getChartColor(index, 0.1)
+            }))
+        };
+    }
+
+    generateCustomerSegmentation() {
+        return {
+            labels: ['عملاء جدد', 'عملاء متكررين', 'عملاء VIP', 'عملاء غير نشطين'],
+            data: [25, 45, 15, 15]
+        };
+    }
+
+    generateRetentionData() {
+        return {
+            labels: ['الشهر 1', 'الشهر 2', 'الشهر 3', 'الشهر 4', 'الشهر 5', 'الشهر 6'],
+            data: [100, 85, 72, 65, 58, 52]
+        };
+    }
+
+    generateLTVData() {
+        return {
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            data: [450, 520, 580, 620]
+        };
+    }
+
+    generateCashflowData() {
+        return {
+            labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+            income: [75000, 82000, 78000, 86000, 90000, 95000],
+            expenses: [45000, 48000, 52000, 49000, 51000, 53000],
+            profit: [30000, 34000, 26000, 37000, 39000, 42000]
+        };
+    }
+
+    generateExpensesData() {
+        return {
+            labels: ['المخزون', 'الرواتب', 'التسويق', 'الإيجار', 'مرافق', 'أخرى'],
+            data: [45, 25, 12, 8, 5, 5]
+        };
+    }
+
+    generateProfitabilityData() {
+        return {
+            labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+            grossMargin: [65, 68, 62, 70, 72, 75],
+            netMargin: [25, 28, 22, 30, 32, 35],
+            operatingMargin: [40, 42, 38, 45, 47, 50]
+        };
+    }
+
+    generateIncomeStatement() {
+        return {
+            revenue: 85600,
+            cogs: 38520,
+            grossProfit: 47080,
+            operatingExpenses: 23540,
+            netProfit: 23540
+        };
+    }
+
+    generateFinancialRatios() {
+        return {
+            netMargin: 27.5,
+            roi: 18.3,
+            currentRatio: 2.1,
+            collectionPeriod: 28
+        };
+    }
+
+    getChartColor(index, alpha = 1) {
+        const colors = [
+            `rgba(0, 137, 123, ${alpha})`,
+            `rgba(255, 179, 0, ${alpha})`,
+            `rgba(33, 150, 243, ${alpha})`,
+            `rgba(76, 175, 80, ${alpha})`,
+            `rgba(156, 39, 176, ${alpha})`,
+            `rgba(244, 67, 54, ${alpha})`
+        ];
+        return colors[index % colors.length];
+    }
+
+    setupEventListeners() {
+        // زر التحديث
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => {
+                this.refreshData();
+            });
+        }
+
+        // زر التصدير
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                this.showExportModal();
+            });
+        }
+
+        // زر توليد التقرير
+        const generateBtn = document.getElementById('generateReportBtn');
+        if (generateBtn) {
+            generateBtn.addEventListener('click', () => {
+                this.generateReport();
+            });
+        }
+
+        // تغيير الفترة
+        const periodSelect = document.getElementById('reportPeriod');
+        if (periodSelect) {
+            periodSelect.addEventListener('change', (e) => {
+                this.currentPeriod = e.target.value;
+                this.toggleCustomDateRange();
+                this.generateReport();
+            });
+        }
+
+        // تغيير نوع مخطط الإيرادات
+        const revenueChartType = document.getElementById('revenueChartType');
+        if (revenueChartType) {
+            revenueChartType.addEventListener('change', (e) => {
+                this.updateRevenueChartType(e.target.value);
+            });
+        }
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    setupTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabName = e.target.dataset.tab;
+                this.switchTab(tabName);
+            });
+        });
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث أزرار التبويب
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تحديث محتوى التبويب
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === `${tabName}Tab`) {
+                pane.classList.add('active');
+            }
+        });
+
+        // تحميل المحتوى الخاص بكل تبويب
+        switch(tabName) {
+            case 'overview':
+                this.renderOverview();
+                break;
+            case 'sales':
+                this.renderSalesReports();
+                break;
+            case 'products':
+                this.renderProductsReports();
+                break;
+            case 'customers':
+                this.renderCustomersReports();
+                break;
+            case 'financial':
+                this.renderFinancialReports();
+                break;
+        }
+    }
+
+    toggleCustomDateRange() {
+        const customRange = document.getElementById('customDateRange');
+        const periodSelect = document.getElementById('reportPeriod');
+        
+        if (periodSelect.value === 'custom') {
+            customRange.style.display = 'flex';
+        } else {
+            customRange.style.display = 'none';
+        }
+    }
+
+    generateReport() {
+        this.updateQuickStats();
+        
+        switch(this.currentTab) {
+            case 'overview':
+                this.renderOverview();
+                break;
+            case 'sales':
+                this.renderSalesReports();
+                break;
+            case 'products':
+                this.renderProductsReports();
+                break;
+            case 'customers':
+                this.renderCustomersReports();
+                break;
+            case 'financial':
+                this.renderFinancialReports();
+                break;
+        }
+        
+        this.showToast('تم تحديث التقرير بنجاح');
+    }
+
+    updateQuickStats() {
+        const data = this.reportData.overview;
+        
+        document.getElementById('totalRevenue').textContent = `${data.totalRevenue.toLocaleString()} ر.س`;
+        document.getElementById('totalOrders').textContent = data.totalOrders.toLocaleString();
+        document.getElementById('productsSold').textContent = data.productsSold.toLocaleString();
+        document.getElementById('newCustomers').textContent = data.newCustomers.toLocaleString();
+        
+        document.getElementById('revenueTrend').textContent = `${data.revenueTrend}%`;
+        document.getElementById('ordersTrend').textContent = `${data.ordersTrend}%`;
+        document.getElementById('productsTrend').textContent = `${data.productsTrend}%`;
+        document.getElementById('customersTrend').textContent = `${data.customersTrend}%`;
+    }
+
+    // === تبويب النظرة العامة ===
+    renderOverview() {
+        this.initRevenueChart();
+        this.initCategoriesChart();
+        this.initChannelsChart();
+        this.renderTopProducts();
+    }
+
+    initRevenueChart() {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        if (this.charts.revenue) {
+            this.charts.revenue.destroy();
+        }
+
+        const data = this.reportData.sales.dailyTrend;
+        const labels = data.map((_, index) => `يوم ${index + 1}`);
+        
+        this.charts.revenue = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'الإيرادات اليومية',
+                    data: data,
+                    borderColor: '#00897B',
+                    backgroundColor: 'rgba(0, 137, 123, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    updateRevenueChartType(type) {
+        if (this.charts.revenue) {
+            this.charts.revenue.config.type = type;
+            this.charts.revenue.update();
+        }
+    }
+
+    initCategoriesChart() {
+        const ctx = document.getElementById('categoriesChart').getContext('2d');
+        const data = this.reportData.products.categories;
+        
+        if (this.charts.categories) {
+            this.charts.categories.destroy();
+        }
+
+        this.charts.categories = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.data,
+                    backgroundColor: [
+                        '#00897B', '#FFB300', '#2196F3', '#4CAF50', '#9C27B0', '#FF9800'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true
+                    }
+                }
+            }
+        });
+    }
+
+    initChannelsChart() {
+        const ctx = document.getElementById('channelsChart').getContext('2d');
+        
+        if (this.charts.channels) {
+            this.charts.channels.destroy();
+        }
+
+        this.charts.channels = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['المباشر', 'الموقع', 'التوصيل', 'الهاتف', 'التطبيق'],
+                datasets: [{
+                    label: 'قنوات البيع',
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: '#00897B',
+                    borderColor: '#00695C',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderTopProducts() {
+        const container = document.getElementById('topProductsList');
+        const products = this.reportData.products.topProducts;
+        
+        let html = '';
+        products.forEach((product, index) => {
+            const trendClass = product.trend > 0 ? 'positive' : 'negative';
+            const trendIcon = product.trend > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+            
+            html += `
+                <div class="product-rank-item liquid-transition">
+                    <div class="rank-number ${index < 3 ? 'top-3' : ''}">${index + 1}</div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-meta">${product.sales} عملية بيع</div>
+                    </div>
+                    <div class="product-stats">
+                        <div class="product-revenue">${product.revenue.toLocaleString()} ر.س</div>
+                        <div class="product-trend ${trendClass}">
+                            <i class="fas ${trendIcon}"></i>
+                            ${Math.abs(product.trend)}%
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // === تبويب تقارير المبيعات ===
+    renderSalesReports() {
+        this.initSalesTrendChart();
+        this.initHourlySalesChart();
+        this.initWeeklySalesChart();
+        this.updateSalesAnalysis();
+    }
+
+    initSalesTrendChart() {
+        const ctx = document.getElementById('salesTrendChart').getContext('2d');
+        const data = this.reportData.sales.dailyTrend;
+        const labels = data.map((_, index) => `يوم ${index + 1}`);
+        
+        if (this.charts.salesTrend) {
+            this.charts.salesTrend.destroy();
+        }
+
+        this.charts.salesTrend = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'المبيعات',
+                    data: data,
+                    borderColor: '#FFB300',
+                    backgroundColor: 'rgba(255, 179, 0, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initHourlySalesChart() {
+        const ctx = document.getElementById('hourlySalesChart').getContext('2d');
+        const data = this.reportData.sales.hourlyPattern;
+        
+        if (this.charts.hourlySales) {
+            this.charts.hourlySales.destroy();
+        }
+
+        this.charts.hourlySales = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'المبيعات',
+                    data: data.data,
+                    backgroundColor: '#2196F3',
+                    borderColor: '#1976D2',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initWeeklySalesChart() {
+        const ctx = document.getElementById('weeklySalesChart').getContext('2d');
+        const data = this.reportData.sales.weeklyPattern;
+        
+        if (this.charts.weeklySales) {
+            this.charts.weeklySales.destroy();
+        }
+
+        this.charts.weeklySales = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'المبيعات',
+                    data: data.data,
+                    backgroundColor: '#4CAF50',
+                    borderColor: '#388E3C',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    updateSalesAnalysis() {
+        const data = this.reportData.sales;
+        const change = ((data.currentMonth - data.lastMonth) / data.lastMonth * 100).toFixed(1);
+        const changeClass = change >= 0 ? 'positive' : 'negative';
+        
+        document.getElementById('currentMonthSales').textContent = `${data.currentMonth.toLocaleString()} ر.س`;
+        document.getElementById('lastMonthSales').textContent = `${data.lastMonth.toLocaleString()} ر.س`;
+        document.getElementById('salesChange').textContent = `${change}%`;
+        document.getElementById('salesChange').className = `value ${changeClass}`;
+        
+        document.getElementById('avgOrderValue').textContent = `${data.avgOrderValue.toLocaleString()} ر.س`;
+    }
+
+    // === تبويب تقارير المنتجات ===
+    renderProductsReports() {
+        this.initProfitProductsChart();
+        this.initInventoryChart();
+        this.initProductsPerformanceChart();
+        this.renderProductsAnalysisTable();
+    }
+
+    initProfitProductsChart() {
+        const ctx = document.getElementById('profitProductsChart').getContext('2d');
+        const products = this.reportData.products.topProducts;
+        
+        if (this.charts.profitProducts) {
+            this.charts.profitProducts.destroy();
+        }
+
+        this.charts.profitProducts = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: products.map(p => p.name.split(' ')[0]),
+                datasets: [{
+                    label: 'الربح',
+                    data: products.map(p => p.revenue * 0.6), // افتراض نسبة ربح 60%
+                    backgroundColor: '#9C27B0',
+                    borderColor: '#7B1FA2',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initInventoryChart() {
+        const ctx = document.getElementById('inventoryChart').getContext('2d');
+        
+        if (this.charts.inventory) {
+            this.charts.inventory.destroy();
+        }
+
+        this.charts.inventory = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['مخزون جيد', 'منخفض', 'منتهي'],
+                datasets: [{
+                    data: [65, 25, 10],
+                    backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true
+                    }
+                }
+            }
+        });
+    }
+
+    initProductsPerformanceChart() {
+        const ctx = document.getElementById('productsPerformanceChart').getContext('2d');
+        const data = this.reportData.products.performance;
+        
+        if (this.charts.productsPerformance) {
+            this.charts.productsPerformance.destroy();
+        }
+
+        this.charts.productsPerformance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: data.datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        rtl: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderProductsAnalysisTable() {
+        const table = document.getElementById('productsAnalysisTable').querySelector('tbody');
+        const products = this.reportData.products.topProducts;
+        
+        let html = '';
+        products.forEach(product => {
+            const profit = product.revenue * 0.6;
+            const sellThrough = (product.sales / 200 * 100).toFixed(1); // افتراض مخزون 200
+            const status = sellThrough > 80 ? 'ممتاز' : sellThrough > 50 ? 'جيد' : 'عادي';
+            
+            html += `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.sales}</td>
+                    <td>${product.revenue.toLocaleString()} ر.س</td>
+                    <td>${profit.toLocaleString()} ر.س</td>
+                    <td>${sellThrough}%</td>
+                    <td><span class="status-${status}">${status}</span></td>
+                </tr>
+            `;
+        });
+
+        table.innerHTML = html;
+    }
+
+    // === تبويب تقارير العملاء ===
+    renderCustomersReports() {
+        this.initCustomersSegmentationChart();
+        this.initRetentionChart();
+        this.initLifetimeValueChart();
+        this.updateCustomersAnalysis();
+        this.renderTopCustomers();
+    }
+
+    initCustomersSegmentationChart() {
+        const ctx = document.getElementById('customersSegmentationChart').getContext('2d');
+        const data = this.reportData.customers.segmentation;
+        
+        if (this.charts.customersSegmentation) {
+            this.charts.customersSegmentation.destroy();
+        }
+
+        this.charts.customersSegmentation = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.data,
+                    backgroundColor: ['#00897B', '#FFB300', '#2196F3', '#9C27B0'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true
+                    }
+                }
+            }
+        });
+    }
+
+    initRetentionChart() {
+        const ctx = document.getElementById('retentionChart').getContext('2d');
+        const data = this.reportData.customers.retention;
+        
+        if (this.charts.retention) {
+            this.charts.retention.destroy();
+        }
+
+        this.charts.retention = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'معدل الاحتفاظ',
+                    data: data.data,
+                    borderColor: '#FF9800',
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initLifetimeValueChart() {
+        const ctx = document.getElementById('lifetimeValueChart').getContext('2d');
+        const data = this.reportData.customers.lifetimeValue;
+        
+        if (this.charts.lifetimeValue) {
+            this.charts.lifetimeValue.destroy();
+        }
+
+        this.charts.lifetimeValue = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'القيمة الدائمة',
+                    data: data.data,
+                    backgroundColor: '#4CAF50',
+                    borderColor: '#388E3C',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    updateCustomersAnalysis() {
+        const data = this.reportData.customers;
+        
+        document.getElementById('activeCustomers').textContent = data.activeCustomers.toLocaleString();
+        document.getElementById('avgCustomerSpend').textContent = `${data.avgSpend.toLocaleString()} ر.س`;
+        document.getElementById('conversionRate').textContent = `${data.conversionRate}%`;
+    }
+
+    renderTopCustomers() {
+        const container = document.getElementById('topCustomersList');
+        const customers = [
+            { name: 'أحمد محمد', value: 12500, orders: 15 },
+            { name: 'خالد عبدالله', value: 11800, orders: 22 },
+            { name: 'فاطمة علي', value: 9800, orders: 12 },
+            { name: 'عبدالله ناصر', value: 8700, orders: 18 },
+            { name: 'نورة السعد', value: 7600, orders: 8 }
+        ];
+        
+        let html = '';
+        customers.forEach((customer, index) => {
+            html += `
+                <div class="customer-rank-item liquid-transition">
+                    <div class="customer-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="customer-info">
+                        <div class="customer-name">${customer.name}</div>
+                        <div class="customer-meta">${customer.orders} طلب</div>
+                    </div>
+                    <div class="customer-value">${customer.value.toLocaleString()} ر.س</div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // === تبويب التقارير المالية ===
+    renderFinancialReports() {
+        this.initCashflowChart();
+        this.initExpensesChart();
+        this.initProfitabilityChart();
+        this.updateFinancialStatements();
+        this.updateFinancialRatios();
+    }
+
+    initCashflowChart() {
+        const ctx = document.getElementById('cashflowChart').getContext('2d');
+        const data = this.reportData.financial.cashflow;
+        
+        if (this.charts.cashflow) {
+            this.charts.cashflow.destroy();
+        }
+
+        this.charts.cashflow = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: 'الإيرادات',
+                        data: data.income,
+                        backgroundColor: '#4CAF50',
+                        borderColor: '#388E3C',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'المصروفات',
+                        data: data.expenses,
+                        backgroundColor: '#F44336',
+                        borderColor: '#D32F2F',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'صافي الربح',
+                        data: data.profit,
+                        backgroundColor: '#2196F3',
+                        borderColor: '#1976D2',
+                        borderWidth: 1,
+                        type: 'line',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        rtl: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initExpensesChart() {
+        const ctx = document.getElementById('expensesChart').getContext('2d');
+        const data = this.reportData.financial.expenses;
+        
+        if (this.charts.expenses) {
+            this.charts.expenses.destroy();
+        }
+
+        this.charts.expenses = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.data,
+                    backgroundColor: [
+                        '#00897B', '#FFB300', '#2196F3', '#9C27B0', '#4CAF50', '#FF9800'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true
+                    }
+                }
+            }
+        });
+    }
+
+    initProfitabilityChart() {
+        const ctx = document.getElementById('profitabilityChart').getContext('2d');
+        const data = this.reportData.financial.profitability;
+        
+        if (this.charts.profitability) {
+            this.charts.profitability.destroy();
+        }
+
+        this.charts.profitability = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: 'هامش إجمالي',
+                        data: data.grossMargin,
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        borderWidth: 2,
+                        fill: true
+                    },
+                    {
+                        label: 'هامش صافي',
+                        data: data.netMargin,
+                        borderColor: '#2196F3',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        borderWidth: 2,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        rtl: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    updateFinancialStatements() {
+        const data = this.reportData.financial.incomeStatement;
+        
+        document.getElementById('totalRevenueFinancial').textContent = `${data.revenue.toLocaleString()} ر.س`;
+        document.getElementById('cogs').textContent = `${data.cogs.toLocaleString()} ر.س`;
+        document.getElementById('grossProfit').textContent = `${data.grossProfit.toLocaleString()} ر.س`;
+        document.getElementById('operatingExpenses').textContent = `${data.operatingExpenses.toLocaleString()} ر.س`;
+        document.getElementById('netProfit').textContent = `${data.netProfit.toLocaleString()} ر.س`;
+    }
+
+    updateFinancialRatios() {
+        const data = this.reportData.financial.financialRatios;
+        
+        document.getElementById('netMargin').textContent = `${data.netMargin}%`;
+        document.getElementById('roi').textContent = `${data.roi}%`;
+        document.getElementById('currentRatio').textContent = data.currentRatio;
+        document.getElementById('collectionPeriod').textContent = `${data.collectionPeriod} يوم`;
+    }
+
+    // === وظائف التصدير ===
+    showExportModal() {
+        document.getElementById('exportModal').style.display = 'block';
+    }
+
+    closeExportModal() {
+        document.getElementById('exportModal').style.display = 'none';
+    }
+
+    exportReport() {
+        const format = document.querySelector('input[name="exportFormat"]:checked').value;
+        const period = document.getElementById('exportPeriod').value;
+        
+        this.showToast(`جاري تصدير التقرير بصيغة ${format.toUpperCase()}...`);
+        
+        // محاكاة عملية التصدير
+        setTimeout(() => {
+            this.showToast(`تم تصدير التقرير بنجاح!`);
+            this.closeExportModal();
+        }, 2000);
+    }
+
+    // === وظائف مساعدة ===
+    refreshData() {
+        this.showToast('جاري تحديث البيانات...');
+        
+        // محاكاة تحديث البيانات
+        setTimeout(() => {
+            this.reportData = this.generateSampleData();
+            this.generateReport();
+            this.showToast('تم تحديث البيانات بنجاح');
+        }, 1500);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 30000); // كل 30 ثانية
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة تحديثات عشوائية للبيانات
+        if (Math.random() > 0.7) {
+            const randomIncrease = Math.floor(Math.random() * 1000) + 500;
+            this.reportData.overview.totalRevenue += randomIncrease;
+            this.reportData.overview.totalOrders += Math.floor(Math.random() * 3) + 1;
+            
+            this.updateQuickStats();
+            
+            if (this.currentTab === 'overview' && this.charts.revenue) {
+                this.charts.revenue.data.datasets[0].data.push(randomIncrease);
+                this.charts.revenue.data.labels.push(`يوم ${this.charts.revenue.data.labels.length + 1}`);
+                if (this.charts.revenue.data.datasets[0].data.length > 30) {
+                    this.charts.revenue.data.datasets[0].data.shift();
+                    this.charts.revenue.data.labels.shift();
+                }
+                this.charts.revenue.update();
+            }
+        }
+    }
+}
+
+// تهيئة نظام التقارير عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.reports = new AdvancedReports();
+});
+</script>
+</body>
+</html>

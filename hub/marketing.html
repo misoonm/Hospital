@@ -1,0 +1,3504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - المبيعات والتسويق</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.status-right i {
+    margin-right: 8px;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.marketing-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* الإحصائيات السريعة */
+.quick-stats-section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.stat-icon.revenue {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.stat-icon.orders {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+}
+
+.stat-icon.customers {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+.stat-icon.conversion {
+    background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+}
+
+.stat-trend.positive {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.stat-trend.negative {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+/* التبويبات الرئيسية */
+.tabs-navigation {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.tab-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+/* محتوى التبويبات */
+.tab-content {
+    padding: 0 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* الأقسام العامة */
+.content-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.period-select, .report-period {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* المخططات */
+.chart-container {
+    height: 200px;
+    position: relative;
+}
+
+/* شبكة المنتجات */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.product-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.product-image {
+    width: 100%;
+    height: 80px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+}
+
+.product-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.product-sales {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.sales-amount {
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* قائمة الحملات */
+.campaigns-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.campaign-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    cursor: pointer;
+    border-right: 4px solid var(--primary);
+}
+
+.campaign-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateX(-4px);
+}
+
+.campaign-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.campaign-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.campaign-status {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-active {
+    background: var(--success);
+    color: white;
+}
+
+.status-paused {
+    background: var(--warning);
+    color: white;
+}
+
+.status-completed {
+    background: var(--info);
+    color: white;
+}
+
+.campaign-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric-value {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.metric-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.campaign-progress {
+    margin-top: 12px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--primary-light);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* إدارة الحملات */
+.campaigns-management {
+    margin-bottom: 20px;
+}
+
+.campaigns-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.view-options {
+    display: flex;
+    gap: 8px;
+}
+
+.view-option {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.view-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.view-option:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-primary {
+    background: var(--primary);
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 137, 123, 0.6);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-danger {
+    background: var(--danger);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(244, 67, 54, 0.6);
+}
+
+/* شبكة الحملات */
+.campaigns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.campaign-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.campaign-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.campaign-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+}
+
+.campaign-type {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.campaign-budget {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+}
+
+.campaign-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.campaign-stat {
+    text-align: center;
+}
+
+.campaign-stat-value {
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.campaign-stat-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+/* لوحة التحليلات */
+.analytics-dashboard {
+    margin-bottom: 20px;
+}
+
+.kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.kpi-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.kpi-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.kpi-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.kpi-content {
+    flex: 1;
+}
+
+.kpi-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.kpi-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.kpi-trend {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.kpi-trend.positive {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.kpi-trend.negative {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+/* التقارير */
+.reports-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.report-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.report-header h4 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* أداء القنوات */
+.channel-performance {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.channel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.channel-item:last-child {
+    border-bottom: none;
+}
+
+.channel-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.channel-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-light);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.channel-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.channel-stats {
+    text-align: right;
+}
+
+.channel-value {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.channel-trend {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* التوزيع الجغرافي */
+.geo-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.region-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.region-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.region-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--primary-light);
+    border-radius: 3px;
+    margin: 0 12px;
+    overflow: hidden;
+}
+
+.region-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.region-percentage {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--primary-dark);
+    min-width: 40px;
+    text-align: left;
+}
+
+/* إدارة العملاء المحتملين */
+.leads-management {
+    margin-bottom: 20px;
+}
+
+.leads-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.lead-stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.lead-stat-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.lead-stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.lead-stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.leads-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+}
+
+.leads-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-options select {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.leads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.lead-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    padding: 16px;
+    cursor: pointer;
+    border-right: 4px solid var(--info);
+}
+
+.lead-item:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.lead-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.lead-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.lead-status {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-new {
+    background: var(--info);
+    color: white;
+}
+
+.status-contacted {
+    background: var(--warning);
+    color: white;
+}
+
+.status-qualified {
+    background: var(--success);
+    color: white;
+}
+
+.status-converted {
+    background: var(--primary);
+    color: white;
+}
+
+.lead-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lead-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.lead-source {
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-content.large-modal {
+    max-height: 90vh;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* النماذج */
+.form-section {
+    margin-bottom: 24px;
+}
+
+.form-section h3 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 480px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.channels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.channel-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-liquid);
+}
+
+.channel-checkbox:hover {
+    background: var(--primary-light);
+}
+
+.channel-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--primary-light);
+}
+
+/* تفاصيل الحملة */
+.campaign-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campaign-header-details {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-item label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.info-item span {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.campaign-metrics-details h3,
+.campaign-channels h3,
+.campaign-description h3 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.metric-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+}
+
+.metric-card .metric-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.metric-card .metric-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.channels-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.channel-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.campaign-description p {
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.campaign-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .campaigns-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .kpis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .leads-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .campaigns-toolbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .leads-toolbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .tabs-container {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1 0 45%;
+        margin-bottom: 4px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .campaign-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 380px) {
+    .campaign-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .channels-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>المبيعات والتسويق 📈</h1>
+                    <p>إدارة الحملات وتحليلات المبيعات المتقدمة</p>
+                </div>
+                <div class="marketing-actions">
+                    <button class="action-icon liquid-transition" id="analyticsBtn">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge">2</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="addCampaignBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث في الحملات والعملاء..." id="searchInput">
+                <button class="action-icon liquid-transition" id="closeSearchBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الإحصائيات السريعة -->
+        <div class="quick-stats-section">
+            <div class="stats-grid">
+                <div class="stat-card liquid-transition">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalRevenue">0 ر.س</div>
+                        <div class="stat-label">إجمالي الإيرادات</div>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        15%
+                    </div>
+                </div>
+
+                <div class="stat-card liquid-transition">
+                    <div class="stat-icon orders">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalOrders">0</div>
+                        <div class="stat-label">إجمالي الطلبات</div>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        8%
+                    </div>
+                </div>
+
+                <div class="stat-card liquid-transition">
+                    <div class="stat-icon customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalCustomers">0</div>
+                        <div class="stat-label">عملاء جدد</div>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        12%
+                    </div>
+                </div>
+
+                <div class="stat-card liquid-transition">
+                    <div class="stat-icon conversion">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="conversionRate">0%</div>
+                        <div class="stat-label">معدل التحويل</div>
+                    </div>
+                    <div class="stat-trend negative">
+                        <i class="fas fa-arrow-down"></i>
+                        3%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويبات الرئيسية -->
+        <div class="tabs-navigation">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+                <button class="tab-btn" data-tab="campaigns">الحملات</button>
+                <button class="tab-btn" data-tab="analytics">التقارير</button>
+                <button class="tab-btn" data-tab="leads">العملاء المحتملين</button>
+            </div>
+        </div>
+
+        <!-- محتوى التبويبات -->
+        <div class="tab-content">
+            <!-- تبويب النظرة العامة -->
+            <div class="tab-pane active" id="overviewTab">
+                <!-- مخطط الإيرادات -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>الإيرادات الشهرية</h3>
+                        <select class="period-select" id="revenuePeriod">
+                            <option value="7d">آخر 7 أيام</option>
+                            <option value="30d" selected>آخر 30 يوم</option>
+                            <option value="90d">آخر 90 يوم</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- أفضل المنتجات مبيعاً -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>أفضل المنتجات مبيعاً</h3>
+                        <button class="btn-text" id="viewAllProductsBtn">عرض الكل</button>
+                    </div>
+                    <div class="products-grid" id="topProductsGrid">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+
+                <!-- الحملات النشطة -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>الحملات النشطة</h3>
+                        <button class="btn-text" id="viewAllCampaignsBtn">عرض الكل</button>
+                    </div>
+                    <div class="campaigns-list" id="activeCampaignsList">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب الحملات -->
+            <div class="tab-pane" id="campaignsTab">
+                <div class="campaigns-management">
+                    <!-- شريط أدوات الحملات -->
+                    <div class="campaigns-toolbar">
+                        <div class="view-options">
+                            <button class="view-option active" data-view="all">الكل</button>
+                            <button class="view-option" data-view="active">نشطة</button>
+                            <button class="view-option" data-view="paused">متوقفة</button>
+                            <button class="view-option" data-view="completed">مكتملة</button>
+                        </div>
+                        <button class="btn-primary" id="createCampaignBtn">
+                            <i class="fas fa-plus"></i>
+                            حملة جديدة
+                        </button>
+                    </div>
+
+                    <!-- قائمة الحملات -->
+                    <div class="campaigns-container" id="campaignsContainer">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب التقارير -->
+            <div class="tab-pane" id="analyticsTab">
+                <div class="analytics-dashboard">
+                    <!-- مؤشرات الأداء -->
+                    <div class="kpis-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="totalImpressions">0</div>
+                                <div class="kpi-label">عدد المشاهدات</div>
+                                <div class="kpi-trend positive">+12%</div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-mouse-pointer"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="totalClicks">0</div>
+                                <div class="kpi-label">النقرات</div>
+                                <div class="kpi-trend positive">+8%</div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="totalConversions">0</div>
+                                <div class="kpi-label">عمليات الشراء</div>
+                                <div class="kpi-trend negative">-3%</div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="totalROI">0%</div>
+                                <div class="kpi-label">عائد الاستثمار</div>
+                                <div class="kpi-trend positive">+5%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- التقارير التفصيلية -->
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <div class="report-header">
+                                <h4>أداء القنوات</h4>
+                                <select class="report-period" id="channelPeriod">
+                                    <option value="week">أسبوعي</option>
+                                    <option value="month" selected>شهري</option>
+                                    <option value="quarter">ربع سنوي</option>
+                                </select>
+                            </div>
+                            <div class="channel-performance" id="channelPerformance">
+                                <!-- سيتم تعبئتها بالجافاسكريبت -->
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-header">
+                                <h4>التوزيع الجغرافي</h4>
+                                <button class="btn-text" id="viewMapBtn">عرض الخريطة</button>
+                            </div>
+                            <div class="geo-distribution" id="geoDistribution">
+                                <!-- سيتم تعبئتها بالجافاسكريبت -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب العملاء المحتملين -->
+            <div class="tab-pane" id="leadsTab">
+                <div class="leads-management">
+                    <!-- إحصائيات العملاء المحتملين -->
+                    <div class="leads-stats">
+                        <div class="lead-stat-card">
+                            <div class="lead-stat-value" id="totalLeads">0</div>
+                            <div class="lead-stat-label">إجمالي العملاء المحتملين</div>
+                        </div>
+                        <div class="lead-stat-card">
+                            <div class="lead-stat-value" id="newLeads">0</div>
+                            <div class="lead-stat-label">جدد هذا الشهر</div>
+                        </div>
+                        <div class="lead-stat-card">
+                            <div class="lead-stat-value" id="convertedLeads">0</div>
+                            <div class="lead-stat-label">تم تحويلهم</div>
+                        </div>
+                        <div class="lead-stat-card">
+                            <div class="lead-stat-value" id="conversionRateLeads">0%</div>
+                            <div class="lead-stat-label">معدل التحويل</div>
+                        </div>
+                    </div>
+
+                    <!-- قائمة العملاء المحتملين -->
+                    <div class="leads-container">
+                        <div class="leads-toolbar">
+                            <div class="filter-options">
+                                <select id="leadsFilter">
+                                    <option value="all">جميع العملاء المحتملين</option>
+                                    <option value="new">جدد</option>
+                                    <option value="contacted">تم التواصل</option>
+                                    <option value="qualified">مؤهلين</option>
+                                    <option value="converted">تم التحويل</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" id="addLeadBtn">
+                                <i class="fas fa-plus"></i>
+                                عميل محتمل جديد
+                            </button>
+                        </div>
+
+                        <div class="leads-list" id="leadsList">
+                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="marketing.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="nav-label">التسويق</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <!-- نافذة إنشاء حملة -->
+    <div id="campaignModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="campaignModalTitle">حملة تسويقية جديدة</h2>
+                <span class="close" id="closeCampaignModal">&times;</span>
+            </div>
+            <div class="modal-body" id="campaignModalBody">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الحملة -->
+    <div id="campaignDetailsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="campaignDetailsTitle">تفاصيل الحملة</h2>
+                <span class="close" id="closeCampaignDetails">&times;</span>
+            </div>
+            <div class="modal-body" id="campaignDetailsBody">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة العميل المحتمل -->
+    <div id="leadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="leadModalTitle">عميل محتمل جديد</h2>
+                <span class="close" id="closeLeadModal">&times;</span>
+            </div>
+            <div class="modal-body" id="leadModalBody">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+   </div>
+
+    <!-- نافذة الخريطة -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2>التوزيع الجغرافي</h2>
+                <span class="close" id="closeMapModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="mapContainer" style="height: 400px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 12px;">
+                    <p>خريطة التوزيع الجغرافي ستظهر هنا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+// نظام المبيعات والتسويق المتكامل
+class MarketingManagement {
+    constructor() {
+        this.campaigns = [];
+        this.leads = [];
+        this.products = [];
+        this.analytics = {};
+        this.currentTab = 'overview';
+        this.currentCampaign = null;
+        this.currentLead = null;
+        this.revenueChart = null;
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.setupTabs();
+        this.renderOverview();
+        this.renderCampaigns();
+        this.renderAnalytics();
+        this.renderLeads();
+        this.updateTime();
+        this.setupRealTimeUpdates();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedCampaigns = localStorage.getItem('pharma_marketing_campaigns');
+        const savedLeads = localStorage.getItem('pharma_marketing_leads');
+        const savedAnalytics = localStorage.getItem('pharma_marketing_analytics');
+
+        if (savedCampaigns) {
+            this.campaigns = JSON.parse(savedCampaigns);
+        } else {
+            this.campaigns = this.getDefaultCampaigns();
+        }
+
+        if (savedLeads) {
+            this.leads = JSON.parse(savedLeads);
+        } else {
+            this.leads = this.getDefaultLeads();
+        }
+
+        if (savedAnalytics) {
+            this.analytics = JSON.parse(savedAnalytics);
+        } else {
+            this.analytics = this.getDefaultAnalytics();
+        }
+
+        this.products = this.getTopProducts();
+        this.saveData();
+    }
+
+    getDefaultCampaigns() {
+        return [
+            {
+                id: 1,
+                name: 'حملة أدوية البرد والإنفلونزا',
+                type: 'منتج',
+                status: 'active',
+                budget: 5000,
+                spent: 3200,
+                startDate: '2024-01-01',
+                endDate: '2024-03-31',
+                target: 'الصيدليات والمستشفيات',
+                channels: ['email', 'social_media', 'direct_sales'],
+                impressions: 15000,
+                clicks: 1200,
+                conversions: 85,
+                revenue: 45000,
+                roi: 18.5,
+                description: 'حملة ترويجية لأدوية البرد والإنفلونزا لموسم الشتاء'
+            },
+            {
+                id: 2,
+                name: 'عروض الفيتامينات الموسمية',
+                type: 'ترويج',
+                status: 'active',
+                budget: 3000,
+                spent: 1800,
+                startDate: '2024-01-15',
+                endDate: '2024-02-28',
+                target: 'العملاء الأفراد',
+                channels: ['social_media', 'website'],
+                impressions: 8000,
+                clicks: 650,
+                conversions: 42,
+                revenue: 28000,
+                roi: 15.6,
+                description: 'عروض خاصة على مكملات الفيتامينات خلال فصل الشتاء'
+            },
+            {
+                id: 3,
+                name: 'برنامج ولاء الصيدليات',
+                type: 'ولاء',
+                status: 'paused',
+                budget: 8000,
+                spent: 4500,
+                startDate: '2023-11-01',
+                endDate: '2024-04-30',
+                target: 'الصيدليات الشريكة',
+                channels: ['direct_sales', 'events'],
+                impressions: 5000,
+                clicks: 300,
+                conversions: 25,
+                revenue: 120000,
+                roi: 26.7,
+                description: 'برنامج ولاء للصيدليات الشريكة يقدم خصومات ومزايا حصرية'
+            },
+            {
+                id: 4,
+                name: 'حملة التوعية بمرض السكري',
+                type: 'توعية',
+                status: 'completed',
+                budget: 2000,
+                spent: 2000,
+                startDate: '2023-12-01',
+                endDate: '2023-12-31',
+                target: 'الجمهور العام',
+                channels: ['social_media', 'email', 'events'],
+                impressions: 12000,
+                clicks: 900,
+                conversions: 35,
+                revenue: 18000,
+                roi: 9.0,
+                description: 'حملة توعوية حول الوقاية والعلاج من مرض السكري'
+            }
+        ];
+    }
+
+    getDefaultLeads() {
+        return [
+            {
+                id: 1,
+                name: 'أحمد محمد',
+                company: 'صيدلية النور',
+                email: 'ahmed@pharmacy.com',
+                phone: '+966501234567',
+                source: 'website',
+                status: 'qualified',
+                budget: 15000,
+                interest: 'أدوية مزمنة',
+                lastContact: '2024-01-15',
+                notes: 'مهتم بمنتجات السكري والضغط'
+            },
+            {
+                id: 2,
+                name: 'فاطمة علي',
+                company: 'مستشفى الملك فهد',
+                email: 'fatima@hospital.com',
+                phone: '+966502345678',
+                source: 'referral',
+                status: 'contacted',
+                budget: 25000,
+                interest: 'مستلزمات طبية',
+                lastContact: '2024-01-14',
+                notes: 'طلب عينات للمنتجات الجديدة'
+            },
+            {
+                id: 3,
+                name: 'خالد عبدالله',
+                company: 'مركز الرعاية الصحية',
+                email: 'khaled@care.com',
+                phone: '+966503456789',
+                source: 'social_media',
+                status: 'new',
+                budget: 8000,
+                interest: 'مكملات غذائية',
+                lastContact: '2024-01-13',
+                notes: 'يبحث عن عروض خاصة للكميات الكبيرة'
+            },
+            {
+                id: 4,
+                name: 'نورة السعد',
+                company: 'سلسلة صيدليات الدواء',
+                email: 'nora@pharmacy.com',
+                phone: '+966504567890',
+                source: 'email',
+                status: 'converted',
+                budget: 40000,
+                interest: 'جميع المنتجات',
+                lastContact: '2024-01-12',
+                notes: 'عميل دائم، طلب كتالوج المنتجات الجديدة'
+            }
+        ];
+    }
+
+    getDefaultAnalytics() {
+        return {
+            revenue: {
+                total: 245800,
+                monthly: 85600,
+                weekly: 21500,
+                daily: 3500
+            },
+            orders: {
+                total: 1248,
+                monthly: 156,
+                weekly: 42,
+                daily: 8
+            },
+            customers: {
+                total: 5248,
+                new: 124,
+                returning: 385
+            },
+            conversion: {
+                rate: 3.2,
+                trend: -0.3
+            },
+            channels: {
+                direct_sales: { value: 45, trend: 12 },
+                website: { value: 25, trend: 8 },
+                social_media: { value: 15, trend: 15 },
+                email: { value: 10, trend: -2 },
+                referrals: { value: 5, trend: 5 }
+            },
+            regions: {
+                'الرياض': 35,
+                'جدة': 25,
+                'الدمام': 15,
+                'مكة': 10,
+                'المدينة': 8,
+                'أبها': 7
+            }
+        };
+    }
+
+    getTopProducts() {
+        return [
+            { id: 1, name: 'باراسيتامول 500 مجم', sales: 245, revenue: 3675, icon: 'fa-pills' },
+            { id: 2, name: 'فيتامين سي 1000 مجم', sales: 189, revenue: 8505, icon: 'fa-apple-alt' },
+            { id: 3, name: 'أوميغا 3 كبسولات', sales: 156, revenue: 11700, icon: 'fa-capsules' },
+            { id: 4, name: 'كريم هيدروكورتيزون', sales: 98, revenue: 2156, icon: 'fa-allergies' }
+        ];
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_marketing_campaigns', JSON.stringify(this.campaigns));
+        localStorage.setItem('pharma_marketing_leads', JSON.stringify(this.leads));
+        localStorage.setItem('pharma_marketing_analytics', JSON.stringify(this.analytics));
+    }
+
+    setupEventListeners() {
+        // زر البحث
+        const searchToggleBtn = document.getElementById('analyticsBtn');
+        if (searchToggleBtn) {
+            searchToggleBtn.addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // زر الإضافة
+        const addCampaignBtn = document.getElementById('addCampaignBtn');
+        if (addCampaignBtn) {
+            addCampaignBtn.addEventListener('click', () => {
+                this.createCampaign();
+            });
+        }
+
+        // زر إنشاء حملة
+        const createCampaignBtn = document.getElementById('createCampaignBtn');
+        if (createCampaignBtn) {
+            createCampaignBtn.addEventListener('click', () => {
+                this.createCampaign();
+            });
+        }
+
+        // زر إضافة عميل محتمل
+        const addLeadBtn = document.getElementById('addLeadBtn');
+        if (addLeadBtn) {
+            addLeadBtn.addEventListener('click', () => {
+                this.addLead();
+            });
+        }
+
+        // زر عرض الخريطة
+        const viewMapBtn = document.getElementById('viewMapBtn');
+        if (viewMapBtn) {
+            viewMapBtn.addEventListener('click', () => {
+                this.showMapModal();
+            });
+        }
+
+        // زر عرض جميع المنتجات
+        const viewAllProductsBtn = document.getElementById('viewAllProductsBtn');
+        if (viewAllProductsBtn) {
+            viewAllProductsBtn.addEventListener('click', () => {
+                this.viewAllProducts();
+            });
+        }
+
+        // زر عرض جميع الحملات
+        const viewAllCampaignsBtn = document.getElementById('viewAllCampaignsBtn');
+        if (viewAllCampaignsBtn) {
+            viewAllCampaignsBtn.addEventListener('click', () => {
+                this.viewAllCampaigns();
+            });
+        }
+
+        // البحث في الوقت الحقيقي
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchContent(e.target.value);
+            });
+        }
+
+        // إغلاق البحث
+        const closeSearchBtn = document.getElementById('closeSearchBtn');
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة
+        const closeCampaignModal = document.getElementById('closeCampaignModal');
+        if (closeCampaignModal) {
+            closeCampaignModal.addEventListener('click', () => {
+                this.closeCampaignModal();
+            });
+        }
+
+        const closeCampaignDetails = document.getElementById('closeCampaignDetails');
+        if (closeCampaignDetails) {
+            closeCampaignDetails.addEventListener('click', () => {
+                this.closeCampaignDetails();
+            });
+        }
+
+        const closeLeadModal = document.getElementById('closeLeadModal');
+        if (closeLeadModal) {
+            closeLeadModal.addEventListener('click', () => {
+                this.closeLeadModal();
+            });
+        }
+
+        const closeMapModal = document.getElementById('closeMapModal');
+        if (closeMapModal) {
+            closeMapModal.addEventListener('click', () => {
+                this.closeMapModal();
+            });
+        }
+
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // تحديث مخطط الإيرادات
+        const revenuePeriod = document.getElementById('revenuePeriod');
+        if (revenuePeriod) {
+            revenuePeriod.addEventListener('change', (e) => {
+                this.updateRevenueChart(e.target.value);
+            });
+        }
+
+        // تصفية العملاء المحتملين
+        const leadsFilter = document.getElementById('leadsFilter');
+        if (leadsFilter) {
+            leadsFilter.addEventListener('change', (e) => {
+                this.filterLeads(e.target.value);
+            });
+        }
+
+        // تحديث أداء القنوات
+        const channelPeriod = document.getElementById('channelPeriod');
+        if (channelPeriod) {
+            channelPeriod.addEventListener('change', (e) => {
+                this.updateChannelPerformance(e.target.value);
+            });
+        }
+    }
+
+    setupTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabName = e.target.dataset.tab;
+                this.switchTab(tabName);
+            });
+        });
+
+        // تبويبات عرض الحملات
+        const viewOptions = document.querySelectorAll('.view-option[data-view]');
+        viewOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                const view = e.target.dataset.view;
+                this.filterCampaigns(view);
+            });
+        });
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        // تحديث أزرار التبويب
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تحديث محتوى التبويب
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === `${tabName}Tab`) {
+                pane.classList.add('active');
+            }
+        });
+
+        // تحميل المحتوى الخاص بكل تبويب
+        switch(tabName) {
+            case 'overview':
+                this.renderOverview();
+                break;
+            case 'campaigns':
+                this.renderCampaigns();
+                break;
+            case 'analytics':
+                this.renderAnalytics();
+                break;
+            case 'leads':
+                this.renderLeads();
+                break;
+        }
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    toggleSearch() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar.style.display === 'none') {
+            searchBar.style.display = 'flex';
+            document.getElementById('searchInput').focus();
+        } else {
+            searchBar.style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            this.searchContent('');
+        }
+    }
+
+    searchContent(query) {
+        // البحث في المحتوى الحالي حسب التبويب النشط
+        switch(this.currentTab) {
+            case 'campaigns':
+                this.searchCampaigns(query);
+                break;
+            case 'leads':
+                this.searchLeads(query);
+                break;
+            default:
+                // البحث العام
+                break;
+        }
+    }
+
+    // === تبويب النظرة العامة ===
+    renderOverview() {
+        this.updateQuickStats();
+        this.initRevenueChart();
+        this.renderTopProducts();
+        this.renderActiveCampaigns();
+    }
+
+    updateQuickStats() {
+        document.getElementById('totalRevenue').textContent = `${this.analytics.revenue.monthly.toLocaleString()} ر.س`;
+        document.getElementById('totalOrders').textContent = this.analytics.orders.monthly.toLocaleString();
+        document.getElementById('totalCustomers').textContent = this.analytics.customers.new.toLocaleString();
+        document.getElementById('conversionRate').textContent = `${this.analytics.conversion.rate}%`;
+    }
+
+    initRevenueChart() {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        if (this.revenueChart) {
+            this.revenueChart.destroy();
+        }
+
+        const data = this.getRevenueData('30d');
+        
+        this.revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'الإيرادات',
+                    data: data.values,
+                    borderColor: '#00897B',
+                    backgroundColor: 'rgba(0, 137, 123, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    getRevenueData(period) {
+        // بيانات محاكاة للإيرادات
+        const data = {
+            '7d': {
+                labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                values: [3200, 2800, 3500, 4200, 3800, 4500, 5000]
+            },
+            '30d': {
+                labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                values: [18500, 21500, 19800, 25800]
+            },
+            '90d': {
+                labels: ['الشهر 1', 'الشهر 2', 'الشهر 3'],
+                values: [75600, 82400, 87800]
+            }
+        };
+        
+        return data[period] || data['30d'];
+    }
+
+    updateRevenueChart(period) {
+        const data = this.getRevenueData(period);
+        this.revenueChart.data.labels = data.labels;
+        this.revenueChart.data.datasets[0].data = data.values;
+        this.revenueChart.update();
+    }
+
+    renderTopProducts() {
+        const grid = document.getElementById('topProductsGrid');
+        let html = '';
+
+        this.products.forEach(product => {
+            html += `
+                <div class="product-card liquid-transition">
+                    <div class="product-image">
+                        <i class="fas ${product.icon}"></i>
+                    </div>
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-sales">
+                        <span>${product.sales} مبيع</span>
+                        <span class="sales-amount">${product.revenue.toLocaleString()} ر.س</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        grid.innerHTML = html;
+    }
+
+    renderActiveCampaigns() {
+        const list = document.getElementById('activeCampaignsList');
+        const activeCampaigns = this.campaigns.filter(c => c.status === 'active').slice(0, 3);
+        
+        let html = '';
+
+        activeCampaigns.forEach(campaign => {
+            const progress = (campaign.spent / campaign.budget) * 100;
+            const roiColor = campaign.roi > 15 ? 'positive' : 'negative';
+            
+            html += `
+                <div class="campaign-item liquid-transition" onclick="marketing.showCampaignDetails(${campaign.id})">
+                    <div class="campaign-header">
+                        <div class="campaign-title">${campaign.name}</div>
+                        <div class="campaign-status status-active">نشطة</div>
+                    </div>
+                    <div class="campaign-metrics">
+                        <div class="metric">
+                            <div class="metric-value">${campaign.impressions.toLocaleString()}</div>
+                            <div class="metric-label">مشاهدة</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${campaign.conversions}</div>
+                            <div class="metric-label">تحويل</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value ${roiColor}">${campaign.roi}%</div>
+                            <div class="metric-label">عائد استثمار</div>
+                        </div>
+                    </div>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>${campaign.spent.toLocaleString()} ر.س</span>
+                            <span>${campaign.budget.toLocaleString()} ر.س</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        list.innerHTML = html;
+    }
+
+    // === تبويب الحملات ===
+    renderCampaigns() {
+        this.renderCampaignsGrid();
+    }
+
+    renderCampaignsGrid() {
+        const container = document.getElementById('campaignsContainer');
+        let html = '';
+
+        this.campaigns.forEach(campaign => {
+            const progress = (campaign.spent / campaign.budget) * 100;
+            const statusClass = `status-${campaign.status}`;
+            const statusText = this.getStatusText(campaign.status);
+            const typeText = this.getCampaignTypeText(campaign.type);
+            
+            html += `
+                <div class="campaign-card liquid-transition" onclick="marketing.showCampaignDetails(${campaign.id})">
+                    <div class="campaign-type">${typeText}</div>
+                    <div class="campaign-title">${campaign.name}</div>
+                    <div class="campaign-budget">${campaign.budget.toLocaleString()} ر.س</div>
+                    <div class="campaign-stats">
+                        <div class="campaign-stat">
+                            <div class="campaign-stat-value">${campaign.conversions}</div>
+                            <div class="campaign-stat-label">تحويل</div>
+                        </div>
+                        <div class="campaign-stat">
+                            <div class="campaign-stat-value">${campaign.roi}%</div>
+                            <div class="campaign-stat-label">عائد استثمار</div>
+                        </div>
+                    </div>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>${Math.round(progress)}%</span>
+                            <span class="campaign-status ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            'active': 'نشطة',
+            'paused': 'متوقفة',
+            'completed': 'مكتملة'
+        };
+        return statusMap[status] || status;
+    }
+
+    getCampaignTypeText(type) {
+        const typeMap = {
+            'منتج': 'حملة منتج',
+            'ترويج': 'عرض ترويجي',
+            'ولاء': 'برنامج ولاء',
+            'توعية': 'حملة توعوية'
+        };
+        return typeMap[type] || type;
+    }
+
+    filterCampaigns(view) {
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-option[data-view]').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === view) {
+                btn.classList.add('active');
+            }
+        });
+
+        let filteredCampaigns = this.campaigns;
+        
+        if (view !== 'all') {
+            filteredCampaigns = this.campaigns.filter(campaign => campaign.status === view);
+        }
+
+        // إعادة عرض الحملات المصفاة
+        this.renderFilteredCampaigns(filteredCampaigns);
+    }
+
+    renderFilteredCampaigns(campaigns) {
+        const container = document.getElementById('campaignsContainer');
+        let html = '';
+
+        campaigns.forEach(campaign => {
+            const progress = (campaign.spent / campaign.budget) * 100;
+            const statusClass = `status-${campaign.status}`;
+            const statusText = this.getStatusText(campaign.status);
+            const typeText = this.getCampaignTypeText(campaign.type);
+            
+            html += `
+                <div class="campaign-card liquid-transition" onclick="marketing.showCampaignDetails(${campaign.id})">
+                    <div class="campaign-type">${typeText}</div>
+                    <div class="campaign-title">${campaign.name}</div>
+                    <div class="campaign-budget">${campaign.budget.toLocaleString()} ر.س</div>
+                    <div class="campaign-stats">
+                        <div class="campaign-stat">
+                            <div class="campaign-stat-value">${campaign.conversions}</div>
+                            <div class="campaign-stat-label">تحويل</div>
+                        </div>
+                        <div class="campaign-stat">
+                            <div class="campaign-stat-value">${campaign.roi}%</div>
+                            <div class="campaign-stat-label">عائد استثمار</div>
+                        </div>
+                    </div>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>${Math.round(progress)}%</span>
+                            <span class="campaign-status ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    searchCampaigns(query) {
+        if (query.trim() === '') {
+            this.renderCampaignsGrid();
+            return;
+        }
+
+        const searchTerm = query.toLowerCase();
+        const filteredCampaigns = this.campaigns.filter(campaign =>
+            campaign.name.toLowerCase().includes(searchTerm) ||
+            campaign.type.toLowerCase().includes(searchTerm) ||
+            campaign.target.toLowerCase().includes(searchTerm)
+        );
+
+        this.renderFilteredCampaigns(filteredCampaigns);
+    }
+
+    createCampaign() {
+        this.currentCampaign = null;
+        this.showCampaignForm();
+    }
+
+    showCampaignForm() {
+        const modal = document.getElementById('campaignModal');
+        const modalBody = document.getElementById('campaignModalBody');
+        
+        const isEdit = this.currentCampaign !== null;
+        const title = isEdit ? 'تعديل الحملة' : 'حملة تسويقية جديدة';
+        
+        document.getElementById('campaignModalTitle').textContent = title;
+
+        const formHTML = `
+            <div class="campaign-form">
+                <div class="form-section">
+                    <h3>المعلومات الأساسية</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="campaignName">اسم الحملة *</label>
+                            <input type="text" id="campaignName" value="${isEdit ? this.currentCampaign.name : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignType">نوع الحملة *</label>
+                            <select id="campaignType" required>
+                                <option value="">اختر النوع</option>
+                                <option value="منتج" ${isEdit && this.currentCampaign.type === 'منتج' ? 'selected' : ''}>حملة منتج</option>
+                                <option value="ترويج" ${isEdit && this.currentCampaign.type === 'ترويج' ? 'selected' : ''}>عرض ترويجي</option>
+                                <option value="ولاء" ${isEdit && this.currentCampaign.type === 'ولاء' ? 'selected' : ''}>برنامج ولاء</option>
+                                <option value="توعية" ${isEdit && this.currentCampaign.type === 'توعية' ? 'selected' : ''}>حملة توعوية</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignBudget">الميزانية (ر.س) *</label>
+                            <input type="number" id="campaignBudget" value="${isEdit ? this.currentCampaign.budget : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignStatus">الحالة</label>
+                            <select id="campaignStatus">
+                                <option value="active" ${isEdit && this.currentCampaign.status === 'active' ? 'selected' : ''}>نشطة</option>
+                                <option value="paused" ${isEdit && this.currentCampaign.status === 'paused' ? 'selected' : ''}>متوقفة</option>
+                                <option value="completed" ${isEdit && this.currentCampaign.status === 'completed' ? 'selected' : ''}>مكتملة</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>التوقيت والجمهور</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="campaignStart">تاريخ البدء *</label>
+                            <input type="date" id="campaignStart" value="${isEdit ? this.currentCampaign.startDate : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignEnd">تاريخ الانتهاء *</label>
+                            <input type="date" id="campaignEnd" value="${isEdit ? this.currentCampaign.endDate : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignTarget">الجمهور المستهدف *</label>
+                            <input type="text" id="campaignTarget" value="${isEdit ? this.currentCampaign.target : ''}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>قنوات التسويق</h3>
+                    <div class="channels-grid">
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="email" ${isEdit && this.currentCampaign.channels.includes('email') ? 'checked' : ''}>
+                            <span>البريد الإلكتروني</span>
+                        </label>
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="social_media" ${isEdit && this.currentCampaign.channels.includes('social_media') ? 'checked' : ''}>
+                            <span>وسائل التواصل</span>
+                        </label>
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="website" ${isEdit && this.currentCampaign.channels.includes('website') ? 'checked' : ''}>
+                            <span>الموقع الإلكتروني</span>
+                        </label>
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="direct_sales" ${isEdit && this.currentCampaign.channels.includes('direct_sales') ? 'checked' : ''}>
+                            <span>المبيعات المباشرة</span>
+                        </label>
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="events" ${isEdit && this.currentCampaign.channels.includes('events') ? 'checked' : ''}>
+                            <span>الفعاليات</span>
+                        </label>
+                        <label class="channel-checkbox">
+                            <input type="checkbox" name="channels" value="referrals" ${isEdit && this.currentCampaign.channels.includes('referrals') ? 'checked' : ''}>
+                            <span>التوصيات</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>الوصف والأهداف</h3>
+                    <div class="form-group">
+                        <label for="campaignDescription">وصف الحملة</label>
+                        <textarea id="campaignDescription" rows="4">${isEdit ? this.currentCampaign.description : ''}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="marketing.closeCampaignModal()">إلغاء</button>
+                    <button type="button" class="btn-primary" onclick="marketing.saveCampaign()">
+                        <i class="fas fa-save"></i>
+                        ${isEdit ? 'تحديث الحملة' : 'إنشاء الحملة'}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modalBody.innerHTML = formHTML;
+        modal.style.display = 'block';
+    }
+
+    saveCampaign() {
+        // جمع بيانات النموذج
+        const formData = {
+            name: document.getElementById('campaignName').value,
+            type: document.getElementById('campaignType').value,
+            budget: parseInt(document.getElementById('campaignBudget').value),
+            status: document.getElementById('campaignStatus').value,
+            startDate: document.getElementById('campaignStart').value,
+            endDate: document.getElementById('campaignEnd').value,
+            target: document.getElementById('campaignTarget').value,
+            description: document.getElementById('campaignDescription').value,
+            channels: Array.from(document.querySelectorAll('input[name="channels"]:checked')).map(cb => cb.value)
+        };
+
+        // التحقق من صحة البيانات
+        if (!formData.name || !formData.type || !formData.budget) {
+            this.showToast('الرجاء ملء جميع الحقول المطلوبة');
+            return;
+        }
+
+        if (this.currentCampaign) {
+            // تحديث الحملة الحالية
+            Object.assign(this.currentCampaign, formData);
+        } else {
+            // إنشاء حملة جديدة
+            const newCampaign = {
+                id: Math.max(...this.campaigns.map(c => c.id)) + 1,
+                ...formData,
+                spent: 0,
+                impressions: 0,
+                clicks: 0,
+                conversions: 0,
+                revenue: 0,
+                roi: 0
+            };
+            this.campaigns.unshift(newCampaign);
+        }
+
+        this.saveData();
+        this.renderCampaigns();
+        this.renderActiveCampaigns();
+        this.closeCampaignModal();
+        
+        this.showToast(this.currentCampaign ? 'تم تحديث الحملة بنجاح' : 'تم إنشاء الحملة بنجاح');
+    }
+
+    closeCampaignModal() {
+        document.getElementById('campaignModal').style.display = 'none';
+    }
+
+    showCampaignDetails(campaignId) {
+        const campaign = this.campaigns.find(c => c.id === campaignId);
+        if (!campaign) return;
+
+        this.currentCampaign = campaign;
+        
+        const modal = document.getElementById('campaignDetailsModal');
+        const modalBody = document.getElementById('campaignDetailsBody');
+        
+        document.getElementById('campaignDetailsTitle').textContent = campaign.name;
+
+        const detailsHTML = `
+            <div class="campaign-details">
+                <div class="campaign-header-details">
+                    <div class="campaign-basic-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>نوع الحملة:</label>
+                                <span>${this.getCampaignTypeText(campaign.type)}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>الحالة:</label>
+                                <span class="campaign-status status-${campaign.status}">${this.getStatusText(campaign.status)}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>الميزانية:</label>
+                                <span>${campaign.budget.toLocaleString()} ر.س</span>
+                            </div>
+                            <div class="info-item">
+                                <label>المصاريف:</label>
+                                <span>${campaign.spent.toLocaleString()} ر.س</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campaign-metrics-details">
+                    <h3>مؤشرات الأداء</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">${campaign.impressions.toLocaleString()}</div>
+                            <div class="metric-label">عدد المشاهدات</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">${campaign.clicks.toLocaleString()}</div>
+                            <div class="metric-label">النقرات</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">${campaign.conversions}</div>
+                            <div class="metric-label">التحويلات</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">${campaign.revenue.toLocaleString()} ر.س</div>
+                            <div class="metric-label">الإيرادات</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campaign-channels">
+                    <h3>قنوات التسويق</h3>
+                    <div class="channels-list">
+                        ${campaign.channels.map(channel => `
+                            <div class="channel-tag">${this.getChannelText(channel)}</div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="campaign-description">
+                    <h3>وصف الحملة</h3>
+                    <p>${campaign.description}</p>
+                </div>
+
+                <div class="campaign-actions">
+                    <button class="btn-secondary" onclick="marketing.editCampaign(${campaign.id})">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-primary" onclick="marketing.duplicateCampaign(${campaign.id})">
+                        <i class="fas fa-copy"></i>
+                        نسخ
+                    </button>
+                    <button class="btn-danger" onclick="marketing.deleteCampaign(${campaign.id})">
+                        <i class="fas fa-trash"></i>
+                        حذف
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modalBody.innerHTML = detailsHTML;
+        modal.style.display = 'block';
+    }
+
+    getChannelText(channel) {
+        const channelMap = {
+            'email': 'البريد الإلكتروني',
+            'social_media': 'وسائل التواصل',
+            'website': 'الموقع الإلكتروني',
+            'direct_sales': 'المبيعات المباشرة',
+            'events': 'الفعاليات',
+            'referrals': 'التوصيات'
+        };
+        return channelMap[channel] || channel;
+    }
+
+    closeCampaignDetails() {
+        document.getElementById('campaignDetailsModal').style.display = 'none';
+    }
+
+    editCampaign(campaignId) {
+        const campaign = this.campaigns.find(c => c.id === campaignId);
+        if (!campaign) return;
+
+        this.currentCampaign = campaign;
+        this.showCampaignForm();
+        this.closeCampaignDetails();
+    }
+
+    duplicateCampaign(campaignId) {
+        const campaign = this.campaigns.find(c => c.id === campaignId);
+        if (!campaign) return;
+
+        const duplicatedCampaign = {
+            ...campaign,
+            id: Math.max(...this.campaigns.map(c => c.id)) + 1,
+            name: `${campaign.name} (نسخة)`,
+            status: 'active',
+            spent: 0,
+            impressions: 0,
+            clicks: 0,
+            conversions: 0,
+            revenue: 0,
+            roi: 0
+        };
+
+        this.campaigns.unshift(duplicatedCampaign);
+        this.saveData();
+        this.renderCampaigns();
+        this.renderActiveCampaigns();
+        this.closeCampaignDetails();
+        
+        this.showToast('تم نسخ الحملة بنجاح');
+    }
+
+    deleteCampaign(campaignId) {
+        const campaign = this.campaigns.find(c => c.id === campaignId);
+        if (!campaign) return;
+
+        if (confirm(`هل أنت متأكد من حذف الحملة "${campaign.name}"؟`)) {
+            this.campaigns = this.campaigns.filter(c => c.id !== campaignId);
+            this.saveData();
+            this.renderCampaigns();
+            this.renderActiveCampaigns();
+            this.closeCampaignDetails();
+            
+            this.showToast('تم حذف الحملة بنجاح');
+        }
+    }
+
+    // === تبويب التقارير ===
+    renderAnalytics() {
+        this.updateKPIs();
+        this.renderChannelPerformance();
+        this.renderGeoDistribution();
+    }
+
+    updateKPIs() {
+        document.getElementById('totalImpressions').textContent = '15,000';
+        document.getElementById('totalClicks').textContent = '1,200';
+        document.getElementById('totalConversions').textContent = '85';
+        document.getElementById('totalROI').textContent = '18.5%';
+    }
+
+    renderChannelPerformance() {
+        const container = document.getElementById('channelPerformance');
+        let html = '';
+
+        Object.entries(this.analytics.channels).forEach(([channel, data]) => {
+            const channelText = this.getChannelText(channel);
+            const trendClass = data.trend > 0 ? 'positive' : 'negative';
+            const trendIcon = data.trend > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+            
+            html += `
+                <div class="channel-item">
+                    <div class="channel-info">
+                        <div class="channel-icon">
+                            <i class="fas ${this.getChannelIcon(channel)}"></i>
+                        </div>
+                        <div class="channel-name">${channelText}</div>
+                    </div>
+                    <div class="channel-stats">
+                        <div class="channel-value">${data.value}%</div>
+                        <div class="channel-trend ${trendClass}">
+                            <i class="fas ${trendIcon}"></i>
+                            ${Math.abs(data.trend)}%
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    getChannelIcon(channel) {
+        const icons = {
+            'direct_sales': 'fa-handshake',
+            'website': 'fa-globe',
+            'social_media': 'fa-share-alt',
+            'email': 'fa-envelope',
+            'referrals': 'fa-user-friends'
+        };
+        return icons[channel] || 'fa-chart-bar';
+    }
+
+    updateChannelPerformance(period) {
+        // محاكاة تحديث بيانات القنوات حسب الفترة
+        this.showToast(`تم تحديث بيانات القنوات للفترة: ${period}`);
+    }
+
+    renderGeoDistribution() {
+        const container = document.getElementById('geoDistribution');
+        let html = '';
+
+        Object.entries(this.analytics.regions).forEach(([region, percentage]) => {
+            html += `
+                <div class="region-item">
+                    <div class="region-name">${region}</div>
+                    <div class="region-bar">
+                        <div class="region-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="region-percentage">${percentage}%</div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    showMapModal() {
+        document.getElementById('mapModal').style.display = 'block';
+    }
+
+    closeMapModal() {
+        document.getElementById('mapModal').style.display = 'none';
+    }
+
+    // === تبويب العملاء المحتملين ===
+    renderLeads() {
+        this.updateLeadsStats();
+        this.renderLeadsList();
+    }
+
+    updateLeadsStats() {
+        const totalLeads = this.leads.length;
+        const newLeads = this.leads.filter(lead => lead.status === 'new').length;
+        const convertedLeads = this.leads.filter(lead => lead.status === 'converted').length;
+        const conversionRate = totalLeads > 0 ? ((convertedLeads / totalLeads) * 100).toFixed(1) : 0;
+
+        document.getElementById('totalLeads').textContent = totalLeads;
+        document.getElementById('newLeads').textContent = newLeads;
+        document.getElementById('convertedLeads').textContent = convertedLeads;
+        document.getElementById('conversionRateLeads').textContent = `${conversionRate}%`;
+    }
+
+    renderLeadsList() {
+        const list = document.getElementById('leadsList');
+        let html = '';
+
+        this.leads.forEach(lead => {
+            const statusClass = `status-${lead.status}`;
+            const statusText = this.getLeadStatusText(lead.status);
+            const sourceText = this.getLeadSourceText(lead.source);
+            
+            html += `
+                <div class="lead-item liquid-transition" onclick="marketing.showLeadDetails(${lead.id})">
+                    <div class="lead-header">
+                        <div class="lead-name">${lead.name}</div>
+                        <div class="lead-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="lead-details">
+                        <div class="lead-contact">
+                            <i class="fas fa-building"></i>
+                            <span>${lead.company}</span>
+                        </div>
+                        <div class="lead-contact">
+                            <i class="fas fa-phone"></i>
+                            <span>${lead.phone}</span>
+                        </div>
+                        <div class="lead-source">${sourceText}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        list.innerHTML = html;
+    }
+
+    getLeadStatusText(status) {
+        const statusMap = {
+            'new': 'جديد',
+            'contacted': 'تم التواصل',
+            'qualified': 'مؤهل',
+            'converted': 'تم التحويل'
+        };
+        return statusMap[status] || status;
+    }
+
+    getLeadSourceText(source) {
+        const sourceMap = {
+            'website': 'الموقع الإلكتروني',
+            'social_media': 'وسائل التواصل',
+            'email': 'البريد الإلكتروني',
+            'referral': 'توصية',
+            'event': 'فعالية'
+        };
+        return sourceMap[source] || source;
+    }
+
+    filterLeads(filter) {
+        let filteredLeads = this.leads;
+        
+        if (filter !== 'all') {
+            filteredLeads = this.leads.filter(lead => lead.status === filter);
+        }
+
+        this.renderFilteredLeads(filteredLeads);
+    }
+
+    renderFilteredLeads(leads) {
+        const list = document.getElementById('leadsList');
+        let html = '';
+
+        leads.forEach(lead => {
+            const statusClass = `status-${lead.status}`;
+            const statusText = this.getLeadStatusText(lead.status);
+            const sourceText = this.getLeadSourceText(lead.source);
+            
+            html += `
+                <div class="lead-item liquid-transition" onclick="marketing.showLeadDetails(${lead.id})">
+                    <div class="lead-header">
+                        <div class="lead-name">${lead.name}</div>
+                        <div class="lead-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="lead-details">
+                        <div class="lead-contact">
+                            <i class="fas fa-building"></i>
+                            <span>${lead.company}</span>
+                        </div>
+                        <div class="lead-contact">
+                            <i class="fas fa-phone"></i>
+                            <span>${lead.phone}</span>
+                        </div>
+                        <div class="lead-source">${sourceText}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        list.innerHTML = html;
+    }
+
+    searchLeads(query) {
+        if (query.trim() === '') {
+            this.renderLeadsList();
+            return;
+        }
+
+        const searchTerm = query.toLowerCase();
+        const filteredLeads = this.leads.filter(lead =>
+            lead.name.toLowerCase().includes(searchTerm) ||
+            lead.company.toLowerCase().includes(searchTerm) ||
+            lead.email.toLowerCase().includes(searchTerm)
+        );
+
+        this.renderFilteredLeads(filteredLeads);
+    }
+
+    addLead() {
+        this.currentLead = null;
+        this.showLeadForm();
+    }
+
+    showLeadForm() {
+        const modal = document.getElementById('leadModal');
+        const modalBody = document.getElementById('leadModalBody');
+        
+        const isEdit = this.currentLead !== null;
+        const title = isEdit ? 'تعديل العميل المحتمل' : 'عميل محتمل جديد';
+        
+        document.getElementById('leadModalTitle').textContent = title;
+
+        const formHTML = `
+            <div class="lead-form">
+                <div class="form-section">
+                    <h3>المعلومات الأساسية</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="leadName">الاسم *</label>
+                            <input type="text" id="leadName" value="${isEdit ? this.currentLead.name : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadCompany">الشركة *</label>
+                            <input type="text" id="leadCompany" value="${isEdit ? this.currentLead.company : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadEmail">البريد الإلكتروني *</label>
+                            <input type="email" id="leadEmail" value="${isEdit ? this.currentLead.email : ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadPhone">رقم الهاتف *</label>
+                            <input type="tel" id="leadPhone" value="${isEdit ? this.currentLead.phone : ''}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>المعلومات الإضافية</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="leadSource">المصدر</label>
+                            <select id="leadSource">
+                                <option value="">اختر المصدر</option>
+                                <option value="website" ${isEdit && this.currentLead.source === 'website' ? 'selected' : ''}>الموقع الإلكتروني</option>
+                                <option value="social_media" ${isEdit && this.currentLead.source === 'social_media' ? 'selected' : ''}>وسائل التواصل</option>
+                                <option value="email" ${isEdit && this.currentLead.source === 'email' ? 'selected' : ''}>البريد الإلكتروني</option>
+                                <option value="referral" ${isEdit && this.currentLead.source === 'referral' ? 'selected' : ''}>توصية</option>
+                                <option value="event" ${isEdit && this.currentLead.source === 'event' ? 'selected' : ''}>فعالية</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadStatus">الحالة</label>
+                            <select id="leadStatus">
+                                <option value="new" ${isEdit && this.currentLead.status === 'new' ? 'selected' : ''}>جديد</option>
+                                <option value="contacted" ${isEdit && this.currentLead.status === 'contacted' ? 'selected' : ''}>تم التواصل</option>
+                                <option value="qualified" ${isEdit && this.currentLead.status === 'qualified' ? 'selected' : ''}>مؤهل</option>
+                                <option value="converted" ${isEdit && this.currentLead.status === 'converted' ? 'selected' : ''}>تم التحويل</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="leadBudget">الميزانية المتوقعة (ر.س)</label>
+                            <input type="number" id="leadBudget" value="${isEdit ? this.currentLead.budget : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="leadInterest">مجال الاهتمام</label>
+                            <input type="text" id="leadInterest" value="${isEdit ? this.currentLead.interest : ''}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ملاحظات إضافية</h3>
+                    <div class="form-group">
+                        <label for="leadNotes">ملاحظات</label>
+                        <textarea id="leadNotes" rows="4">${isEdit ? this.currentLead.notes : ''}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="marketing.closeLeadModal()">إلغاء</button>
+                    <button type="button" class="btn-primary" onclick="marketing.saveLead()">
+                        <i class="fas fa-save"></i>
+                        ${isEdit ? 'تحديث العميل' : 'إضافة العميل'}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modalBody.innerHTML = formHTML;
+        modal.style.display = 'block';
+    }
+
+    saveLead() {
+        // جمع بيانات النموذج
+        const formData = {
+            name: document.getElementById('leadName').value,
+            company: document.getElementById('leadCompany').value,
+            email: document.getElementById('leadEmail').value,
+            phone: document.getElementById('leadPhone').value,
+            source: document.getElementById('leadSource').value,
+            status: document.getElementById('leadStatus').value,
+            budget: document.getElementById('leadBudget').value ? parseInt(document.getElementById('leadBudget').value) : 0,
+            interest: document.getElementById('leadInterest').value,
+            notes: document.getElementById('leadNotes').value,
+            lastContact: new Date().toISOString().split('T')[0]
+        };
+
+        // التحقق من صحة البيانات
+        if (!formData.name || !formData.company || !formData.email || !formData.phone) {
+            this.showToast('الرجاء ملء جميع الحقول المطلوبة');
+            return;
+        }
+
+        if (this.currentLead) {
+            // تحديث العميل الحالي
+            Object.assign(this.currentLead, formData);
+        } else {
+            // إنشاء عميل جديد
+            const newLead = {
+                id: Math.max(...this.leads.map(l => l.id)) + 1,
+                ...formData
+            };
+            this.leads.unshift(newLead);
+        }
+
+        this.saveData();
+        this.renderLeads();
+        this.closeLeadModal();
+        
+        this.showToast(this.currentLead ? 'تم تحديث العميل بنجاح' : 'تم إضافة العميل بنجاح');
+    }
+
+    showLeadDetails(leadId) {
+        const lead = this.leads.find(l => l.id === leadId);
+        if (!lead) return;
+
+        this.currentLead = lead;
+        
+        const modal = document.getElementById('leadModal');
+        const modalBody = document.getElementById('leadModalBody');
+        
+        document.getElementById('leadModalTitle').textContent = lead.name;
+
+        const detailsHTML = `
+            <div class="lead-details-view">
+                <div class="lead-basic-info">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>الشركة:</label>
+                            <span>${lead.company}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>البريد الإلكتروني:</label>
+                            <span>${lead.email}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>رقم الهاتف:</label>
+                            <span>${lead.phone}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>المصدر:</label>
+                            <span>${this.getLeadSourceText(lead.source)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>الحالة:</label>
+                            <span class="lead-status status-${lead.status}">${this.getLeadStatusText(lead.status)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>الميزانية:</label>
+                            <span>${lead.budget ? lead.budget.toLocaleString() + ' ر.س' : 'غير محدد'}</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>مجال الاهتمام:</label>
+                            <span>${lead.interest || 'غير محدد'}</span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>آخر تواصل:</label>
+                            <span>${lead.lastContact}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lead-notes">
+                    <h3>ملاحظات</h3>
+                    <div class="notes-content">
+                        <p>${lead.notes || 'لا توجد ملاحظات'}</p>
+                    </div>
+                </div>
+
+                <div class="lead-actions">
+                    <button class="btn-secondary" onclick="marketing.editLead(${lead.id})">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-danger" onclick="marketing.deleteLead(${lead.id})">
+                        <i class="fas fa-trash"></i>
+                        حذف
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modalBody.innerHTML = detailsHTML;
+        modal.style.display = 'block';
+    }
+
+    editLead(leadId) {
+        const lead = this.leads.find(l => l.id === leadId);
+        if (!lead) return;
+
+        this.currentLead = lead;
+        this.showLeadForm();
+    }
+
+    deleteLead(leadId) {
+        const lead = this.leads.find(l => l.id === leadId);
+        if (!lead) return;
+
+        if (confirm(`هل أنت متأكد من حذف العميل "${lead.name}"؟`)) {
+            this.leads = this.leads.filter(l => l.id !== leadId);
+            this.saveData();
+            this.renderLeads();
+            this.closeLeadModal();
+            
+            this.showToast('تم حذف العميل بنجاح');
+        }
+    }
+
+    closeLeadModal() {
+        document.getElementById('leadModal').style.display = 'none';
+    }
+
+    // === وظائف مساعدة ===
+    viewAllProducts() {
+        this.switchTab('analytics');
+        this.showToast('سيتم عرض جميع المنتجات في تبويب التقارير');
+    }
+
+    viewAllCampaigns() {
+        this.switchTab('campaigns');
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 30000); // كل 30 ثانية
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة تحديثات للإحصائيات
+        if (Math.random() > 0.7) {
+            this.analytics.revenue.daily += Math.floor(Math.random() * 100) + 50;
+            this.analytics.orders.daily += Math.floor(Math.random() * 3) + 1;
+            this.saveData();
+            this.updateQuickStats();
+            
+            this.showToast('تم تحديث الإحصائيات الحديثة');
+        }
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// تهيئة نظام المبيعات والتسويق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.marketing = new MarketingManagement();
+});
+</script>
+</body>
+</html>

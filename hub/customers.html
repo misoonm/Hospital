@@ -1,0 +1,3838 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - إدارة العملاء</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+    --purple: #9C27B0;
+    --pink: #E91E63;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.customer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+/* شريط البحث */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* إحصائيات سريعة */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-item.active {
+    background: var(--primary);
+    color: white;
+}
+
+.stat-item.active .stat-value,
+.stat-item.active .stat-label {
+    color: white;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* التصنيفات */
+.categories-section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 12px 20px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* إدارة العملاء */
+.customers-management {
+    padding: 0 20px;
+}
+
+/* شريط الأدوات */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.view-options {
+    display: flex;
+    gap: 8px;
+}
+
+.view-option {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.view-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.view-option:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.sort-options select {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.sort-options select:focus {
+    box-shadow: var(--shadow-inset);
+}
+
+/* حاوية العملاء */
+.customers-container {
+    margin-bottom: 20px;
+}
+
+/* شبكة العملاء */
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.customers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.customers-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* بطاقة العميل (شبكة) */
+.customer-card-grid {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    padding: 20px 16px;
+}
+
+.customer-card-grid:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.customer-avatar {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    margin: 0 auto 12px;
+    position: relative;
+}
+
+.customer-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.customer-status.online {
+    background: var(--success);
+}
+
+.customer-status.offline {
+    background: var(--text-secondary);
+}
+
+.customer-status.vip {
+    background: var(--secondary);
+}
+
+.customer-name {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.customer-meta-grid {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.customer-stats {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--primary-light);
+    padding-top: 12px;
+}
+
+.stat-mini {
+    text-align: center;
+}
+
+.stat-mini-value {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--primary-dark);
+    display: block;
+}
+
+.stat-mini-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.customer-tags-grid {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.customer-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.customer-tag.vip {
+    background: var(--secondary);
+    color: white;
+}
+
+.customer-tag.new {
+    background: var(--info);
+    color: white;
+}
+
+/* بطاقة العميل (قائمة) */
+.customer-card-list {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.customer-card-list:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.customer-avatar-list {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.customer-details-list {
+    flex: 1;
+}
+
+.customer-name-list {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.customer-contact-list {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.customer-stats-list {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.customer-actions-list {
+    display: flex;
+    gap: 8px;
+}
+
+/* بطاقة العميل (كارت) */
+.customer-card-detailed {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    padding: 20px;
+    position: relative;
+}
+
+.customer-card-detailed:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.customer-header-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.customer-avatar-card {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.customer-info-card {
+    flex: 1;
+}
+
+.customer-name-card {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.customer-contact-card {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.customer-tags-card {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.customer-stats-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--primary-light);
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.customer-actions-card {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+/* زر الإضافة العائم */
+.floating-action-btn {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    background: var(--primary);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    z-index: 1000;
+}
+
+.floating-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+}
+
+.floating-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-content.large-modal {
+    max-height: 90vh;
+}
+
+.modal-content.small-modal {
+    max-width: 300px;
+    margin: 0 auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    border-radius: var(--radius-xl);
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* نموذج العميل */
+.customer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.form-section h3 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-section h3::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: var(--bg-surface);
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+}
+
+/* أزرار */
+.btn-neumorphism {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    color: var(--primary);
+}
+
+.btn-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+}
+
+.btn-primary-neumorphism {
+    background: var(--primary);
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+    color: white;
+}
+
+.btn-primary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: var(--primary-dark);
+}
+
+.btn-secondary-neumorphism {
+    background: var(--secondary);
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.4);
+    color: white;
+}
+
+.btn-secondary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #E6A200;
+}
+
+.btn-danger-neumorphism {
+    background: var(--danger);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+    color: white;
+}
+
+.btn-danger-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #D32F2F;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+/* تفاصيل العميل */
+.customer-details-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tabs-header {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.tab-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.tabs-content {
+    min-height: 400px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* النظرة العامة */
+.customer-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.customer-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.customer-avatar-large {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: var(--shadow-card);
+    position: relative;
+}
+
+.customer-status {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+}
+
+.customer-status.online {
+    background: var(--success);
+}
+
+.customer-status.offline {
+    background: var(--text-secondary);
+}
+
+.customer-status.vip {
+    background: var(--secondary);
+}
+
+.customer-info {
+    flex: 1;
+}
+
+.customer-info h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.customer-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.customer-meta span {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.customer-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.customer-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.customer-details-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.customer-details-section h4 {
+    margin-bottom: 12px;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.contact-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.recent-orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+}
+
+.order-id {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.order-details {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.order-amount {
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.order-date {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* إدارة الطلبات */
+.orders-management {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.orders-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.orders-list-detailed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-item-detailed {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    transition: var(--transition-liquid);
+}
+
+.order-item-detailed:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.order-products {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.order-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--primary-light);
+}
+
+.order-status {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.order-status.pending {
+    background: var(--warning);
+    color: white;
+}
+
+.order-status.completed {
+    background: var(--success);
+    color: white;
+}
+
+.order-status.cancelled {
+    background: var(--danger);
+    color: white;
+}
+
+/* المعلومات الطبية */
+.medical-management {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.medical-alerts {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--warning);
+    color: white;
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+}
+
+.alert-item:last-child {
+    margin-bottom: 0;
+}
+
+.medical-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.medical-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.medical-card h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.medical-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.medical-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.medical-detail:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.allergies-list,
+.diseases-list,
+.medications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.medical-item {
+    padding: 8px 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+}
+
+/* التفاعلات */
+.interactions-management {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.interaction-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.add-interaction {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.add-interaction h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.interaction-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.interactions-history {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.interactions-history h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.interactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.interaction-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    border-right: 4px solid var(--primary);
+}
+
+.interaction-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.interaction-icon.call {
+    background: var(--success);
+}
+
+.interaction-icon.message {
+    background: var(--info);
+}
+
+.interaction-icon.visit {
+    background: var(--secondary);
+}
+
+.interaction-icon.email {
+    background: var(--purple);
+}
+
+.interaction-icon.note {
+    background: var(--text-secondary);
+}
+
+.interaction-content {
+    flex: 1;
+}
+
+.interaction-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.interaction-details {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.interaction-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* أقدام الإجراءات */
+.customer-actions-footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+    flex-wrap: wrap;
+}
+
+.customer-actions-footer .btn-neumorphism {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* الفلترة */
+.filter-section {
+    padding: 20px;
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.filter-option input {
+    margin: 0;
+}
+
+.price-range {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.price-inputs {
+    display: flex;
+    gap: 12px;
+}
+
+.price-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* التحميل */
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* تحميل المزيد */
+.load-more-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 480px) {
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .customers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .customer-stats-grid,
+    .orders-stats,
+    .interaction-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .medical-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .interaction-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .customer-actions-footer {
+        flex-direction: column;
+    }
+    
+    .customer-actions-footer .btn-neumorphism {
+        min-width: auto;
+    }
+    
+    .customer-stats-card {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة العملاء 👥</h1>
+                    <p>إدارة كاملة لبيانات العملاء وتفاعلاتهم</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon liquid-transition" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="addCustomerBtn">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن عميل، هاتف، أو بريد إلكتروني..." id="searchInput">
+                <button class="action-icon liquid-transition" onclick="customers.toggleSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-bar">
+                <div class="stat-item liquid-transition" onclick="customers.filterByType('all')">
+                    <div class="stat-value" id="totalCustomers">0</div>
+                    <div class="stat-label">إجمالي العملاء</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="customers.filterByType('active')">
+                    <div class="stat-value" id="activeCustomers">0</div>
+                    <div class="stat-label">نشط</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="customers.filterByType('new')">
+                    <div class="stat-value" id="newCustomers">0</div>
+                    <div class="stat-label">جدد هذا الشهر</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="customers.filterByType('vip')">
+                    <div class="stat-value" id="vipCustomers">0</div>
+                    <div class="stat-label">عملاء مميزين</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التصنيفات -->
+        <div class="categories-section">
+            <div class="categories-scroll" id="categoriesScroll">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- إدارة العملاء -->
+        <div class="customers-management">
+            <!-- شريط الأدوات -->
+            <div class="toolbar">
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid" onclick="customers.changeView('grid')">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-option" data-view="list" onclick="customers.changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-option" data-view="cards" onclick="customers.changeView('cards')">
+                        <i class="fas fa-id-card"></i>
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sortSelect" onchange="customers.sortCustomers()">
+                        <option value="name_asc">الاسم (أ-ي)</option>
+                        <option value="name_desc">الاسم (ي-أ)</option>
+                        <option value="recent">الأحدث</option>
+                        <option value="orders_desc">الطلبات (كثير-قليل)</option>
+                        <option value="orders_asc">الطلبات (قليل-كثير)</option>
+                        <option value="spent_desc">إجمالي المشتريات</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- حاوية العملاء -->
+            <div class="customers-container">
+                <div class="customers-grid" id="customersGrid">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="customers-list" id="customersList" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="customers-cards" id="customersCards" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- تحميل المزيد -->
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn" onclick="customers.loadMore()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <!-- زر الإضافة العائم -->
+        <button class="floating-action-btn liquid-transition" onclick="customers.showAddCustomerModal()">
+            <i class="fas fa-user-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="customers.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="nav-label">العملاء</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة/تعديل العميل -->
+    <div id="customerFormModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="customerFormTitle">إضافة عميل جديد</h2>
+                <span class="close" onclick="customers.closeCustomerForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="customerForm" class="customer-form">
+                    <div class="form-section">
+                        <h3>المعلومات الشخصية</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customerName">الاسم الكامل *</label>
+                                <input type="text" id="customerName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPhone">رقم الهاتف *</label>
+                                <input type="tel" id="customerPhone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerEmail">البريد الإلكتروني</label>
+                                <input type="email" id="customerEmail" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerGender">الجنس</label>
+                                <select id="customerGender" name="gender">
+                                    <option value="">اختر الجنس</option>
+                                    <option value="male">ذكر</option>
+                                    <option value="female">أنثى</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerBirthDate">تاريخ الميلاد</label>
+                                <input type="date" id="customerBirthDate" name="birthDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerNationalId">الرقم الوطني</label>
+                                <input type="text" id="customerNationalId" name="nationalId">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>معلومات العنوان</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customerCountry">الدولة</label>
+                                <input type="text" id="customerCountry" name="country" value="السعودية">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerCity">المدينة *</label>
+                                <input type="text" id="customerCity" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerDistrict">الحي</label>
+                                <input type="text" id="customerDistrict" name="district">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerStreet">الشارع</label>
+                                <input type="text" id="customerStreet" name="street">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerBuilding">المبنى</label>
+                                <input type="text" id="customerBuilding" name="building">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPostalCode">الرمز البريدي</label>
+                                <input type="text" id="customerPostalCode" name="postalCode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerAddress">العنوان التفصيلي</label>
+                            <textarea id="customerAddress" name="address" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>المعلومات الطبية</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="customerBloodType">فصيلة الدم</label>
+                                <select id="customerBloodType" name="bloodType">
+                                    <option value="">اختر فصيلة الدم</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerWeight">الوزن (كجم)</label>
+                                <input type="number" id="customerWeight" name="weight">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerHeight">الطول (سم)</label>
+                                <input type="number" id="customerHeight" name="height">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerAllergies">الحساسيات</label>
+                            <textarea id="customerAllergies" name="allergies" rows="3" placeholder="الحساسيات المعروفة..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerChronicDiseases">الأمراض المزمنة</label>
+                            <textarea id="customerChronicDiseases" name="chronicDiseases" rows="3" placeholder="الأمراض المزمنة..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCurrentMedications">الأدوية الحالية</label>
+                            <textarea id="customerCurrentMedications" name="currentMedications" rows="3" placeholder="الأدوية التي يتناولها حالياً..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>الإعدادات الإضافية</h3>
+                        <div class="form-grid">
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="customerIsActive" name="isActive" checked>
+                                <label for="customerIsActive">عميل نشط</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="customerIsVip" name="isVip">
+                                <label for="customerIsVip">عميل مميز</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="customerAllowNotifications" name="allowNotifications" checked>
+                                <label for="customerAllowNotifications">السماح بالإشعارات</label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="customerAllowSms" name="allowSms" checked>
+                                <label for="customerAllowSms">السماح بالرسائل النصية</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerNotes">ملاحظات إضافية</label>
+                            <textarea id="customerNotes" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-neumorphism" onclick="customers.closeCustomerForm()">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-neumorphism btn-primary-neumorphism">
+                            <i class="fas fa-save"></i>
+                            حفظ العميل
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل العميل -->
+    <div id="customerDetailsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="customerDetailsTitle">تفاصيل العميل</h2>
+                <span class="close" onclick="customers.closeCustomerDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="customer-details-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+                        <button class="tab-btn" data-tab="orders">الطلبات</button>
+                        <button class="tab-btn" data-tab="medical">المعلومات الطبية</button>
+                        <button class="tab-btn" data-tab="interactions">التفاعلات</button>
+                    </div>
+
+                    <div class="tabs-content">
+                        <!-- تبويب النظرة العامة -->
+                        <div class="tab-pane active" id="overviewTab">
+                            <div class="customer-overview">
+                                <div class="customer-header">
+                                    <div class="customer-avatar-large">
+                                        <i class="fas fa-user" id="detailCustomerIcon"></i>
+                                        <div class="customer-status" id="detailCustomerStatus"></div>
+                                    </div>
+                                    <div class="customer-info">
+                                        <h3 id="detailCustomerName"></h3>
+                                        <div class="customer-meta">
+                                            <span id="detailCustomerPhone"></span>
+                                            <span id="detailCustomerEmail"></span>
+                                            <span id="detailCustomerSince"></span>
+                                        </div>
+                                        <div class="customer-tags" id="customerTags">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="customer-stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="detailTotalOrders">0</div>
+                                            <div class="stat-label">إجمالي الطلبات</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-money-bill-wave"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="detailTotalSpent">0 ر.س</div>
+                                            <div class="stat-label">إجمالي المشتريات</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="detailAvgRating">0.0</div>
+                                            <div class="stat-label">التقييم</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon">
+                                            <i class="fas fa-calendar-day"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <div class="stat-value" id="detailDaysSince">0</div>
+                                            <div class="stat-label">أيام كعميل</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="customer-details-section">
+                                    <h4>معلومات الاتصال</h4>
+                                    <div class="contact-info" id="contactInfo">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+
+                                <div class="customer-details-section">
+                                    <h4>آخر الطلبات</h4>
+                                    <div class="recent-orders-list" id="recentOrdersList">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب الطلبات -->
+                        <div class="tab-pane" id="ordersTab">
+                            <div class="orders-management">
+                                <div class="orders-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="ordersTotalCount">0</div>
+                                        <div class="stat-label">إجمالي الطلبات</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="ordersPendingCount">0</div>
+                                        <div class="stat-label">قيد الانتظار</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="ordersCompletedCount">0</div>
+                                        <div class="stat-label">مكتملة</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="ordersCancelledCount">0</div>
+                                        <div class="stat-label">ملغية</div>
+                                    </div>
+                                </div>
+
+                                <div class="orders-list-detailed" id="ordersListDetailed">
+                                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب المعلومات الطبية -->
+                        <div class="tab-pane" id="medicalTab">
+                            <div class="medical-management">
+                                <div class="medical-alerts" id="medicalAlerts">
+                                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                </div>
+
+                                <div class="medical-info-grid">
+                                    <div class="medical-card">
+                                        <h4>المعلومات الأساسية</h4>
+                                        <div class="medical-details" id="basicMedicalInfo">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="medical-card">
+                                        <h4>الحساسيات</h4>
+                                        <div class="allergies-list" id="allergiesList">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-card">
+                                        <h4>الأمراض المزمنة</h4>
+                                        <div class="diseases-list" id="diseasesList">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-card">
+                                        <h4>الأدوية الحالية</h4>
+                                        <div class="medications-list" id="medicationsList">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب التفاعلات -->
+                        <div class="tab-pane" id="interactionsTab">
+                            <div class="interactions-management">
+                                <div class="interaction-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="interactionsTotal">0</div>
+                                        <div class="stat-label">إجمالي التفاعلات</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="interactionsCalls">0</div>
+                                        <div class="stat-label">مكالمات</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="interactionsMessages">0</div>
+                                        <div class="stat-label">رسائل</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="interactionsVisits">0</div>
+                                        <div class="stat-label">زيارات</div>
+                                    </div>
+                                </div>
+
+                                <div class="add-interaction">
+                                    <h4>إضافة تفاعل جديد</h4>
+                                    <div class="interaction-form">
+                                        <div class="form-group">
+                                            <label>نوع التفاعل</label>
+                                            <select id="interactionType">
+                                                <option value="call">مكالمة</option>
+                                                <option value="message">رسالة</option>
+                                                <option value="visit">زيارة</option>
+                                                <option value="email">بريد إلكتروني</option>
+                                                <option value="note">ملاحظة</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>الموضوع</label>
+                                            <input type="text" id="interactionSubject" placeholder="موضوع التفاعل">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>التفاصيل</label>
+                                            <textarea id="interactionDetails" rows="3" placeholder="تفاصيل التفاعل..."></textarea>
+                                        </div>
+                                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="customers.addInteraction()">
+                                            <i class="fas fa-plus"></i>
+                                            إضافة تفاعل
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="interactions-history">
+                                    <h4>سجل التفاعلات</h4>
+                                    <div class="interactions-list" id="interactionsHistoryList">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customer-actions-footer">
+                    <button class="btn-neumorphism" onclick="customers.editCustomer()">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-neumorphism btn-secondary-neumorphism" onclick="customers.sendMessage()">
+                        <i class="fas fa-comment"></i>
+                        إرسال رسالة
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="customers.createOrder()">
+                        <i class="fas fa-plus"></i>
+                        طلب جديد
+                    </button>
+                    <button class="btn-neumorphism btn-danger-neumorphism" onclick="customers.deleteCustomer()">
+                        <i class="fas fa-trash"></i>
+                        حذف
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلترة -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية العملاء</h2>
+                <span class="close" onclick="customers.closeFilter()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <div class="filter-title">نوع العميل</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="active" checked>
+                                <span>نشط</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="vip">
+                                <span>مميز</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="new">
+                                <span>جديد</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="inactive">
+                                <span>غير نشط</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">المدينة</div>
+                        <div class="filter-options" id="filterCities">
+                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">نطاق المشتريات</div>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" class="price-input" id="filterMinSpent" placeholder="الحد الأدنى" value="0">
+                                <input type="number" class="price-input" id="filterMaxSpent" placeholder="الحد الأقصى" value="10000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">عدد الطلبات</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="radio" name="orders" value="all" checked>
+                                <span>الكل</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="orders" value="1-5">
+                                <span>1-5 طلبات</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="orders" value="6-20">
+                                <span>6-20 طلب</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="orders" value="20+">
+                                <span>أكثر من 20 طلب</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-neumorphism" onclick="customers.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="customers.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>جاري المعالجة...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة العملاء المتكامل
+class CustomersManagement {
+    constructor() {
+        this.customers = [];
+        this.cities = [];
+        this.filteredCustomers = [];
+        this.currentCustomer = null;
+        this.currentView = 'grid';
+        this.visibleCustomers = 12;
+        this.currentFilters = {
+            type: ['active'],
+            cities: [],
+            minSpent: 0,
+            maxSpent: 10000,
+            ordersRange: 'all'
+        };
+        this.sortBy = 'name_asc';
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.renderCities();
+        this.renderCustomers();
+        this.updateStats();
+        this.setupRealTimeUpdates();
+        this.updateTime();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedCustomers = localStorage.getItem('pharma_customers');
+        const savedCities = localStorage.getItem('pharma_cities');
+
+        if (savedCustomers) {
+            this.customers = JSON.parse(savedCustomers);
+        } else {
+            this.customers = this.getDefaultCustomers();
+        }
+
+        if (savedCities) {
+            this.cities = JSON.parse(savedCities);
+        } else {
+            this.cities = this.getDefaultCities();
+        }
+
+        this.filteredCustomers = [...this.customers];
+        this.saveData();
+    }
+
+    getDefaultCustomers() {
+        return [
+            {
+                id: 1,
+                name: 'أحمد محمد',
+                phone: '+966501234567',
+                email: 'ahmed@example.com',
+                gender: 'male',
+                birthDate: '1985-05-15',
+                nationalId: '1234567890',
+                country: 'السعودية',
+                city: 'الرياض',
+                district: 'الملز',
+                street: 'شارع الملك فهد',
+                building: 'مبنى 123',
+                postalCode: '12345',
+                address: 'الرياض - الملز - شارع الملك فهد - مبنى 123',
+                bloodType: 'O+',
+                weight: 75,
+                height: 175,
+                allergies: 'البنسلين، الغلوتين',
+                chronicDiseases: 'ضغط الدم',
+                currentMedications: 'أدوية الضغط',
+                isActive: true,
+                isVip: true,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'عميل مميز ومتابع جيد',
+                totalOrders: 15,
+                totalSpent: 12500,
+                avgRating: 4.8,
+                lastOrderDate: '2024-01-15',
+                createdAt: '2023-06-01',
+                interactions: [
+                    {
+                        id: 1,
+                        type: 'call',
+                        subject: 'متابعة طلب',
+                        details: 'تم التواصل مع العميل لمتابعة طلبه الأخير',
+                        date: '2024-01-15T10:30:00'
+                    },
+                    {
+                        id: 2,
+                        type: 'message',
+                        subject: 'عرض خاص',
+                        details: 'إرسال عرض خاص على فيتامينات',
+                        date: '2024-01-14T15:20:00'
+                    }
+                ],
+                orders: [
+                    {
+                        id: 'ORD-001',
+                        date: '2024-01-15',
+                        amount: 850,
+                        status: 'completed',
+                        products: [
+                            { name: 'باراسيتامول 500 مجم', quantity: 2, price: 15 },
+                            { name: 'فيتامين سي 1000 مجم', quantity: 1, price: 45 },
+                            { name: 'أوميغا 3 كبسولات', quantity: 1, price: 75 }
+                        ]
+                    },
+                    {
+                        id: 'ORD-002',
+                        date: '2024-01-10',
+                        amount: 320,
+                        status: 'completed',
+                        products: [
+                            { name: 'كريم هيدروكورتيزون 1%', quantity: 1, price: 22 },
+                            { name: 'قطرة العين المرطبة', quantity: 1, price: 28 }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: 'فاطمة علي',
+                phone: '+966502345678',
+                email: 'fatima@example.com',
+                gender: 'female',
+                birthDate: '1990-08-22',
+                nationalId: '0987654321',
+                country: 'السعودية',
+                city: 'جدة',
+                district: 'السلامة',
+                street: 'شارع التحلية',
+                building: 'مبنى 456',
+                postalCode: '23456',
+                address: 'جدة - السلامة - شارع التحلية - مبنى 456',
+                bloodType: 'A+',
+                weight: 62,
+                height: 165,
+                allergies: 'لا توجد',
+                chronicDiseases: 'سكري',
+                currentMedications: 'أنسولين، ميتفورمين',
+                isActive: true,
+                isVip: false,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'تتطلب أدوية السكري بانتظام',
+                totalOrders: 8,
+                totalSpent: 4200,
+                avgRating: 4.5,
+                lastOrderDate: '2024-01-14',
+                createdAt: '2023-08-15'
+            },
+            {
+                id: 3,
+                name: 'خالد عبدالله',
+                phone: '+966503456789',
+                email: 'khaled@example.com',
+                gender: 'male',
+                birthDate: '1978-12-10',
+                nationalId: '1122334455',
+                country: 'السعودية',
+                city: 'الدمام',
+                district: 'الفتح',
+                street: 'شارع الملك سعود',
+                building: 'مبنى 789',
+                postalCode: '34567',
+                address: 'الدمام - الفتح - شارع الملك سعود - مبنى 789',
+                bloodType: 'B+',
+                weight: 80,
+                height: 178,
+                allergies: 'المكسرات',
+                chronicDiseases: 'ربو، حساسية صدر',
+                currentMedications: 'بخاخ asthma',
+                isActive: true,
+                isVip: true,
+                allowNotifications: true,
+                allowSms: false,
+                notes: 'عميل يحتاج لأدوية الربو بانتظام',
+                totalOrders: 22,
+                totalSpent: 18900,
+                avgRating: 4.9,
+                lastOrderDate: '2024-01-13',
+                createdAt: '2023-03-20'
+            },
+            {
+                id: 4,
+                name: 'نورة السعد',
+                phone: '+966504567890',
+                email: 'nora@example.com',
+                gender: 'female',
+                birthDate: '1995-03-30',
+                nationalId: '5566778899',
+                country: 'السعودية',
+                city: 'الرياض',
+                district: 'النخيل',
+                street: 'شارع العليا',
+                building: 'مبنى 321',
+                postalCode: '45678',
+                address: 'الرياض - النخيل - شارع العليا - مبنى 321',
+                bloodType: 'AB+',
+                weight: 58,
+                height: 162,
+                allergies: 'لا توجد',
+                chronicDiseases: 'لا توجد',
+                currentMedications: 'مكملات فيتامين',
+                isActive: true,
+                isVip: false,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'مهتمة بالمكملات الغذائية',
+                totalOrders: 5,
+                totalSpent: 1800,
+                avgRating: 4.2,
+                lastOrderDate: '2024-01-12',
+                createdAt: '2023-11-05'
+            },
+            {
+                id: 5,
+                name: 'محمد أحمد',
+                phone: '+966505678901',
+                email: 'mohammed@example.com',
+                gender: 'male',
+                birthDate: '1982-07-18',
+                nationalId: '6677889900',
+                country: 'السعودية',
+                city: 'جدة',
+                district: 'الروضة',
+                street: 'شارع الأمير سلطان',
+                building: 'مبنى 654',
+                postalCode: '56789',
+                address: 'جدة - الروضة - شارع الأمير سلطان - مبنى 654',
+                bloodType: 'O-',
+                weight: 70,
+                height: 172,
+                allergies: 'البنسلين',
+                chronicDiseases: 'ضغط الدم',
+                currentMedications: 'أدوية الضغط',
+                isActive: false,
+                isVip: false,
+                allowNotifications: false,
+                allowSms: false,
+                notes: 'توقف عن الشراء منذ 3 أشهر',
+                totalOrders: 3,
+                totalSpent: 950,
+                avgRating: 3.8,
+                lastOrderDate: '2023-10-20',
+                createdAt: '2023-09-10'
+            },
+            {
+                id: 6,
+                name: 'سارة خالد',
+                phone: '+966506789012',
+                email: 'sara@example.com',
+                gender: 'female',
+                birthDate: '1988-11-25',
+                nationalId: '7788990011',
+                country: 'السعودية',
+                city: 'الدمام',
+                district: 'الخبر',
+                street: 'شارع الملك فيصل',
+                building: 'مبنى 987',
+                postalCode: '67890',
+                address: 'الدمام - الخبر - شارع الملك فيصل - مبنى 987',
+                bloodType: 'A-',
+                weight: 55,
+                height: 160,
+                allergies: 'الأسبرين',
+                chronicDiseases: 'صداع نصفي',
+                currentMedications: 'أدوية الصداع',
+                isActive: true,
+                isVip: false,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'تعاني من صداع نصفي متكرر',
+                totalOrders: 12,
+                totalSpent: 6800,
+                avgRating: 4.6,
+                lastOrderDate: '2024-01-11',
+                createdAt: '2023-07-22'
+            },
+            {
+                id: 7,
+                name: 'عبدالله ناصر',
+                phone: '+966507890123',
+                email: 'abdullah@example.com',
+                gender: 'male',
+                birthDate: '1975-04-12',
+                nationalId: '8899001122',
+                country: 'السعودية',
+                city: 'الرياض',
+                district: 'المرسلات',
+                street: 'شارع العروبة',
+                building: 'مبنى 147',
+                postalCode: '78901',
+                address: 'الرياض - المرسلات - شارع العروبة - مبنى 147',
+                bloodType: 'B-',
+                weight: 85,
+                height: 180,
+                allergies: 'لا توجد',
+                chronicDiseases: 'كوليسترول',
+                currentMedications: 'أدوية الكوليسترول',
+                isActive: true,
+                isVip: true,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'عميل مميز، مشتريات كبيرة',
+                totalOrders: 18,
+                totalSpent: 15200,
+                avgRating: 4.7,
+                lastOrderDate: '2024-01-10',
+                createdAt: '2023-05-14'
+            },
+            {
+                id: 8,
+                name: 'لينا فارس',
+                phone: '+966508901234',
+                email: 'lina@example.com',
+                gender: 'female',
+                birthDate: '1992-09-08',
+                nationalId: '9900112233',
+                country: 'السعودية',
+                city: 'جدة',
+                district: 'الزهراء',
+                street: 'شارع الستين',
+                building: 'مبنى 258',
+                postalCode: '89012',
+                address: 'جدة - الزهراء - شارع الستين - مبنى 258',
+                bloodType: 'O+',
+                weight: 60,
+                height: 168,
+                allergies: 'لا توجد',
+                chronicDiseases: 'لا توجد',
+                currentMedications: 'مكملات غذائية',
+                isActive: true,
+                isVip: false,
+                allowNotifications: true,
+                allowSms: true,
+                notes: 'مهتمة بالعناية بالبشرة',
+                totalOrders: 7,
+                totalSpent: 3100,
+                avgRating: 4.3,
+                lastOrderDate: '2024-01-09',
+                createdAt: '2023-10-18'
+            }
+        ];
+    }
+
+    getDefaultCities() {
+        return ['الرياض', 'جدة', 'الدمام', 'مكة', 'المدينة', 'الطائف', 'بريدة', 'خميس مشيط', 'تبوك', 'الخرج'];
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_customers', JSON.stringify(this.customers));
+        localStorage.setItem('pharma_cities', JSON.stringify(this.cities));
+    }
+
+    setupEventListeners() {
+        // زر البحث
+        const searchToggleBtn = document.getElementById('searchToggleBtn');
+        if (searchToggleBtn) {
+            searchToggleBtn.addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // زر الفلترة
+        const filterBtn = document.getElementById('filterBtn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', () => {
+                this.showFilter();
+            });
+        }
+
+        // زر الإضافة
+        const addCustomerBtn = document.getElementById('addCustomerBtn');
+        if (addCustomerBtn) {
+            addCustomerBtn.addEventListener('click', () => {
+                this.showAddCustomerModal();
+            });
+        }
+
+        // البحث في الوقت الحقيقي
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchCustomers(e.target.value);
+            });
+        }
+
+        // نموذج العميل
+        const customerForm = document.getElementById('customerForm');
+        if (customerForm) {
+            customerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveCustomer();
+            });
+        }
+
+        // تبويبات التفاصيل
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.target.dataset.tab);
+            });
+        });
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    toggleSearch() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar.style.display === 'none') {
+            searchBar.style.display = 'flex';
+            document.getElementById('searchInput').focus();
+        } else {
+            searchBar.style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            this.searchCustomers('');
+        }
+    }
+
+    searchCustomers(query) {
+        if (query.trim() === '') {
+            this.filteredCustomers = [...this.customers];
+        } else {
+            const searchTerm = query.toLowerCase();
+            this.filteredCustomers = this.customers.filter(customer => 
+                customer.name.toLowerCase().includes(searchTerm) ||
+                customer.phone.includes(searchTerm) ||
+                (customer.email && customer.email.toLowerCase().includes(searchTerm)) ||
+                customer.city.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        this.applySorting();
+        this.renderCustomers();
+        this.updateStats();
+    }
+
+    renderCities() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        if (!categoriesScroll) return;
+
+        let citiesHTML = `
+            <div class="category-chip active liquid-transition" data-city="all">
+                <i class="fas fa-map-marker-alt"></i>
+                جميع المدن
+            </div>
+        `;
+
+        this.cities.forEach(city => {
+            const customerCount = this.customers.filter(c => c.city === city).length;
+            citiesHTML += `
+                <div class="category-chip liquid-transition" data-city="${city}">
+                    <i class="fas fa-city"></i>
+                    ${city} (${customerCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = citiesHTML;
+
+        // إضافة مستمعي الأحداث للمدن
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const city = chip.dataset.city;
+                this.filterByCity(city);
+            });
+        });
+
+        // تحديث خيارات الفلترة
+        this.renderFilterCities();
+    }
+
+    filterByCity(city) {
+        if (city === 'all') {
+            this.filteredCustomers = [...this.customers];
+        } else {
+            this.filteredCustomers = this.customers.filter(customer => customer.city === city);
+        }
+        
+        this.applySorting();
+        this.renderCustomers();
+        this.updateStats();
+    }
+
+    filterByType(type) {
+        // تحديث الإحصائيات النشطة
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        event.target.closest('.stat-item').classList.add('active');
+
+        this.applyFilters();
+    }
+
+    applyFilters() {
+        this.filteredCustomers = this.customers.filter(customer => {
+            // فلترة النوع
+            const typeMatch = 
+                (this.currentFilters.type.includes('active') && customer.isActive) ||
+                (this.currentFilters.type.includes('vip') && customer.isVip) ||
+                (this.currentFilters.type.includes('new') && this.isNewCustomer(customer)) ||
+                (this.currentFilters.type.includes('inactive') && !customer.isActive);
+
+            // فلترة المدينة
+            const cityMatch = this.currentFilters.cities.length === 0 || 
+                            this.currentFilters.cities.includes(customer.city);
+
+            // فلترة المشتريات
+            const spentMatch = customer.totalSpent >= this.currentFilters.minSpent && 
+                             customer.totalSpent <= this.currentFilters.maxSpent;
+
+            // فلترة عدد الطلبات
+            const ordersMatch = this.checkOrdersRange(customer.totalOrders, this.currentFilters.ordersRange);
+
+            return typeMatch && cityMatch && spentMatch && ordersMatch;
+        });
+
+        this.applySorting();
+        this.renderCustomers();
+        this.updateStats();
+    }
+
+    isNewCustomer(customer) {
+        const customerDate = new Date(customer.createdAt);
+        const monthAgo = new Date();
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        return customerDate > monthAgo;
+    }
+
+    checkOrdersRange(orders, range) {
+        switch (range) {
+            case 'all': return true;
+            case '1-5': return orders >= 1 && orders <= 5;
+            case '6-20': return orders >= 6 && orders <= 20;
+            case '20+': return orders > 20;
+            default: return true;
+        }
+    }
+
+    applySorting() {
+        switch (this.sortBy) {
+            case 'name_asc':
+                this.filteredCustomers.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name_desc':
+                this.filteredCustomers.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+            case 'recent':
+                this.filteredCustomers.sort((a, b) => new Date(b.lastOrderDate || b.createdAt) - new Date(a.lastOrderDate || a.createdAt));
+                break;
+            case 'orders_desc':
+                this.filteredCustomers.sort((a, b) => b.totalOrders - a.totalOrders);
+                break;
+            case 'orders_asc':
+                this.filteredCustomers.sort((a, b) => a.totalOrders - b.totalOrders);
+                break;
+            case 'spent_desc':
+                this.filteredCustomers.sort((a, b) => b.totalSpent - a.totalSpent);
+                break;
+        }
+    }
+
+    sortCustomers() {
+        const sortSelect = document.getElementById('sortSelect');
+        this.sortBy = sortSelect.value;
+        this.applySorting();
+        this.renderCustomers();
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-option').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === view) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تبديل العرض
+        const gridView = document.getElementById('customersGrid');
+        const listView = document.getElementById('customersList');
+        const cardsView = document.getElementById('customersCards');
+        
+        gridView.style.display = 'none';
+        listView.style.display = 'none';
+        cardsView.style.display = 'none';
+        
+        if (view === 'grid') {
+            gridView.style.display = 'grid';
+        } else if (view === 'list') {
+            listView.style.display = 'flex';
+        } else {
+            cardsView.style.display = 'flex';
+        }
+    }
+
+    renderCustomers() {
+        this.renderCustomersGrid();
+        this.renderCustomersList();
+        this.renderCustomersCards();
+        this.updateLoadMoreButton();
+    }
+
+    renderCustomersGrid() {
+        const customersGrid = document.getElementById('customersGrid');
+        if (!customersGrid) return;
+
+        const customersToShow = this.filteredCustomers.slice(0, this.visibleCustomers);
+        
+        let gridHTML = '';
+        customersToShow.forEach(customer => {
+            const statusClass = this.getCustomerStatus(customer);
+            const isNew = this.isNewCustomer(customer);
+            
+            gridHTML += `
+                <div class="customer-card-grid liquid-transition" onclick="customers.showCustomerDetails(${customer.id})">
+                    <div class="customer-avatar">
+                        <i class="fas fa-user"></i>
+                        <div class="customer-status ${statusClass}"></div>
+                    </div>
+                    <div class="customer-name">${customer.name}</div>
+                    <div class="customer-meta-grid">
+                        <div>${customer.phone}</div>
+                        <div>${customer.city}</div>
+                    </div>
+                    <div class="customer-stats">
+                        <div class="stat-mini">
+                            <span class="stat-mini-value">${customer.totalOrders}</span>
+                            <span class="stat-mini-label">طلبات</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="stat-mini-value">${customer.totalSpent}</span>
+                            <span class="stat-mini-label">ريال</span>
+                        </div>
+                    </div>
+                    <div class="customer-tags-grid">
+                        ${customer.isVip ? '<span class="customer-tag vip">مميز</span>' : ''}
+                        ${isNew ? '<span class="customer-tag new">جديد</span>' : ''}
+                        ${!customer.isActive ? '<span class="customer-tag" style="background: var(--danger); color: white;">غير نشط</span>' : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        customersGrid.innerHTML = gridHTML;
+    }
+
+    renderCustomersList() {
+        const customersList = document.getElementById('customersList');
+        if (!customersList) return;
+
+        const customersToShow = this.filteredCustomers.slice(0, this.visibleCustomers);
+        
+        let listHTML = '';
+        customersToShow.forEach(customer => {
+            const statusClass = this.getCustomerStatus(customer);
+            
+            listHTML += `
+                <div class="customer-card-list liquid-transition" onclick="customers.showCustomerDetails(${customer.id})">
+                    <div class="customer-avatar-list">
+                        <i class="fas fa-user"></i>
+                        <div class="customer-status ${statusClass}"></div>
+                    </div>
+                    <div class="customer-details-list">
+                        <div class="customer-name-list">${customer.name}</div>
+                        <div class="customer-contact-list">
+                            <span>${customer.phone}</span> • 
+                            <span>${customer.city}</span>
+                        </div>
+                        <div class="customer-stats-list">
+                            <span>${customer.totalOrders} طلبات</span>
+                            <span>${customer.totalSpent} ر.س</span>
+                        </div>
+                    </div>
+                    <div class="customer-actions-list">
+                        <button class="btn-neumorphism btn-small" onclick="event.stopPropagation(); customers.sendMessage(${customer.id})">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        customersList.innerHTML = listHTML;
+    }
+
+    renderCustomersCards() {
+        const customersCards = document.getElementById('customersCards');
+        if (!customersCards) return;
+
+        const customersToShow = this.filteredCustomers.slice(0, this.visibleCustomers);
+        
+        let cardsHTML = '';
+        customersToShow.forEach(customer => {
+            const statusClass = this.getCustomerStatus(customer);
+            const isNew = this.isNewCustomer(customer);
+            
+            cardsHTML += `
+                <div class="customer-card-detailed liquid-transition" onclick="customers.showCustomerDetails(${customer.id})">
+                    <div class="customer-header-card">
+                        <div class="customer-avatar-card">
+                            <i class="fas fa-user"></i>
+                            <div class="customer-status ${statusClass}"></div>
+                        </div>
+                        <div class="customer-info-card">
+                            <div class="customer-name-card">${customer.name}</div>
+                            <div class="customer-contact-card">
+                                <div>${customer.phone}</div>
+                                <div>${customer.email || 'لا يوجد بريد'}</div>
+                            </div>
+                            <div class="customer-tags-card">
+                                ${customer.isVip ? '<span class="customer-tag vip">مميز</span>' : ''}
+                                ${isNew ? '<span class="customer-tag new">جديد</span>' : ''}
+                                ${!customer.isActive ? '<span class="customer-tag" style="background: var(--danger); color: white;">غير نشط</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="customer-stats-card">
+                        <div class="stat-mini">
+                            <span class="stat-mini-value">${customer.totalOrders}</span>
+                            <span class="stat-mini-label">طلبات</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="stat-mini-value">${customer.totalSpent}</span>
+                            <span class="stat-mini-label">إجمالي</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="stat-mini-value">${customer.avgRating}</span>
+                            <span class="stat-mini-label">تقييم</span>
+                        </div>
+                    </div>
+                    
+                    <div class="customer-actions-card">
+                        <button class="btn-neumorphism btn-small" onclick="event.stopPropagation(); customers.sendMessage(${customer.id})">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="btn-neumorphism btn-small" onclick="event.stopPropagation(); customers.createOrder(${customer.id})">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn-neumorphism btn-small" onclick="event.stopPropagation(); customers.showCustomerDetails(${customer.id})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        customersCards.innerHTML = cardsHTML;
+    }
+
+    getCustomerStatus(customer) {
+        if (!customer.isActive) return 'offline';
+        if (customer.isVip) return 'vip';
+        return 'online';
+    }
+
+    updateStats() {
+        const totalCustomers = this.customers.length;
+        const activeCustomers = this.customers.filter(c => c.isActive).length;
+        const newCustomers = this.customers.filter(c => this.isNewCustomer(c)).length;
+        const vipCustomers = this.customers.filter(c => c.isVip).length;
+
+        document.getElementById('totalCustomers').textContent = totalCustomers;
+        document.getElementById('activeCustomers').textContent = activeCustomers;
+        document.getElementById('newCustomers').textContent = newCustomers;
+        document.getElementById('vipCustomers').textContent = vipCustomers;
+    }
+
+    updateLoadMoreButton() {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if (this.visibleCustomers >= this.filteredCustomers.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    loadMore() {
+        this.visibleCustomers += 8;
+        this.renderCustomers();
+    }
+
+    showAddCustomerModal() {
+        this.currentCustomer = null;
+        document.getElementById('customerFormTitle').textContent = 'إضافة عميل جديد';
+        document.getElementById('customerForm').reset();
+        
+        // إظهار النافذة
+        document.getElementById('customerFormModal').style.display = 'block';
+    }
+
+    closeCustomerForm() {
+        document.getElementById('customerFormModal').style.display = 'none';
+    }
+
+    saveCustomer() {
+        const formData = new FormData(document.getElementById('customerForm'));
+        const customerData = Object.fromEntries(formData);
+        
+        // تحويل القيم الرقمية
+        customerData.weight = parseFloat(customerData.weight) || null;
+        customerData.height = parseFloat(customerData.height) || null;
+        
+        // تحويل القيم المنطقية
+        customerData.isActive = document.getElementById('customerIsActive').checked;
+        customerData.isVip = document.getElementById('customerIsVip').checked;
+        customerData.allowNotifications = document.getElementById('customerAllowNotifications').checked;
+        customerData.allowSms = document.getElementById('customerAllowSms').checked;
+
+        if (this.currentCustomer) {
+            // تحديث العميل الحالي
+            const index = this.customers.findIndex(c => c.id === this.currentCustomer.id);
+            if (index !== -1) {
+                this.customers[index] = { 
+                    ...this.customers[index], 
+                    ...customerData,
+                    updatedAt: new Date().toISOString()
+                };
+            }
+        } else {
+            // إضافة عميل جديد
+            const newCustomer = {
+                id: Math.max(...this.customers.map(c => c.id)) + 1,
+                ...customerData,
+                totalOrders: 0,
+                totalSpent: 0,
+                avgRating: 0,
+                createdAt: new Date().toISOString(),
+                interactions: [],
+                orders: []
+            };
+            this.customers.unshift(newCustomer);
+        }
+
+        this.saveData();
+        this.filteredCustomers = [...this.customers];
+        this.applySorting();
+        this.renderCustomers();
+        this.updateStats();
+        this.closeCustomerForm();
+        
+        this.showToast(this.currentCustomer ? 'تم تحديث العميل بنجاح' : 'تم إضافة العميل بنجاح');
+    }
+
+    showCustomerDetails(customerId) {
+        const customer = this.customers.find(c => c.id === customerId);
+        if (!customer) return;
+
+        this.currentCustomer = customer;
+        
+        // تعبئة البيانات الأساسية
+        document.getElementById('detailCustomerName').textContent = customer.name;
+        document.getElementById('detailCustomerPhone').textContent = customer.phone;
+        document.getElementById('detailCustomerEmail').textContent = customer.email || 'لا يوجد بريد إلكتروني';
+        document.getElementById('detailCustomerSince').textContent = `عميل منذ ${this.formatDate(customer.createdAt)}`;
+        
+        // تحديث الحالة
+        const statusElement = document.getElementById('detailCustomerStatus');
+        const statusClass = this.getCustomerStatus(customer);
+        statusElement.className = `customer-status ${statusClass}`;
+        
+        // تحديث الإحصائيات
+        document.getElementById('detailTotalOrders').textContent = customer.totalOrders;
+        document.getElementById('detailTotalSpent').textContent = `${customer.totalSpent} ر.س`;
+        document.getElementById('detailAvgRating').textContent = customer.avgRating;
+        document.getElementById('detailDaysSince').textContent = this.getDaysSince(customer.createdAt);
+        
+        // تعبئة العلامات
+        this.populateCustomerTags(customer);
+        
+        // تعبئة معلومات الاتصال
+        this.populateContactInfo(customer);
+        
+        // تعبئة آخر الطلبات
+        this.populateRecentOrders(customer);
+        
+        // تعبئة تبويب الطلبات
+        this.populateOrdersTab(customer);
+        
+        // تعبئة تبويب المعلومات الطبية
+        this.populateMedicalTab(customer);
+        
+        // تعبئة تبويب التفاعلات
+        this.populateInteractionsTab(customer);
+        
+        // إظهار النافذة
+        document.getElementById('customerDetailsModal').style.display = 'block';
+    }
+
+    populateCustomerTags(customer) {
+        const tagsElement = document.getElementById('customerTags');
+        let tagsHTML = '';
+        
+        if (customer.isVip) {
+            tagsHTML += '<span class="customer-tag vip">عميل مميز</span>';
+        }
+        
+        if (this.isNewCustomer(customer)) {
+            tagsHTML += '<span class="customer-tag new">عميل جديد</span>';
+        }
+        
+        if (!customer.isActive) {
+            tagsHTML += '<span class="customer-tag" style="background: var(--danger); color: white;">غير نشط</span>';
+        }
+        
+        if (customer.allowNotifications) {
+            tagsHTML += '<span class="customer-tag" style="background: var(--info); color: white;">يسمح بالإشعارات</span>';
+        }
+        
+        tagsElement.innerHTML = tagsHTML;
+    }
+
+    populateContactInfo(customer) {
+        const contactInfo = document.getElementById('contactInfo');
+        const contactDetails = [
+            { label: 'الجنس', value: customer.gender === 'male' ? 'ذكر' : 'أنثى' },
+            { label: 'تاريخ الميلاد', value: customer.birthDate ? this.formatDate(customer.birthDate) : 'غير محدد' },
+            { label: 'العمر', value: customer.birthDate ? this.calculateAge(customer.birthDate) + ' سنة' : 'غير محدد' },
+            { label: 'المدينة', value: customer.city },
+            { label: 'الحي', value: customer.district || 'غير محدد' },
+            { label: 'العنوان', value: customer.address || 'غير محدد' }
+        ];
+        
+        let contactHTML = '';
+        contactDetails.forEach(detail => {
+            contactHTML += `
+                <div class="contact-item">
+                    <div class="contact-label">${detail.label}</div>
+                    <div class="contact-value">${detail.value}</div>
+                </div>
+            `;
+        });
+        
+        contactInfo.innerHTML = contactHTML;
+    }
+
+    populateRecentOrders(customer) {
+        const recentOrdersList = document.getElementById('recentOrdersList');
+        const recentOrders = customer.orders ? customer.orders.slice(0, 3) : [];
+        
+        let ordersHTML = '';
+        recentOrders.forEach(order => {
+            ordersHTML += `
+                <div class="recent-order-item">
+                    <div class="order-id">${order.id}</div>
+                    <div class="order-details">
+                        <span>${order.products.length} منتج</span>
+                        <span class="order-amount">${order.amount} ر.س</span>
+                    </div>
+                    <div class="order-date">${this.formatDate(order.date)}</div>
+                </div>
+            `;
+        });
+        
+        if (recentOrders.length === 0) {
+            ordersHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد طلبات سابقة</div>';
+        }
+        
+        recentOrdersList.innerHTML = ordersHTML;
+    }
+
+    populateOrdersTab(customer) {
+        const orders = customer.orders || [];
+        
+        // تحديث الإحصائيات
+        document.getElementById('ordersTotalCount').textContent = orders.length;
+        document.getElementById('ordersPendingCount').textContent = orders.filter(o => o.status === 'pending').length;
+        document.getElementById('ordersCompletedCount').textContent = orders.filter(o => o.status === 'completed').length;
+        document.getElementById('ordersCancelledCount').textContent = orders.filter(o => o.status === 'cancelled').length;
+        
+        // تعبئة قائمة الطلبات
+        this.populateOrdersList(orders);
+    }
+
+    populateOrdersList(orders) {
+        const ordersList = document.getElementById('ordersListDetailed');
+        
+        let ordersHTML = '';
+        orders.forEach(order => {
+            const statusClass = order.status === 'completed' ? 'completed' : 
+                              order.status === 'pending' ? 'pending' : 'cancelled';
+            const statusText = order.status === 'completed' ? 'مكتمل' : 
+                             order.status === 'pending' ? 'قيد الانتظار' : 'ملغي';
+            
+            let productsHTML = '';
+            order.products.forEach(product => {
+                productsHTML += `
+                    <div class="order-product">
+                        <span>${product.name}</span>
+                        <span>${product.quantity} × ${product.price} ر.س</span>
+                    </div>
+                `;
+            });
+            
+            ordersHTML += `
+                <div class="order-item-detailed">
+                    <div class="order-header">
+                        <div class="order-id">${order.id}</div>
+                        <div class="order-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="order-products">
+                        ${productsHTML}
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-date">${this.formatDate(order.date)}</div>
+                        <div class="order-amount">${order.amount} ر.س</div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (orders.length === 0) {
+            ordersHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 40px;">لا توجد طلبات</div>';
+        }
+        
+        ordersList.innerHTML = ordersHTML;
+    }
+
+    populateMedicalTab(customer) {
+        // تعبئة المعلومات الأساسية
+        this.populateBasicMedicalInfo(customer);
+        
+        // تعبئة الحساسيات
+        this.populateAllergies(customer);
+        
+        // تعبئة الأمراض المزمنة
+        this.populateDiseases(customer);
+        
+        // تعبئة الأدوية الحالية
+        this.populateMedications(customer);
+        
+        // تحديث التنبيهات الطبية
+        this.updateMedicalAlerts(customer);
+    }
+
+    populateBasicMedicalInfo(customer) {
+        const basicInfo = document.getElementById('basicMedicalInfo');
+        const medicalDetails = [
+            { label: 'فصيلة الدم', value: customer.bloodType || 'غير معروفة' },
+            { label: 'الوزن', value: customer.weight ? `${customer.weight} كجم` : 'غير محدد' },
+            { label: 'الطول', value: customer.height ? `${customer.height} سم` : 'غير محدد' },
+            { label: 'مؤشر كتلة الجسم', value: customer.weight && customer.height ? this.calculateBMI(customer.weight, customer.height) : 'غير محدد' }
+        ];
+        
+        let infoHTML = '';
+        medicalDetails.forEach(detail => {
+            infoHTML += `
+                <div class="medical-detail">
+                    <span class="detail-label">${detail.label}</span>
+                    <span class="detail-value">${detail.value}</span>
+                </div>
+            `;
+        });
+        
+        basicInfo.innerHTML = infoHTML;
+    }
+
+    populateAllergies(customer) {
+        const allergiesList = document.getElementById('allergiesList');
+        const allergies = customer.allergies ? customer.allergies.split('،') : ['لا توجد حساسيات معروفة'];
+        
+        let allergiesHTML = '';
+        allergies.forEach(allergy => {
+            allergiesHTML += `<div class="medical-item">${allergy.trim()}</div>`;
+        });
+        
+        allergiesList.innerHTML = allergiesHTML;
+    }
+
+    populateDiseases(customer) {
+        const diseasesList = document.getElementById('diseasesList');
+        const diseases = customer.chronicDiseases ? customer.chronicDiseases.split('،') : ['لا توجد أمراض مزمنة'];
+        
+        let diseasesHTML = '';
+        diseases.forEach(disease => {
+            diseasesHTML += `<div class="medical-item">${disease.trim()}</div>`;
+        });
+        
+        diseasesList.innerHTML = diseasesHTML;
+    }
+
+    populateMedications(customer) {
+        const medicationsList = document.getElementById('medicationsList');
+        const medications = customer.currentMedications ? customer.currentMedications.split('،') : ['لا يتناول أدوية حالياً'];
+        
+        let medicationsHTML = '';
+        medications.forEach(medication => {
+            medicationsHTML += `<div class="medical-item">${medication.trim()}</div>`;
+        });
+        
+        medicationsList.innerHTML = medicationsHTML;
+    }
+
+    updateMedicalAlerts(customer) {
+        const medicalAlerts = document.getElementById('medicalAlerts');
+        let alertsHTML = '';
+        
+        if (!customer.allergies || customer.allergies === 'لا توجد') {
+            alertsHTML += `
+                <div class="alert-item">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>لم يتم تسجيل أي حساسيات للعميل</span>
+                </div>
+            `;
+        }
+        
+        if (customer.chronicDiseases && customer.chronicDiseases !== 'لا توجد') {
+            alertsHTML += `
+                <div class="alert-item" style="background: var(--info);">
+                    <i class="fas fa-info-circle"></i>
+                    <span>العميل يعاني من أمراض مزمنة: ${customer.chronicDiseases}</span>
+                </div>
+            `;
+        }
+        
+        medicalAlerts.innerHTML = alertsHTML || '<div style="text-align: center; color: var(--text-secondary);">لا توجد تنبيهات طبية</div>';
+    }
+
+    populateInteractionsTab(customer) {
+        const interactions = customer.interactions || [];
+        
+        // تحديث الإحصائيات
+        document.getElementById('interactionsTotal').textContent = interactions.length;
+        document.getElementById('interactionsCalls').textContent = interactions.filter(i => i.type === 'call').length;
+        document.getElementById('interactionsMessages').textContent = interactions.filter(i => i.type === 'message').length;
+        document.getElementById('interactionsVisits').textContent = interactions.filter(i => i.type === 'visit').length;
+        
+        // تعبئة سجل التفاعلات
+        this.populateInteractionsHistory(interactions);
+    }
+
+    populateInteractionsHistory(interactions) {
+        const historyList = document.getElementById('interactionsHistoryList');
+        
+        let historyHTML = '';
+        interactions.forEach(interaction => {
+            const typeText = this.getInteractionTypeText(interaction.type);
+            const typeIcon = this.getInteractionTypeIcon(interaction.type);
+            
+            historyHTML += `
+                <div class="interaction-item">
+                    <div class="interaction-icon ${interaction.type}">
+                        <i class="fas ${typeIcon}"></i>
+                    </div>
+                    <div class="interaction-content">
+                        <div class="interaction-title">${interaction.subject}</div>
+                        <div class="interaction-details">${interaction.details}</div>
+                        <div class="interaction-time">${this.formatDateTime(interaction.date)}</div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (interactions.length === 0) {
+            historyHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 40px;">لا توجد تفاعلات سابقة</div>';
+        }
+        
+        historyList.innerHTML = historyHTML;
+    }
+
+    getInteractionTypeText(type) {
+        const types = {
+            'call': 'مكالمة',
+            'message': 'رسالة',
+            'visit': 'زيارة',
+            'email': 'بريد إلكتروني',
+            'note': 'ملاحظة'
+        };
+        return types[type] || type;
+    }
+
+    getInteractionTypeIcon(type) {
+        const icons = {
+            'call': 'fa-phone',
+            'message': 'fa-comment',
+            'visit': 'fa-user',
+            'email': 'fa-envelope',
+            'note': 'fa-sticky-note'
+        };
+        return icons[type] || 'fa-circle';
+    }
+
+    closeCustomerDetails() {
+        document.getElementById('customerDetailsModal').style.display = 'none';
+    }
+
+    editCustomer(customerId = null) {
+        const customer = customerId ? this.customers.find(c => c.id === customerId) : this.currentCustomer;
+        if (!customer) return;
+
+        this.currentCustomer = customer;
+        document.getElementById('customerFormTitle').textContent = 'تعديل العميل';
+        
+        // تعبئة النموذج بالبيانات
+        document.getElementById('customerName').value = customer.name;
+        document.getElementById('customerPhone').value = customer.phone;
+        document.getElementById('customerEmail').value = customer.email || '';
+        document.getElementById('customerGender').value = customer.gender || '';
+        document.getElementById('customerBirthDate').value = customer.birthDate || '';
+        document.getElementById('customerNationalId').value = customer.nationalId || '';
+        document.getElementById('customerCountry').value = customer.country || 'السعودية';
+        document.getElementById('customerCity').value = customer.city || '';
+        document.getElementById('customerDistrict').value = customer.district || '';
+        document.getElementById('customerStreet').value = customer.street || '';
+        document.getElementById('customerBuilding').value = customer.building || '';
+        document.getElementById('customerPostalCode').value = customer.postalCode || '';
+        document.getElementById('customerAddress').value = customer.address || '';
+        document.getElementById('customerBloodType').value = customer.bloodType || '';
+        document.getElementById('customerWeight').value = customer.weight || '';
+        document.getElementById('customerHeight').value = customer.height || '';
+        document.getElementById('customerAllergies').value = customer.allergies || '';
+        document.getElementById('customerChronicDiseases').value = customer.chronicDiseases || '';
+        document.getElementById('customerCurrentMedications').value = customer.currentMedications || '';
+        document.getElementById('customerNotes').value = customer.notes || '';
+        
+        document.getElementById('customerIsActive').checked = customer.isActive;
+        document.getElementById('customerIsVip').checked = customer.isVip;
+        document.getElementById('customerAllowNotifications').checked = customer.allowNotifications;
+        document.getElementById('customerAllowSms').checked = customer.allowSms;
+        
+        // إظهار النافذة
+        document.getElementById('customerFormModal').style.display = 'block';
+        this.closeCustomerDetails();
+    }
+
+    deleteCustomer() {
+        if (!this.currentCustomer) return;
+
+        if (confirm(`هل أنت متأكد من حذف العميل "${this.currentCustomer.name}"؟`)) {
+            this.customers = this.customers.filter(c => c.id !== this.currentCustomer.id);
+            this.saveData();
+            this.filteredCustomers = [...this.customers];
+            this.applySorting();
+            this.renderCustomers();
+            this.updateStats();
+            this.closeCustomerDetails();
+            
+            this.showToast('تم حذف العميل بنجاح');
+        }
+    }
+
+    sendMessage(customerId = null) {
+        const customer = customerId ? this.customers.find(c => c.id === customerId) : this.currentCustomer;
+        if (!customer) return;
+
+        const message = prompt('أدخل الرسالة التي تريد إرسالها:', '');
+        if (message) {
+            // إضافة إلى سجل التفاعلات
+            if (!customer.interactions) {
+                customer.interactions = [];
+            }
+            
+            customer.interactions.unshift({
+                id: customer.interactions.length + 1,
+                type: 'message',
+                subject: 'رسالة نصية',
+                details: message,
+                date: new Date().toISOString()
+            });
+
+            this.saveData();
+            
+            if (this.currentCustomer && this.currentCustomer.id === customer.id) {
+                this.showCustomerDetails(customer.id);
+            }
+            
+            this.showToast('تم إرسال الرسالة بنجاح');
+        }
+    }
+
+    createOrder(customerId = null) {
+        const customer = customerId ? this.customers.find(c => c.id === customerId) : this.currentCustomer;
+        if (!customer) return;
+
+        this.showToast(`سيتم إنشاء طلب جديد للعميل ${customer.name}`);
+        // في التطبيق الحقيقي، سيتم توجيه المستخدم إلى صفحة إنشاء الطلب
+    }
+
+    addInteraction() {
+        if (!this.currentCustomer) return;
+
+        const type = document.getElementById('interactionType').value;
+        const subject = document.getElementById('interactionSubject').value;
+        const details = document.getElementById('interactionDetails').value;
+
+        if (!subject || !details) {
+            alert('الرجاء ملء جميع الحقول المطلوبة');
+            return;
+        }
+
+        // إضافة إلى سجل التفاعلات
+        if (!this.currentCustomer.interactions) {
+            this.currentCustomer.interactions = [];
+        }
+        
+        this.currentCustomer.interactions.unshift({
+            id: this.currentCustomer.interactions.length + 1,
+            type: type,
+            subject: subject,
+            details: details,
+            date: new Date().toISOString()
+        });
+
+        this.saveData();
+        this.populateInteractionsTab(this.currentCustomer);
+        
+        // إعادة تعيين النموذج
+        document.getElementById('interactionSubject').value = '';
+        document.getElementById('interactionDetails').value = '';
+        
+        this.showToast('تم إضافة التفاعل بنجاح');
+    }
+
+    showFilter() {
+        this.renderFilterCities();
+        document.getElementById('filterModal').style.display = 'block';
+    }
+
+    renderFilterCities() {
+        const filterCities = document.getElementById('filterCities');
+        let citiesHTML = '';
+        
+        this.cities.forEach(city => {
+            citiesHTML += `
+                <label class="filter-option">
+                    <input type="checkbox" name="city" value="${city}">
+                    <span>${city}</span>
+                </label>
+            `;
+        });
+        
+        filterCities.innerHTML = citiesHTML;
+    }
+
+    closeFilter() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    applyFilters() {
+        // جمع إعدادات الفلترة من النموذج
+        const typeCheckboxes = document.querySelectorAll('input[name="type"]:checked');
+        this.currentFilters.type = Array.from(typeCheckboxes).map(cb => cb.value);
+        
+        const cityCheckboxes = document.querySelectorAll('input[name="city"]:checked');
+        this.currentFilters.cities = Array.from(cityCheckboxes).map(cb => cb.value);
+        
+        this.currentFilters.minSpent = parseInt(document.getElementById('filterMinSpent').value) || 0;
+        this.currentFilters.maxSpent = parseInt(document.getElementById('filterMaxSpent').value) || 10000;
+        
+        const ordersRadio = document.querySelector('input[name="orders"]:checked');
+        this.currentFilters.ordersRange = ordersRadio ? ordersRadio.value : 'all';
+
+        this.applyFilters();
+        this.closeFilter();
+    }
+
+    resetFilters() {
+        // إعادة تعيين كل الفلترة
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (cb.name === 'type' && (cb.value === 'active' || cb.value === 'all')) {
+                cb.checked = true;
+            } else {
+                cb.checked = false;
+            }
+        });
+        
+        document.getElementById('filterMinSpent').value = 0;
+        document.getElementById('filterMaxSpent').value = 10000;
+        document.querySelector('input[name="orders"][value="all"]').checked = true;
+        
+        this.currentFilters = {
+            type: ['active'],
+            cities: [],
+            minSpent: 0,
+            maxSpent: 10000,
+            ordersRange: 'all'
+        };
+        
+        this.applyFilters();
+    }
+
+    switchTab(tabName) {
+        // تحديث أزرار التبويب
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تحديث محتوى التبويب
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === `${tabName}Tab`) {
+                pane.classList.add('active');
+            }
+        });
+    }
+
+    // دوال مساعدة
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+
+    formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString('ar-EG', {
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    getDaysSince(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    }
+
+    calculateAge(birthDate) {
+        const birth = new Date(birthDate);
+        const now = new Date();
+        let age = now.getFullYear() - birth.getFullYear();
+        const monthDiff = now.getMonth() - birth.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < birth.getDate())) {
+            age--;
+        }
+        
+        return age;
+    }
+
+    calculateBMI(weight, height) {
+        const heightInMeters = height / 100;
+        const bmi = weight / (heightInMeters * heightInMeters);
+        return bmi.toFixed(1);
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 60000); // كل دقيقة
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة تفاعلات جديدة
+        if (Math.random() > 0.7 && this.customers.length > 0) {
+            const randomCustomer = this.customers[Math.floor(Math.random() * this.customers.length)];
+            if (randomCustomer && randomCustomer.isActive) {
+                const interactionTypes = ['call', 'message', 'email'];
+                const randomType = interactionTypes[Math.floor(Math.random() * interactionTypes.length)];
+                
+                if (!randomCustomer.interactions) {
+                    randomCustomer.interactions = [];
+                }
+                
+                randomCustomer.interactions.unshift({
+                    id: randomCustomer.interactions.length + 1,
+                    type: randomType,
+                    subject: 'تفاعل تلقائي',
+                    details: 'هذا تفاعل محاكاة للاختبار',
+                    date: new Date().toISOString()
+                });
+
+                this.saveData();
+                
+                if (this.currentCustomer && this.currentCustomer.id === randomCustomer.id) {
+                    this.showCustomerDetails(randomCustomer.id);
+                }
+            }
+        }
+    }
+}
+
+// تهيئة نظام إدارة العملاء عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.customers = new CustomersManagement();
+});
+</script>
+</body>
+</html>
