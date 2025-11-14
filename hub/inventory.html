@@ -1,0 +1,3433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - إدارة المخزون</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+/* شريط البحث */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* إحصائيات سريعة */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-item.active {
+    background: var(--primary);
+    color: white;
+}
+
+.stat-item.active .stat-value,
+.stat-item.active .stat-label {
+    color: white;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* التصنيفات */
+.categories-section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 12px 20px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* لوحة تحكم المخزون */
+.inventory-dashboard {
+    padding: 0 20px;
+}
+
+/* بطاقات التحليل */
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.analytics-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+}
+
+.analytics-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.analytics-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.analytics-content {
+    flex: 1;
+}
+
+.analytics-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.analytics-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* شريط الأدوات */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.view-options {
+    display: flex;
+    gap: 8px;
+}
+
+.view-option {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.view-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.view-option:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.sort-options select {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.sort-options select:focus {
+    box-shadow: var(--shadow-inset);
+}
+
+/* حاوية المخزون */
+.inventory-container {
+    margin-bottom: 20px;
+}
+
+/* شبكة المخزون */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.inventory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* بطاقة المخزون (شبكة) */
+.inventory-card-grid {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.inventory-card-grid:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.inventory-image {
+    width: 100%;
+    height: 120px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--primary-dark);
+    position: relative;
+}
+
+.inventory-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.inventory-badge.stock {
+    background: var(--success);
+}
+
+.inventory-badge.low-stock {
+    background: var(--warning);
+}
+
+.inventory-badge.out-of-stock {
+    background: var(--danger);
+}
+
+.inventory-badge.expiring {
+    background: var(--danger);
+}
+
+.inventory-content {
+    padding: 16px;
+}
+
+.inventory-name {
+    font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    height: 40px;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.inventory-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.inventory-stock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.current-stock {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--primary-dark);
+}
+
+.stock-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.stock-indicator.high {
+    background: var(--success);
+}
+
+.stock-indicator.low {
+    background: var(--warning);
+}
+
+.stock-indicator.out {
+    background: var(--danger);
+}
+
+.inventory-actions-grid {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* بطاقة المخزون (قائمة) */
+.inventory-card-list {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.inventory-card-list:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.inventory-image-list {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+}
+
+.inventory-details-list {
+    flex: 1;
+}
+
+.inventory-name-list {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.inventory-meta-list {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.inventory-stock-list {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.inventory-status-list {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* زر الإضافة العائم */
+.floating-action-btn {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    background: var(--primary);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    z-index: 1000;
+}
+
+.floating-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+}
+
+.floating-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-content.large-modal {
+    max-height: 90vh;
+}
+
+.modal-content.small-modal {
+    max-width: 300px;
+    margin: 0 auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    border-radius: var(--radius-xl);
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* نموذج المخزون */
+.inventory-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.form-section h3 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-section h3::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: var(--bg-surface);
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+}
+
+/* أزرار */
+.btn-neumorphism {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    color: var(--primary);
+}
+
+.btn-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+}
+
+.btn-primary-neumorphism {
+    background: var(--primary);
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+    color: white;
+}
+
+.btn-primary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: var(--primary-dark);
+}
+
+.btn-secondary-neumorphism {
+    background: var(--secondary);
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.4);
+    color: white;
+}
+
+.btn-secondary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #E6A200;
+}
+
+.btn-danger-neumorphism {
+    background: var(--danger);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+    color: white;
+}
+
+.btn-danger-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #D32F2F;
+}
+
+/* تفاصيل المخزون */
+.inventory-details-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tabs-header {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.tab-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.tabs-content {
+    min-height: 400px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* النظرة العامة للمخزون */
+.inventory-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.inventory-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.inventory-image-large {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: var(--shadow-card);
+}
+
+.inventory-info {
+    flex: 1;
+}
+
+.inventory-info h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.inventory-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.inventory-meta span {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.inventory-status {
+    display: flex;
+    gap: 8px;
+}
+
+.status-badge,
+.stock-badge {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-badge.active {
+    background: var(--success);
+    color: white;
+}
+
+.status-badge.inactive {
+    background: var(--danger);
+    color: white;
+}
+
+.stock-badge.high {
+    background: var(--success);
+    color: white;
+}
+
+.stock-badge.low {
+    background: var(--warning);
+    color: white;
+}
+
+.stock-badge.out {
+    background: var(--danger);
+    color: white;
+}
+
+.inventory-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.spec-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.spec-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.spec-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.spec-info {
+    flex: 1;
+}
+
+.spec-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.spec-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.inventory-details-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.inventory-details-section h4 {
+    margin-bottom: 12px;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.technical-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.technical-spec {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spec-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.spec-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.quick-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* حركة المخزون */
+.inventory-movement {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.movement-filters {
+    display: flex;
+    gap: 16px;
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.movement-filters .filter-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.movement-filters label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.movement-list {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+}
+
+.movement-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.movement-items {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.movement-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--primary-light);
+    font-size: 12px;
+}
+
+.movement-item:last-child {
+    border-bottom: none;
+}
+
+.movement-type.in {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.movement-type.out {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+/* تحليلات المخزون */
+.inventory-analytics {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.analytics-stat {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    text-align: center;
+    transition: var(--transition-liquid);
+}
+
+.analytics-stat:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.analytics-stat .stat-value {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.analytics-stat .stat-label {
+    font-size: 12px;
+}
+
+.analytics-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.chart-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.chart-container h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.chart-placeholder {
+    height: 150px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    gap: 12px;
+}
+
+.chart-placeholder i {
+    font-size: 48px;
+    color: var(--primary-light);
+}
+
+/* تنبيهات المخزون */
+.inventory-alerts {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.alert-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.alert-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: var(--transition-liquid);
+    border-right: 4px solid transparent;
+}
+
+.alert-card.warning {
+    border-right-color: var(--warning);
+}
+
+.alert-card.danger {
+    border-right-color: var(--danger);
+}
+
+.alert-card.info {
+    border-right-color: var(--info);
+}
+
+.alert-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.alert-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.alert-card.warning .alert-icon {
+    background: var(--warning);
+}
+
+.alert-card.danger .alert-icon {
+    background: var(--danger);
+}
+
+.alert-card.info .alert-icon {
+    background: var(--info);
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-content h4 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.alert-content p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.alert-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* أقدام الإجراءات */
+.inventory-actions-footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+    flex-wrap: wrap;
+}
+
+.inventory-actions-footer .btn-neumorphism {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* الفلترة */
+.filter-section {
+    padding: 20px;
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.filter-option input {
+    margin: 0;
+}
+
+.stock-range {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stock-inputs {
+    display: flex;
+    gap: 12px;
+}
+
+.stock-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* التحميل */
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* تحميل المزيد */
+.load-more-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 480px) {
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .analytics-stats,
+    .analytics-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .movement-filters {
+        flex-direction: column;
+    }
+    
+    .movement-header,
+    .movement-item {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .inventory-actions-footer {
+        flex-direction: column;
+    }
+    
+    .inventory-actions-footer .btn-neumorphism {
+        min-width: auto;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة المخزون 📦</h1>
+                    <p>مراقبة وإدارة مخزون الأدوية والمستحضرات</p>
+                </div>
+                <div class="product-actions">
+                    <button class="action-icon liquid-transition" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="addInventoryBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن منتج، كود، أو تصنيف..." id="searchInput">
+                <button class="action-icon liquid-transition" onclick="inventory.toggleSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-bar">
+                <div class="stat-item liquid-transition" onclick="inventory.filterByStatus('all')">
+                    <div class="stat-value" id="totalItems">0</div>
+                    <div class="stat-label">إجمالي المنتجات</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="inventory.filterByStatus('low_stock')">
+                    <div class="stat-value" id="lowStockItems">0</div>
+                    <div class="stat-label">منخفض المخزون</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="inventory.filterByStatus('out_of_stock')">
+                    <div class="stat-value" id="outOfStockItems">0</div>
+                    <div class="stat-label">غير متوفر</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="inventory.filterByStatus('expiring')">
+                    <div class="stat-value" id="expiringItems">0</div>
+                    <div class="stat-label">منتهي الصلاحية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التصنيفات -->
+        <div class="categories-section">
+            <div class="categories-scroll" id="categoriesScroll">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- لوحة التحكم بالمخزون -->
+        <div class="inventory-dashboard">
+            <!-- بطاقات التحليل -->
+            <div class="analytics-cards">
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="totalInventoryValue">0 ر.س</div>
+                        <div class="analytics-label">إجمالي قيمة المخزون</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="monthlySales">0</div>
+                        <div class="analytics-label">مبيعات الشهر</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="turnoverRate">0%</div>
+                        <div class="analytics-label">معدل الدوران</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="alertItems">0</div>
+                        <div class="analytics-label">عناصر تحتاج انتباه</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شريط الأدوات -->
+            <div class="toolbar">
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid" onclick="inventory.changeView('grid')">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-option" data-view="list" onclick="inventory.changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sortSelect" onchange="inventory.sortInventory()">
+                        <option value="name_asc">الاسم (أ-ي)</option>
+                        <option value="name_desc">الاسم (ي-أ)</option>
+                        <option value="stock_asc">المخزون (منخفض-عالي)</option>
+                        <option value="stock_desc">المخزون (عالي-منخفض)</option>
+                        <option value="expiry_asc">الصلاحية (قريب-بعيد)</option>
+                        <option value="updated_desc">الأحدث</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- قائمة المخزون -->
+            <div class="inventory-container">
+                <div class="inventory-grid" id="inventoryGrid">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="inventory-list" id="inventoryList" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- تحميل المزيد -->
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn" onclick="inventory.loadMore()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <!-- زر الإضافة العائم -->
+        <button class="floating-action-btn liquid-transition" onclick="inventory.showAddInventoryModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="inventory.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="nav-label">المخزون</div>
+            </a>
+            <a href="orders.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل المخزون -->
+    <div id="inventoryFormModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="inventoryFormTitle">تعديل المخزون</h2>
+                <span class="close" onclick="inventory.closeInventoryForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="inventoryForm" class="inventory-form">
+                    <div class="form-section">
+                        <h3>المعلومات الأساسية</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="inventoryProduct">المنتج *</label>
+                                <select id="inventoryProduct" name="product" required>
+                                    <option value="">اختر المنتج</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryAction">نوع العملية *</label>
+                                <select id="inventoryAction" name="action" required>
+                                    <option value="add">إضافة إلى المخزون</option>
+                                    <option value="remove">خصم من المخزون</option>
+                                    <option value="adjust">تعديل الكمية</option>
+                                    <option value="transfer">نقل بين المخازن</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryQuantity">الكمية *</label>
+                                <input type="number" id="inventoryQuantity" name="quantity" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryDate">تاريخ العملية</label>
+                                <input type="date" id="inventoryDate" name="date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>التفاصيل الإضافية</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="inventoryReason">السبب *</label>
+                                <select id="inventoryReason" name="reason" required>
+                                    <option value="">اختر السبب</option>
+                                    <option value="purchase">شراء من مورد</option>
+                                    <option value="sale">بيع للعميل</option>
+                                    <option value="return">إرجاع من عميل</option>
+                                    <option value="damage">تلف أو كسر</option>
+                                    <option value="expired">منتهي الصلاحية</option>
+                                    <option value="adjustment">تعديل يدوي</option>
+                                    <option value="transfer">نقل بين المخازن</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryReference">رقم المرجع</label>
+                                <input type="text" id="inventoryReference" name="reference" placeholder="رقم الفاتورة أو الطلب">
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryCost">سعر التكلفة (ر.س)</label>
+                                <input type="number" id="inventoryCost" name="cost" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="inventoryLocation">الموقع/المخزن</label>
+                                <select id="inventoryLocation" name="location">
+                                    <option value="main">المخزن الرئيسي</option>
+                                    <option value="branch1">فرع الرياض</option>
+                                    <option value="branch2">فرع جدة</option>
+                                    <option value="branch3">فرع الدمام</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>الملاحظات</h3>
+                        <div class="form-group">
+                            <label for="inventoryNotes">ملاحظات إضافية</label>
+                            <textarea id="inventoryNotes" name="notes" rows="3" placeholder="أي ملاحظات إضافية حول العملية..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-neumorphism" onclick="inventory.closeInventoryForm()">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-neumorphism btn-primary-neumorphism">
+                            <i class="fas fa-save"></i>
+                            حفظ العملية
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل المخزون -->
+    <div id="inventoryDetailsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="inventoryDetailsTitle">تفاصيل المخزون</h2>
+                <span class="close" onclick="inventory.closeInventoryDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="inventory-details-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+                        <button class="tab-btn" data-tab="movement">حركة المخزون</button>
+                        <button class="tab-btn" data-tab="analytics">التحليلات</button>
+                        <button class="tab-btn" data-tab="alerts">التنبيهات</button>
+                    </div>
+
+                    <div class="tabs-content">
+                        <!-- تبويب النظرة العامة -->
+                        <div class="tab-pane active" id="overviewTab">
+                            <div class="inventory-overview">
+                                <div class="inventory-header">
+                                    <div class="inventory-image-large">
+                                        <i class="fas fa-pills" id="detailInventoryIcon"></i>
+                                    </div>
+                                    <div class="inventory-info">
+                                        <h3 id="detailInventoryName"></h3>
+                                        <div class="inventory-meta">
+                                            <span id="detailInventoryCode"></span>
+                                            <span id="detailInventoryCategory"></span>
+                                            <span id="detailInventoryCompany"></span>
+                                        </div>
+                                        <div class="inventory-status">
+                                            <span class="status-badge" id="detailInventoryStatus"></span>
+                                            <span class="stock-badge" id="detailInventoryStockBadge"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inventory-specs-grid">
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-box"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailInventoryStock"></div>
+                                            <div class="spec-label">المخزون الحالي</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailInventorySold"></div>
+                                            <div class="spec-label">مباع هذا الشهر</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailInventoryMinStock"></div>
+                                            <div class="spec-label">الحد الأدنى</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailInventoryExpiry"></div>
+                                            <div class="spec-label">أيام للصلاحية</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inventory-details-section">
+                                    <h4>معلومات المخزون</h4>
+                                    <div class="technical-specs" id="inventorySpecs">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+
+                                <div class="inventory-details-section">
+                                    <h4>إجراءات سريعة</h4>
+                                    <div class="quick-actions">
+                                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="inventory.quickAddStock()">
+                                            <i class="fas fa-plus"></i>
+                                            إضافة مخزون
+                                        </button>
+                                        <button class="btn-neumorphism btn-secondary-neumorphism" onclick="inventory.quickAdjustStock()">
+                                            <i class="fas fa-edit"></i>
+                                            تعديل الكمية
+                                        </button>
+                                        <button class="btn-neumorphism btn-danger-neumorphism" onclick="inventory.quickRemoveStock()">
+                                            <i class="fas fa-minus"></i>
+                                            خصم مخزون
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب حركة المخزون -->
+                        <div class="tab-pane" id="movementTab">
+                            <div class="inventory-movement">
+                                <div class="movement-filters">
+                                    <div class="filter-group">
+                                        <label>الفترة:</label>
+                                        <select id="movementPeriod">
+                                            <option value="7">آخر 7 أيام</option>
+                                            <option value="30">آخر 30 يوم</option>
+                                            <option value="90">آخر 90 يوم</option>
+                                            <option value="365">آخر سنة</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label>نوع الحركة:</label>
+                                        <select id="movementType">
+                                            <option value="all">جميع الحركات</option>
+                                            <option value="in">حركات الدخول</option>
+                                            <option value="out">حركات الخروج</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="movement-list">
+                                    <div class="movement-header">
+                                        <div>التاريخ</div>
+                                        <div>نوع الحركة</div>
+                                        <div>الكمية</div>
+                                        <div>السبب</div>
+                                        <div>المستخدم</div>
+                                    </div>
+                                    <div class="movement-items" id="movementItems">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب التحليلات -->
+                        <div class="tab-pane" id="analyticsTab">
+                            <div class="inventory-analytics">
+                                <div class="analytics-stats">
+                                    <div class="analytics-stat">
+                                        <div class="stat-value" id="analyticsTurnover">0%</div>
+                                        <div class="stat-label">معدل الدوران</div>
+                                    </div>
+                                    <div class="analytics-stat">
+                                        <div class="stat-value" id="analyticsAvgStock">0</div>
+                                        <div class="stat-label">متوسط المخزون</div>
+                                    </div>
+                                    <div class="analytics-stat">
+                                        <div class="stat-value" id="analyticsStockDays">0</div>
+                                        <div class="stat-label">أيام التغطية</div>
+                                    </div>
+                                    <div class="analytics-stat">
+                                        <div class="stat-value" id="analyticsReorderPoint">0</div>
+                                        <div class="stat-label">نقطة إعادة الطلب</div>
+                                    </div>
+                                </div>
+
+                                <div class="analytics-charts">
+                                    <div class="chart-container">
+                                        <h4>اتجاه المخزون</h4>
+                                        <div class="chart-placeholder">
+                                            <i class="fas fa-chart-line"></i>
+                                            <p>رسم بياني لاتجاه المخزون</p>
+                                        </div>
+                                    </div>
+                                    <div class="chart-container">
+                                        <h4>حركة المبيعات</h4>
+                                        <div class="chart-placeholder">
+                                            <i class="fas fa-chart-bar"></i>
+                                            <p>رسم بياني لحركة المبيعات</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب التنبيهات -->
+                        <div class="tab-pane" id="alertsTab">
+                            <div class="inventory-alerts">
+                                <div class="alert-cards">
+                                    <div class="alert-card warning">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>مخزون منخفض</h4>
+                                            <p>المخزون الحالي أقل من الحد الأدنى المطلوب</p>
+                                            <div class="alert-actions">
+                                                <button class="btn-neumorphism btn-primary-neumorphism" onclick="inventory.reorderProduct()">
+                                                    طلب من المورد
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert-card danger">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-skull-crossbones"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>منتهي الصلاحية قريباً</h4>
+                                            <p>هذا المنتج سينتهي صلاحيته خلال 30 يوم</p>
+                                            <div class="alert-actions">
+                                                <button class="btn-neumorphism btn-secondary-neumorphism" onclick="inventory.applyDiscount()">
+                                                    تطبيق خصم
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert-card info">
+                                        <div class="alert-icon">
+                                            <i class="fas fa-info-circle"></i>
+                                        </div>
+                                        <div class="alert-content">
+                                            <h4>مخزون راكد</h4>
+                                            <p>لم يتم بيع هذا المنتج خلال 60 يوم</p>
+                                            <div class="alert-actions">
+                                                <button class="btn-neumorphism" onclick="inventory.promoteProduct()">
+                                                    الترويج للمنتج
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inventory-actions-footer">
+                    <button class="btn-neumorphism" onclick="inventory.editInventory()">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-neumorphism btn-secondary-neumorphism" onclick="inventory.transferInventory()">
+                        <i class="fas fa-exchange-alt"></i>
+                        نقل بين المخازن
+                    </button>
+                    <button class="btn-neumorphism btn-danger-neumorphism" onclick="inventory.adjustInventory()">
+                        <i class="fas fa-adjust"></i>
+                        تعديل المخزون
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="inventory.generateReport()">
+                        <i class="fas fa-file-pdf"></i>
+                        تقرير المخزون
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلترة -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية المخزون</h2>
+                <span class="close" onclick="inventory.closeFilter()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <div class="filter-title">حالة المخزون</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="stock_status" value="in_stock" checked>
+                                <span>متوفر في المخزون</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="stock_status" value="low_stock">
+                                <span>منخفض المخزون</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="stock_status" value="out_of_stock">
+                                <span>غير متوفر</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="stock_status" value="expiring">
+                                <span>منتهي الصلاحية قريباً</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">التصنيف</div>
+                        <div class="filter-options" id="filterCategories">
+                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">نطاق المخزون</div>
+                        <div class="stock-range">
+                            <div class="stock-inputs">
+                                <input type="number" class="stock-input" id="filterMinStock" placeholder="الحد الأدنى" value="0">
+                                <input type="number" class="stock-input" id="filterMaxStock" placeholder="الحد الأقصى" value="1000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">خيارات إضافية</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterRequiresPrescription">
+                                <span>يتطلب وصفة طبية</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterTrackInventory">
+                                <span>يتم تتبع المخزون</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterActiveOnly" checked>
+                                <span>المنتجات النشطة فقط</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-neumorphism" onclick="inventory.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="inventory.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>جاري المعالجة...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة المخزون المتكامل
+class InventoryManagement {
+    constructor() {
+        this.products = [];
+        this.categories = [];
+        this.inventory = [];
+        this.filteredInventory = [];
+        this.currentItem = null;
+        this.currentView = 'grid';
+        this.visibleItems = 12;
+        this.currentFilters = {
+            stockStatus: ['in_stock'],
+            categories: [],
+            minStock: 0,
+            maxStock: 1000,
+            requiresPrescription: false,
+            trackInventory: true,
+            activeOnly: true
+        };
+        this.sortBy = 'name_asc';
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.renderCategories();
+        this.renderInventory();
+        this.updateStats();
+        this.setupRealTimeUpdates();
+        this.updateTime();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedProducts = localStorage.getItem('pharma_products_management');
+        const savedCategories = localStorage.getItem('pharma_categories');
+        const savedInventory = localStorage.getItem('pharma_inventory');
+
+        if (savedProducts) {
+            this.products = JSON.parse(savedProducts);
+        } else {
+            // إذا لم توجد بيانات المنتجات، نستخدم بيانات افتراضية
+            this.products = this.getDefaultProducts();
+        }
+
+        if (savedCategories) {
+            this.categories = JSON.parse(savedCategories);
+        } else {
+            this.categories = this.getDefaultCategories();
+        }
+
+        if (savedInventory) {
+            this.inventory = JSON.parse(savedInventory);
+        } else {
+            // إنشاء بيانات المخزون من المنتجات
+            this.inventory = this.generateInventoryFromProducts();
+        }
+
+        this.filteredInventory = [...this.inventory];
+        this.saveData();
+    }
+
+    getDefaultProducts() {
+        return [
+            {
+                id: 1,
+                code: 'PARA-500',
+                name: 'باراسيتامول 500 مجم',
+                category: 'مسكنات',
+                company: 'شركة الأدوية المتحدة',
+                description: 'مسكن للألم وخافض للحرارة، يستخدم لتسكين الآلام الخفيفة إلى المتوسطة وخفض الحرارة.',
+                price: 15.00,
+                cost: 8.50,
+                stock: 150,
+                minStock: 25,
+                form: 'tablet',
+                dosage: '500 مجم',
+                size: '20 قرص',
+                expiry: 36,
+                ingredients: 'باراسيتامول',
+                usage: 'قرص كل 6-8 ساعات حسب الحاجة',
+                requiresPrescription: false,
+                isActive: true,
+                isFeatured: true,
+                trackInventory: true,
+                icon: 'fa-pills',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 2,
+                code: 'VITC-1000',
+                name: 'فيتامين سي 1000 مجم',
+                category: 'فيتامينات',
+                company: 'مصنع الفيتامينات المتقدم',
+                description: 'مكمل غذائي من فيتامين سي، يدعم جهاز المناعة ويعزز صحة الجلد والعظام.',
+                price: 45.00,
+                cost: 25.00,
+                stock: 75,
+                minStock: 20,
+                form: 'tablet',
+                dosage: '1000 مجم',
+                size: '30 قرص فوار',
+                expiry: 24,
+                ingredients: 'فيتامين سي',
+                usage: 'قرص فوار يومياً في كوب من الماء',
+                requiresPrescription: false,
+                isActive: true,
+                isFeatured: true,
+                trackInventory: true,
+                icon: 'fa-apple-alt',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 3,
+                code: 'OMEGA-1000',
+                name: 'أوميغا 3 كبسولات',
+                category: 'مكملات غذائية',
+                company: 'مصنع الفيتامينات المتقدم',
+                description: 'مكمل غذائي من أحماض أوميغا 3 الدهنية، يدعم صحة القلب والدماغ والمفاصل.',
+                price: 75.00,
+                cost: 45.00,
+                stock: 30,
+                minStock: 15,
+                form: 'capsule',
+                dosage: '1000 مجم',
+                size: '60 كبسولة',
+                expiry: 24,
+                ingredients: 'زيت السمك، أوميغا 3',
+                usage: 'كبسولة مرتين يومياً',
+                requiresPrescription: false,
+                isActive: true,
+                isFeatured: false,
+                trackInventory: true,
+                icon: 'fa-capsules',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 4,
+                code: 'HYDRO-1',
+                name: 'كريم هيدروكورتيزون 1%',
+                category: 'جلدية',
+                company: 'مختبرات الجلدية',
+                description: 'كريم موضعي لعلاج الالتهابات الجلدية والحكة والطفح الجلدي.',
+                price: 22.00,
+                cost: 12.00,
+                stock: 8,
+                minStock: 10,
+                form: 'cream',
+                dosage: '1%',
+                size: '30 جم',
+                expiry: 24,
+                ingredients: 'هيدروكورتيزون',
+                usage: 'يوضع على المنطقة المصابة 2-3 مرات يومياً',
+                requiresPrescription: true,
+                isActive: true,
+                isFeatured: false,
+                trackInventory: true,
+                icon: 'fa-allergies',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 5,
+                code: 'AMOX-500',
+                name: 'أموكسيسيلين 500 مجم',
+                category: 'مضادات حيوية',
+                company: 'شركة المضادات الحيوية',
+                description: 'مضاد حيوي واسع المدى لعلاج الالتهابات البكتيرية المختلفة.',
+                price: 35.00,
+                cost: 18.00,
+                stock: 0,
+                minStock: 20,
+                form: 'capsule',
+                dosage: '500 مجم',
+                size: '12 كبسولة',
+                expiry: 36,
+                ingredients: 'أموكسيسيلين',
+                usage: 'كبسولة كل 8 ساعات',
+                requiresPrescription: true,
+                isActive: true,
+                isFeatured: false,
+                trackInventory: true,
+                icon: 'fa-prescription-bottle',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 6,
+                code: 'EYE-DROP',
+                name: 'قطرة العين المرطبة',
+                category: 'عيون',
+                company: 'مختبرات العيون',
+                description: 'قطرة عين لترطيب وتخفيف جفاف وتهيج العينين.',
+                price: 28.00,
+                cost: 15.00,
+                stock: 45,
+                minStock: 15,
+                form: 'drops',
+                dosage: '',
+                size: '15 مل',
+                expiry: 12,
+                ingredients: 'هيالورونيك أسيد',
+                usage: 'قطرة في كل عين حسب الحاجة',
+                requiresPrescription: false,
+                isActive: true,
+                isFeatured: false,
+                trackInventory: true,
+                icon: 'fa-eye',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 7,
+                code: 'COUGH-SYRUP',
+                name: 'شراب السعال للأطفال',
+                category: 'أطفال',
+                company: 'شركة أدوية الأطفال',
+                description: 'شراب لعلاج السعال ونزلات البرد لدى الأطفال، بنكهة الفراولة المحببة.',
+                price: 18.00,
+                cost: 9.50,
+                stock: 60,
+                minStock: 20,
+                form: 'syrup',
+                dosage: '',
+                size: '120 مل',
+                expiry: 12,
+                ingredients: 'ديكستروميثورفان',
+                usage: 'ملعقة صغيرة كل 6-8 ساعات',
+                requiresPrescription: false,
+                isActive: true,
+                isFeatured: true,
+                trackInventory: true,
+                icon: 'fa-baby',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            },
+            {
+                id: 8,
+                code: 'BP-MED',
+                name: 'أدوية الضغط',
+                category: 'قلب وأوعية دموية',
+                company: 'مختبرات القلب',
+                description: 'دواء لعلاج ارتفاع ضغط الدم، يساعد في الحفاظ على مستويات ضغط الدم الطبيعية.',
+                price: 42.00,
+                cost: 22.00,
+                stock: 25,
+                minStock: 15,
+                form: 'tablet',
+                dosage: '50 مجم',
+                size: '30 قرص',
+                expiry: 36,
+                ingredients: 'لوسارتان',
+                usage: 'قرص يومياً',
+                requiresPrescription: true,
+                isActive: false,
+                isFeatured: false,
+                trackInventory: true,
+                icon: 'fa-heartbeat',
+                createdAt: '2024-01-01',
+                updatedAt: '2024-01-15'
+            }
+        ];
+    }
+
+    getDefaultCategories() {
+        return [
+            'مسكنات',
+            'فيتامينات',
+            'مكملات غذائية',
+            'جلدية',
+            'مضادات حيوية',
+            'عيون',
+            'أطفال',
+            'قلب وأوعية دموية',
+            'معدة وهضم',
+            'أعصاب',
+            'غدد صماء',
+            'مسالك بولية'
+        ];
+    }
+
+    generateInventoryFromProducts() {
+        return this.products.map(product => {
+            const daysToExpiry = this.calculateDaysToExpiry(product.expiry);
+            const monthlySales = Math.floor(Math.random() * 50) + 10;
+            const turnoverRate = ((monthlySales / product.stock) * 100).toFixed(1);
+            
+            return {
+                ...product,
+                daysToExpiry: daysToExpiry,
+                monthlySales: monthlySales,
+                turnoverRate: turnoverRate,
+                inventoryValue: product.stock * product.cost,
+                lastMovement: this.generateRandomMovement(),
+                movementHistory: this.generateMovementHistory(product.id)
+            };
+        });
+    }
+
+    calculateDaysToExpiry(expiryMonths) {
+        const createdDate = new Date('2024-01-01');
+        const expiryDate = new Date(createdDate);
+        expiryDate.setMonth(expiryDate.getMonth() + expiryMonths);
+        const today = new Date();
+        const diffTime = expiryDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    }
+
+    generateRandomMovement() {
+        const types = ['purchase', 'sale', 'adjustment', 'transfer'];
+        const reasons = ['شراء من مورد', 'بيع للعميل', 'تعديل يدوي', 'نقل بين المخازن'];
+        return {
+            date: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+            type: types[Math.floor(Math.random() * types.length)],
+            quantity: Math.floor(Math.random() * 20) - 10,
+            reason: reasons[Math.floor(Math.random() * reasons.length)]
+        };
+    }
+
+    generateMovementHistory(productId) {
+        const movements = [];
+        const movementCount = Math.floor(Math.random() * 10) + 5;
+        
+        for (let i = 0; i < movementCount; i++) {
+            movements.push(this.generateRandomMovement());
+        }
+        
+        return movements.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_inventory', JSON.stringify(this.inventory));
+    }
+
+    setupEventListeners() {
+        // زر البحث
+        const searchToggleBtn = document.getElementById('searchToggleBtn');
+        if (searchToggleBtn) {
+            searchToggleBtn.addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // زر الفلترة
+        const filterBtn = document.getElementById('filterBtn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', () => {
+                this.showFilter();
+            });
+        }
+
+        // زر الإضافة
+        const addInventoryBtn = document.getElementById('addInventoryBtn');
+        if (addInventoryBtn) {
+            addInventoryBtn.addEventListener('click', () => {
+                this.showAddInventoryModal();
+            });
+        }
+
+        // البحث في الوقت الحقيقي
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchInventory(e.target.value);
+            });
+        }
+
+        // نموذج المخزون
+        const inventoryForm = document.getElementById('inventoryForm');
+        if (inventoryForm) {
+            inventoryForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveInventoryMovement();
+            });
+        }
+
+        // تبويبات التفاصيل
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.target.dataset.tab);
+            });
+        });
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    toggleSearch() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar.style.display === 'none') {
+            searchBar.style.display = 'flex';
+            document.getElementById('searchInput').focus();
+        } else {
+            searchBar.style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            this.searchInventory('');
+        }
+    }
+
+    searchInventory(query) {
+        if (query.trim() === '') {
+            this.filteredInventory = [...this.inventory];
+        } else {
+            const searchTerm = query.toLowerCase();
+            this.filteredInventory = this.inventory.filter(item => 
+                item.name.toLowerCase().includes(searchTerm) ||
+                item.code.toLowerCase().includes(searchTerm) ||
+                item.company.toLowerCase().includes(searchTerm) ||
+                item.category.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        this.applySorting();
+        this.renderInventory();
+        this.updateStats();
+    }
+
+    renderCategories() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        if (!categoriesScroll) return;
+
+        let categoriesHTML = `
+            <div class="category-chip active liquid-transition" data-category="all">
+                <i class="fas fa-th-large"></i>
+                الكل
+            </div>
+        `;
+
+        this.categories.forEach(category => {
+            const itemCount = this.inventory.filter(p => p.category === category).length;
+            categoriesHTML += `
+                <div class="category-chip liquid-transition" data-category="${category}">
+                    <i class="fas ${this.getCategoryIcon(category)}"></i>
+                    ${category} (${itemCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = categoriesHTML;
+
+        // إضافة مستمعي الأحداث للتصنيفات
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const category = chip.dataset.category;
+                this.filterByCategory(category);
+            });
+        });
+
+        // تحديث خيارات الفلترة
+        this.renderFilterCategories();
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            'مسكنات': 'fa-pills',
+            'فيتامينات': 'fa-apple-alt',
+            'مكملات غذائية': 'fa-capsules',
+            'جلدية': 'fa-allergies',
+            'مضادات حيوية': 'fa-prescription-bottle',
+            'عيون': 'fa-eye',
+            'أطفال': 'fa-baby',
+            'قلب وأوعية دموية': 'fa-heartbeat',
+            'معدة وهضم': 'fa-stomach',
+            'أعصاب': 'fa-brain',
+            'غدد صماء': 'fa-vial',
+            'مسالك بولية': 'fa-tint'
+        };
+        return icons[category] || 'fa-pills';
+    }
+
+    filterByCategory(category) {
+        if (category === 'all') {
+            this.filteredInventory = [...this.inventory];
+        } else {
+            this.filteredInventory = this.inventory.filter(item => item.category === category);
+        }
+        
+        this.applySorting();
+        this.renderInventory();
+        this.updateStats();
+    }
+
+    filterByStatus(status) {
+        // تحديث الإحصائيات النشطة
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        event.target.closest('.stat-item').classList.add('active');
+
+        this.applyFilters();
+    }
+
+    applyFilters() {
+        this.filteredInventory = this.inventory.filter(item => {
+            // فلترة حالة المخزون
+            const stockStatusMatch = 
+                (this.currentFilters.stockStatus.includes('in_stock') && item.stock > item.minStock) ||
+                (this.currentFilters.stockStatus.includes('low_stock') && item.stock > 0 && item.stock <= item.minStock) ||
+                (this.currentFilters.stockStatus.includes('out_of_stock') && item.stock === 0) ||
+                (this.currentFilters.stockStatus.includes('expiring') && item.daysToExpiry <= 30);
+
+            // فلترة المخزون
+            const stockMatch = item.stock >= this.currentFilters.minStock && 
+                             item.stock <= this.currentFilters.maxStock;
+
+            // فلترة الوصفة الطبية
+            const prescriptionMatch = !this.currentFilters.requiresPrescription || item.requiresPrescription;
+
+            // فلترة تتبع المخزون
+            const trackMatch = !this.currentFilters.trackInventory || item.trackInventory;
+
+            // فلترة المنتجات النشطة
+            const activeMatch = !this.currentFilters.activeOnly || item.isActive;
+
+            return stockStatusMatch && stockMatch && prescriptionMatch && trackMatch && activeMatch;
+        });
+
+        this.applySorting();
+        this.renderInventory();
+        this.updateStats();
+    }
+
+    applySorting() {
+        switch (this.sortBy) {
+            case 'name_asc':
+                this.filteredInventory.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name_desc':
+                this.filteredInventory.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+            case 'stock_asc':
+                this.filteredInventory.sort((a, b) => a.stock - b.stock);
+                break;
+            case 'stock_desc':
+                this.filteredInventory.sort((a, b) => b.stock - a.stock);
+                break;
+            case 'expiry_asc':
+                this.filteredInventory.sort((a, b) => a.daysToExpiry - b.daysToExpiry);
+                break;
+            case 'updated_desc':
+                this.filteredInventory.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                break;
+        }
+    }
+
+    sortInventory() {
+        const sortSelect = document.getElementById('sortSelect');
+        this.sortBy = sortSelect.value;
+        this.applySorting();
+        this.renderInventory();
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-option').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === view) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تبديل العرض
+        const gridView = document.getElementById('inventoryGrid');
+        const listView = document.getElementById('inventoryList');
+        
+        if (view === 'grid') {
+            gridView.style.display = 'grid';
+            listView.style.display = 'none';
+        } else {
+            gridView.style.display = 'none';
+            listView.style.display = 'flex';
+        }
+    }
+
+    renderInventory() {
+        this.renderInventoryGrid();
+        this.renderInventoryList();
+        this.updateLoadMoreButton();
+    }
+
+    renderInventoryGrid() {
+        const inventoryGrid = document.getElementById('inventoryGrid');
+        if (!inventoryGrid) return;
+
+        const itemsToShow = this.filteredInventory.slice(0, this.visibleItems);
+        
+        let gridHTML = '';
+        itemsToShow.forEach(item => {
+            const stockStatus = this.getStockStatus(item);
+            const expiryStatus = this.getExpiryStatus(item);
+            
+            gridHTML += `
+                <div class="inventory-card-grid liquid-transition" onclick="inventory.showInventoryDetails(${item.id})">
+                    <div class="inventory-image">
+                        <i class="fas ${item.icon}"></i>
+                        <div class="inventory-badge ${stockStatus.class}">${stockStatus.text}</div>
+                        ${expiryStatus.isExpiring ? `<div class="inventory-badge expiring">${expiryStatus.text}</div>` : ''}
+                        ${item.requiresPrescription ? `<div class="inventory-badge" style="background: var(--info); top: 80px;">وصفة</div>` : ''}
+                    </div>
+                    <div class="inventory-content">
+                        <div class="inventory-name">${item.name}</div>
+                        <div class="inventory-meta">
+                            <div>${item.code}</div>
+                            <div>${item.company}</div>
+                        </div>
+                        <div class="inventory-stock">
+                            <span class="current-stock">${item.stock} وحدة</span>
+                            <div class="stock-indicator ${stockStatus.class}"></div>
+                        </div>
+                        <div class="inventory-meta">
+                            <div>القيمة: ${(item.stock * item.cost).toFixed(2)} ر.س</div>
+                            <div>الدوران: ${item.turnoverRate}%</div>
+                        </div>
+                        <div class="inventory-actions-grid">
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); inventory.quickAddStock(${item.id})">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); inventory.quickAdjustStock(${item.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); inventory.showInventoryDetails(${item.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        inventoryGrid.innerHTML = gridHTML;
+    }
+
+    renderInventoryList() {
+        const inventoryList = document.getElementById('inventoryList');
+        if (!inventoryList) return;
+
+        const itemsToShow = this.filteredInventory.slice(0, this.visibleItems);
+        
+        let listHTML = '';
+        itemsToShow.forEach(item => {
+            const stockStatus = this.getStockStatus(item);
+            
+            listHTML += `
+                <div class="inventory-card-list liquid-transition" onclick="inventory.showInventoryDetails(${item.id})">
+                    <div class="inventory-image-list">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                    <div class="inventory-details-list">
+                        <div class="inventory-name-list">${item.name}</div>
+                        <div class="inventory-meta-list">
+                            <span>${item.code}</span> • 
+                            <span>${item.company}</span>
+                        </div>
+                        <div class="inventory-stock-list">${item.stock} وحدة</div>
+                        <div class="inventory-status-list">
+                            <span class="stock-indicator ${stockStatus.class}"></span>
+                            ${stockStatus.text} • القيمة: ${(item.stock * item.cost).toFixed(2)} ر.س
+                        </div>
+                    </div>
+                    <div class="inventory-actions-list">
+                        <button class="btn-neumorphism" onclick="event.stopPropagation(); inventory.quickAddStock(${item.id})">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        inventoryList.innerHTML = listHTML;
+    }
+
+    getStockStatus(item) {
+        if (item.stock === 0) {
+            return { class: 'out-of-stock', text: 'غير متوفر' };
+        } else if (item.stock <= item.minStock) {
+            return { class: 'low-stock', text: 'منخفض' };
+        } else {
+            return { class: 'stock', text: 'متوفر' };
+        }
+    }
+
+    getExpiryStatus(item) {
+        if (item.daysToExpiry <= 0) {
+            return { isExpiring: true, text: 'منتهي' };
+        } else if (item.daysToExpiry <= 30) {
+            return { isExpiring: true, text: `${item.daysToExpiry} يوم` };
+        } else {
+            return { isExpiring: false, text: '' };
+        }
+    }
+
+    updateStats() {
+        const totalItems = this.inventory.length;
+        const lowStockItems = this.inventory.filter(p => p.stock > 0 && p.stock <= p.minStock).length;
+        const outOfStockItems = this.inventory.filter(p => p.stock === 0).length;
+        const expiringItems = this.inventory.filter(p => p.daysToExpiry <= 30 && p.daysToExpiry > 0).length;
+
+        document.getElementById('totalItems').textContent = totalItems;
+        document.getElementById('lowStockItems').textContent = lowStockItems;
+        document.getElementById('outOfStockItems').textContent = outOfStockItems;
+        document.getElementById('expiringItems').textContent = expiringItems;
+
+        // تحديث إحصائيات التحليل
+        this.updateAnalyticsStats();
+    }
+
+    updateAnalyticsStats() {
+        const totalInventoryValue = this.inventory.reduce((sum, item) => sum + (item.stock * item.cost), 0);
+        const totalMonthlySales = this.inventory.reduce((sum, item) => sum + item.monthlySales, 0);
+        const averageTurnover = this.inventory.reduce((sum, item) => sum + parseFloat(item.turnoverRate), 0) / this.inventory.length;
+        const alertItems = this.inventory.filter(item => 
+            item.stock <= item.minStock || item.daysToExpiry <= 30
+        ).length;
+
+        document.getElementById('totalInventoryValue').textContent = `${totalInventoryValue.toFixed(2)} ر.س`;
+        document.getElementById('monthlySales').textContent = totalMonthlySales;
+        document.getElementById('turnoverRate').textContent = `${averageTurnover.toFixed(1)}%`;
+        document.getElementById('alertItems').textContent = alertItems;
+    }
+
+    updateLoadMoreButton() {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if (this.visibleItems >= this.filteredInventory.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    loadMore() {
+        this.visibleItems += 8;
+        this.renderInventory();
+    }
+
+    showAddInventoryModal() {
+        document.getElementById('inventoryFormTitle').textContent = 'تعديل المخزون';
+        document.getElementById('inventoryForm').reset();
+        
+        // تعبئة خيارات المنتجات
+        this.populateProductOptions();
+        
+        // إظهار النافذة
+        document.getElementById('inventoryFormModal').style.display = 'block';
+    }
+
+    populateProductOptions() {
+        const productSelect = document.getElementById('inventoryProduct');
+        productSelect.innerHTML = '<option value="">اختر المنتج</option>';
+        
+        this.products.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = `${product.name} (${product.code}) - ${product.stock} وحدة`;
+            productSelect.appendChild(option);
+        });
+    }
+
+    closeInventoryForm() {
+        document.getElementById('inventoryFormModal').style.display = 'none';
+    }
+
+    saveInventoryMovement() {
+        const formData = new FormData(document.getElementById('inventoryForm'));
+        const movementData = Object.fromEntries(formData);
+        
+        // تحويل القيم الرقمية
+        movementData.productId = parseInt(movementData.product);
+        movementData.quantity = parseInt(movementData.quantity);
+        movementData.cost = parseFloat(movementData.cost) || 0;
+        
+        // العثور على المنتج
+        const product = this.products.find(p => p.id === movementData.productId);
+        if (!product) {
+            alert('المنتج غير موجود');
+            return;
+        }
+
+        // تطبيق التغيير على المخزون
+        let newStock = product.stock;
+        switch (movementData.action) {
+            case 'add':
+                newStock += movementData.quantity;
+                break;
+            case 'remove':
+                if (movementData.quantity > product.stock) {
+                    alert('الكمية المراد خصمها أكبر من المخزون المتاح');
+                    return;
+                }
+                newStock -= movementData.quantity;
+                break;
+            case 'adjust':
+                newStock = movementData.quantity;
+                break;
+            case 'transfer':
+                // في حالة النقل، نحتاج إلى معالجة خاصة
+                break;
+        }
+
+        // تحديث المنتج
+        product.stock = newStock;
+        product.updatedAt = new Date().toISOString();
+
+        // إضافة إلى سجل الحركات
+        if (!product.movementHistory) {
+            product.movementHistory = [];
+        }
+        
+        product.movementHistory.unshift({
+            date: movementData.date || new Date().toISOString(),
+            type: movementData.action,
+            quantity: movementData.action === 'adjust' ? (movementData.quantity - product.stock) : 
+                     movementData.action === 'add' ? movementData.quantity : -movementData.quantity,
+            reason: movementData.reason,
+            reference: movementData.reference,
+            cost: movementData.cost,
+            location: movementData.location,
+            notes: movementData.notes
+        });
+
+        this.saveData();
+        this.inventory = this.generateInventoryFromProducts();
+        this.filteredInventory = [...this.inventory];
+        this.applySorting();
+        this.renderInventory();
+        this.updateStats();
+        this.closeInventoryForm();
+        
+        this.showToast('تم تحديث المخزون بنجاح');
+    }
+
+    showInventoryDetails(itemId) {
+        const item = this.inventory.find(p => p.id === itemId);
+        if (!item) return;
+
+        this.currentItem = item;
+        
+        // تعبئة البيانات الأساسية
+        document.getElementById('detailInventoryName').textContent = item.name;
+        document.getElementById('detailInventoryCode').textContent = item.code;
+        document.getElementById('detailInventoryCategory').textContent = item.category;
+        document.getElementById('detailInventoryCompany').textContent = item.company;
+        document.getElementById('detailInventoryIcon').className = `fas ${item.icon}`;
+        
+        // تحديث الحالة والمخزون
+        const statusBadge = document.getElementById('detailInventoryStatus');
+        statusBadge.textContent = item.isActive ? 'نشط' : 'غير نشط';
+        statusBadge.className = `status-badge ${item.isActive ? 'active' : 'inactive'}`;
+        
+        const stockStatus = this.getStockStatus(item);
+        const stockBadge = document.getElementById('detailInventoryStockBadge');
+        stockBadge.textContent = stockStatus.text;
+        stockBadge.className = `stock-badge ${stockStatus.class}`;
+        
+        // تحديث الإحصائيات
+        document.getElementById('detailInventoryStock').textContent = `${item.stock} وحدة`;
+        document.getElementById('detailInventorySold').textContent = `${item.monthlySales} وحدة`;
+        document.getElementById('detailInventoryMinStock').textContent = `${item.minStock} وحدة`;
+        document.getElementById('detailInventoryExpiry').textContent = item.daysToExpiry > 0 ? `${item.daysToExpiry} يوم` : 'منتهي';
+        
+        // تعبئة معلومات المخزون
+        this.populateInventorySpecs(item);
+        
+        // تعبئة حركة المخزون
+        this.populateMovementTab(item);
+        
+        // تعبئة التحليلات
+        this.populateAnalyticsTab(item);
+        
+        // إظهار النافذة
+        document.getElementById('inventoryDetailsModal').style.display = 'block';
+    }
+
+    populateInventorySpecs(item) {
+        const inventorySpecs = document.getElementById('inventorySpecs');
+        const specs = [
+            { name: 'القيمة الإجمالية', value: `${(item.stock * item.cost).toFixed(2)} ر.س` },
+            { name: 'معدل الدوران', value: `${item.turnoverRate}%` },
+            { name: 'آخر حركة', value: this.formatDate(item.lastMovement.date) },
+            { name: 'نوع آخر حركة', value: this.getMovementTypeText(item.lastMovement.type) },
+            { name: 'موقع التخزين', value: 'المخزن الرئيسي' },
+            { name: 'حالة التتبع', value: item.trackInventory ? 'مفعل' : 'معطل' }
+        ];
+        
+        let specsHTML = '';
+        specs.forEach(spec => {
+            specsHTML += `
+                <div class="technical-spec">
+                    <div class="spec-name">${spec.name}</div>
+                    <div class="spec-value">${spec.value}</div>
+                </div>
+            `;
+        });
+        
+        inventorySpecs.innerHTML = specsHTML;
+    }
+
+    getMovementTypeText(type) {
+        const types = {
+            'purchase': 'شراء',
+            'sale': 'بيع',
+            'adjustment': 'تعديل',
+            'transfer': 'نقل'
+        };
+        return types[type] || type;
+    }
+
+    populateMovementTab(item) {
+        const movementItems = document.getElementById('movementItems');
+        let movementHTML = '';
+        
+        const movements = item.movementHistory || [];
+        movements.slice(0, 10).forEach(movement => {
+            const typeClass = movement.type === 'purchase' || movement.type === 'add' ? 'in' : 'out';
+            const typeText = this.getMovementTypeText(movement.type);
+            const quantitySign = movement.quantity > 0 ? '+' : '';
+            
+            movementHTML += `
+                <div class="movement-item">
+                    <div>${this.formatDate(movement.date)}</div>
+                    <div class="movement-type ${typeClass}">${typeText}</div>
+                    <div>${quantitySign}${movement.quantity}</div>
+                    <div>${movement.reason}</div>
+                    <div>المستخدم</div>
+                </div>
+            `;
+        });
+        
+        movementItems.innerHTML = movementHTML || '<div style="text-align: center; padding: 20px; color: var(--text-secondary);">لا توجد حركات</div>';
+    }
+
+    populateAnalyticsTab(item) {
+        // تحديث إحصائيات التحليل
+        document.getElementById('analyticsTurnover').textContent = `${item.turnoverRate}%`;
+        document.getElementById('analyticsAvgStock').textContent = Math.round(item.stock * 0.8);
+        document.getElementById('analyticsStockDays').textContent = Math.round(item.stock / (item.monthlySales / 30));
+        document.getElementById('analyticsReorderPoint').textContent = Math.round(item.minStock * 1.2);
+    }
+
+    closeInventoryDetails() {
+        document.getElementById('inventoryDetailsModal').style.display = 'none';
+    }
+
+    quickAddStock(itemId = null) {
+        const item = itemId ? this.inventory.find(p => p.id === itemId) : this.currentItem;
+        if (!item) return;
+
+        const quantity = prompt(`أدخل الكمية المراد إضافتها للمنتج ${item.name}:`, '10');
+        if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+            item.stock += parseInt(quantity);
+            item.updatedAt = new Date().toISOString();
+            
+            // إضافة إلى سجل الحركات
+            if (!item.movementHistory) {
+                item.movementHistory = [];
+            }
+            item.movementHistory.unshift({
+                date: new Date().toISOString(),
+                type: 'purchase',
+                quantity: parseInt(quantity),
+                reason: 'إضافة يدوية',
+                reference: '',
+                cost: item.cost,
+                location: 'main',
+                notes: 'إضافة سريعة للمخزون'
+            });
+
+            this.saveData();
+            this.renderInventory();
+            this.updateStats();
+            
+            if (this.currentItem && this.currentItem.id === item.id) {
+                this.showInventoryDetails(item.id);
+            }
+            
+            this.showToast('تم إضافة المخزون بنجاح');
+        }
+    }
+
+    quickAdjustStock(itemId = null) {
+        const item = itemId ? this.inventory.find(p => p.id === itemId) : this.currentItem;
+        if (!item) return;
+
+        const newStock = prompt(`أدخل الكمية الجديدة للمخزون للمنتج ${item.name}:`, item.stock);
+        if (newStock !== null && !isNaN(newStock)) {
+            const quantityChange = parseInt(newStock) - item.stock;
+            item.stock = parseInt(newStock);
+            item.updatedAt = new Date().toISOString();
+            
+            // إضافة إلى سجل الحركات
+            if (!item.movementHistory) {
+                item.movementHistory = [];
+            }
+            item.movementHistory.unshift({
+                date: new Date().toISOString(),
+                type: 'adjustment',
+                quantity: quantityChange,
+                reason: 'تعديل يدوي',
+                reference: '',
+                cost: item.cost,
+                location: 'main',
+                notes: 'تعديل سريع للمخزون'
+            });
+
+            this.saveData();
+            this.renderInventory();
+            this.updateStats();
+            
+            if (this.currentItem && this.currentItem.id === item.id) {
+                this.showInventoryDetails(item.id);
+            }
+            
+            this.showToast('تم تعديل المخزون بنجاح');
+        }
+    }
+
+    quickRemoveStock() {
+        if (!this.currentItem) return;
+
+        const quantity = prompt(`أدخل الكمية المراد خصمها من المنتج ${this.currentItem.name}:`, '1');
+        if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+            if (parseInt(quantity) > this.currentItem.stock) {
+                alert('الكمية المراد خصمها أكبر من المخزون المتاح');
+                return;
+            }
+
+            this.currentItem.stock -= parseInt(quantity);
+            this.currentItem.updatedAt = new Date().toISOString();
+            
+            // إضافة إلى سجل الحركات
+            if (!this.currentItem.movementHistory) {
+                this.currentItem.movementHistory = [];
+            }
+            this.currentItem.movementHistory.unshift({
+                date: new Date().toISOString(),
+                type: 'sale',
+                quantity: -parseInt(quantity),
+                reason: 'خصم يدوي',
+                reference: '',
+                cost: this.currentItem.cost,
+                location: 'main',
+                notes: 'خصم سريع من المخزون'
+            });
+
+            this.saveData();
+            this.renderInventory();
+            this.updateStats();
+            this.showInventoryDetails(this.currentItem.id);
+            
+            this.showToast('تم خصم المخزون بنجاح');
+        }
+    }
+
+    showFilter() {
+        this.renderFilterCategories();
+        document.getElementById('filterModal').style.display = 'block';
+    }
+
+    renderFilterCategories() {
+        const filterCategories = document.getElementById('filterCategories');
+        let categoriesHTML = '';
+        
+        this.categories.forEach(category => {
+            categoriesHTML += `
+                <label class="filter-option">
+                    <input type="checkbox" name="category" value="${category}">
+                    <span>${category}</span>
+                </label>
+            `;
+        });
+        
+        filterCategories.innerHTML = categoriesHTML;
+    }
+
+    closeFilter() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    applyFilters() {
+        // جمع إعدادات الفلترة من النموذج
+        const statusCheckboxes = document.querySelectorAll('input[name="stock_status"]:checked');
+        this.currentFilters.stockStatus = Array.from(statusCheckboxes).map(cb => cb.value);
+        
+        const categoryCheckboxes = document.querySelectorAll('input[name="category"]:checked');
+        this.currentFilters.categories = Array.from(categoryCheckboxes).map(cb => cb.value);
+        
+        this.currentFilters.minStock = parseInt(document.getElementById('filterMinStock').value) || 0;
+        this.currentFilters.maxStock = parseInt(document.getElementById('filterMaxStock').value) || 1000;
+        this.currentFilters.requiresPrescription = document.getElementById('filterRequiresPrescription').checked;
+        this.currentFilters.trackInventory = document.getElementById('filterTrackInventory').checked;
+        this.currentFilters.activeOnly = document.getElementById('filterActiveOnly').checked;
+
+        this.applyFilters();
+        this.closeFilter();
+    }
+
+    resetFilters() {
+        // إعادة تعيين كل الفلترة
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (cb.name === 'stock_status' && (cb.value === 'in_stock' || cb.value === 'all')) {
+                cb.checked = true;
+            } else {
+                cb.checked = false;
+            }
+        });
+        
+        document.getElementById('filterMinStock').value = 0;
+        document.getElementById('filterMaxStock').value = 1000;
+        document.getElementById('filterActiveOnly').checked = true;
+        
+        this.currentFilters = {
+            stockStatus: ['in_stock'],
+            categories: [],
+            minStock: 0,
+            maxStock: 1000,
+            requiresPrescription: false,
+            trackInventory: true,
+            activeOnly: true
+        };
+        
+        this.applyFilters();
+    }
+
+    switchTab(tabName) {
+        // تحديث أزرار التبويب
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تحديث محتوى التبويب
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === `${tabName}Tab`) {
+                pane.classList.add('active');
+            }
+        });
+    }
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            day: 'numeric',
+            month: 'short'
+        });
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 60000); // كل دقيقة
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة تغييرات في المخزون والمبيعات
+        if (Math.random() > 0.7) {
+            const randomItem = this.inventory[Math.floor(Math.random() * this.inventory.length)];
+            if (randomItem && randomItem.stock > 0) {
+                const saleQuantity = Math.floor(Math.random() * 3) + 1;
+                randomItem.stock = Math.max(0, randomItem.stock - saleQuantity);
+                randomItem.updatedAt = new Date().toISOString();
+                
+                // إضافة إلى سجل الحركات
+                if (!randomItem.movementHistory) {
+                    randomItem.movementHistory = [];
+                }
+                randomItem.movementHistory.unshift({
+                    date: new Date().toISOString(),
+                    type: 'sale',
+                    quantity: -saleQuantity,
+                    reason: 'بيع تلقائي',
+                    reference: `AUTO-${Date.now()}`,
+                    cost: randomItem.cost,
+                    location: 'main',
+                    notes: 'بيع محاكاة'
+                });
+                
+                this.saveData();
+                
+                if (this.currentItem && this.currentItem.id === randomItem.id) {
+                    this.showInventoryDetails(randomItem.id);
+                }
+                
+                this.renderInventory();
+                this.updateStats();
+            }
+        }
+    }
+
+    // وظائف إضافية للواجهة
+    editInventory() {
+        if (!this.currentItem) return;
+        this.showAddInventoryModal();
+        // يمكن تعبئة النموذج ببيانات العنصر الحالي هنا
+    }
+
+    transferInventory() {
+        if (!this.currentItem) return;
+        alert(`سيتم فتح نافذة نقل المخزون للمنتج: ${this.currentItem.name}`);
+        // تنفيذ منطق نقل المخزون بين المخازن
+    }
+
+    adjustInventory() {
+        if (!this.currentItem) return;
+        this.quickAdjustStock(this.currentItem.id);
+    }
+
+    generateReport() {
+        if (!this.currentItem) return;
+        alert(`سيتم إنشاء تقرير المخزون للمنتج: ${this.currentItem.name}`);
+        // تنفيذ منطق إنشاء التقارير
+    }
+
+    reorderProduct() {
+        if (!this.currentItem) return;
+        const quantity = prompt(`كمية الطلب من المورد للمنتج ${this.currentItem.name}:`, this.currentItem.minStock * 2);
+        if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+            this.showToast(`تم إنشاء طلب شراء لـ ${quantity} وحدة من ${this.currentItem.name}`);
+        }
+    }
+
+    applyDiscount() {
+        if (!this.currentItem) return;
+        const discount = prompt(`نسبة الخصم للمنتج ${this.currentItem.name} (%):`, '10');
+        if (discount !== null && !isNaN(discount)) {
+            this.showToast(`تم تطبيق خصم ${discount}% على ${this.currentItem.name}`);
+        }
+    }
+
+    promoteProduct() {
+        if (!this.currentItem) return;
+        this.showToast(`تم بدء حملة ترويجية للمنتج ${this.currentItem.name}`);
+    }
+}
+
+// تهيئة نظام إدارة المخزون عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.inventory = new InventoryManagement();
+});
+</script>
+</body>
+</html>

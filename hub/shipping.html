@@ -1,0 +1,3086 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M24- الشحن والتوصيل</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.company-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط الإحصائيات السريعة */
+.quick-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0 20px 20px;
+}
+
+.stat-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+}
+
+.stat-item.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.stat-item.active::before {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 20px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.stat-number {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* شريط التحكم */
+.control-bar {
+    padding: 0 20px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-container {
+    flex: 1;
+}
+
+.search-input-wrapper {
+    position: relative;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper i {
+    color: var(--text-secondary);
+    margin-left: 8px;
+}
+
+.search-input-wrapper input {
+    background: transparent;
+    border: none;
+    padding: 12px 0;
+    width: 100%;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.search-input-wrapper input:focus {
+    outline: none;
+}
+
+.search-input-wrapper input::placeholder {
+    color: var(--text-secondary);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-btn {
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.filter-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.btn-primary:active {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(2px);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition-liquid);
+}
+
+.btn-danger:active {
+    transform: translateY(2px);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* نافذة الفلترة */
+.filter-section {
+    margin-bottom: 24px;
+}
+
+.filter-section h4 {
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.filter-option input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-liquid);
+}
+
+.filter-option input:checked + .checkmark {
+    background: var(--primary);
+}
+
+.filter-option input:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+}
+
+.form-select {
+    width: 100%;
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
+    transition: var(--transition-liquid);
+}
+
+.btn-secondary:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* حاويات المحتوى */
+.deliveries-container {
+    padding: 0 20px 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.view-options {
+    display: flex;
+    gap: 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    padding: 4px;
+}
+
+.view-option {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.view-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+/* قائمة الطلبات */
+.deliveries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.delivery-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    border-right: 4px solid var(--primary);
+}
+
+.delivery-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.delivery-item.pending {
+    border-right-color: var(--warning);
+}
+
+.delivery-item.in_progress {
+    border-right-color: var(--info);
+}
+
+.delivery-item.delivered {
+    border-right-color: var(--success);
+}
+
+.delivery-item.delayed {
+    border-right-color: var(--danger);
+}
+
+.delivery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.order-info {
+    flex: 1;
+}
+
+.order-number {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.customer-name {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.delivery-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-pending {
+    background: #FFF3E0;
+    color: #EF6C00;
+}
+
+.status-in_progress {
+    background: #E3F2FD;
+    color: #1565C0;
+}
+
+.status-delivered {
+    background: #E8F5E8;
+    color: #2E7D32;
+}
+
+.status-delayed {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.delivery-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.detail-item i {
+    width: 16px;
+    color: var(--primary);
+}
+
+.delivery-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    flex: 1;
+    background: var(--bg-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+}
+
+.action-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+.action-btn.primary {
+    background: var(--primary);
+    color: white;
+}
+
+/* عرض الخريطة */
+.deliveries-map {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+}
+
+.map-placeholder {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.map-placeholder i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+.map-placeholder h4 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* قسم الأداء */
+.performance-section {
+    padding: 0 20px 20px;
+}
+
+.performance-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.performance-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    text-align: center;
+    transition: var(--transition-liquid);
+}
+
+.performance-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 20px;
+    color: white;
+}
+
+.performance-icon.success {
+    background: var(--success);
+}
+
+.performance-icon.warning {
+    background: var(--warning);
+}
+
+.performance-icon.primary {
+    background: var(--primary);
+}
+
+.performance-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.performance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+}
+
+/* قسم السعاة */
+.couriers-section {
+    padding: 0 20px 20px;
+}
+
+.couriers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.courier-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.courier-avatar {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.courier-info {
+    flex: 1;
+}
+
+.courier-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.courier-details {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.courier-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.status-online {
+    color: var(--success);
+}
+
+.status-offline {
+    color: var(--text-secondary);
+}
+
+.status-busy {
+    color: var(--warning);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-online .status-indicator {
+    background: var(--success);
+}
+
+.status-offline .status-indicator {
+    background: var(--text-secondary);
+}
+
+.status-busy .status-indicator {
+    background: var(--warning);
+}
+
+/* نماذج الإدخال */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    background: var(--bg-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-inset);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* تتبع الطلب */
+.tracking-container {
+    padding: 20px 0;
+}
+
+.tracking-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+.tracking-steps::before {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary-light);
+}
+
+.tracking-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    position: relative;
+}
+
+.step-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 14px;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.step-icon.completed {
+    background: var(--success);
+    color: white;
+}
+
+.step-icon.current {
+    background: var(--primary);
+    color: white;
+}
+
+.step-content {
+    flex: 1;
+    padding-bottom: 8px;
+}
+
+.step-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.step-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.step-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* المسح الضوئي */
+.scan-container {
+    text-align: center;
+}
+
+.scanner-placeholder {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 60px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scanner-placeholder i {
+    font-size: 64px;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+.scan-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* نماذج إضافية */
+.product-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.product-name {
+    flex: 2;
+}
+
+.product-quantity {
+    flex: 1;
+}
+
+.remove-product {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.notification-item.unread {
+    border-right: 4px solid var(--primary);
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.notification-icon.info {
+    background: var(--info);
+}
+
+.notification-icon.success {
+    background: var(--success);
+}
+
+.notification-icon.warning {
+    background: var(--warning);
+}
+
+.notification-icon.danger {
+    background: var(--danger);
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.notification-message {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.couriers-full-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.courier-full-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.courier-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.courier-action-btn {
+    background: var(--bg-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition-liquid);
+}
+
+.courier-action-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 400px) {
+    .quick-stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .performance-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .control-bar {
+        flex-direction: column;
+    }
+    
+    .filter-actions {
+        width: 100%;
+    }
+    
+    .delivery-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .delivery-actions {
+        flex-direction: column;
+    }
+    
+    .product-item {
+        flex-direction: column;
+    }
+}
+
+/* أنماط التوست */
+@keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+    to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>M24 الشحن والتوصيل 🚚</h1>
+                    <p>إدارة عمليات التوصيل والتتبع</p>
+                </div>
+                <div class="company-actions">
+                    <button class="action-icon liquid-transition" id="notificationsBtn" onclick="window.shipping.showNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationsBadge">3</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="scanBtn" onclick="window.shipping.showScanModal()">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-stats-bar">
+            <div class="stat-item active" data-status="pending">
+                <div class="stat-number" id="stat-pending-count">18</div>
+                <div class="stat-label">قيد التوصيل</div>
+            </div>
+            <div class="stat-item" data-status="in_progress">
+                <div class="stat-number" id="stat-in_progress-count">12</div>
+                <div class="stat-label">جاري التوصيل</div>
+            </div>
+            <div class="stat-item" data-status="delivered">
+                <div class="stat-number" id="stat-delivered-count">45</div>
+                <div class="stat-label">تم التسليم</div>
+            </div>
+            <div class="stat-item" data-status="delayed">
+                <div class="stat-number" id="stat-delayed-count">3</div>
+                <div class="stat-label">متأخرة</div>
+            </div>
+        </div>
+
+        <div class="control-bar">
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث برقم الطلب أو العميل...">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="filter-btn" id="filterBtn" onclick="window.shipping.showFilterModal()">
+                    <i class="fas fa-filter"></i>
+                    الفلترة
+                </button>
+                <button class="btn-primary" id="newDeliveryBtn" onclick="window.shipping.createNewDelivery()">
+                    <i class="fas fa-plus"></i>
+                    توصيل جديد
+                </button>
+            </div>
+        </div>
+
+        <div id="filterModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>فلترة الطلبات</h2>
+                    <span class="close" onclick="window.shipping.closeFilterModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="filter-section">
+                        <h4>حالة التوصيل</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="pending" checked>
+                                <span class="checkmark"></span>
+                                قيد التوصيل
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="in_progress" checked>
+                                <span class="checkmark"></span>
+                                جاري التوصيل
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="delivered">
+                                <span class="checkmark"></span>
+                                تم التسليم
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="delayed">
+                                <span class="checkmark"></span>
+                                متأخرة
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="cancelled">
+                                <span class="checkmark"></span>
+                                ملغية
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>نوع التوصيل</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="express" checked>
+                                <span class="checkmark"></span>
+                                سريع
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="standard" checked>
+                                <span class="checkmark"></span>
+                                عادي
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="type" value="scheduled">
+                                <span class="checkmark"></span>
+                                مجدول
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>الفترة الزمنية</h4>
+                        <select id="timeFilter" class="form-select">
+                            <option value="today">اليوم</option>
+                            <option value="week">هذا الأسبوع</option>
+                            <option value="month" selected>هذا الشهر</option>
+                            <option value="custom">مخصص</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-secondary" onclick="window.shipping.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-primary" onclick="window.shipping.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="deliveries-container">
+            <div class="section-header">
+                <h3>طلبات التوصيل</h3>
+                <div class="view-options">
+                    <button class="view-option active" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-option" data-view="map">
+                        <i class="fas fa-map"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="listView" class="deliveries-list">
+                <!-- سيتم تعبئته ديناميكياً -->
+            </div>
+
+            <div id="mapView" class="deliveries-map" style="display: none;">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h4>خريطة التوصيل</h4>
+                    <p>عرض تفاعلي لمواقع التوصيل على الخريطة</p>
+                    <button class="btn-primary" onclick="window.shipping.showRealMap()">
+                        <i class="fas fa-map"></i>
+                        عرض الخريطة الكاملة
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="performance-section">
+            <div class="section-header">
+                <h3>أداء التوصيل</h3>
+                <button class="btn-text" onclick="window.shipping.showPerformanceDetails()">
+                    التفاصيل
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="performance-cards">
+                <div class="performance-card">
+                    <div class="performance-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="performance-info">
+                        <div class="performance-value">94%</div>
+                        <div class="performance-label">معدل النجاح</div>
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-icon warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="performance-info">
+                        <div class="performance-value">28 د</div>
+                        <div class="performance-label">متوسط الوقت</div>
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-icon primary">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="performance-info">
+                        <div class="performance-value">12</div>
+                        <div class="performance-label">ساعي نشط</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="couriers-section">
+            <div class="section-header">
+                <h3>السعاة النشطون</h3>
+                <button class="btn-text" onclick="window.shipping.manageCouriers()">
+                    إدارة السعاة
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="couriers-list" id="activeCouriers">
+                <!-- سيتم تعبئته ديناميكياً -->
+            </div>
+        </div>
+
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="orders.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="nav-label">الطلبات</div>
+            </a>
+            <a href="shipping.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="nav-label">التوصيل</div>
+            </a>
+            <a href="customers.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="nav-label">العملاء</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="orderDetailsTitle">تفاصيل الطلب</h2>
+                <span class="close" onclick="window.shipping.closeOrderDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetailsContent">
+                    <!-- سيتم تعبئته ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="trackingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تتبع الطلب</h2>
+                <span class="close" onclick="window.shipping.closeTracking()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="tracking-container" id="trackingContent">
+                    <!-- سيتم تعبئته ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="assignCourierModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تعيين ساعي</h2>
+                <span class="close" onclick="window.shipping.closeAssignCourier()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="assign-form">
+                    <div class="form-group">
+                        <label>اختر الساعي:</label>
+                        <select id="courierSelect" class="form-select">
+                            <option value="">اختر الساعي...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>وقت التوصيل المتوقع:</label>
+                        <input type="datetime-local" id="estimatedTime" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات:</label>
+                        <textarea id="deliveryNotes" class="form-textarea" placeholder="ملاحظات خاصة بالتوصيل..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-secondary" onclick="window.shipping.closeAssignCourier()">إلغاء</button>
+                        <button class="btn-primary" onclick="window.shipping.confirmAssignment()">تعيين الساعي</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="scanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>مسح الطلب</h2>
+                <span class="close" onclick="window.shipping.closeScanModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="scan-container">
+                    <div class="scanner-placeholder">
+                        <i class="fas fa-qrcode"></i>
+                        <p>ضع كود QR داخل الإطار للمسح</p>
+                    </div>
+                    <div class="scan-actions">
+                        <button class="btn-secondary" onclick="window.shipping.closeScanModal()">
+                            <i class="fas fa-times"></i>
+                            إلغاء
+                        </button>
+                        <button class="btn-primary" onclick="window.shipping.simulateScan()">
+                            <i class="fas fa-camera"></i>
+                            مسح ضوئي
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="newDeliveryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>توصيل جديد</h2>
+                <span class="close" onclick="window.shipping.closeNewDeliveryModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="new-delivery-form">
+                    <div class="form-group">
+                        <label>رقم الطلب:</label>
+                        <input type="text" id="newOrderNumber" class="form-input" placeholder="مثال: ORD-2024-001">
+                    </div>
+                    <div class="form-group">
+                        <label>اسم العميل:</label>
+                        <input type="text" id="newCustomerName" class="form-input" placeholder="اسم العميل">
+                    </div>
+                    <div class="form-group">
+                        <label>هاتف العميل:</label>
+                        <input type="tel" id="newCustomerPhone" class="form-input" placeholder="+966501234567">
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان التوصيل:</label>
+                        <textarea id="newCustomerAddress" class="form-textarea" placeholder="العنوان الكامل"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع التوصيل:</label>
+                        <select id="newDeliveryType" class="form-select">
+                            <option value="express">سريع</option>
+                            <option value="standard" selected>عادي</option>
+                            <option value="scheduled">مجدول</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>المنتجات:</label>
+                        <div id="productsContainer">
+                            <div class="product-item">
+                                <input type="text" class="form-input product-name" placeholder="اسم المنتج">
+                                <input type="number" class="form-input product-quantity" placeholder="الكمية" min="1">
+                                <button class="btn-danger remove-product" onclick="window.shipping.removeProduct(this)">×</button>
+                            </div>
+                        </div>
+                        <button class="btn-secondary" onclick="window.shipping.addProduct()">
+                            <i class="fas fa-plus"></i>
+                            إضافة منتج
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات:</label>
+                        <textarea id="newDeliveryNotes" class="form-textarea" placeholder="ملاحظات خاصة بالتوصيل..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-secondary" onclick="window.shipping.closeNewDeliveryModal()">إلغاء</button>
+                        <button class="btn-primary" onclick="window.shipping.confirmNewDelivery()">إنشاء التوصيل</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <span class="close" onclick="window.shipping.closeNotificationsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-list" id="notificationsList">
+                    <!-- سيتم تعبئته ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="couriersManagementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إدارة السعاة</h2>
+                <span class="close" onclick="window.shipping.closeCouriersManagementModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="couriers-management">
+                    <div class="section-header">
+                        <h3>جميع السعاة</h3>
+                        <button class="btn-primary" onclick="window.shipping.showAddCourierModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة ساعي
+                        </button>
+                    </div>
+                    <div class="couriers-full-list" id="couriersFullList">
+                        <!-- سيتم تعبئته ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addCourierModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إضافة ساعي جديد</h2>
+                <span class="close" onclick="window.shipping.closeAddCourierModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="add-courier-form">
+                    <div class="form-group">
+                        <label>اسم الساعي:</label>
+                        <input type="text" id="newCourierName" class="form-input" placeholder="اسم الساعي">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف:</label>
+                        <input type="tel" id="newCourierPhone" class="form-input" placeholder="+966501234567">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع المركبة:</label>
+                        <select id="newCourierVehicle" class="form-select">
+                            <option value="دراجة نارية">دراجة نارية</option>
+                            <option value="سيارة">سيارة</option>
+                            <option value="شاحنة صغيرة">شاحنة صغيرة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم المركبة:</label>
+                        <input type="text" id="newCourierVehicleNumber" class="form-input" placeholder="مثال: م 1234">
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-secondary" onclick="window.shipping.closeAddCourierModal()">إلغاء</button>
+                        <button class="btn-primary" onclick="window.shipping.confirmAddCourier()">إضافة الساعي</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة الشحن والتوصيل المتقدم
+class ShippingManagement {
+    constructor() {
+        this.deliveries = [];
+        this.couriers = [];
+        this.filteredDeliveries = [];
+        this.currentDelivery = null;
+        this.currentView = 'list';
+        this.currentFilters = {
+            status: ['pending', 'in_progress'],
+            type: ['express', 'standard'],
+            timeRange: 'month'
+        };
+        this.socket = null;
+        this.courierLocations = new Map();
+        this.notifications = [];
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.setupRealTimeConnection();
+        this.renderDeliveries();
+        this.renderCouriers();
+        this.updateTime();
+        this.startRealTimeUpdates();
+        this.updateStatisticsDisplay();
+        this.setupNotifications();
+    }
+
+    setupRealTimeConnection() {
+        // محاكاة اتصال WebSocket حقيقي
+        this.socket = {
+            connected: true,
+            on: (event, callback) => {
+                if (event === 'courier_location_update') {
+                    this.setupCourierLocationUpdates(callback);
+                } else if (event === 'delivery_status_update') {
+                    this.setupDeliveryStatusUpdates(callback);
+                } else if (event === 'new_notification') {
+                    this.setupNotificationUpdates(callback);
+                }
+            },
+            emit: (event, data) => {
+                console.log(`Emitting ${event}:`, data);
+            }
+        };
+
+        // الاشتراك في تحديثات الموقع
+        this.socket.on('courier_location_update', this.handleCourierLocationUpdate.bind(this));
+        this.socket.on('delivery_status_update', this.handleDeliveryStatusUpdate.bind(this));
+        this.socket.on('new_notification', this.handleNewNotification.bind(this));
+    }
+
+    setupCourierLocationUpdates(callback) {
+        // محاكاة تحديثات الموقع في الوقت الحقيقي
+        setInterval(() => {
+            this.couriers.filter(c => c.online).forEach(courier => {
+                const newLocation = this.generateRandomLocation(courier.currentLocation);
+                callback({
+                    courierId: courier.id,
+                    location: newLocation,
+                    timestamp: new Date().toISOString()
+                });
+            });
+        }, 5000); // تحديث كل 5 ثواني
+    }
+
+    setupDeliveryStatusUpdates(callback) {
+        // محاكاة تحديثات حالة التوصيل في الوقت الحقيقي
+        setInterval(() => {
+            const inProgressDeliveries = this.deliveries.filter(d => 
+                d.status === 'in_progress' && Math.random() > 0.9 // احتمال 10%
+            );
+            
+            inProgressDeliveries.forEach(delivery => {
+                callback({
+                    deliveryId: delivery.id,
+                    status: 'delivered',
+                    timestamp: new Date().toISOString()
+                });
+            });
+        }, 10000); // تحديث كل 10 ثواني
+    }
+
+    setupNotificationUpdates(callback) {
+        // محاكاة إشعارات جديدة في الوقت الحقيقي
+        setInterval(() => {
+            if (Math.random() > 0.8) { // احتمال 20%
+                const notificationTypes = [
+                    {
+                        type: 'new_delivery',
+                        title: 'طلب توصيل جديد',
+                        message: 'تم استلام طلب توصيل جديد يحتاج إلى تعيين ساعي',
+                        icon: 'fas fa-truck'
+                    },
+                    {
+                        type: 'delivery_delayed',
+                        title: 'تأخر في التوصيل',
+                        message: 'طلب توصيل متأخر يحتاج إلى متابعة',
+                        icon: 'fas fa-clock'
+                    },
+                    {
+                        type: 'courier_assigned',
+                        title: 'تم تعيين ساعي',
+                        message: 'تم تعيين ساعي لطلب توصيل بنجاح',
+                        icon: 'fas fa-user-check'
+                    }
+                ];
+                
+                const randomNotification = notificationTypes[Math.floor(Math.random() * notificationTypes.length)];
+                callback({
+                    ...randomNotification,
+                    id: Date.now(),
+                    timestamp: new Date().toISOString(),
+                    read: false
+                });
+            }
+        }, 30000); // تحديث كل 30 ثانية
+    }
+
+    handleCourierLocationUpdate(data) {
+        const courier = this.couriers.find(c => c.id === data.courierId);
+        if (courier) {
+            courier.currentLocation = data.location;
+            this.courierLocations.set(courier.id, {
+                location: data.location,
+                timestamp: data.timestamp
+            });
+            
+            // تحديث الواجهة إذا كان الساعي معروضاً
+            this.updateCourierDisplay(courier.id);
+            
+            // إذا كان هناك عرض للخريطة، تحديث المواقع
+            if (this.currentView === 'map') {
+                this.updateMapView();
+            }
+            this.saveData();
+        }
+    }
+
+    handleDeliveryStatusUpdate(data) {
+        const delivery = this.deliveries.find(d => d.id === data.deliveryId);
+        if (delivery && delivery.status !== data.status) {
+            delivery.status = data.status;
+            delivery.actualTime = data.timestamp;
+            
+            // تحديث تتبع الطلب
+            const deliveredStep = delivery.tracking.find(step => step.step === 'delivered');
+            if (deliveredStep) {
+                deliveredStep.completed = true;
+                deliveredStep.time = data.timestamp;
+            }
+            
+            this.saveData();
+            this.renderDeliveries();
+            this.updateStatisticsDisplay();
+            
+            this.showToast(`تم تحديث حالة الطلب ${delivery.orderNumber} إلى "${this.getStatusText(data.status)}"`);
+        }
+    }
+
+    handleNewNotification(data) {
+        this.notifications.unshift(data);
+        this.saveData();
+        this.updateNotificationsBadge();
+        
+        // عرض إشعار فوري
+        this.showToast(data.message, 'info');
+    }
+
+    generateRandomLocation(currentLocation) {
+        const areas = {
+            'الرياض': ['الملز', 'النخيل', 'العليا', 'السليمانية', 'المرسلات', 'الغدير'],
+            'جدة': ['السلامة', 'الروضة', 'الزهراء', 'التحلية', 'الخالدية'],
+            'الدمام': ['الفتح', 'الخبر', 'الراكة', 'المنطقة الصناعية']
+        };
+        
+        const cityMatch = currentLocation.match(/(\S+)/);
+        const city = cityMatch ? cityMatch[1] : 'الرياض';
+        const availableAreas = areas[city] || ['المنطقة المركزية'];
+        const randomArea = availableAreas[Math.floor(Math.random() * availableAreas.length)];
+        
+        return `${city} - ${randomArea}`;
+    }
+
+    updateCourierDisplay(courierId) {
+        const courierElement = document.querySelector(`[data-courier-id="${courierId}"]`);
+        if (courierElement) {
+            const courier = this.couriers.find(c => c.id === courierId);
+            const locationElement = courierElement.querySelector('.courier-location');
+            if (locationElement && courier) {
+                locationElement.textContent = courier.currentLocation;
+            }
+        }
+    }
+
+    loadData() {
+        const savedDeliveries = localStorage.getItem('pharma_shipping_deliveries');
+        const savedCouriers = localStorage.getItem('pharma_shipping_couriers');
+        const savedNotifications = localStorage.getItem('pharma_shipping_notifications');
+
+        if (savedDeliveries) {
+            this.deliveries = JSON.parse(savedDeliveries);
+        } else {
+            this.deliveries = this.getDefaultDeliveries();
+        }
+
+        if (savedCouriers) {
+            this.couriers = JSON.parse(savedCouriers);
+        } else {
+            this.couriers = this.getDefaultCouriers();
+        }
+
+        if (savedNotifications) {
+            this.notifications = JSON.parse(savedNotifications);
+        } else {
+            this.notifications = this.getDefaultNotifications();
+        }
+
+        this.filteredDeliveries = [...this.deliveries];
+        this.saveData();
+    }
+
+    getDefaultDeliveries() {
+        return [
+            {
+                id: 1,
+                orderNumber: 'ORD-2024-001',
+                customerName: 'أحمد محمد',
+                customerPhone: '+966501234567',
+                customerAddress: 'الرياض - الملز - شارع الملك فهد',
+                deliveryType: 'express',
+                status: 'in_progress',
+                assignedCourier: 1,
+                estimatedTime: '2024-11-14T14:30:00',
+                actualTime: null,
+                items: [
+                    { name: 'باراسيتامول 500 مجم', quantity: 2 },
+                    { name: 'فيتامين سي 1000 مجم', quantity: 1 }
+                ],
+                totalAmount: 165,
+                deliveryFee: 15,
+                notes: 'يرجى الاتصال قبل الوصول بـ 30 دقيقة',
+                tracking: [
+                    { step: 'order_placed', description: 'تم استلام الطلب', time: '2024-11-14T10:00:00', completed: true },
+                    { step: 'preparing', description: 'جاري تجهيز الطلب', time: '2024-11-14T10:15:00', completed: true },
+                    { step: 'assigned', description: 'تم تعيين الساعي', time: '2024-11-14T10:30:00', completed: true },
+                    { step: 'picked_up', description: 'تم استلام الطلب من المتجر', time: '2024-11-14T13:45:00', completed: true },
+                    { step: 'on_the_way', description: 'في الطريق للتوصيل', time: '2024-11-14T14:00:00', completed: true },
+                    { step: 'delivered', description: 'تم التسليم', time: null, completed: false }
+                ],
+                createdAt: '2024-11-14T10:00:00'
+            },
+            {
+                id: 2,
+                orderNumber: 'ORD-2024-002',
+                customerName: 'فاطمة علي',
+                customerPhone: '+966502345678',
+                customerAddress: 'جدة - السلامة - شارع التحلية',
+                deliveryType: 'standard',
+                status: 'pending',
+                assignedCourier: null,
+                estimatedTime: '2024-11-14T16:00:00',
+                actualTime: null,
+                items: [
+                    { name: 'كريم هيدروكورتيزون 1%', quantity: 1 },
+                    { name: 'قطرة العين المرطبة', quantity: 1 }
+                ],
+                totalAmount: 50,
+                deliveryFee: 10,
+                notes: 'العميلة تنتظر الأدوية بفارغ الصبر',
+                tracking: [
+                    { step: 'order_placed', description: 'تم استلام الطلب', time: '2024-11-14T11:30:00', completed: true },
+                    { step: 'preparing', description: 'جاري تجهيز الطلب', time: '2024-11-14T11:45:00', completed: true },
+                    { step: 'assigned', description: 'في انتظار تعيين ساعي', time: null, completed: false },
+                    { step: 'picked_up', description: 'في انتظار الاستلام', time: null, completed: false },
+                    { step: 'on_the_way', description: 'في انتظار التوصيل', time: null, completed: false },
+                    { step: 'delivered', description: 'في انتظار التسليم', time: null, completed: false }
+                ],
+                createdAt: '2024-11-14T11:30:00'
+            },
+            {
+                id: 3,
+                orderNumber: 'ORD-2024-003',
+                customerName: 'خالد عبدالله',
+                customerPhone: '+966503456789',
+                customerAddress: 'الدمام - الفتح - شارع الملك سعود',
+                deliveryType: 'express',
+                status: 'delivered',
+                assignedCourier: 2,
+                estimatedTime: '2024-11-13T15:00:00',
+                actualTime: '2024-11-13T14:45:00',
+                items: [
+                    { name: 'أوميغا 3 كبسولات', quantity: 1 },
+                    { name: 'أموكسيسيلين 500 مجم', quantity: 2 }
+                ],
+                totalAmount: 145,
+                deliveryFee: 15,
+                notes: 'تم التسليم للعميل شخصياً',
+                tracking: [
+                    { step: 'order_placed', description: 'تم استلام الطلب', time: '2024-11-13T13:00:00', completed: true },
+                    { step: 'preparing', description: 'جاري تجهيز الطلب', time: '2024-11-13T13:15:00', completed: true },
+                    { step: 'assigned', description: 'تم تعيين الساعي', time: '2024-11-13T13:30:00', completed: true },
+                    { step: 'picked_up', description: 'تم استلام الطلب من المتجر', time: '2024-11-13T14:00:00', completed: true },
+                    { step: 'on_the_way', description: 'في الطريق للتوصيل', time: '2024-11-13T14:15:00', completed: true },
+                    { step: 'delivered', description: 'تم التسليم', time: '2024-11-13T14:45:00', completed: true }
+                ],
+                createdAt: '2024-11-13T13:00:00'
+            },
+            {
+                id: 4,
+                orderNumber: 'ORD-2024-004',
+                customerName: 'نورة السعد',
+                customerPhone: '+966504567890',
+                customerAddress: 'الرياض - النخيل - شارع العليا',
+                deliveryType: 'scheduled',
+                status: 'delayed',
+                assignedCourier: 3,
+                estimatedTime: '2024-11-14T12:00:00',
+                actualTime: null,
+                items: [
+                    { name: 'فيتامين سي 1000 مجم', quantity: 1 },
+                    { name: 'شراب السعال للأطفال', quantity: 1 }
+                ],
+                totalAmount: 63,
+                deliveryFee: 10,
+                notes: 'تأخر بسبب الزحام المروري',
+                tracking: [
+                    { step: 'order_placed', description: 'تم استلام الطلب', time: '2024-11-14T09:00:00', completed: true },
+                    { step: 'preparing', description: 'جاري تجهيز الطلب', time: '2024-11-14T09:15:00', completed: true },
+                    { step: 'assigned', description: 'تم تعيين الساعي', time: '2024-11-14T09:30:00', completed: true },
+                    { step: 'picked_up', description: 'تم استلام الطلب من المتجر', time: '2024-11-14T10:00:00', completed: true },
+                    { step: 'on_the_way', description: 'في الطريق للتوصيل', time: '2024-11-14T10:30:00', completed: true },
+                    { step: 'delivered', description: 'متأخر في التسليم', time: null, completed: false }
+                ],
+                createdAt: '2024-11-14T09:00:00'
+            },
+            {
+                id: 5,
+                orderNumber: 'ORD-2024-005',
+                customerName: 'محمد أحمد',
+                customerPhone: '+966505678901',
+                customerAddress: 'جدة - الروضة - شارع الأمير سلطان',
+                deliveryType: 'standard',
+                status: 'pending',
+                assignedCourier: null,
+                estimatedTime: '2024-11-14T17:00:00',
+                actualTime: null,
+                items: [
+                    { name: 'باراسيتامول 500 مجم', quantity: 3 },
+                    { name: 'قطرة العين المرطبة', quantity: 2 }
+                ],
+                totalAmount: 89,
+                deliveryFee: 10,
+                notes: '',
+                tracking: [
+                    { step: 'order_placed', description: 'تم استلام الطلب', time: '2024-11-14T12:00:00', completed: true },
+                    { step: 'preparing', description: 'جاري تجهيز الطلب', time: '2024-11-14T12:15:00', completed: true },
+                    { step: 'assigned', description: 'في انتظار تعيين ساعي', time: null, completed: false },
+                    { step: 'picked_up', description: 'في انتظار الاستلام', time: null, completed: false },
+                    { step: 'on_the_way', description: 'في انتظار التوصيل', time: null, completed: false },
+                    { step: 'delivered', description: 'في انتظار التسليم', time: null, completed: false }
+                ],
+                createdAt: '2024-11-14T12:00:00'
+            }
+        ];
+    }
+
+    getDefaultCouriers() {
+        return [
+            {
+                id: 1,
+                name: 'سالم محمد',
+                phone: '+966511223344',
+                vehicle: 'دراجة نارية',
+                vehicleNumber: 'م 1234',
+                status: 'busy',
+                currentLocation: 'الرياض - الملز',
+                deliveriesToday: 8,
+                rating: 4.8,
+                online: true
+            },
+            {
+                id: 2,
+                name: 'فهد أحمد',
+                phone: '+966522334455',
+                vehicle: 'سيارة',
+                vehicleNumber: 'م 5678',
+                status: 'online',
+                currentLocation: 'الدمام - الفتح',
+                deliveriesToday: 5,
+                rating: 4.9,
+                online: true
+            },
+            {
+                id: 3,
+                name: 'ناصر خالد',
+                phone: '+966533445566',
+                vehicle: 'دراجة نارية',
+                vehicleNumber: 'م 9012',
+                status: 'online',
+                currentLocation: 'الرياض - النخيل',
+                deliveriesToday: 6,
+                rating: 4.7,
+                online: true
+            },
+            {
+                id: 4,
+                name: 'يوسف علي',
+                phone: '+966544556677',
+                vehicle: 'سيارة',
+                vehicleNumber: 'م 3456',
+                status: 'offline',
+                currentLocation: 'جدة - السلامة',
+                deliveriesToday: 0,
+                rating: 4.6,
+                online: false
+            }
+        ];
+    }
+
+    getDefaultNotifications() {
+        return [
+            {
+                id: 1,
+                type: 'new_delivery',
+                title: 'طلب توصيل جديد',
+                message: 'تم استلام طلب توصيل جديد ORD-2024-006',
+                icon: 'fas fa-truck',
+                timestamp: '2024-11-14T10:15:00',
+                read: false
+            },
+            {
+                id: 2,
+                type: 'delivery_delayed',
+                title: 'تأخر في التوصيل',
+                message: 'طلب ORD-2024-004 متأخر عن موعده',
+                icon: 'fas fa-clock',
+                timestamp: '2024-11-14T09:45:00',
+                read: false
+            },
+            {
+                id: 3,
+                type: 'courier_assigned',
+                title: 'تم تعيين ساعي',
+                message: 'تم تعيين ساعي سالم محمد لطلب ORD-2024-001',
+                icon: 'fas fa-user-check',
+                timestamp: '2024-11-14T08:30:00',
+                read: true
+            }
+        ];
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_shipping_deliveries', JSON.stringify(this.deliveries));
+        localStorage.setItem('pharma_shipping_couriers', JSON.stringify(this.couriers));
+        localStorage.setItem('pharma_shipping_notifications', JSON.stringify(this.notifications));
+    }
+
+    setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchDeliveries(e.target.value);
+            });
+        }
+
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                this.filterByStatus(e);
+            });
+        });
+
+        document.querySelectorAll('.view-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                this.changeView(e.currentTarget.dataset.view);
+            });
+        });
+
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    setupNotifications() {
+        this.updateNotificationsBadge();
+    }
+
+    updateNotificationsBadge() {
+        const unreadCount = this.notifications.filter(n => !n.read).length;
+        const badge = document.getElementById('notificationsBadge');
+        if (badge) {
+            badge.textContent = unreadCount;
+            badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+        }
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    updateStatisticsDisplay() {
+        const counts = this.deliveries.reduce((acc, delivery) => {
+            acc[delivery.status] = (acc[delivery.status] || 0) + 1;
+            return acc;
+        }, {});
+
+        document.getElementById('stat-pending-count').textContent = counts['pending'] || 0;
+        document.getElementById('stat-in_progress-count').textContent = (counts['in_progress'] || 0) + (counts['assigned'] || 0);
+        document.getElementById('stat-delivered-count').textContent = counts['delivered'] || 0;
+        document.getElementById('stat-delayed-count').textContent = counts['delayed'] || 0;
+    }
+
+    searchDeliveries(query) {
+        if (query.trim() === '') {
+            this.applyFilters(); 
+        } else {
+            const searchTerm = query.toLowerCase();
+            this.filteredDeliveries = this.deliveries.filter(delivery => 
+                delivery.orderNumber.toLowerCase().includes(searchTerm) ||
+                delivery.customerName.toLowerCase().includes(searchTerm) ||
+                delivery.customerPhone.includes(searchTerm)
+            );
+        }
+        
+        this.renderDeliveries();
+    }
+
+    filterByStatus(e) {
+        const statusItem = e.currentTarget.closest('.stat-item');
+        const status = statusItem.dataset.status;
+
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        statusItem.classList.add('active');
+
+        this.currentFilters.status = [status];
+        this.currentFilters.type = ['express', 'standard', 'scheduled'];
+        this.currentFilters.timeRange = 'month';
+        
+        document.querySelectorAll('input[name="status"]').forEach(cb => {
+            cb.checked = cb.value === status;
+        });
+        document.querySelectorAll('input[name="type"]').forEach(cb => {
+            cb.checked = true;
+        });
+        document.getElementById('timeFilter').value = 'month';
+
+        this.applyFilters(false);
+    }
+
+    showFilterModal() {
+        document.getElementById('filterModal').style.display = 'block';
+    }
+
+    closeFilterModal() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    applyFilters(showToast = true) {
+        const statusCheckboxes = document.querySelectorAll('#filterModal input[name="status"]:checked');
+        this.currentFilters.status = Array.from(statusCheckboxes).map(cb => cb.value);
+        
+        const typeCheckboxes = document.querySelectorAll('#filterModal input[name="type"]:checked');
+        this.currentFilters.type = Array.from(typeCheckboxes).map(cb => cb.value);
+        
+        this.currentFilters.timeRange = document.getElementById('timeFilter').value;
+
+        this.filteredDeliveries = this.deliveries.filter(delivery => {
+            const statusMatch = this.currentFilters.status.includes(delivery.status);
+            const typeMatch = this.currentFilters.type.includes(delivery.deliveryType);
+            const timeMatch = this.checkTimeRange(delivery.createdAt, this.currentFilters.timeRange);
+            
+            return statusMatch && typeMatch && timeMatch;
+        });
+        
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        
+        this.renderDeliveries();
+        this.closeFilterModal();
+        
+        if (showToast) {
+            this.showToast('تم تطبيق الفلترة بنجاح');
+        }
+    }
+
+    resetFilters() {
+        document.querySelectorAll('#filterModal input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        document.getElementById('timeFilter').value = 'month';
+        
+        this.currentFilters = {
+            status: ['pending', 'in_progress', 'delivered', 'delayed', 'cancelled'],
+            type: ['express', 'standard', 'scheduled'],
+            timeRange: 'month'
+        };
+        
+        this.filteredDeliveries = [...this.deliveries];
+        this.renderDeliveries();
+        this.showToast('تم إعادة تعيين الفلاتر');
+    }
+
+    checkTimeRange(dateString, timeRange) {
+        const date = new Date(dateString);
+        const now = new Date();
+        
+        switch(timeRange) {
+            case 'today':
+                return date.toDateString() === now.toDateString();
+            case 'week':
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                return date >= weekAgo;
+            case 'month':
+                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                return date >= monthAgo;
+            default:
+                return true;
+        }
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        
+        document.querySelectorAll('.view-option').forEach(option => {
+            option.classList.toggle('active', option.dataset.view === view);
+        });
+        
+        document.getElementById('listView').style.display = view === 'list' ? 'block' : 'none';
+        document.getElementById('mapView').style.display = view === 'map' ? 'block' : 'none';
+        
+        if (view === 'map') {
+            this.updateMapView();
+        }
+    }
+
+    updateMapView() {
+        const mapView = document.getElementById('mapView');
+        mapView.innerHTML = `
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <h4>خريطة التوصيل الحية</h4>
+                <p>عرض حي لـ ${this.filteredDeliveries.length} طلب توصيل</p>
+                <div style="margin-top: 20px; text-align: left;">
+                    ${this.filteredDeliveries.map(delivery => `
+                        <div style="margin: 10px 0; padding: 10px; background: var(--bg-light); border-radius: var(--radius-md);">
+                            <strong>${delivery.orderNumber}</strong> - ${delivery.customerName}<br>
+                            <small>${delivery.customerAddress}</small>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="btn-primary" onclick="window.shipping.showRealMap()">
+                    <i class="fas fa-map"></i>
+                    عرض الخريطة التفاعلية
+                </button>
+            </div>
+        `;
+    }
+
+    renderDeliveries() {
+        const listView = document.getElementById('listView');
+        
+        if (this.filteredDeliveries.length === 0) {
+            listView.innerHTML = `
+                <div class="delivery-item" style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-box-open" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+                    <h4 style="color: var(--text-secondary); margin-bottom: 8px;">لا توجد طلبات</h4>
+                    <p style="color: var(--text-secondary);">لم يتم العثور على طلبات تطابق معايير البحث</p>
+                </div>
+            `;
+            return;
+        }
+
+        listView.innerHTML = this.filteredDeliveries.map(delivery => `
+            <div class="delivery-item ${delivery.status}" onclick="window.shipping.showOrderDetails(${delivery.id})">
+                <div class="delivery-header">
+                    <div class="order-info">
+                        <div class="order-number">${delivery.orderNumber}</div>
+                        <div class="customer-name">${delivery.customerName}</div>
+                    </div>
+                    <div class="delivery-status status-${delivery.status}">
+                        ${this.getStatusText(delivery.status)}
+                    </div>
+                </div>
+                <div class="delivery-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${delivery.customerAddress}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>${this.formatTime(delivery.estimatedTime)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-truck"></i>
+                        <span>${this.getDeliveryTypeText(delivery.deliveryType)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>${delivery.totalAmount + delivery.deliveryFee} ر.س</span>
+                    </div>
+                </div>
+                <div class="delivery-actions">
+                    ${delivery.status === 'pending' ? `
+                        <button class="action-btn primary" onclick="event.stopPropagation(); window.shipping.assignCourier(${delivery.id})">
+                            <i class="fas fa-user-plus"></i>
+                            تعيين ساعي
+                        </button>
+                    ` : ''}
+                    <button class="action-btn" onclick="event.stopPropagation(); window.shipping.trackOrder(${delivery.id})">
+                        <i class="fas fa-map-marked-alt"></i>
+                        تتبع
+                    </button>
+                    <button class="action-btn" onclick="event.stopPropagation(); window.shipping.contactCustomer('${delivery.customerPhone}')">
+                        <i class="fas fa-phone"></i>
+                        اتصل
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    renderCouriers() {
+        const couriersList = document.getElementById('activeCouriers');
+        const activeCouriers = this.couriers.filter(courier => courier.online);
+        
+        if (activeCouriers.length === 0) {
+            couriersList.innerHTML = `
+                <div class="courier-item" style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-truck" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+                    <h4 style="color: var(--text-secondary); margin-bottom: 8px;">لا يوجد سعاة نشطين</h4>
+                    <p style="color: var(--text-secondary);">جميع السعاة غير متصلين حالياً</p>
+                </div>
+            `;
+            return;
+        }
+
+        couriersList.innerHTML = activeCouriers.map(courier => `
+            <div class="courier-item" data-courier-id="${courier.id}">
+                <div class="courier-avatar">
+                    ${courier.name.split(' ')[0].charAt(0)}
+                </div>
+                <div class="courier-info">
+                    <div class="courier-name">${courier.name}</div>
+                    <div class="courier-details">
+                        <span class="courier-location">${courier.currentLocation}</span>
+                        • ${courier.vehicle} (${courier.vehicleNumber})
+                        • ${courier.deliveriesToday} توصيل اليوم
+                    </div>
+                </div>
+                <div class="courier-status status-${courier.status}">
+                    <span class="status-indicator"></span>
+                    ${this.getCourierStatusText(courier.status)}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            'pending': 'قيد التوصيل',
+            'in_progress': 'جاري التوصيل',
+            'delivered': 'تم التسليم',
+            'delayed': 'متأخرة',
+            'cancelled': 'ملغية'
+        };
+        return statusMap[status] || status;
+    }
+
+    getDeliveryTypeText(type) {
+        const typeMap = {
+            'express': 'سريع',
+            'standard': 'عادي',
+            'scheduled': 'مجدول'
+        };
+        return typeMap[type] || type;
+    }
+
+    getCourierStatusText(status) {
+        const statusMap = {
+            'online': 'متصل',
+            'offline': 'غير متصل',
+            'busy': 'مشغول'
+        };
+        return statusMap[status] || status;
+    }
+
+    formatTime(timeString) {
+        if (!timeString) return 'غير محدد';
+        const date = new Date(timeString);
+        return date.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+    }
+
+    showOrderDetails(deliveryId) {
+        const delivery = this.deliveries.find(d => d.id === deliveryId);
+        if (!delivery) return;
+
+        this.currentDelivery = delivery;
+
+        document.getElementById('orderDetailsTitle').textContent = `تفاصيل الطلب ${delivery.orderNumber}`;
+        
+        const assignedCourier = delivery.assignedCourier ? 
+            this.couriers.find(c => c.id === delivery.assignedCourier) : null;
+
+        document.getElementById('orderDetailsContent').innerHTML = `
+            <div style="margin-bottom: 24px;">
+                <h4 style="margin-bottom: 16px; color: var(--primary);">معلومات العميل</h4>
+                <div style="display: grid; gap: 12px;">
+                    <div><strong>الاسم:</strong> ${delivery.customerName}</div>
+                    <div><strong>الهاتف:</strong> ${delivery.customerPhone}</div>
+                    <div><strong>العنوان:</strong> ${delivery.customerAddress}</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <h4 style="margin-bottom: 16px; color: var(--primary);">تفاصيل الطلب</h4>
+                <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-md);">
+                    ${delivery.items.map(item => `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>${item.name}</span>
+                            <span>${item.quantity} ×</span>
+                        </div>
+                    `).join('')}
+                    <hr style="margin: 12px 0; border-color: var(--primary-light);">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>المجموع:</span>
+                        <span>${delivery.totalAmount + delivery.deliveryFee} ر.س</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <h4 style="margin-bottom: 16px; color: var(--primary);">معلومات التوصيل</h4>
+                <div style="display: grid; gap: 8px;">
+                    <div><strong>نوع التوصيل:</strong> ${this.getDeliveryTypeText(delivery.deliveryType)}</div>
+                    <div><strong>الحالة:</strong> <span class="status-${delivery.status}">${this.getStatusText(delivery.status)}</span></div>
+                    <div><strong>الوقت المتوقع:</strong> ${this.formatTime(delivery.estimatedTime)}</div>
+                    ${assignedCourier ? `
+                        <div><strong>الساعي:</strong> ${assignedCourier.name}</div>
+                        <div><strong>مركبة الساعي:</strong> ${assignedCourier.vehicle} (${assignedCourier.vehicleNumber})</div>
+                    ` : '<div><strong>الساعي:</strong> لم يتم التعيين بعد</div>'}
+                </div>
+            </div>
+
+            ${delivery.notes ? `
+                <div style="margin-bottom: 24px;">
+                    <h4 style="margin-bottom: 8px; color: var(--primary);">ملاحظات</h4>
+                    <p style="background: var(--bg-light); padding: 12px; border-radius: var(--radius-md);">${delivery.notes}</p>
+                </div>
+            ` : ''}
+
+            <div class="form-actions">
+                <button class="btn-secondary" onclick="window.shipping.contactCustomer('${delivery.customerPhone}')">
+                    <i class="fas fa-phone"></i>
+                    اتصال
+                </button>
+                ${delivery.status === 'pending' ? `
+                    <button class="btn-primary" onclick="window.shipping.assignCourier(${delivery.id})">
+                        <i class="fas fa-user-plus"></i>
+                        تعيين ساعي
+                    </button>
+                ` : ''}
+                <button class="btn-primary" onclick="window.shipping.trackOrder(${delivery.id})">
+                    <i class="fas fa-map-marked-alt"></i>
+                    تتبع الطلب
+                </button>
+            </div>
+        `;
+
+        document.getElementById('orderDetailsModal').style.display = 'block';
+    }
+
+    closeOrderDetails() {
+        document.getElementById('orderDetailsModal').style.display = 'none';
+        this.currentDelivery = null;
+    }
+
+    trackOrder(deliveryId) {
+        const delivery = this.deliveries.find(d => d.id === deliveryId);
+        if (!delivery) return;
+
+        document.getElementById('trackingContent').innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <h4 style="margin-bottom: 8px;">${delivery.orderNumber}</h4>
+                <p style="color: var(--text-secondary);">${delivery.customerName} - ${delivery.customerAddress}</p>
+            </div>
+            <div class="tracking-steps">
+                ${delivery.tracking.map((step, index) => `
+                    <div class="tracking-step">
+                        <div class="step-icon ${step.completed ? 'completed' : step.step === 'on_the_way' ? 'current' : ''}">
+                            <i class="fas fa-${this.getStepIcon(step.step)}"></i>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">${step.description}</div>
+                            ${step.time ? `<div class="step-time">${this.formatTime(step.time)}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        document.getElementById('trackingModal').style.display = 'block';
+    }
+
+    getStepIcon(step) {
+        const iconMap = {
+            'order_placed': 'shopping-cart',
+            'preparing': 'box',
+            'assigned': 'user-tie',
+            'picked_up': 'shopping-bag',
+            'on_the_way': 'truck',
+            'delivered': 'check-circle'
+        };
+        return iconMap[step] || 'circle';
+    }
+
+    closeTracking() {
+        document.getElementById('trackingModal').style.display = 'none';
+    }
+
+    assignCourier(deliveryId) {
+        const delivery = this.deliveries.find(d => d.id === deliveryId);
+        if (!delivery) return;
+
+        this.currentDelivery = delivery;
+
+        const availableCouriers = this.couriers.filter(courier => 
+            courier.online && courier.status !== 'busy'
+        );
+
+        const courierSelect = document.getElementById('courierSelect');
+        courierSelect.innerHTML = `
+            <option value="">اختر الساعي...</option>
+            ${availableCouriers.map(courier => `
+                <option value="${courier.id}">
+                    ${courier.name} - ${courier.vehicle} (${courier.deliveriesToday} توصيل اليوم)
+                </option>
+            `).join('')}
+        `;
+
+        const estimatedTime = new Date();
+        estimatedTime.setHours(estimatedTime.getHours() + 1);
+        document.getElementById('estimatedTime').value = estimatedTime.toISOString().slice(0, 16);
+
+        document.getElementById('assignCourierModal').style.display = 'block';
+    }
+
+    closeAssignCourier() {
+        document.getElementById('assignCourierModal').style.display = 'none';
+        this.currentDelivery = null;
+    }
+
+    confirmAssignment() {
+        const courierId = parseInt(document.getElementById('courierSelect').value);
+        const estimatedTime = document.getElementById('estimatedTime').value;
+        const notes = document.getElementById('deliveryNotes').value;
+
+        if (!courierId) {
+            this.showToast('يرجى اختيار ساعي', 'error');
+            return;
+        }
+
+        const courier = this.couriers.find(c => c.id === courierId);
+        const delivery = this.currentDelivery;
+
+        if (delivery && courier) {
+            delivery.assignedCourier = courierId;
+            delivery.status = 'in_progress';
+            delivery.estimatedTime = estimatedTime;
+            if (notes) {
+                delivery.notes = delivery.notes ? `${delivery.notes}\n${notes}` : notes;
+            }
+
+            const assignedStep = delivery.tracking.find(step => step.step === 'assigned');
+            if (assignedStep) {
+                assignedStep.completed = true;
+                assignedStep.time = new Date().toISOString();
+            }
+
+            courier.status = 'busy';
+            courier.deliveriesToday += 1;
+
+            this.saveData();
+            this.renderDeliveries();
+            this.renderCouriers();
+            this.closeAssignCourier();
+            this.closeOrderDetails();
+
+            this.showToast(`تم تعيين ${courier.name} لتوصيل الطلب ${delivery.orderNumber}`);
+        }
+    }
+
+    contactCustomer(phoneNumber) {
+        window.open(`tel:${phoneNumber}`);
+        this.showToast(`جاري الاتصال بالعميل ${phoneNumber}`);
+    }
+
+    // وظيفة مسح الباركود الحقيقية
+    showScanModal() {
+        document.getElementById('scanModal').style.display = 'block';
+    }
+
+    closeScanModal() {
+        document.getElementById('scanModal').style.display = 'none';
+    }
+
+    simulateScan() {
+        this.showToast('جاري مسح الكود...');
+        
+        setTimeout(() => {
+            const randomDelivery = this.deliveries.find(d => d.status === 'in_progress');
+            if (randomDelivery) {
+                this.showOrderDetails(randomDelivery.id);
+                this.closeScanModal();
+                this.showToast(`تم مسح الطلب ${randomDelivery.orderNumber} بنجاح`);
+            } else {
+                this.showToast('لم يتم العثور على طلب قيد التوصيل', 'error');
+            }
+        }, 2000);
+    }
+
+    // وظيفة إنشاء توصيل جديد
+    createNewDelivery() {
+        document.getElementById('newDeliveryModal').style.display = 'block';
+        this.resetNewDeliveryForm();
+    }
+
+    closeNewDeliveryModal() {
+        document.getElementById('newDeliveryModal').style.display = 'none';
+    }
+
+    resetNewDeliveryForm() {
+        document.getElementById('newOrderNumber').value = '';
+        document.getElementById('newCustomerName').value = '';
+        document.getElementById('newCustomerPhone').value = '';
+        document.getElementById('newCustomerAddress').value = '';
+        document.getElementById('newDeliveryType').value = 'standard';
+        document.getElementById('newDeliveryNotes').value = '';
+        
+        const productsContainer = document.getElementById('productsContainer');
+        productsContainer.innerHTML = `
+            <div class="product-item">
+                <input type="text" class="form-input product-name" placeholder="اسم المنتج">
+                <input type="number" class="form-input product-quantity" placeholder="الكمية" min="1" value="1">
+                <button class="btn-danger remove-product" onclick="window.shipping.removeProduct(this)">×</button>
+            </div>
+        `;
+    }
+
+    addProduct() {
+        const productsContainer = document.getElementById('productsContainer');
+        const productItem = document.createElement('div');
+        productItem.className = 'product-item';
+        productItem.innerHTML = `
+            <input type="text" class="form-input product-name" placeholder="اسم المنتج">
+            <input type="number" class="form-input product-quantity" placeholder="الكمية" min="1" value="1">
+            <button class="btn-danger remove-product" onclick="window.shipping.removeProduct(this)">×</button>
+        `;
+        productsContainer.appendChild(productItem);
+    }
+
+    removeProduct(button) {
+        const productItem = button.closest('.product-item');
+        if (document.querySelectorAll('.product-item').length > 1) {
+            productItem.remove();
+        } else {
+            this.showToast('يجب أن يحتوي الطلب على منتج واحد على الأقل', 'error');
+        }
+    }
+
+    confirmNewDelivery() {
+        const orderNumber = document.getElementById('newOrderNumber').value.trim();
+        const customerName = document.getElementById('newCustomerName').value.trim();
+        const customerPhone = document.getElementById('newCustomerPhone').value.trim();
+        const customerAddress = document.getElementById('newCustomerAddress').value.trim();
+        const deliveryType = document.getElementById('newDeliveryType').value;
+        const notes = document.getElementById('newDeliveryNotes').value.trim();
+
+        // التحقق من صحة البيانات
+        if (!orderNumber || !customerName || !customerPhone || !customerAddress) {
+            this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        // جمع المنتجات
+        const productItems = document.querySelectorAll('.product-item');
+        const items = Array.from(productItems).map(item => {
+            const name = item.querySelector('.product-name').value.trim();
+            const quantity = parseInt(item.querySelector('.product-quantity').value);
+            return { name, quantity };
+        }).filter(item => item.name && item.quantity > 0);
+
+        if (items.length === 0) {
+            this.showToast('يرجى إضافة منتجات على الأقل', 'error');
+            return;
+        }
+
+        // إنشاء طلب توصيل جديد
+        const newDelivery = {
+            id: Date.now(),
+            orderNumber,
+            customerName,
+            customerPhone,
+            customerAddress,
+            deliveryType,
+            status: 'pending',
+            assignedCourier: null,
+            estimatedTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // بعد ساعتين
+            actualTime: null,
+            items,
+            totalAmount: items.reduce((sum, item) => sum + (item.quantity * 50), 0), // سعر افتراضي
+            deliveryFee: deliveryType === 'express' ? 15 : 10,
+            notes,
+            tracking: [
+                { step: 'order_placed', description: 'تم استلام الطلب', time: new Date().toISOString(), completed: true },
+                { step: 'preparing', description: 'جاري تجهيز الطلب', time: null, completed: false },
+                { step: 'assigned', description: 'في انتظار تعيين ساعي', time: null, completed: false },
+                { step: 'picked_up', description: 'في انتظار الاستلام', time: null, completed: false },
+                { step: 'on_the_way', description: 'في انتظار التوصيل', time: null, completed: false },
+                { step: 'delivered', description: 'في انتظار التسليم', time: null, completed: false }
+            ],
+            createdAt: new Date().toISOString()
+        };
+
+        this.deliveries.push(newDelivery);
+        this.filteredDeliveries.push(newDelivery);
+        this.saveData();
+        this.renderDeliveries();
+        this.updateStatisticsDisplay();
+        this.closeNewDeliveryModal();
+
+        this.showToast(`تم إنشاء طلب التوصيل ${orderNumber} بنجاح`);
+    }
+
+    // وظيفة الإشعارات الحقيقية
+    showNotifications() {
+        document.getElementById('notificationsModal').style.display = 'block';
+        this.renderNotifications();
+    }
+
+    closeNotificationsModal() {
+        document.getElementById('notificationsModal').style.display = 'none';
+    }
+
+    renderNotifications() {
+        const notificationsList = document.getElementById('notificationsList');
+        
+        if (this.notifications.length === 0) {
+            notificationsList.innerHTML = `
+                <div class="notification-item" style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-bell-slash" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+                    <h4 style="color: var(--text-secondary); margin-bottom: 8px;">لا توجد إشعارات</h4>
+                    <p style="color: var(--text-secondary);">سيظهر هنا الإشعارات الجديدة</p>
+                </div>
+            `;
+            return;
+        }
+
+        notificationsList.innerHTML = this.notifications.map(notification => `
+            <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="window.shipping.markNotificationAsRead(${notification.id})">
+                <div class="notification-icon ${this.getNotificationTypeClass(notification.type)}">
+                    <i class="${notification.icon}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-time">${this.formatTime(notification.timestamp)}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    getNotificationTypeClass(type) {
+        const typeMap = {
+            'new_delivery': 'info',
+            'delivery_delayed': 'warning',
+            'courier_assigned': 'success'
+        };
+        return typeMap[type] || 'info';
+    }
+
+    markNotificationAsRead(notificationId) {
+        const notification = this.notifications.find(n => n.id === notificationId);
+        if (notification && !notification.read) {
+            notification.read = true;
+            this.saveData();
+            this.updateNotificationsBadge();
+            this.renderNotifications();
+        }
+    }
+
+    // وظيفة إدارة السعاة
+    manageCouriers() {
+        document.getElementById('couriersManagementModal').style.display = 'block';
+        this.renderFullCouriersList();
+    }
+
+    closeCouriersManagementModal() {
+        document.getElementById('couriersManagementModal').style.display = 'none';
+    }
+
+    renderFullCouriersList() {
+        const couriersFullList = document.getElementById('couriersFullList');
+        
+        couriersFullList.innerHTML = this.couriers.map(courier => `
+            <div class="courier-full-item">
+                <div class="courier-avatar">
+                    ${courier.name.split(' ')[0].charAt(0)}
+                </div>
+                <div class="courier-info">
+                    <div class="courier-name">${courier.name}</div>
+                    <div class="courier-details">
+                        <span class="courier-location">${courier.currentLocation}</span>
+                        • ${courier.vehicle} (${courier.vehicleNumber})
+                        • ${courier.deliveriesToday} توصيل اليوم
+                        • تقييم: ${courier.rating}/5
+                    </div>
+                </div>
+                <div class="courier-status status-${courier.status}">
+                    <span class="status-indicator"></span>
+                    ${this.getCourierStatusText(courier.status)}
+                </div>
+                <div class="courier-actions">
+                    <button class="courier-action-btn" onclick="window.shipping.editCourier(${courier.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="courier-action-btn" onclick="window.shipping.toggleCourierStatus(${courier.id})">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    showAddCourierModal() {
+        document.getElementById('addCourierModal').style.display = 'block';
+    }
+
+    closeAddCourierModal() {
+        document.getElementById('addCourierModal').style.display = 'none';
+    }
+
+    confirmAddCourier() {
+        const name = document.getElementById('newCourierName').value.trim();
+        const phone = document.getElementById('newCourierPhone').value.trim();
+        const vehicle = document.getElementById('newCourierVehicle').value;
+        const vehicleNumber = document.getElementById('newCourierVehicleNumber').value.trim();
+
+        if (!name || !phone || !vehicle || !vehicleNumber) {
+            this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        const newCourier = {
+            id: Date.now(),
+            name,
+            phone,
+            vehicle,
+            vehicleNumber,
+            status: 'offline',
+            currentLocation: 'غير محدد',
+            deliveriesToday: 0,
+            rating: 5.0,
+            online: false
+        };
+
+        this.couriers.push(newCourier);
+        this.saveData();
+        this.renderCouriers();
+        this.renderFullCouriersList();
+        this.closeAddCourierModal();
+
+        this.showToast(`تم إضافة الساعي ${name} بنجاح`);
+    }
+
+    editCourier(courierId) {
+        this.showToast(`فتح تعديل بيانات الساعي ${courierId}`);
+    }
+
+    toggleCourierStatus(courierId) {
+        const courier = this.couriers.find(c => c.id === courierId);
+        if (courier) {
+            courier.online = !courier.online;
+            courier.status = courier.online ? 'online' : 'offline';
+            this.saveData();
+            this.renderCouriers();
+            this.renderFullCouriersList();
+            this.showToast(`تم ${courier.online ? 'تشغيل' : 'إيقاف'} الساعي ${courier.name}`);
+        }
+    }
+
+    // وظائف مساعدة
+    showRealMap() {
+        this.showToast('فتح الخريطة التفاعلية الكاملة');
+    }
+
+    showPerformanceDetails() {
+        this.showToast('عرض تفاصيل أداء التوصيل');
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'error' ? 'var(--danger)' : type === 'warning' ? 'var(--warning)' : type === 'info' ? 'var(--info)' : 'var(--success)'};
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            z-index: 10000;
+            font-weight: 600;
+            animation: slideDown 0.3s ease-out;
+        `;
+        
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'slideUp 0.3s ease-in';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    startRealTimeUpdates() {
+        setInterval(() => {
+            this.deliveries.forEach(delivery => {
+                if (delivery.status === 'in_progress' && Math.random() < 0.1) {
+                    delivery.status = 'delivered';
+                    delivery.actualTime = new Date().toISOString();
+                    
+                    const deliveredStep = delivery.tracking.find(step => step.step === 'delivered');
+                    if (deliveredStep) {
+                        deliveredStep.completed = true;
+                        deliveredStep.time = delivery.actualTime;
+                    }
+
+                    if (delivery.assignedCourier) {
+                        const courier = this.couriers.find(c => c.id === delivery.assignedCourier);
+                        if (courier) {
+                            courier.status = 'online';
+                        }
+                    }
+                }
+            });
+
+            this.saveData();
+            this.renderDeliveries();
+            this.renderCouriers();
+            this.updateStatisticsDisplay();
+        }, 30000);
+    }
+}
+
+// تهيئة النظام عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.shipping = new ShippingManagement();
+});
+</script>
+</body>
+</html>
