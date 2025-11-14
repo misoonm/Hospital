@@ -1868,13 +1868,13 @@ class ShippingManagement {
 
     generateRandomLocation(currentLocation) {
         const areas = {
-            'الرياض': ['الملز', 'النخيل', 'العليا', 'السليمانية', 'المرسلات', 'الغدير'],
-            'جدة': ['السلامة', 'الروضة', 'الزهراء', 'التحلية', 'الخالدية'],
-            'الدمام': ['الفتح', 'الخبر', 'الراكة', 'المنطقة الصناعية']
+            'صنعاء': ['دارس', 'الحصبة', 'الستين', 'حدة', 'سعوان', 'السبعين'],
+            'حجة': ['قارة', 'المدينة', 'وشحة', 'كشر', 'عاهم'],
+            'عمران': ['المدينة', 'خارف', 'حوث', 'المنطقة الصناعية']
         };
         
         const cityMatch = currentLocation.match(/(\S+)/);
-        const city = cityMatch ? cityMatch[1] : 'الرياض';
+        const city = cityMatch ? cityMatch[1] : 'صنعاء';
         const availableAreas = areas[city] || ['المنطقة المركزية'];
         const randomArea = availableAreas[Math.floor(Math.random() * availableAreas.length)];
         
@@ -1926,7 +1926,7 @@ class ShippingManagement {
                 orderNumber: 'ORD-2024-001',
                 customerName: 'أحمد محمد',
                 customerPhone: '+966501234567',
-                customerAddress: 'الرياض - الملز - شارع الملك فهد',
+                customerAddress: 'صنعاء - حدة - شارع الخمسين ',
                 deliveryType: 'express',
                 status: 'in_progress',
                 assignedCourier: 1,
@@ -1954,7 +1954,7 @@ class ShippingManagement {
                 orderNumber: 'ORD-2024-002',
                 customerName: 'فاطمة علي',
                 customerPhone: '+966502345678',
-                customerAddress: 'جدة - السلامة - شارع التحلية',
+                customerAddress: 'حجة - قارة -  الحبال',
                 deliveryType: 'standard',
                 status: 'pending',
                 assignedCourier: null,
@@ -1982,7 +1982,7 @@ class ShippingManagement {
                 orderNumber: 'ORD-2024-003',
                 customerName: 'خالد عبدالله',
                 customerPhone: '+966503456789',
-                customerAddress: 'الدمام - الفتح - شارع الملك سعود',
+                customerAddress: 'عمران - المدينة - شارع عشرين',
                 deliveryType: 'express',
                 status: 'delivered',
                 assignedCourier: 2,
@@ -2010,7 +2010,7 @@ class ShippingManagement {
                 orderNumber: 'ORD-2024-004',
                 customerName: 'نورة السعد',
                 customerPhone: '+966504567890',
-                customerAddress: 'الرياض - النخيل - شارع العليا',
+                customerAddress: 'صنعاء - الستين - شارع الستين الجنوبي',
                 deliveryType: 'scheduled',
                 status: 'delayed',
                 assignedCourier: 3,
@@ -2038,7 +2038,7 @@ class ShippingManagement {
                 orderNumber: 'ORD-2024-005',
                 customerName: 'محمد أحمد',
                 customerPhone: '+966505678901',
-                customerAddress: 'جدة - الروضة - شارع الأمير سلطان',
+                customerAddress: 'صنعاء - شارع المطار -   دارس',
                 deliveryType: 'standard',
                 status: 'pending',
                 assignedCourier: null,
@@ -2073,7 +2073,7 @@ class ShippingManagement {
                 vehicle: 'دراجة نارية',
                 vehicleNumber: 'م 1234',
                 status: 'busy',
-                currentLocation: 'الرياض - الملز',
+                currentLocation: 'صنعاء - دارس',
                 deliveriesToday: 8,
                 rating: 4.8,
                 online: true
@@ -2085,7 +2085,7 @@ class ShippingManagement {
                 vehicle: 'سيارة',
                 vehicleNumber: 'م 5678',
                 status: 'online',
-                currentLocation: 'الدمام - الفتح',
+                currentLocation: 'صنعاء - الستين',
                 deliveriesToday: 5,
                 rating: 4.9,
                 online: true
@@ -2097,7 +2097,7 @@ class ShippingManagement {
                 vehicle: 'دراجة نارية',
                 vehicleNumber: 'م 9012',
                 status: 'online',
-                currentLocation: 'الرياض - النخيل',
+                currentLocation: 'صنعاء - سعوان',
                 deliveriesToday: 6,
                 rating: 4.7,
                 online: true
@@ -2109,7 +2109,7 @@ class ShippingManagement {
                 vehicle: 'سيارة',
                 vehicleNumber: 'م 3456',
                 status: 'offline',
-                currentLocation: 'جدة - السلامة',
+                currentLocation: 'صنعاء - حدة',
                 deliveriesToday: 0,
                 rating: 4.6,
                 online: false
