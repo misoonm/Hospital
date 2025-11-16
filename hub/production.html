@@ -1,0 +1,4453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaHub - إدارة الإنتاج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية */
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+
+    /* خلفية التطبيق */
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+    padding-bottom: 100px;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+/* شريط البحث */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* إحصائيات سريعة */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-item.active {
+    background: var(--primary);
+    color: white;
+}
+
+.stat-item.active .stat-value,
+.stat-item.active .stat-label {
+    color: white;
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* التصنيفات */
+.categories-section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 12px 20px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* لوحة تحكم الإنتاج */
+.production-dashboard {
+    padding: 0 20px;
+}
+
+/* بطاقات التحليل */
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.analytics-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+}
+
+.analytics-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.analytics-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.analytics-content {
+    flex: 1;
+}
+
+.analytics-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.analytics-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* خط الإنتاج */
+.production-line-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    color: var(--primary-dark);
+    font-size: 18px;
+}
+
+.production-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.production-stage {
+    flex: 1;
+    text-align: center;
+    padding: 16px 8px;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    transition: var(--transition-liquid);
+    position: relative;
+}
+
+.production-stage.active {
+    background: var(--primary-light);
+    box-shadow: var(--shadow-inset);
+}
+
+.production-stage::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -8px;
+    width: 16px;
+    height: 2px;
+    background: var(--primary-light);
+    transform: translateY(-50%);
+}
+
+.production-stage:first-child::after {
+    display: none;
+}
+
+.stage-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto 8px;
+    font-size: 16px;
+}
+
+.production-stage.active .stage-icon {
+    background: var(--primary-dark);
+}
+
+.stage-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.stage-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-light);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--success);
+    transition: width 0.3s ease;
+}
+
+.production-stage.active .progress-fill {
+    background: var(--primary);
+}
+
+.stage-progress span {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 25px;
+}
+
+/* شريط الأدوات */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.view-options {
+    display: flex;
+    gap: 8px;
+}
+
+.view-option {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.view-option.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.view-option:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.sort-options select {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.sort-options select:focus {
+    box-shadow: var(--shadow-inset);
+}
+
+/* حاوية الإنتاج */
+.production-container {
+    margin-bottom: 20px;
+}
+
+/* شبكة الإنتاج */
+.production-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.production-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.production-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* بطاقة الإنتاج (شبكة) */
+.production-card-grid {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.production-card-grid:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.production-image {
+    width: 100%;
+    height: 120px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--primary-dark);
+    position: relative;
+}
+
+.production-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.production-badge.planned {
+    background: var(--info);
+}
+
+.production-badge.in_progress {
+    background: var(--primary);
+}
+
+.production-badge.paused {
+    background: var(--warning);
+}
+
+.production-badge.quality_check {
+    background: var(--secondary);
+}
+
+.production-badge.completed {
+    background: var(--success);
+}
+
+.production-badge.cancelled {
+    background: var(--danger);
+}
+
+.production-content {
+    padding: 16px;
+}
+
+.production-name {
+    font-family: 'Almarai', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    height: 40px;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.production-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.production-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.current-progress {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--primary-dark);
+}
+
+.progress-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.progress-indicator.high {
+    background: var(--success);
+}
+
+.progress-indicator.medium {
+    background: var(--warning);
+}
+
+.progress-indicator.low {
+    background: var(--danger);
+}
+
+.production-actions-grid {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* بطاقة الإنتاج (قائمة) */
+.production-card-list {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.production-card-list:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.production-image-list {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+}
+
+.production-details-list {
+    flex: 1;
+}
+
+.production-name-list {
+    font-family: 'Almarai', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.production-meta-list {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.production-progress-list {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.production-status-list {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* الجدول الزمني */
+.timeline-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+    border-right: 4px solid var(--primary);
+}
+
+.timeline-item:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.timeline-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.timeline-title {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.timeline-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.timeline-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.timeline-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* زر الإضافة العائم */
+.floating-action-btn {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    background: var(--primary);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    z-index: 1000;
+}
+
+.floating-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+}
+
+.floating-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-content.large-modal {
+    max-height: 90vh;
+}
+
+.modal-content.small-modal {
+    max-width: 300px;
+    margin: 0 auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    border-radius: var(--radius-xl);
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* نموذج الإنتاج */
+.production-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.form-section h3 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-section h3::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: var(--bg-surface);
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* قائمة المواد */
+.materials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.material-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.material-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+}
+
+/* أزرار */
+.btn-neumorphism {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    color: var(--primary);
+}
+
+.btn-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+}
+
+.btn-primary-neumorphism {
+    background: var(--primary);
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+    color: white;
+}
+
+.btn-primary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: var(--primary-dark);
+}
+
+.btn-secondary-neumorphism {
+    background: var(--secondary);
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.4);
+    color: white;
+}
+
+.btn-secondary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #E6A200;
+}
+
+.btn-danger-neumorphism {
+    background: var(--danger);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+    color: white;
+}
+
+.btn-danger-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #D32F2F;
+}
+
+/* تفاصيل الإنتاج */
+.production-details-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tabs-header {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.tab-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.tabs-content {
+    min-height: 400px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* النظرة العامة للإنتاج */
+.production-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.production-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.production-image-large {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: var(--shadow-card);
+}
+
+.production-info {
+    flex: 1;
+}
+
+.production-info h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.production-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.production-meta span {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.production-status {
+    display: flex;
+    gap: 8px;
+}
+
+.status-badge,
+.priority-badge {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-badge.planned {
+    background: var(--info);
+    color: white;
+}
+
+.status-badge.in_progress {
+    background: var(--primary);
+    color: white;
+}
+
+.status-badge.paused {
+    background: var(--warning);
+    color: white;
+}
+
+.status-badge.quality_check {
+    background: var(--secondary);
+    color: white;
+}
+
+.status-badge.completed {
+    background: var(--success);
+    color: white;
+}
+
+.status-badge.cancelled {
+    background: var(--danger);
+    color: white;
+}
+
+.priority-badge.low {
+    background: var(--info);
+    color: white;
+}
+
+.priority-badge.medium {
+    background: var(--primary);
+    color: white;
+}
+
+.priority-badge.high {
+    background: var(--warning);
+    color: white;
+}
+
+.priority-badge.urgent {
+    background: var(--danger);
+    color: white;
+}
+
+.production-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.spec-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.spec-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.spec-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.spec-info {
+    flex: 1;
+}
+
+.spec-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.spec-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.production-details-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.production-details-section h4 {
+    margin-bottom: 12px;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.technical-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.technical-spec {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spec-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.spec-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.quick-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* تقدم الإنتاج */
+.production-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.progress-overview {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.progress-stat {
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+}
+
+.progress-stat .stat-value {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.progress-stat .stat-label {
+    font-size: 12px;
+}
+
+.progress-timeline {
+    margin-top: 20px;
+}
+
+.progress-timeline h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.timeline-event {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    border-right: 4px solid var(--primary);
+}
+
+.timeline-event.completed {
+    border-right-color: var(--success);
+}
+
+.timeline-event.in_progress {
+    border-right-color: var(--primary);
+}
+
+.timeline-event.pending {
+    border-right-color: var(--warning);
+}
+
+.timeline-event-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.timeline-event.completed .timeline-event-icon {
+    background: var(--success);
+    color: white;
+}
+
+.timeline-event-content {
+    flex: 1;
+}
+
+.timeline-event-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.timeline-event-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.production-stages {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.production-stages h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.stages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.production-stage-detailed {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    border-right: 4px solid var(--primary-light);
+}
+
+.production-stage-detailed.completed {
+    border-right-color: var(--success);
+}
+
+.production-stage-detailed.in_progress {
+    border-right-color: var(--primary);
+}
+
+.stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.stage-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stage-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.production-stage-detailed.completed .stage-status {
+    background: var(--success);
+    color: white;
+}
+
+.stage-progress-detailed {
+    margin-bottom: 12px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.progress-bar-detailed {
+    height: 8px;
+    background: var(--bg-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill-detailed {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.production-stage-detailed.completed .progress-fill-detailed {
+    background: var(--success);
+}
+
+.stage-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* المواد الخام */
+.production-materials {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.materials-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.summary-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+}
+
+.summary-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.summary-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.summary-content {
+    flex: 1;
+}
+
+.summary-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.summary-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.materials-list-detailed {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.materials-list-detailed h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.materials-table {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.table-body {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--primary-light);
+    font-size: 12px;
+    align-items: center;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.material-status.available {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.material-status.shortage {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.material-status.ordered {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+/* مراقبة الجودة */
+.production-quality {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.quality-overview {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.quality-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.quality-stat {
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+}
+
+.quality-stat .stat-value {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.quality-stat .stat-label {
+    font-size: 12px;
+}
+
+.quality-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.quality-checks {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.quality-checks h4 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.checks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quality-check {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    border-right: 4px solid var(--primary-light);
+}
+
+.quality-check.passed {
+    border-right-color: var(--success);
+}
+
+.quality-check.failed {
+    border-right-color: var(--danger);
+}
+
+.quality-check.pending {
+    border-right-color: var(--warning);
+}
+
+.check-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.check-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.check-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.quality-check.passed .check-status {
+    background: var(--success);
+    color: white;
+}
+
+.quality-check.failed .check-status {
+    background: var(--danger);
+    color: white;
+}
+
+.quality-check.pending .check-status {
+    background: var(--warning);
+    color: white;
+}
+
+.check-details {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.check-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* تحديث التقدم */
+.progress-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* أقدام الإجراءات */
+.production-actions-footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-light);
+    flex-wrap: wrap;
+}
+
+.production-actions-footer .btn-neumorphism {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* الفلترة */
+.filter-section {
+    padding: 20px;
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.filter-option input {
+    margin: 0;
+}
+
+.quantity-range {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quantity-inputs {
+    display: flex;
+    gap: 12px;
+}
+
+.quantity-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* التحميل */
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* تحميل المزيد */
+.load-more-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* تأثيرات السوائل */
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* التجاوب */
+@media (max-width: 480px) {
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .production-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .production-line {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .production-stage::after {
+        display: none;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .material-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .progress-stats,
+    .quality-stats,
+    .materials-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-header,
+    .table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .production-actions-footer {
+        flex-direction: column;
+    }
+    
+    .production-actions-footer .btn-neumorphism {
+        min-width: auto;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+    }
+    
+    .technical-specs {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">--:--</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة الإنتاج 🏭</h1>
+                    <p>مراقبة وإدارة عمليات إنتاج الأدوية والمستحضرات</p>
+                </div>
+                <div class="product-actions">
+                    <button class="action-icon liquid-transition" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="addProductionBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- شريط البحث -->
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن دفعة، منتج، أو حالة..." id="searchInput">
+                <button class="action-icon liquid-transition" onclick="production.toggleSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-bar">
+                <div class="stat-item liquid-transition" onclick="production.filterByStatus('all')">
+                    <div class="stat-value" id="totalBatches">0</div>
+                    <div class="stat-label">إجمالي الدفعات</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="production.filterByStatus('in_progress')">
+                    <div class="stat-value" id="inProgressBatches">0</div>
+                    <div class="stat-label">قيد الإنتاج</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="production.filterByStatus('completed')">
+                    <div class="stat-value" id="completedBatches">0</div>
+                    <div class="stat-label">مكتمل</div>
+                </div>
+                <div class="stat-item liquid-transition" onclick="production.filterByStatus('quality_check')">
+                    <div class="stat-value" id="qualityBatches">0</div>
+                    <div class="stat-label">فحص الجودة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التصنيفات -->
+        <div class="categories-section">
+            <div class="categories-scroll" id="categoriesScroll">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- لوحة تحكم الإنتاج -->
+        <div class="production-dashboard">
+            <!-- بطاقات التحليل -->
+            <div class="analytics-cards">
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="productionEfficiency">0%</div>
+                        <div class="analytics-label">كفاءة الإنتاج</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="avgProductionTime">0</div>
+                        <div class="analytics-label">متوسط وقت الإنتاج</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="qualityRate">0%</div>
+                        <div class="analytics-label">معدل الجودة</div>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="analytics-content">
+                        <div class="analytics-value" id="delayedBatches">0</div>
+                        <div class="analytics-label">دفعات متأخرة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- خط الإنتاج -->
+            <div class="production-line-section">
+                <div class="section-header">
+                    <h3>خط الإنتاج الحالي</h3>
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.showProductionLine()">
+                        <i class="fas fa-expand"></i>
+                        عرض كامل
+                    </button>
+                </div>
+                <div class="production-line">
+                    <div class="production-stage active">
+                        <div class="stage-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">التحضير</div>
+                            <div class="stage-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span>85%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="production-stage">
+                        <div class="stage-icon">
+                            <i class="fas fa-blender"></i>
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">الخلط</div>
+                            <div class="stage-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%"></div>
+                                </div>
+                                <span>45%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="production-stage">
+                        <div class="stage-icon">
+                            <i class="fas fa-tablets"></i>
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">التشكيل</div>
+                            <div class="stage-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 20%"></div>
+                                </div>
+                                <span>20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="production-stage">
+                        <div class="stage-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">مراقبة الجودة</div>
+                            <div class="stage-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شريط الأدوات -->
+            <div class="toolbar">
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid" onclick="production.changeView('grid')">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-option" data-view="list" onclick="production.changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-option" data-view="timeline" onclick="production.changeView('timeline')">
+                        <i class="fas fa-stream"></i>
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sortSelect" onchange="production.sortProduction()">
+                        <option value="start_date_desc">الأحدث</option>
+                        <option value="start_date_asc">الأقدم</option>
+                        <option value="priority_desc">عالية الأولوية</option>
+                        <option value="deadline_asc">الأقرب موعداً</option>
+                        <option value="product_name">اسم المنتج</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- قائمة الإنتاج -->
+            <div class="production-container">
+                <div class="production-grid" id="productionGrid">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="production-list" id="productionList" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+
+                <div class="production-timeline" id="productionTimeline" style="display: none;">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- تحميل المزيد -->
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn" onclick="production.loadMore()">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <!-- زر الإضافة العائم -->
+        <button class="floating-action-btn liquid-transition" onclick="production.showAddProductionModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="products.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">المنتجات</div>
+            </a>
+            <a href="inventory.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="nav-label">المخزون</div>
+            </a>
+            <a href="production.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div class="nav-label">الإنتاج</div>
+            </a>
+            <a href="quality.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="nav-label">الجودة</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة/تعديل دفعة الإنتاج -->
+    <div id="productionFormModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="productionFormTitle">دفعة إنتاج جديدة</h2>
+                <span class="close" onclick="production.closeProductionForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="productionForm" class="production-form">
+                    <div class="form-section">
+                        <h3>المعلومات الأساسية</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="productionProduct">المنتج *</label>
+                                <select id="productionProduct" name="product" required>
+                                    <option value="">اختر المنتج</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionBatch">رقم الدفعة *</label>
+                                <input type="text" id="productionBatch" name="batch" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionQuantity">الكمية المطلوبة *</label>
+                                <input type="number" id="productionQuantity" name="quantity" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionPriority">الأولوية</label>
+                                <select id="productionPriority" name="priority">
+                                    <option value="low">منخفضة</option>
+                                    <option value="medium" selected>متوسطة</option>
+                                    <option value="high">عالية</option>
+                                    <option value="urgent">عاجلة</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>التوقيت والجدولة</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="productionStart">تاريخ البدء *</label>
+                                <input type="datetime-local" id="productionStart" name="start_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionDeadline">الموعد النهائي *</label>
+                                <input type="datetime-local" id="productionDeadline" name="deadline" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionLine">خط الإنتاج</label>
+                                <select id="productionLine" name="production_line">
+                                    <option value="line1">الخط 1</option>
+                                    <option value="line2">الخط 2</option>
+                                    <option value="line3">الخط 3</option>
+                                    <option value="line4">الخط 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="productionSupervisor">المشرف</label>
+                                <select id="productionSupervisor" name="supervisor">
+                                    <option value="ahmed">أحمد محمد</option>
+                                    <option value="sara">سارة أحمد</option>
+                                    <option value="ali">علي حسن</option>
+                                    <option value="fatima">فاطمة علي</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>المكونات والمواد الخام</h3>
+                        <div class="materials-list" id="materialsList">
+                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                        </div>
+                        <button type="button" class="btn-neumorphism" onclick="production.addMaterialRow()">
+                            <i class="fas fa-plus"></i>
+                            إضافة مادة
+                        </button>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>التعليمات والمواصفات</h3>
+                        <div class="form-group">
+                            <label for="productionInstructions">تعليمات التصنيع</label>
+                            <textarea id="productionInstructions" name="instructions" rows="4" placeholder="أي تعليمات خاصة بعملية التصنيع..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="productionSpecifications">المواصفات الفنية</label>
+                            <textarea id="productionSpecifications" name="specifications" rows="3" placeholder="المواصفات الفنية المطلوبة..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-neumorphism" onclick="production.closeProductionForm()">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-neumorphism btn-primary-neumorphism">
+                            <i class="fas fa-save"></i>
+                            بدء الإنتاج
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل دفعة الإنتاج -->
+    <div id="productionDetailsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2 id="productionDetailsTitle">تفاصيل دفعة الإنتاج</h2>
+                <span class="close" onclick="production.closeProductionDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="production-details-tabs">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+                        <button class="tab-btn" data-tab="progress">تقدم الإنتاج</button>
+                        <button class="tab-btn" data-tab="materials">المواد الخام</button>
+                        <button class="tab-btn" data-tab="quality">مراقبة الجودة</button>
+                    </div>
+
+                    <div class="tabs-content">
+                        <!-- تبويب النظرة العامة -->
+                        <div class="tab-pane active" id="overviewTab">
+                            <div class="production-overview">
+                                <div class="production-header">
+                                    <div class="production-image-large">
+                                        <i class="fas fa-industry" id="detailProductionIcon"></i>
+                                    </div>
+                                    <div class="production-info">
+                                        <h3 id="detailProductionName"></h3>
+                                        <div class="production-meta">
+                                            <span id="detailProductionBatch"></span>
+                                            <span id="detailProductionLine"></span>
+                                            <span id="detailProductionSupervisor"></span>
+                                        </div>
+                                        <div class="production-status">
+                                            <span class="status-badge" id="detailProductionStatus"></span>
+                                            <span class="priority-badge" id="detailProductionPriority"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-specs-grid">
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-box"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailProductionQuantity"></div>
+                                            <div class="spec-label">الكمية المطلوبة</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailProductionCompleted"></div>
+                                            <div class="spec-label">المكتمل</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailProductionTime"></div>
+                                            <div class="spec-label">الوقت المنقضي</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec-card">
+                                        <div class="spec-icon">
+                                            <i class="fas fa-hourglass-end"></i>
+                                        </div>
+                                        <div class="spec-info">
+                                            <div class="spec-value" id="detailProductionDeadline"></div>
+                                            <div class="spec-label">الوقت المتبقي</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-details-section">
+                                    <h4>معلومات الجدولة</h4>
+                                    <div class="technical-specs" id="productionSpecs">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+
+                                <div class="production-details-section">
+                                    <h4>إجراءات سريعة</h4>
+                                    <div class="quick-actions">
+                                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.updateProgress()">
+                                            <i class="fas fa-sync-alt"></i>
+                                            تحديث التقدم
+                                        </button>
+                                        <button class="btn-neumorphism btn-secondary-neumorphism" onclick="production.pauseProduction()">
+                                            <i class="fas fa-pause"></i>
+                                            إيقاف مؤقت
+                                        </button>
+                                        <button class="btn-neumorphism btn-danger-neumorphism" onclick="production.cancelProduction()">
+                                            <i class="fas fa-times"></i>
+                                            إلغاء الإنتاج
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب تقدم الإنتاج -->
+                        <div class="tab-pane" id="progressTab">
+                            <div class="production-progress">
+                                <div class="progress-overview">
+                                    <div class="progress-stats">
+                                        <div class="progress-stat">
+                                            <div class="stat-value" id="progressPercentage">0%</div>
+                                            <div class="stat-label">نسبة الإنجاز</div>
+                                        </div>
+                                        <div class="progress-stat">
+                                            <div class="stat-value" id="progressEfficiency">0%</div>
+                                            <div class="stat-label">الكفاءة</div>
+                                        </div>
+                                        <div class="progress-stat">
+                                            <div class="stat-value" id="progressDefects">0</div>
+                                            <div class="stat-label">العيوب</div>
+                                        </div>
+                                        <div class="progress-stat">
+                                            <div class="stat-value" id="progressDowntime">0</div>
+                                            <div class="stat-label">وقت التوقف (س)</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-timeline">
+                                        <h4>خط زمني للإنتاج</h4>
+                                        <div class="timeline" id="productionTimelineDetails">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-stages">
+                                    <h4>مراحل الإنتاج</h4>
+                                    <div class="stages-container" id="productionStages">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب المواد الخام -->
+                        <div class="tab-pane" id="materialsTab">
+                            <div class="production-materials">
+                                <div class="materials-summary">
+                                    <div class="summary-card">
+                                        <div class="summary-icon">
+                                            <i class="fas fa-boxes"></i>
+                                        </div>
+                                        <div class="summary-content">
+                                            <div class="summary-value" id="materialsTotal">0</div>
+                                            <div class="summary-label">إجمالي المواد</div>
+                                        </div>
+                                    </div>
+                                    <div class="summary-card">
+                                        <div class="summary-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="summary-content">
+                                            <div class="summary-value" id="materialsAvailable">0</div>
+                                            <div class="summary-label">متوفر</div>
+                                        </div>
+                                    </div>
+                                    <div class="summary-card">
+                                        <div class="summary-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="summary-content">
+                                            <div class="summary-value" id="materialsShortage">0</div>
+                                            <div class="summary-label">نقص</div>
+                                        </div>
+                                    </div>
+                                    <div class="summary-card">
+                                        <div class="summary-icon">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div class="summary-content">
+                                            <div class="summary-value" id="materialsOrdered">0</div>
+                                            <div class="summary-label">قيد الطلب</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="materials-list-detailed">
+                                    <h4>قائمة المواد الخام</h4>
+                                    <div class="materials-table">
+                                        <div class="table-header">
+                                            <div>المادة</div>
+                                            <div>الكمية المطلوبة</div>
+                                            <div>المتوفر</div>
+                                            <div>الحالة</div>
+                                            <div>الإجراء</div>
+                                        </div>
+                                        <div class="table-body" id="materialsTableBody">
+                                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تبويب مراقبة الجودة -->
+                        <div class="tab-pane" id="qualityTab">
+                            <div class="production-quality">
+                                <div class="quality-overview">
+                                    <div class="quality-stats">
+                                        <div class="quality-stat">
+                                            <div class="stat-value" id="qualityScore">0%</div>
+                                            <div class="stat-label">نتيجة الفحص</div>
+                                        </div>
+                                        <div class="quality-stat">
+                                            <div class="stat-value" id="qualityPassed">0</div>
+                                            <div class="stat-label">اجتاز الفحص</div>
+                                        </div>
+                                        <div class="quality-stat">
+                                            <div class="stat-value" id="qualityFailed">0</div>
+                                            <div class="stat-label">فشل في الفحص</div>
+                                        </div>
+                                        <div class="quality-stat">
+                                            <div class="stat-value" id="qualityPending">0</div>
+                                            <div class="stat-label">بانتظار الفحص</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quality-actions">
+                                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.startQualityCheck()">
+                                            <i class="fas fa-clipboard-check"></i>
+                                            بدء فحص الجودة
+                                        </button>
+                                        <button class="btn-neumorphism btn-secondary-neumorphism" onclick="production.generateQualityReport()">
+                                            <i class="fas fa-file-pdf"></i>
+                                            تقرير الجودة
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="quality-checks">
+                                    <h4>فحوصات الجودة</h4>
+                                    <div class="checks-list" id="qualityChecksList">
+                                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="production-actions-footer">
+                    <button class="btn-neumorphism" onclick="production.editProduction()">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn-neumorphism btn-secondary-neumorphism" onclick="production.duplicateProduction()">
+                        <i class="fas fa-copy"></i>
+                        نسخ الدفعة
+                    </button>
+                    <button class="btn-neumorphism btn-danger-neumorphism" onclick="production.cancelProduction()">
+                        <i class="fas fa-times"></i>
+                        إلغاء الإنتاج
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.completeProduction()">
+                        <i class="fas fa-check"></i>
+                        إكمال الإنتاج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تحديث التقدم -->
+    <div id="progressUpdateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تحديث تقدم الإنتاج</h2>
+                <span class="close" onclick="production.closeProgressUpdate()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="progress-update-form">
+                    <div class="form-group">
+                        <label for="updateStage">المرحلة</label>
+                        <select id="updateStage">
+                            <option value="preparation">التحضير</option>
+                            <option value="mixing">الخلط</option>
+                            <option value="forming">التشكيل</option>
+                            <option value="coating">الطلاء</option>
+                            <option value="packaging">التعبئة</option>
+                            <option value="quality">مراقبة الجودة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateProgress">نسبة الإنجاز (%)</label>
+                        <input type="number" id="updateProgress" min="0" max="100" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateQuantity">الكمية المنتجة</label>
+                        <input type="number" id="updateQuantity" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateNotes">ملاحظات</label>
+                        <textarea id="updateNotes" rows="3" placeholder="أي ملاحظات حول التقدم..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-neumorphism" onclick="production.closeProgressUpdate()">
+                            إلغاء
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.saveProgressUpdate()">
+                            <i class="fas fa-save"></i>
+                            حفظ التحديث
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلترة -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية دفعات الإنتاج</h2>
+                <span class="close" onclick="production.closeFilter()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <div class="filter-title">حالة الدفعة</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="planned" checked>
+                                <span>مخطط</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="in_progress" checked>
+                                <span>قيد الإنتاج</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="paused">
+                                <span>متوقف</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="quality_check">
+                                <span>فحص الجودة</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="completed">
+                                <span>مكتمل</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="status" value="cancelled">
+                                <span>ملغى</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">خط الإنتاج</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" name="line" value="line1" checked>
+                                <span>الخط 1</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="line" value="line2" checked>
+                                <span>الخط 2</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="line" value="line3">
+                                <span>الخط 3</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="line" value="line4">
+                                <span>الخط 4</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">نطاق الكمية</div>
+                        <div class="quantity-range">
+                            <div class="quantity-inputs">
+                                <input type="number" class="quantity-input" id="filterMinQuantity" placeholder="الحد الأدنى" value="0">
+                                <input type="number" class="quantity-input" id="filterMaxQuantity" placeholder="الحد الأقصى" value="10000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">خيارات إضافية</div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterDelayedOnly">
+                                <span>المتأخر فقط</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterHighPriority">
+                                <span>عالية الأولوية</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="filterNeedAttention">
+                                <span>تحتاج انتباه</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-neumorphism" onclick="production.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism" onclick="production.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content small-modal">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>جاري المعالجة...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة الإنتاج المتكامل
+class ProductionManagement {
+    constructor() {
+        this.batches = [];
+        this.products = [];
+        this.materials = [];
+        this.filteredBatches = [];
+        this.currentBatch = null;
+        this.currentView = 'grid';
+        this.visibleBatches = 12;
+        this.currentFilters = {
+            status: ['planned', 'in_progress'],
+            lines: ['line1', 'line2'],
+            minQuantity: 0,
+            maxQuantity: 10000,
+            delayedOnly: false,
+            highPriority: false,
+            needAttention: false
+        };
+        this.sortBy = 'start_date_desc';
+        this.init();
+    }
+
+    init() {
+        this.loadData();
+        this.setupEventListeners();
+        this.renderCategories();
+        this.renderProduction();
+        this.updateStats();
+        this.setupRealTimeUpdates();
+        this.updateTime();
+    }
+
+    loadData() {
+        // تحميل البيانات من localStorage أو API
+        const savedBatches = localStorage.getItem('pharma_production_batches');
+        const savedProducts = localStorage.getItem('pharma_products_management');
+        const savedMaterials = localStorage.getItem('pharma_production_materials');
+
+        if (savedBatches) {
+            this.batches = JSON.parse(savedBatches);
+        } else {
+            this.batches = this.getDefaultBatches();
+        }
+
+        if (savedProducts) {
+            this.products = JSON.parse(savedProducts);
+        } else {
+            // إذا لم توجد بيانات المنتجات، نستخدم بيانات افتراضية
+            this.products = this.getDefaultProducts();
+        }
+
+        if (savedMaterials) {
+            this.materials = JSON.parse(savedMaterials);
+        } else {
+            this.materials = this.getDefaultMaterials();
+        }
+
+        this.filteredBatches = [...this.batches];
+        this.saveData();
+    }
+
+    getDefaultBatches() {
+        return [
+            {
+                id: 1,
+                batchNumber: 'BATCH-2024-001',
+                productId: 1,
+                productName: 'باراسيتامول 500 مجم',
+                quantity: 5000,
+                completed: 3200,
+                priority: 'high',
+                status: 'in_progress',
+                productionLine: 'line1',
+                supervisor: 'ahmed',
+                startDate: '2024-01-15T08:00:00',
+                deadline: '2024-01-20T18:00:00',
+                progress: 64,
+                efficiency: 85,
+                defects: 12,
+                downtime: 2.5,
+                stages: [
+                    { name: 'التحضير', status: 'completed', progress: 100 },
+                    { name: 'الخلط', status: 'completed', progress: 100 },
+                    { name: 'التشكيل', status: 'in_progress', progress: 64 },
+                    { name: 'الطلاء', status: 'pending', progress: 0 },
+                    { name: 'التعبئة', status: 'pending', progress: 0 },
+                    { name: 'مراقبة الجودة', status: 'pending', progress: 0 }
+                ],
+                materials: [
+                    { id: 1, name: 'باراسيتامول خام', required: 2.5, available: 3.0, status: 'available' },
+                    { id: 2, name: 'نشا الذرة', required: 1.2, available: 1.5, status: 'available' },
+                    { id: 3, name: 'ستيرات المغنيسيوم', required: 0.1, available: 0.05, status: 'shortage' }
+                ],
+                qualityChecks: [
+                    { name: 'فحص النقاء', status: 'pending' },
+                    { name: 'فحص الذوبان', status: 'pending' },
+                    { name: 'فحص الثبات', status: 'pending' }
+                ],
+                timeline: [
+                    { event: 'بدء الإنتاج', time: '2024-01-15T08:00:00', status: 'completed' },
+                    { event: 'انتهاء التحضير', time: '2024-01-15T12:30:00', status: 'completed' },
+                    { event: 'بدء الخلط', time: '2024-01-15T13:00:00', status: 'completed' },
+                    { event: 'انتهاء الخلط', time: '2024-01-16T10:00:00', status: 'completed' },
+                    { event: 'بدء التشكيل', time: '2024-01-16T10:30:00', status: 'in_progress' }
+                ]
+            },
+            {
+                id: 2,
+                batchNumber: 'BATCH-2024-002',
+                productId: 2,
+                productName: 'فيتامين سي 1000 مجم',
+                quantity: 3000,
+                completed: 3000,
+                priority: 'medium',
+                status: 'completed',
+                productionLine: 'line2',
+                supervisor: 'sara',
+                startDate: '2024-01-10T08:00:00',
+                deadline: '2024-01-15T18:00:00',
+                progress: 100,
+                efficiency: 92,
+                defects: 8,
+                downtime: 1.2,
+                stages: [
+                    { name: 'التحضير', status: 'completed', progress: 100 },
+                    { name: 'الخلط', status: 'completed', progress: 100 },
+                    { name: 'التشكيل', status: 'completed', progress: 100 },
+                    { name: 'الطلاء', status: 'completed', progress: 100 },
+                    { name: 'التعبئة', status: 'completed', progress: 100 },
+                    { name: 'مراقبة الجودة', status: 'completed', progress: 100 }
+                ],
+                materials: [
+                    { id: 4, name: 'فيتامين سي خام', required: 3.0, available: 3.5, status: 'available' },
+                    { id: 5, name: 'حمض الستريك', required: 1.0, available: 1.2, status: 'available' }
+                ],
+                qualityChecks: [
+                    { name: 'فحص النقاء', status: 'passed' },
+                    { name: 'فحص الذوبان', status: 'passed' },
+                    { name: 'فحص الثبات', status: 'passed' }
+                ],
+                timeline: [
+                    { event: 'بدء الإنتاج', time: '2024-01-10T08:00:00', status: 'completed' },
+                    { event: 'انتهاء التحضير', time: '2024-01-10T14:00:00', status: 'completed' },
+                    { event: 'انتهاء الخلط', time: '2024-01-11T16:00:00', status: 'completed' },
+                    { event: 'انتهاء التشكيل', time: '2024-01-12T12:00:00', status: 'completed' },
+                    { event: 'انتهاء التعبئة', time: '2024-01-13T15:00:00', status: 'completed' },
+                    { event: 'اجتياز فحص الجودة', time: '2024-01-14T11:00:00', status: 'completed' }
+                ]
+            },
+            {
+                id: 3,
+                batchNumber: 'BATCH-2024-003',
+                productId: 3,
+                productName: 'أوميغا 3 كبسولات',
+                quantity: 2000,
+                completed: 0,
+                priority: 'medium',
+                status: 'planned',
+                productionLine: 'line1',
+                supervisor: 'ali',
+                startDate: '2024-01-22T08:00:00',
+                deadline: '2024-01-25T18:00:00',
+                progress: 0,
+                efficiency: 0,
+                defects: 0,
+                downtime: 0,
+                stages: [
+                    { name: 'التحضير', status: 'pending', progress: 0 },
+                    { name: 'الخلط', status: 'pending', progress: 0 },
+                    { name: 'التشكيل', status: 'pending', progress: 0 },
+                    { name: 'الطلاء', status: 'pending', progress: 0 },
+                    { name: 'التعبئة', status: 'pending', progress: 0 },
+                    { name: 'مراقبة الجودة', status: 'pending', progress: 0 }
+                ],
+                materials: [
+                    { id: 6, name: 'زيت السمك', required: 2.0, available: 1.5, status: 'shortage' },
+                    { id: 7, name: 'جيلاتين', required: 1.5, available: 2.0, status: 'available' }
+                ],
+                qualityChecks: [
+                    { name: 'فحص النقاء', status: 'pending' },
+                    { name: 'فحص الذوبان', status: 'pending' },
+                    { name: 'فحص الثبات', status: 'pending' }
+                ],
+                timeline: []
+            },
+            {
+                id: 4,
+                batchNumber: 'BATCH-2024-004',
+                productId: 4,
+                productName: 'كريم هيدروكورتيزون 1%',
+                quantity: 1500,
+                completed: 1200,
+                priority: 'urgent',
+                status: 'quality_check',
+                productionLine: 'line3',
+                supervisor: 'fatima',
+                startDate: '2024-01-12T08:00:00',
+                deadline: '2024-01-18T18:00:00',
+                progress: 80,
+                efficiency: 78,
+                defects: 25,
+                downtime: 4.8,
+                stages: [
+                    { name: 'التحضير', status: 'completed', progress: 100 },
+                    { name: 'الخلط', status: 'completed', progress: 100 },
+                    { name: 'التشكيل', status: 'completed', progress: 100 },
+                    { name: 'الطلاء', status: 'completed', progress: 100 },
+                    { name: 'التعبئة', status: 'completed', progress: 100 },
+                    { name: 'مراقبة الجودة', status: 'in_progress', progress: 80 }
+                ],
+                materials: [
+                    { id: 8, name: 'هيدروكورتيزون', required: 0.15, available: 0.2, status: 'available' },
+                    { id: 9, name: 'قاعدة كريم', required: 45.0, available: 50.0, status: 'available' }
+                ],
+                qualityChecks: [
+                    { name: 'فحص النقاء', status: 'passed' },
+                    { name: 'فحص الذوبان', status: 'failed' },
+                    { name: 'فحص الثبات', status: 'pending' }
+                ],
+                timeline: [
+                    { event: 'بدء الإنتاج', time: '2024-01-12T08:00:00', status: 'completed' },
+                    { event: 'انتهاء التحضير', time: '2024-01-12T16:00:00', status: 'completed' },
+                    { event: 'انتهاء الخلط', time: '2024-01-13T14:00:00', status: 'completed' },
+                    { event: 'انتهاء التشكيل', time: '2024-01-14T11:00:00', status: 'completed' },
+                    { event: 'انتهاء التعبئة', time: '2024-01-15T17:00:00', status: 'completed' },
+                    { event: 'بدء فحص الجودة', time: '2024-01-16T09:00:00', status: 'in_progress' }
+                ]
+            },
+            {
+                id: 5,
+                batchNumber: 'BATCH-2024-005',
+                productId: 5,
+                productName: 'أموكسيسيلين 500 مجم',
+                quantity: 4000,
+                completed: 2500,
+                priority: 'high',
+                status: 'paused',
+                productionLine: 'line2',
+                supervisor: 'ahmed',
+                startDate: '2024-01-08T08:00:00',
+                deadline: '2024-01-15T18:00:00',
+                progress: 62.5,
+                efficiency: 88,
+                defects: 15,
+                downtime: 6.2,
+                stages: [
+                    { name: 'التحضير', status: 'completed', progress: 100 },
+                    { name: 'الخلط', status: 'completed', progress: 100 },
+                    { name: 'التشكيل', status: 'in_progress', progress: 62.5 },
+                    { name: 'الطلاء', status: 'pending', progress: 0 },
+                    { name: 'التعبئة', status: 'pending', progress: 0 },
+                    { name: 'مراقبة الجودة', status: 'pending', progress: 0 }
+                ],
+                materials: [
+                    { id: 10, name: 'أموكسيسيلين', required: 2.0, available: 1.2, status: 'shortage' },
+                    { id: 11, name: 'نشا الذرة', required: 1.0, available: 1.5, status: 'available' }
+                ],
+                qualityChecks: [
+                    { name: 'فحص النقاء', status: 'pending' },
+                    { name: 'فحص الذوبان', status: 'pending' },
+                    { name: 'فحص الثبات', status: 'pending' }
+                ],
+                timeline: [
+                    { event: 'بدء الإنتاج', time: '2024-01-08T08:00:00', status: 'completed' },
+                    { event: 'انتهاء التحضير', time: '2024-01-08T15:00:00', status: 'completed' },
+                    { event: 'انتهاء الخلط', time: '2024-01-09T17:00:00', status: 'completed' },
+                    { event: 'بدء التشكيل', time: '2024-01-10T08:00:00', status: 'completed' },
+                    { event: 'توقف الإنتاج', time: '2024-01-11T14:00:00', status: 'completed' }
+                ]
+            }
+        ];
+    }
+
+    getDefaultProducts() {
+        return [
+            {
+                id: 1,
+                name: 'باراسيتامول 500 مجم',
+                code: 'PARA-500',
+                category: 'مسكنات',
+                icon: 'fa-pills'
+            },
+            {
+                id: 2,
+                name: 'فيتامين سي 1000 مجم',
+                code: 'VITC-1000',
+                category: 'فيتامينات',
+                icon: 'fa-apple-alt'
+            },
+            {
+                id: 3,
+                name: 'أوميغا 3 كبسولات',
+                code: 'OMEGA-1000',
+                category: 'مكملات غذائية',
+                icon: 'fa-capsules'
+            },
+            {
+                id: 4,
+                name: 'كريم هيدروكورتيزون 1%',
+                code: 'HYDRO-1',
+                category: 'جلدية',
+                icon: 'fa-allergies'
+            },
+            {
+                id: 5,
+                name: 'أموكسيسيلين 500 مجم',
+                code: 'AMOX-500',
+                category: 'مضادات حيوية',
+                icon: 'fa-prescription-bottle'
+            }
+        ];
+    }
+
+    getDefaultMaterials() {
+        return [
+            { id: 1, name: 'باراسيتامول خام', category: 'مواد فعالة', unit: 'كجم', stock: 15.5 },
+            { id: 2, name: 'نشا الذرة', category: 'مواد مالئة', unit: 'كجم', stock: 45.2 },
+            { id: 3, name: 'ستيرات المغنيسيوم', category: 'مواد مساعدة', unit: 'كجم', stock: 3.8 },
+            { id: 4, name: 'فيتامين سي خام', category: 'مواد فعالة', unit: 'كجم', stock: 12.7 },
+            { id: 5, name: 'حمض الستريك', category: 'مواد مساعدة', unit: 'كجم', stock: 8.3 },
+            { id: 6, name: 'زيت السمك', category: 'مواد فعالة', unit: 'لتر', stock: 25.4 },
+            { id: 7, name: 'جيلاتين', category: 'مواد مساعدة', unit: 'كجم', stock: 18.9 },
+            { id: 8, name: 'هيدروكورتيزون', category: 'مواد فعالة', unit: 'كجم', stock: 1.2 },
+            { id: 9, name: 'قاعدة كريم', category: 'قواعد', unit: 'كجم', stock: 89.6 },
+            { id: 10, name: 'أموكسيسيلين', category: 'مواد فعالة', unit: 'كجم', stock: 8.7 },
+            { id: 11, name: 'نشا الذرة', category: 'مواد مالئة', unit: 'كجم', stock: 45.2 }
+        ];
+    }
+
+    saveData() {
+        localStorage.setItem('pharma_production_batches', JSON.stringify(this.batches));
+        localStorage.setItem('pharma_production_materials', JSON.stringify(this.materials));
+    }
+
+    setupEventListeners() {
+        // زر البحث
+        const searchToggleBtn = document.getElementById('searchToggleBtn');
+        if (searchToggleBtn) {
+            searchToggleBtn.addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // زر الفلترة
+        const filterBtn = document.getElementById('filterBtn');
+        if (filterBtn) {
+            filterBtn.addEventListener('click', () => {
+                this.showFilter();
+            });
+        }
+
+        // زر الإضافة
+        const addProductionBtn = document.getElementById('addProductionBtn');
+        if (addProductionBtn) {
+            addProductionBtn.addEventListener('click', () => {
+                this.showAddProductionModal();
+            });
+        }
+
+        // البحث في الوقت الحقيقي
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchProduction(e.target.value);
+            });
+        }
+
+        // نموذج الإنتاج
+        const productionForm = document.getElementById('productionForm');
+        if (productionForm) {
+            productionForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveProductionBatch();
+            });
+        }
+
+        // تبويبات التفاصيل
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchTab(e.target.dataset.tab);
+            });
+        });
+
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ المنبثقة
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    toggleSearch() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar.style.display === 'none') {
+            searchBar.style.display = 'flex';
+            document.getElementById('searchInput').focus();
+        } else {
+            searchBar.style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            this.searchProduction('');
+        }
+    }
+
+    searchProduction(query) {
+        if (query.trim() === '') {
+            this.filteredBatches = [...this.batches];
+        } else {
+            const searchTerm = query.toLowerCase();
+            this.filteredBatches = this.batches.filter(batch => 
+                batch.productName.toLowerCase().includes(searchTerm) ||
+                batch.batchNumber.toLowerCase().includes(searchTerm) ||
+                batch.status.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        this.applySorting();
+        this.renderProduction();
+        this.updateStats();
+    }
+
+    renderCategories() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        if (!categoriesScroll) return;
+
+        let categoriesHTML = `
+            <div class="category-chip active liquid-transition" data-category="all">
+                <i class="fas fa-th-large"></i>
+                الكل
+            </div>
+        `;
+
+        const categories = [...new Set(this.products.map(p => p.category))];
+        categories.forEach(category => {
+            const batchCount = this.batches.filter(b => {
+                const product = this.products.find(p => p.id === b.productId);
+                return product && product.category === category;
+            }).length;
+            
+            categoriesHTML += `
+                <div class="category-chip liquid-transition" data-category="${category}">
+                    <i class="fas ${this.getCategoryIcon(category)}"></i>
+                    ${category} (${batchCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = categoriesHTML;
+
+        // إضافة مستمعي الأحداث للتصنيفات
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const category = chip.dataset.category;
+                this.filterByCategory(category);
+            });
+        });
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            'مسكنات': 'fa-pills',
+            'فيتامينات': 'fa-apple-alt',
+            'مكملات غذائية': 'fa-capsules',
+            'جلدية': 'fa-allergies',
+            'مضادات حيوية': 'fa-prescription-bottle',
+            'عيون': 'fa-eye',
+            'أطفال': 'fa-baby',
+            'قلب وأوعية دموية': 'fa-heartbeat'
+        };
+        return icons[category] || 'fa-pills';
+    }
+
+    filterByCategory(category) {
+        if (category === 'all') {
+            this.filteredBatches = [...this.batches];
+        } else {
+            this.filteredBatches = this.batches.filter(batch => {
+                const product = this.products.find(p => p.id === batch.productId);
+                return product && product.category === category;
+            });
+        }
+        
+        this.applySorting();
+        this.renderProduction();
+        this.updateStats();
+    }
+
+    filterByStatus(status) {
+        // تحديث الإحصائيات النشطة
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        event.target.closest('.stat-item').classList.add('active');
+
+        this.applyFilters();
+    }
+
+    applyFilters() {
+        this.filteredBatches = this.batches.filter(batch => {
+            // فلترة الحالة
+            const statusMatch = this.currentFilters.status.includes(batch.status);
+
+            // فلترة خط الإنتاج
+            const lineMatch = this.currentFilters.lines.includes(batch.productionLine);
+
+            // فلترة الكمية
+            const quantityMatch = batch.quantity >= this.currentFilters.minQuantity && 
+                                batch.quantity <= this.currentFilters.maxQuantity;
+
+            // فلترة المتأخر فقط
+            const delayedMatch = !this.currentFilters.delayedOnly || this.isBatchDelayed(batch);
+
+            // فلترة عالية الأولوية
+            const priorityMatch = !this.currentFilters.highPriority || batch.priority === 'high' || batch.priority === 'urgent';
+
+            // فلترة تحتاج انتباه
+            const attentionMatch = !this.currentFilters.needAttention || this.needsAttention(batch);
+
+            return statusMatch && lineMatch && quantityMatch && delayedMatch && priorityMatch && attentionMatch;
+        });
+
+        this.applySorting();
+        this.renderProduction();
+        this.updateStats();
+    }
+
+    isBatchDelayed(batch) {
+        const now = new Date();
+        const deadline = new Date(batch.deadline);
+        return now > deadline && batch.status !== 'completed' && batch.status !== 'cancelled';
+    }
+
+    needsAttention(batch) {
+        return this.isBatchDelayed(batch) || 
+               batch.defects > 20 || 
+               batch.downtime > 5 ||
+               batch.materials.some(m => m.status === 'shortage');
+    }
+
+    applySorting() {
+        switch (this.sortBy) {
+            case 'start_date_desc':
+                this.filteredBatches.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+                break;
+            case 'start_date_asc':
+                this.filteredBatches.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                break;
+            case 'priority_desc':
+                const priorityOrder = { 'urgent': 4, 'high': 3, 'medium': 2, 'low': 1 };
+                this.filteredBatches.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]);
+                break;
+            case 'deadline_asc':
+                this.filteredBatches.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+                break;
+            case 'product_name':
+                this.filteredBatches.sort((a, b) => a.productName.localeCompare(b.productName));
+                break;
+        }
+    }
+
+    sortProduction() {
+        const sortSelect = document.getElementById('sortSelect');
+        this.sortBy = sortSelect.value;
+        this.applySorting();
+        this.renderProduction();
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-option').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === view) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تبديل العرض
+        const gridView = document.getElementById('productionGrid');
+        const listView = document.getElementById('productionList');
+        const timelineView = document.getElementById('productionTimeline');
+        
+        gridView.style.display = 'none';
+        listView.style.display = 'none';
+        timelineView.style.display = 'none';
+        
+        if (view === 'grid') {
+            gridView.style.display = 'grid';
+        } else if (view === 'list') {
+            listView.style.display = 'flex';
+        } else if (view === 'timeline') {
+            timelineView.style.display = 'flex';
+        }
+    }
+
+    renderProduction() {
+        this.renderProductionGrid();
+        this.renderProductionList();
+        this.renderProductionTimeline();
+        this.updateLoadMoreButton();
+    }
+
+    renderProductionGrid() {
+        const productionGrid = document.getElementById('productionGrid');
+        if (!productionGrid) return;
+
+        const batchesToShow = this.filteredBatches.slice(0, this.visibleBatches);
+        
+        let gridHTML = '';
+        batchesToShow.forEach(batch => {
+            const product = this.products.find(p => p.id === batch.productId);
+            const icon = product ? product.icon : 'fa-industry';
+            const isDelayed = this.isBatchDelayed(batch);
+            
+            gridHTML += `
+                <div class="production-card-grid liquid-transition" onclick="production.showProductionDetails(${batch.id})">
+                    <div class="production-image">
+                        <i class="fas ${icon}"></i>
+                        <div class="production-badge ${batch.status}">${this.getStatusText(batch.status)}</div>
+                        ${isDelayed ? `<div class="production-badge" style="background: var(--danger); top: 45px;">متأخر</div>` : ''}
+                        ${batch.priority === 'urgent' || batch.priority === 'high' ? `<div class="production-badge" style="background: var(--warning); top: ${isDelayed ? '80px' : '45px'};">${batch.priority === 'urgent' ? 'عاجل' : 'مهم'}</div>` : ''}
+                    </div>
+                    <div class="production-content">
+                        <div class="production-name">${batch.productName}</div>
+                        <div class="production-meta">
+                            <div>${batch.batchNumber}</div>
+                            <div>الخط ${batch.productionLine.replace('line', '')}</div>
+                        </div>
+                        <div class="production-progress">
+                            <span class="current-progress">${batch.progress}%</span>
+                            <div class="progress-indicator ${batch.progress > 80 ? 'high' : batch.progress > 50 ? 'medium' : 'low'}"></div>
+                        </div>
+                        <div class="production-meta">
+                            <div>${batch.completed}/${batch.quantity} وحدة</div>
+                            <div>${this.getTimeRemaining(batch.deadline)}</div>
+                        </div>
+                        <div class="production-actions-grid">
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); production.updateProgress(${batch.id})">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); production.editProduction(${batch.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-neumorphism" onclick="event.stopPropagation(); production.showProductionDetails(${batch.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        productionGrid.innerHTML = gridHTML;
+    }
+
+    renderProductionList() {
+        const productionList = document.getElementById('productionList');
+        if (!productionList) return;
+
+        const batchesToShow = this.filteredBatches.slice(0, this.visibleBatches);
+        
+        let listHTML = '';
+        batchesToShow.forEach(batch => {
+            const product = this.products.find(p => p.id === batch.productId);
+            const icon = product ? product.icon : 'fa-industry';
+            
+            listHTML += `
+                <div class="production-card-list liquid-transition" onclick="production.showProductionDetails(${batch.id})">
+                    <div class="production-image-list">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="production-details-list">
+                        <div class="production-name-list">${batch.productName}</div>
+                        <div class="production-meta-list">
+                            <span>${batch.batchNumber}</span> • 
+                            <span>الخط ${batch.productionLine.replace('line', '')}</span>
+                        </div>
+                        <div class="production-progress-list">${batch.progress}% مكتمل</div>
+                        <div class="production-status-list">
+                            <span class="progress-indicator ${batch.progress > 80 ? 'high' : batch.progress > 50 ? 'medium' : 'low'}"></span>
+                            ${this.getStatusText(batch.status)} • ${batch.completed}/${batch.quantity} وحدة
+                        </div>
+                    </div>
+                    <div class="production-actions-list">
+                        <button class="btn-neumorphism" onclick="event.stopPropagation(); production.updateProgress(${batch.id})">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        productionList.innerHTML = listHTML;
+    }
+
+    renderProductionTimeline() {
+        const productionTimeline = document.getElementById('productionTimeline');
+        if (!productionTimeline) return;
+
+        const batchesToShow = this.filteredBatches.slice(0, this.visibleBatches);
+        
+        let timelineHTML = '';
+        batchesToShow.forEach(batch => {
+            const product = this.products.find(p => p.id === batch.productId);
+            const icon = product ? product.icon : 'fa-industry';
+            const nextEvent = batch.timeline.find(event => event.status === 'in_progress') || 
+                            batch.timeline[batch.timeline.length - 1] || 
+                            { event: 'بدء الإنتاج قريباً', time: batch.startDate };
+            
+            timelineHTML += `
+                <div class="timeline-item liquid-transition" onclick="production.showProductionDetails(${batch.id})">
+                    <div class="timeline-icon">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <div class="timeline-title">${batch.productName}</div>
+                            <div class="timeline-time">${this.formatDate(nextEvent.time)}</div>
+                        </div>
+                        <div class="timeline-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${batch.progress}%"></div>
+                            </div>
+                            <span>${batch.progress}%</span>
+                        </div>
+                        <div class="timeline-meta">
+                            ${nextEvent.event} • ${batch.batchNumber}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        productionTimeline.innerHTML = timelineHTML;
+    }
+
+    getStatusText(status) {
+        const statuses = {
+            'planned': 'مخطط',
+            'in_progress': 'قيد الإنتاج',
+            'paused': 'متوقف',
+            'quality_check': 'فحص الجودة',
+            'completed': 'مكتمل',
+            'cancelled': 'ملغى'
+        };
+        return statuses[status] || status;
+    }
+
+    getTimeRemaining(deadline) {
+        const now = new Date();
+        const end = new Date(deadline);
+        const diff = end - now;
+        
+        if (diff <= 0) return 'منتهي';
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        if (days > 0) return `${days} يوم`;
+        if (hours > 0) return `${hours} ساعة`;
+        return 'أقل من ساعة';
+    }
+
+    updateStats() {
+        const totalBatches = this.batches.length;
+        const inProgressBatches = this.batches.filter(b => b.status === 'in_progress').length;
+        const completedBatches = this.batches.filter(b => b.status === 'completed').length;
+        const qualityBatches = this.batches.filter(b => b.status === 'quality_check').length;
+
+        document.getElementById('totalBatches').textContent = totalBatches;
+        document.getElementById('inProgressBatches').textContent = inProgressBatches;
+        document.getElementById('completedBatches').textContent = completedBatches;
+        document.getElementById('qualityBatches').textContent = qualityBatches;
+
+        // تحديث إحصائيات التحليل
+        this.updateAnalyticsStats();
+    }
+
+    updateAnalyticsStats() {
+        const totalEfficiency = this.batches.reduce((sum, batch) => sum + batch.efficiency, 0) / this.batches.length;
+        const totalProductionTime = this.batches.filter(b => b.status === 'completed').reduce((sum, batch) => {
+            const start = new Date(batch.startDate);
+            const end = new Date(batch.timeline[batch.timeline.length - 1]?.time || batch.deadline);
+            return sum + (end - start) / (1000 * 60 * 60 * 24);
+        }, 0);
+        const avgProductionTime = this.batches.filter(b => b.status === 'completed').length > 0 ? 
+            (totalProductionTime / this.batches.filter(b => b.status === 'completed').length).toFixed(1) : 0;
+        const qualityRate = this.batches.filter(b => b.status === 'completed').length > 0 ?
+            (this.batches.filter(b => b.status === 'completed' && b.defects < 10).length / this.batches.filter(b => b.status === 'completed').length * 100).toFixed(0) : 0;
+        const delayedBatches = this.batches.filter(b => this.isBatchDelayed(b)).length;
+
+        document.getElementById('productionEfficiency').textContent = `${totalEfficiency.toFixed(0)}%`;
+        document.getElementById('avgProductionTime').textContent = `${avgProductionTime} يوم`;
+        document.getElementById('qualityRate').textContent = `${qualityRate}%`;
+        document.getElementById('delayedBatches').textContent = delayedBatches;
+    }
+
+    updateLoadMoreButton() {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if (this.visibleBatches >= this.filteredBatches.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    loadMore() {
+        this.visibleBatches += 8;
+        this.renderProduction();
+    }
+
+    showAddProductionModal() {
+        document.getElementById('productionFormTitle').textContent = 'دفعة إنتاج جديدة';
+        document.getElementById('productionForm').reset();
+        
+        // تعبئة خيارات المنتجات
+        this.populateProductOptions();
+        
+        // إضافة صف مواد افتراضي
+        this.addMaterialRow();
+        
+        // إظهار النافذة
+        document.getElementById('productionFormModal').style.display = 'block';
+    }
+
+    populateProductOptions() {
+        const productSelect = document.getElementById('productionProduct');
+        productSelect.innerHTML = '<option value="">اختر المنتج</option>';
+        
+        this.products.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = `${product.name} (${product.code})`;
+            productSelect.appendChild(option);
+        });
+    }
+
+    addMaterialRow() {
+        const materialsList = document.getElementById('materialsList');
+        const materialRow = document.createElement('div');
+        materialRow.className = 'material-row';
+        materialRow.innerHTML = `
+            <div class="form-group">
+                <select class="material-select">
+                    <option value="">اختر المادة</option>
+                    ${this.materials.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" class="material-quantity" placeholder="الكمية" step="0.1">
+            </div>
+            <div class="form-group">
+                <input type="text" class="material-unit" placeholder="الوحدة" readonly>
+            </div>
+            <div class="material-actions">
+                <button type="button" class="btn-neumorphism btn-danger-neumorphism" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        materialsList.appendChild(materialRow);
+        
+        // إضافة مستمع حدث لتحديث الوحدة تلقائياً
+        const materialSelect = materialRow.querySelector('.material-select');
+        const materialUnit = materialRow.querySelector('.material-unit');
+        
+        materialSelect.addEventListener('change', () => {
+            const materialId = materialSelect.value;
+            const material = this.materials.find(m => m.id == materialId);
+            if (material) {
+                materialUnit.value = material.unit;
+            } else {
+                materialUnit.value = '';
+            }
+        });
+    }
+
+    closeProductionForm() {
+        document.getElementById('productionFormModal').style.display = 'none';
+    }
+
+    saveProductionBatch() {
+        const formData = new FormData(document.getElementById('productionForm'));
+        const batchData = Object.fromEntries(formData);
+        
+        // تحويل القيم الرقمية
+        batchData.productId = parseInt(batchData.product);
+        batchData.quantity = parseInt(batchData.quantity);
+        batchData.priority = batchData.priority;
+        
+        // جمع المواد
+        const materials = [];
+        document.querySelectorAll('.material-row').forEach(row => {
+            const materialSelect = row.querySelector('.material-select');
+            const materialQuantity = row.querySelector('.material-quantity');
+            
+            if (materialSelect.value && materialQuantity.value) {
+                const material = this.materials.find(m => m.id == materialSelect.value);
+                if (material) {
+                    materials.push({
+                        id: material.id,
+                        name: material.name,
+                        required: parseFloat(materialQuantity.value),
+                        available: material.stock,
+                        status: material.stock >= parseFloat(materialQuantity.value) ? 'available' : 'shortage'
+                    });
+                }
+            }
+        });
+
+        // إنشاء دفعة إنتاج جديدة
+        const newBatch = {
+            id: Math.max(...this.batches.map(b => b.id)) + 1,
+            batchNumber: batchData.batch || `BATCH-${new Date().getFullYear()}-${String(this.batches.length + 1).padStart(3, '0')}`,
+            productId: batchData.productId,
+            productName: this.products.find(p => p.id === batchData.productId)?.name || 'منتج غير معروف',
+            quantity: batchData.quantity,
+            completed: 0,
+            priority: batchData.priority,
+            status: 'planned',
+            productionLine: batchData.production_line,
+            supervisor: batchData.supervisor,
+            startDate: batchData.start_date,
+            deadline: batchData.deadline,
+            progress: 0,
+            efficiency: 0,
+            defects: 0,
+            downtime: 0,
+            stages: [
+                { name: 'التحضير', status: 'pending', progress: 0 },
+                { name: 'الخلط', status: 'pending', progress: 0 },
+                { name: 'التشكيل', status: 'pending', progress: 0 },
+                { name: 'الطلاء', status: 'pending', progress: 0 },
+                { name: 'التعبئة', status: 'pending', progress: 0 },
+                { name: 'مراقبة الجودة', status: 'pending', progress: 0 }
+            ],
+            materials: materials,
+            qualityChecks: [
+                { name: 'فحص النقاء', status: 'pending' },
+                { name: 'فحص الذوبان', status: 'pending' },
+                { name: 'فحص الثبات', status: 'pending' }
+            ],
+            timeline: []
+        };
+
+        this.batches.unshift(newBatch);
+        this.saveData();
+        this.filteredBatches = [...this.batches];
+        this.applySorting();
+        this.renderProduction();
+        this.updateStats();
+        this.closeProductionForm();
+        
+        this.showToast('تم إنشاء دفعة الإنتاج بنجاح');
+    }
+
+    showProductionDetails(batchId) {
+        const batch = this.batches.find(b => b.id === batchId);
+        if (!batch) return;
+
+        this.currentBatch = batch;
+        
+        // تعبئة البيانات الأساسية
+        const product = this.products.find(p => p.id === batch.productId);
+        document.getElementById('detailProductionName').textContent = batch.productName;
+        document.getElementById('detailProductionBatch').textContent = batch.batchNumber;
+        document.getElementById('detailProductionLine').textContent = `الخط ${batch.productionLine.replace('line', '')}`;
+        document.getElementById('detailProductionSupervisor').textContent = this.getSupervisorName(batch.supervisor);
+        document.getElementById('detailProductionIcon').className = `fas ${product ? product.icon : 'fa-industry'}`;
+        
+        // تحديث الحالة والأولوية
+        const statusBadge = document.getElementById('detailProductionStatus');
+        statusBadge.textContent = this.getStatusText(batch.status);
+        statusBadge.className = `status-badge ${batch.status}`;
+        
+        const priorityBadge = document.getElementById('detailProductionPriority');
+        priorityBadge.textContent = this.getPriorityText(batch.priority);
+        priorityBadge.className = `priority-badge ${batch.priority}`;
+        
+        // تحديث الإحصائيات
+        document.getElementById('detailProductionQuantity').textContent = `${batch.quantity} وحدة`;
+        document.getElementById('detailProductionCompleted').textContent = `${batch.completed} وحدة`;
+        document.getElementById('detailProductionTime').textContent = this.getProductionTime(batch);
+        document.getElementById('detailProductionDeadline').textContent = this.getTimeRemaining(batch.deadline);
+        
+        // تعبئة معلومات الجدولة
+        this.populateProductionSpecs(batch);
+        
+        // تعبئة تبويب التقدم
+        this.populateProgressTab(batch);
+        
+        // تعبئة تبويب المواد
+        this.populateMaterialsTab(batch);
+        
+        // تعبئة تبويب الجودة
+        this.populateQualityTab(batch);
+        
+        // إظهار النافذة
+        document.getElementById('productionDetailsModal').style.display = 'block';
+    }
+
+    getSupervisorName(supervisorId) {
+        const supervisors = {
+            'ahmed': 'أحمد محمد',
+            'sara': 'سارة أحمد',
+            'ali': 'علي حسن',
+            'fatima': 'فاطمة علي'
+        };
+        return supervisors[supervisorId] || supervisorId;
+    }
+
+    getPriorityText(priority) {
+        const priorities = {
+            'low': 'منخفضة',
+            'medium': 'متوسطة',
+            'high': 'عالية',
+            'urgent': 'عاجلة'
+        };
+        return priorities[priority] || priority;
+    }
+
+    getProductionTime(batch) {
+        if (batch.timeline.length === 0) return 'لم يبدأ';
+        
+        const start = new Date(batch.startDate);
+        const lastEvent = batch.timeline[batch.timeline.length - 1];
+        const end = new Date(lastEvent.time);
+        const diff = end - start;
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        if (days > 0) return `${days} يوم ${hours} ساعة`;
+        return `${hours} ساعة`;
+    }
+
+    populateProductionSpecs(batch) {
+        const productionSpecs = document.getElementById('productionSpecs');
+        const specs = [
+            { name: 'تاريخ البدء', value: this.formatDate(batch.startDate) },
+            { name: 'الموعد النهائي', value: this.formatDate(batch.deadline) },
+            { name: 'الكفاءة', value: `${batch.efficiency}%` },
+            { name: 'العيوب', value: batch.defects },
+            { name: 'وقت التوقف', value: `${batch.downtime} ساعة` },
+            { name: 'المشرف', value: this.getSupervisorName(batch.supervisor) }
+        ];
+        
+        let specsHTML = '';
+        specs.forEach(spec => {
+            specsHTML += `
+                <div class="technical-spec">
+                    <div class="spec-name">${spec.name}</div>
+                    <div class="spec-value">${spec.value}</div>
+                </div>
+            `;
+        });
+        
+        productionSpecs.innerHTML = specsHTML;
+    }
+
+    populateProgressTab(batch) {
+        // تحديث إحصائيات التقدم
+        document.getElementById('progressPercentage').textContent = `${batch.progress}%`;
+        document.getElementById('progressEfficiency').textContent = `${batch.efficiency}%`;
+        document.getElementById('progressDefects').textContent = batch.defects;
+        document.getElementById('progressDowntime').textContent = batch.downtime;
+        
+        // تعبئة الخط الزمني
+        this.populateTimeline(batch);
+        
+        // تعبئة مراحل الإنتاج
+        this.populateStages(batch);
+    }
+
+    populateTimeline(batch) {
+        const timeline = document.getElementById('productionTimelineDetails');
+        let timelineHTML = '';
+        
+        batch.timeline.forEach(event => {
+            timelineHTML += `
+                <div class="timeline-event ${event.status}">
+                    <div class="timeline-event-icon">
+                        <i class="fas fa-${event.status === 'completed' ? 'check' : event.status === 'in_progress' ? 'sync' : 'clock'}"></i>
+                    </div>
+                    <div class="timeline-event-content">
+                        <div class="timeline-event-title">${event.event}</div>
+                        <div class="timeline-event-time">${this.formatDateTime(event.time)}</div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        timeline.innerHTML = timelineHTML || '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد أحداث</div>';
+    }
+
+    populateStages(batch) {
+        const stagesContainer = document.getElementById('productionStages');
+        let stagesHTML = '';
+        
+        batch.stages.forEach(stage => {
+            stagesHTML += `
+                <div class="production-stage-detailed ${stage.status}">
+                    <div class="stage-header">
+                        <div class="stage-name">${stage.name}</div>
+                        <div class="stage-status">${this.getStageStatusText(stage.status)}</div>
+                    </div>
+                    <div class="stage-progress-detailed">
+                        <div class="progress-info">
+                            <span>التقدم</span>
+                            <span>${stage.progress}%</span>
+                        </div>
+                        <div class="progress-bar-detailed">
+                            <div class="progress-fill-detailed" style="width: ${stage.progress}%"></div>
+                        </div>
+                    </div>
+                    <div class="stage-actions">
+                        <button class="btn-neumorphism" onclick="production.updateStageProgress('${stage.name}', ${batch.id})">
+                            <i class="fas fa-edit"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        stagesContainer.innerHTML = stagesHTML;
+    }
+
+    getStageStatusText(status) {
+        const statuses = {
+            'pending': 'بانتظار',
+            'in_progress': 'قيد التنفيذ',
+            'completed': 'مكتمل'
+        };
+        return statuses[status] || status;
+    }
+
+    populateMaterialsTab(batch) {
+        // تحديث إحصائيات المواد
+        const totalMaterials = batch.materials.length;
+        const availableMaterials = batch.materials.filter(m => m.status === 'available').length;
+        const shortageMaterials = batch.materials.filter(m => m.status === 'shortage').length;
+        const orderedMaterials = batch.materials.filter(m => m.status === 'ordered').length;
+        
+        document.getElementById('materialsTotal').textContent = totalMaterials;
+        document.getElementById('materialsAvailable').textContent = availableMaterials;
+        document.getElementById('materialsShortage').textContent = shortageMaterials;
+        document.getElementById('materialsOrdered').textContent = orderedMaterials;
+        
+        // تعبئة جدول المواد
+        this.populateMaterialsTable(batch);
+    }
+
+    populateMaterialsTable(batch) {
+        const tableBody = document.getElementById('materialsTableBody');
+        let tableHTML = '';
+        
+        batch.materials.forEach(material => {
+            tableHTML += `
+                <div class="table-row">
+                    <div>${material.name}</div>
+                    <div>${material.required}</div>
+                    <div>${material.available}</div>
+                    <div class="material-status ${material.status}">${this.getMaterialStatusText(material.status)}</div>
+                    <div>
+                        ${material.status === 'shortage' ? 
+                            `<button class="btn-neumorphism btn-primary-neumorphism" onclick="production.orderMaterial(${material.id})">
+                                طلب
+                            </button>` : 
+                            `<button class="btn-neumorphism" disabled>
+                                متوفر
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        });
+        
+        tableBody.innerHTML = tableHTML || '<div style="text-align: center; padding: 20px; color: var(--text-secondary);">لا توجد مواد</div>';
+    }
+
+    getMaterialStatusText(status) {
+        const statuses = {
+            'available': 'متوفر',
+            'shortage': 'نقص',
+            'ordered': 'قيد الطلب'
+        };
+        return statuses[status] || status;
+    }
+
+    populateQualityTab(batch) {
+        // تحديث إحصائيات الجودة
+        const totalChecks = batch.qualityChecks.length;
+        const passedChecks = batch.qualityChecks.filter(c => c.status === 'passed').length;
+        const failedChecks = batch.qualityChecks.filter(c => c.status === 'failed').length;
+        const pendingChecks = batch.qualityChecks.filter(c => c.status === 'pending').length;
+        const qualityScore = totalChecks > 0 ? Math.round((passedChecks / totalChecks) * 100) : 0;
+        
+        document.getElementById('qualityScore').textContent = `${qualityScore}%`;
+        document.getElementById('qualityPassed').textContent = passedChecks;
+        document.getElementById('qualityFailed').textContent = failedChecks;
+        document.getElementById('qualityPending').textContent = pendingChecks;
+        
+        // تعبئة فحوصات الجودة
+        this.populateQualityChecks(batch);
+    }
+
+    populateQualityChecks(batch) {
+        const checksList = document.getElementById('qualityChecksList');
+        let checksHTML = '';
+        
+        batch.qualityChecks.forEach(check => {
+            checksHTML += `
+                <div class="quality-check ${check.status}">
+                    <div class="check-header">
+                        <div class="check-name">${check.name}</div>
+                        <div class="check-status">${this.getQualityStatusText(check.status)}</div>
+                    </div>
+                    <div class="check-details">
+                        ${this.getQualityCheckDetails(check)}
+                    </div>
+                    <div class="check-actions">
+                        ${check.status === 'pending' ? 
+                            `<button class="btn-neumorphism btn-primary-neumorphism" onclick="production.performQualityCheck('${check.name}', ${batch.id})">
+                                بدء الفحص
+                            </button>` :
+                            check.status === 'failed' ?
+                            `<button class="btn-neumorphism btn-primary-neumorphism" onclick="production.retryQualityCheck('${check.name}', ${batch.id})">
+                                إعادة الفحص
+                            </button>` :
+                            `<button class="btn-neumorphism" disabled>
+                                مكتمل
+                            </button>`
+                        }
+                    </div>
+                </div>
+            `;
+        });
+        
+        checksList.innerHTML = checksHTML;
+    }
+
+    getQualityStatusText(status) {
+        const statuses = {
+            'pending': 'بانتظار',
+            'passed': 'نجح',
+            'failed': 'فشل'
+        };
+        return statuses[status] || status;
+    }
+
+    getQualityCheckDetails(check) {
+        switch (check.status) {
+            case 'pending':
+                return 'بانتظار بدء فحص الجودة';
+            case 'passed':
+                return 'اجتاز الفحص بنجاح وتتوافق مع المواصفات';
+            case 'failed':
+                return 'لم يجتز الفحص، يحتاج إلى إعادة فحص';
+            default:
+                return 'غير معروف';
+        }
+    }
+
+    closeProductionDetails() {
+        document.getElementById('productionDetailsModal').style.display = 'none';
+    }
+
+    updateProgress(batchId = null) {
+        const batch = batchId ? this.batches.find(b => b.id === batchId) : this.currentBatch;
+        if (!batch) return;
+
+        // في التطبيق الحقيقي، هنا سيتم فتح نموذج لتحديث التقدم
+        // للتبسيط، سنقوم بمحاكاة تحديث التقدم
+        const newProgress = Math.min(batch.progress + 10, 100);
+        const newCompleted = Math.round((newProgress / 100) * batch.quantity);
+        
+        batch.progress = newProgress;
+        batch.completed = newCompleted;
+        batch.updatedAt = new Date().toISOString();
+        
+        // تحديث المرحلة النشطة
+        const activeStage = batch.stages.find(stage => stage.status === 'in_progress') || 
+                          batch.stages.find(stage => stage.status === 'pending');
+        
+        if (activeStage) {
+            activeStage.progress = newProgress;
+            if (newProgress === 100) {
+                activeStage.status = 'completed';
+                
+                // الانتقال إلى المرحلة التالية
+                const nextStage = batch.stages.find(stage => stage.status === 'pending');
+                if (nextStage) {
+                    nextStage.status = 'in_progress';
+                    nextStage.progress = 0;
+                } else {
+                    // إذا كانت كل المراحل مكتملة، انتقل إلى فحص الجودة
+                    batch.status = 'quality_check';
+                }
+            }
+        }
+
+        // إضافة إلى الخط الزمني
+        if (batch.timeline.length === 0 || !batch.timeline.some(event => event.event.includes('تحديث التقدم'))) {
+            batch.timeline.push({
+                event: 'تحديث التقدم',
+                time: new Date().toISOString(),
+                status: 'completed'
+            });
+        }
+
+        this.saveData();
+        this.renderProduction();
+        this.updateStats();
+        
+        if (this.currentBatch && this.currentBatch.id === batch.id) {
+            this.showProductionDetails(batch.id);
+        }
+        
+        this.showToast('تم تحديث تقدم الإنتاج بنجاح');
+    }
+
+    showProductionLine() {
+        alert('عرض خط الإنتاج الكامل - هذه الميزة قيد التطوير');
+    }
+
+    editProduction(batchId = null) {
+        const batch = batchId ? this.batches.find(b => b.id === batchId) : this.currentBatch;
+        if (!batch) return;
+
+        // في التطبيق الحقيقي، هنا سيتم فتح نموذج التعديل
+        // للتبسيط، سنقوم بعرض رسالة
+        this.showToast(`سيتم فتح نموذج تعديل الدفعة: ${batch.batchNumber}`);
+    }
+
+    duplicateProduction() {
+        if (!this.currentBatch) return;
+
+        const duplicatedBatch = {
+            ...this.currentBatch,
+            id: Math.max(...this.batches.map(b => b.id)) + 1,
+            batchNumber: `BATCH-${new Date().getFullYear()}-${String(this.batches.length + 1).padStart(3, '0')}`,
+            status: 'planned',
+            progress: 0,
+            completed: 0,
+            efficiency: 0,
+            defects: 0,
+            downtime: 0,
+            stages: this.currentBatch.stages.map(stage => ({ ...stage, status: 'pending', progress: 0 })),
+            qualityChecks: this.currentBatch.qualityChecks.map(check => ({ ...check, status: 'pending' })),
+            timeline: []
+        };
+
+        this.batches.unshift(duplicatedBatch);
+        this.saveData();
+        this.filteredBatches = [...this.batches];
+        this.applySorting();
+        this.renderProduction();
+        this.updateStats();
+        this.closeProductionDetails();
+        
+        this.showToast('تم نسخ الدفعة بنجاح');
+    }
+
+    cancelProduction() {
+        if (!this.currentBatch) return;
+
+        if (confirm(`هل أنت متأكد من إلغاء دفعة الإنتاج "${this.currentBatch.batchNumber}"؟`)) {
+            this.currentBatch.status = 'cancelled';
+            this.currentBatch.progress = 0;
+            this.currentBatch.completed = 0;
+            
+            this.currentBatch.timeline.push({
+                event: 'إلغاء الإنتاج',
+                time: new Date().toISOString(),
+                status: 'completed'
+            });
+
+            this.saveData();
+            this.renderProduction();
+            this.updateStats();
+            this.showProductionDetails(this.currentBatch.id);
+            
+            this.showToast('تم إلغاء الإنتاج بنجاح');
+        }
+    }
+
+    completeProduction() {
+        if (!this.currentBatch) return;
+
+        if (confirm(`هل أنت متأكد من إكمال دفعة الإنتاج "${this.currentBatch.batchNumber}"؟`)) {
+            this.currentBatch.status = 'completed';
+            this.currentBatch.progress = 100;
+            this.currentBatch.completed = this.currentBatch.quantity;
+            
+            this.currentBatch.stages.forEach(stage => {
+                stage.status = 'completed';
+                stage.progress = 100;
+            });
+
+            this.currentBatch.timeline.push({
+                event: 'إكمال الإنتاج',
+                time: new Date().toISOString(),
+                status: 'completed'
+            });
+
+            this.saveData();
+            this.renderProduction();
+            this.updateStats();
+            this.showProductionDetails(this.currentBatch.id);
+            
+            this.showToast('تم إكمال الإنتاج بنجاح');
+        }
+    }
+
+    pauseProduction() {
+        if (!this.currentBatch) return;
+
+        this.currentBatch.status = 'paused';
+        this.saveData();
+        this.showProductionDetails(this.currentBatch.id);
+        this.showToast('تم إيقاف الإنتاج مؤقتاً');
+    }
+
+    orderMaterial(materialId) {
+        const material = this.materials.find(m => m.id === materialId);
+        if (material) {
+            this.showToast(`تم طلب المادة: ${material.name}`);
+        }
+    }
+
+    performQualityCheck(checkName, batchId) {
+        const batch = this.batches.find(b => b.id === batchId);
+        if (batch) {
+            const check = batch.qualityChecks.find(c => c.name === checkName);
+            if (check) {
+                // محاكاة نتيجة الفحص (80% نجاح، 20% فشل)
+                check.status = Math.random() > 0.2 ? 'passed' : 'failed';
+                
+                batch.timeline.push({
+                    event: `فحص ${checkName}`,
+                    time: new Date().toISOString(),
+                    status: 'completed'
+                });
+
+                this.saveData();
+                this.showProductionDetails(batchId);
+                this.showToast(`تم إجراء فحص ${checkName}: ${check.status === 'passed' ? 'نجح' : 'فشل'}`);
+            }
+        }
+    }
+
+    retryQualityCheck(checkName, batchId) {
+        const batch = this.batches.find(b => b.id === batchId);
+        if (batch) {
+            const check = batch.qualityChecks.find(c => c.name === checkName);
+            if (check) {
+                check.status = 'pending';
+                this.saveData();
+                this.showProductionDetails(batchId);
+                this.showToast(`تم إعادة تعيين فحص ${checkName}`);
+            }
+        }
+    }
+
+    startQualityCheck() {
+        if (!this.currentBatch) return;
+
+        this.currentBatch.status = 'quality_check';
+        this.saveData();
+        this.showProductionDetails(this.currentBatch.id);
+        this.showToast('تم بدء فحص الجودة');
+    }
+
+    generateQualityReport() {
+        if (!this.currentBatch) return;
+
+        this.showToast(`سيتم إنشاء تقرير الجودة للدفعة: ${this.currentBatch.batchNumber}`);
+    }
+
+    showFilter() {
+        document.getElementById('filterModal').style.display = 'block';
+    }
+
+    closeFilter() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    applyFilters() {
+        // جمع إعدادات الفلترة من النموذج
+        const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
+        this.currentFilters.status = Array.from(statusCheckboxes).map(cb => cb.value);
+        
+        const lineCheckboxes = document.querySelectorAll('input[name="line"]:checked');
+        this.currentFilters.lines = Array.from(lineCheckboxes).map(cb => cb.value);
+        
+        this.currentFilters.minQuantity = parseInt(document.getElementById('filterMinQuantity').value) || 0;
+        this.currentFilters.maxQuantity = parseInt(document.getElementById('filterMaxQuantity').value) || 10000;
+        this.currentFilters.delayedOnly = document.getElementById('filterDelayedOnly').checked;
+        this.currentFilters.highPriority = document.getElementById('filterHighPriority').checked;
+        this.currentFilters.needAttention = document.getElementById('filterNeedAttention').checked;
+
+        this.applyFilters();
+        this.closeFilter();
+    }
+
+    resetFilters() {
+        // إعادة تعيين كل الفلترة
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (cb.name === 'status' && (cb.value === 'planned' || cb.value === 'in_progress')) {
+                cb.checked = true;
+            } else if (cb.name === 'line' && (cb.value === 'line1' || cb.value === 'line2')) {
+                cb.checked = true;
+            } else {
+                cb.checked = false;
+            }
+        });
+        
+        document.getElementById('filterMinQuantity').value = 0;
+        document.getElementById('filterMaxQuantity').value = 10000;
+        document.getElementById('filterDelayedOnly').checked = false;
+        
+        this.currentFilters = {
+            status: ['planned', 'in_progress'],
+            lines: ['line1', 'line2'],
+            minQuantity: 0,
+            maxQuantity: 10000,
+            delayedOnly: false,
+            highPriority: false,
+            needAttention: false
+        };
+        
+        this.applyFilters();
+    }
+
+    switchTab(tabName) {
+        // تحديث أزرار التبويب
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تحديث محتوى التبويب
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+            if (pane.id === `${tabName}Tab`) {
+                pane.classList.add('active');
+            }
+        });
+    }
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG', {
+            day: 'numeric',
+            month: 'short'
+        });
+    }
+
+    formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString('ar-EG', {
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    showToast(message) {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+            max-width: 300px;
+            text-align: center;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    setupRealTimeUpdates() {
+        // محاكاة تحديثات في الوقت الحقيقي
+        setInterval(() => {
+            this.simulateRealTimeUpdate();
+        }, 30000); // كل 30 ثانية
+    }
+
+    simulateRealTimeUpdate() {
+        // محاكاة تحديثات تلقائية للإنتاج
+        if (Math.random() > 0.7) {
+            const activeBatches = this.batches.filter(b => b.status === 'in_progress');
+            if (activeBatches.length > 0) {
+                const randomBatch = activeBatches[Math.floor(Math.random() * activeBatches.length)];
+                
+                // زيادة التقدم بنسبة 1-5%
+                const progressIncrease = Math.floor(Math.random() * 5) + 1;
+                const newProgress = Math.min(randomBatch.progress + progressIncrease, 100);
+                const newCompleted = Math.round((newProgress / 100) * randomBatch.quantity);
+                
+                randomBatch.progress = newProgress;
+                randomBatch.completed = newCompleted;
+                randomBatch.updatedAt = new Date().toISOString();
+                
+                // تحديث المرحلة النشطة
+                const activeStage = randomBatch.stages.find(stage => stage.status === 'in_progress');
+                if (activeStage) {
+                    activeStage.progress = newProgress;
+                    if (newProgress === 100) {
+                        activeStage.status = 'completed';
+                        
+                        // الانتقال إلى المرحلة التالية
+                        const nextStage = randomBatch.stages.find(stage => stage.status === 'pending');
+                        if (nextStage) {
+                            nextStage.status = 'in_progress';
+                            nextStage.progress = 0;
+                        } else {
+                            // إذا كانت كل المراحل مكتملة، انتقل إلى فحص الجودة
+                            randomBatch.status = 'quality_check';
+                        }
+                    }
+                }
+
+                this.saveData();
+                
+                if (this.currentBatch && this.currentBatch.id === randomBatch.id) {
+                    this.showProductionDetails(randomBatch.id);
+                }
+                
+                this.renderProduction();
+                this.updateStats();
+            }
+        }
+    }
+}
+
+// تهيئة نظام إدارة الإنتاج عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.production = new ProductionManagement();
+});
+</script>
+</body>
+</html>
