@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دواء - متجر الأدوية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300;
+    --accent: #FF5252;
+    --bg-light: #E0F2F1;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.section-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 20px 16px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 8px 20px;
+    scrollbar-width: none;
+    padding-bottom: 24px;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 12px 20px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    padding: 8px 20px 120px;
+}
+
+.product-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.product-image {
+    width: 100%;
+    height: 140px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: var(--primary-dark);
+    position: relative;
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.product-content {
+    padding: 16px;
+}
+
+.product-name {
+    font-family: 'Almarai', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.product-company {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.current-price {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--primary-dark);
+}
+
+.original-price {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.discount {
+    background: var(--accent);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 12px;
+    font-size: 12px;
+}
+
+.rating-stars {
+    color: var(--secondary);
+}
+
+.rating-count {
+    color: var(--text-secondary);
+}
+
+.product-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-neumorphism {
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    color: var(--primary);
+}
+
+.btn-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    color: var(--primary-dark);
+}
+
+.btn-primary-neumorphism {
+    background: var(--primary);
+    box-shadow: 0 4px 10px rgba(0, 137, 123, 0.4);
+    color: white;
+}
+
+.btn-primary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: var(--primary-dark);
+}
+
+.btn-secondary-neumorphism {
+    background: var(--secondary);
+    box-shadow: 0 4px 10px rgba(255, 179, 0, 0.4);
+    color: white;
+}
+
+.btn-secondary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: #E6A200;
+}
+
+.cart-btn {
+    flex: 1;
+}
+
+.wishlist-btn {
+    width: 40px;
+    padding: 10px;
+}
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.product-detail {
+    padding: 20px;
+}
+
+.product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.product-main-image {
+    width: 100%;
+    height: 200px;
+    background: var(--primary-light);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: var(--primary-dark);
+}
+
+.product-thumbnails {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.product-thumbnail.active {
+    border: 2px solid var(--primary);
+}
+
+.product-info h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.product-company-detail {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.product-rating-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.product-price-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.current-price-detail {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.original-price-detail {
+    font-size: 16px;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.discount-detail {
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.product-description {
+    margin-bottom: 24px;
+}
+
+.product-description h4 {
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.product-specs {
+    margin-bottom: 24px;
+}
+
+.product-specs h4 {
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.specs-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.spec-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.spec-value {
+    font-weight: 600;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.quantity-label {
+    font-weight: 600;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quantity-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.quantity-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+.quantity-value {
+    font-weight: 700;
+    min-width: 30px;
+    text-align: center;
+}
+
+.product-actions-detail {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-large {
+    flex: 1;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.cart-modal-content {
+    max-height: 70vh;
+}
+
+.cart-items {
+    padding: 20px;
+}
+
+.cart-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-light);
+}
+
+.cart-item-image {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cart-item-price {
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-item-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.remove-item {
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cart-summary {
+    padding: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.summary-total {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--primary-dark);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 12px;
+    margin-top: 12px;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-cart i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+.wishlist-items {
+    padding: 20px;
+}
+
+.wishlist-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-light);
+}
+
+.wishlist-item-image {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-dark);
+}
+
+.wishlist-item-details {
+    flex: 1;
+}
+
+.wishlist-item-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.wishlist-item-price {
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.wishlist-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-section {
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-option input {
+    margin: 0;
+}
+
+.price-range {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.price-inputs {
+    display: flex;
+    gap: 12px;
+}
+
+.price-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+}
+
+.range-slider {
+    width: 100%;
+    height: 5px;
+    background: var(--primary-light);
+    border-radius: 5px;
+    outline: none;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+    opacity: 0;
+    transition: var(--transition-liquid);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+}
+
+.load-more-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 80px;
+}
+
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+
+/* أنماط الدفع والإيصالات الجديدة */
+.payment-methods {
+    margin: 20px 0;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.payment-option:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.payment-option.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.payment-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.payment-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.payment-desc, .payment-balance {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.payment-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.payment-summary {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.payment-summary h3 {
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.order-items {
+    margin-bottom: 16px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-total {
+    border-top: 2px solid var(--primary);
+    padding-top: 12px;
+    margin-top: 12px;
+}
+
+.receipt-content {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.receipt-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.receipt-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.receipt-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.receipt-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.receipt-value {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.receipt-amount {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.receipt-footer {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 2px solid var(--primary);
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* تحسينات للأداء */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-bar {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    
+    .specs-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-actions {
+        flex-direction: column;
+    }
+    
+    .receipt-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 380px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .customer-actions {
+        align-self: flex-end;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>PharmaHub 💎</h1>
+                    <p>متجر الأدوية الشامل</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="wishlistBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="icon-badge" id="wishlistBadge">0</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="icon-badge" id="cartBadge">0</span>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن دواء، منتج أو شركة..." id="searchInput">
+                <button class="action-icon liquid-transition" id="filterBtn">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">منتج دوائي</div>
+            </div>
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">24</div>
+                <div class="stat-label">شركة مصنعة</div>
+            </div>
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">🚚 24h</div>
+                <div class="stat-label">توصيل سريع</div>
+            </div>
+        </div>
+
+        <div class="store-page">
+            <div class="categories-section">
+                <div class="section-title">
+                    <i class="fas fa-filter"></i>
+                    التصنيفات
+                </div>
+                <div class="categories-scroll" id="categoriesScroll">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-bolt"></i>
+                العروض الحصرية
+            </div>
+
+            <div class="products-grid" id="featuredProducts">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-list-ul"></i>
+                جميع المنتجات
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- سيتم تعبئتها بالجافاسكريبت -->
+            </div>
+
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <button class="action-icon scroll-to-top liquid-transition" id="scrollToTop">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="companies.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div class="nav-label">الشركات</div>
+            </a>
+            <a href="shop.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="nav-label">المتجر</div>
+            </a>
+            <a href="finance.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المال</div>
+            </a>
+            <a href="finance.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل المنتج -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle">تفاصيل المنتج</h2>
+                <span class="close" onclick="store.closeModal()">&times;</span>
+            </div>
+            <div class="modal-body product-detail">
+                <div class="product-gallery">
+                    <div class="product-main-image" id="productMainImage">
+                        <i class="fas fa-pills" id="productDetailIcon"></i>
+                    </div>
+                    <div class="product-thumbnails" id="productThumbnails">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+
+                <div class="product-info">
+                    <h3 id="productDetailName"></h3>
+                    <div class="product-company-detail" id="productDetailCompany"></div>
+                    <div class="product-rating-detail" id="productDetailRating"></div>
+                    <div class="product-price-detail">
+                        <span class="current-price-detail" id="productDetailPrice"></span>
+                        <span class="original-price-detail" id="productDetailOriginalPrice"></span>
+                        <span class="discount-detail" id="productDetailDiscount"></span>
+                    </div>
+                </div>
+
+                <div class="product-description">
+                    <h4>الوصف</h4>
+                    <p id="productDetailDescription"></p>
+                </div>
+
+                <div class="product-specs">
+                    <h4>المواصفات</h4>
+                    <div class="specs-list" id="productSpecs">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                </div>
+
+                <div class="quantity-selector">
+                    <div class="quantity-label">الكمية:</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" id="decreaseQuantity">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="quantity-value" id="quantityValue">1</span>
+                        <button class="quantity-btn" id="increaseQuantity">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="product-actions-detail">
+                    <button class="btn-neumorphism wishlist-btn-detail liquid-transition" id="wishlistDetailBtn">
+                        <i class="far fa-heart" id="wishlistDetailIcon"></i>
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism btn-large liquid-transition" id="addToCartDetailBtn">
+                        <i class="fas fa-cart-plus"></i>
+                        أضف إلى السلة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة السلة -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content cart-modal-content">
+            <div class="modal-header">
+                <h2>سلة التسوق</h2>
+                <span class="close" onclick="store.closeCart()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>المجموع الفرعي:</span>
+                        <span id="subtotalPrice">0 ر.س</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>رسوم التوصيل:</span>
+                        <span id="shippingPrice">0 ر.س</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>المجموع الكلي:</span>
+                        <span id="totalPrice">0 ر.س</span>
+                    </div>
+                    <button class="btn-neumorphism btn-primary-neumorphism checkout-btn liquid-transition" id="checkoutBtn">
+                        <i class="fas fa-credit-card"></i>
+                        اتمام الشراء
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الدفع -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إتمام عملية الشراء</h2>
+                <span class="close" onclick="store.closePayment()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary">
+                    <h3>ملخص الطلب</h3>
+                    <div class="order-items" id="orderItems">
+                        <!-- سيتم تعبئتها بالجافاسكريبت -->
+                    </div>
+                    <div class="order-total">
+                        <div class="summary-row">
+                            <span>المجموع الكلي:</span>
+                            <span id="orderTotalPrice">0 ر.س</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <h3>اختر طريقة الدفع</h3>
+                    <div class="payment-options">
+                        <div class="payment-option" data-method="wallet" onclick="store.selectPaymentMethod('wallet')">
+                            <div class="payment-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">المحفظة الرقمية</div>
+                                <div class="payment-balance" id="walletBalance">الرصيد المتاح: 0 ر.س</div>
+                            </div>
+                        </div>
+                        <div class="payment-option" data-method="cash" onclick="store.selectPaymentMethod('cash')">
+                            <div class="payment-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">الدفع عند الاستلام</div>
+                                <div class="payment-desc">ادفع نقداً عند استلام الطلب</div>
+                            </div>
+                        </div>
+                        <div class="payment-option" data-method="card" onclick="store.selectPaymentMethod('card')">
+                            <div class="payment-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">البطاقة الائتمانية</div>
+                                <div class="payment-desc">دفع آمن عبر البطاقات</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-neumorphism liquid-transition" onclick="store.closePayment()">
+                        إلغاء
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism liquid-transition" id="confirmPaymentBtn" onclick="store.processPayment()">
+                        <i class="fas fa-check"></i>
+                        تأكيد الدفع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إيصال الشراء -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إيصال الشراء</h2>
+                <span class="close" onclick="store.closeReceipt()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-content" id="receiptContent">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+                <div class="receipt-actions">
+                    <button class="btn-neumorphism btn-primary-neumorphism" onclick="store.printReceipt()">
+                        <i class="fas fa-print"></i>
+                        طباعة الإيصال
+                    </button>
+                    <button class="btn-neumorphism btn-secondary-neumorphism" onclick="store.downloadReceipt()">
+                        <i class="fas fa-download"></i>
+                        تحميل PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة المفضلة -->
+    <div id="wishlistModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>قائمة المفضلة</h2>
+                <span class="close" onclick="store.closeWishlist()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wishlist-items" id="wishlistItems">
+                    <!-- سيتم تعبئتها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلترة -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية المنتجات</h2>
+                <span class="close" onclick="store.closeFilter()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <span>الفئة</span>
+                        </div>
+                        <div class="filter-options" id="filterCategories">
+                            <!-- سيتم تعبئتها بالجافاسكريبت -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <span>السعر</span>
+                        </div>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" class="price-input" id="minPrice" placeholder="الحد الأدنى" value="0">
+                                <input type="number" class="price-input" id="maxPrice" placeholder="الحد الأقصى" value="500">
+                            </div>
+                            <input type="range" class="range-slider" id="priceRange" min="0" max="500" value="500">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <div class="filter-title">
+                            <span>التوفر</span>
+                        </div>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" id="inStockFilter" checked>
+                                <span>متوفر في المخزون</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="onSaleFilter">
+                                <span>العروض الخاصة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-neumorphism liquid-transition" onclick="store.resetFilters()">
+                            إعادة تعيين
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism liquid-transition" onclick="store.applyFilters()">
+                            تطبيق الفلترة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام متجر الأدوية مع التكامل المالي
+class Store {
+    constructor() {
+        this.products = [];
+        this.filteredProducts = [];
+        this.wishlist = [];
+        this.cart = [];
+        this.currentProduct = null;
+        this.visibleProducts = 8;
+        this.currentCategory = 'all';
+        this.selectedPaymentMethod = null;
+        this.filters = {
+            category: 'all',
+            minPrice: 0,
+            maxPrice: 500,
+            inStock: true,
+            onSale: false
+        };
+        this.init();
+    }
+
+    init() {
+        this.loadProducts();
+        this.loadWishlist();
+        this.loadCart();
+        this.setupEventListeners();
+        this.renderCategories();
+        this.renderProducts();
+        this.updateCartBadge();
+        this.updateWishlistBadge();
+        this.setupScrollToTop();
+        this.updateTime();
+        this.checkFinancialAccount();
+    }
+
+    checkFinancialAccount() {
+        // التحقق من وجود حساب مالي
+        const financialAccount = JSON.parse(localStorage.getItem('pharmacyFinancialAccount'));
+        if (!financialAccount) {
+            console.log('لا يوجد حساب مالي مرتبط');
+        }
+    }
+
+    loadProducts() {
+        const savedProducts = localStorage.getItem('pharma_products');
+        
+        if (savedProducts) {
+            this.products = JSON.parse(savedProducts);
+        } else {
+            this.products = this.getDefaultProducts();
+        }
+        
+        this.filteredProducts = [...this.products];
+        this.saveProducts();
+    }
+
+    getDefaultProducts() {
+        return [
+            { 
+                id: 1, 
+                name: "باراسيتامول 500 مجم", 
+                company: "شركة الأدوية المتحدة", 
+                category: "مسكنات", 
+                description: "مسكن للألم وخافض للحرارة، يستخدم لتسكين الآلام الخفيفة إلى المتوسطة وخفض الحرارة.", 
+                icon: "fa-pills", 
+                images: ["fa-pills", "fa-capsules", "fa-tablets"],
+                price: 15.00, 
+                originalPrice: 18.00, 
+                rating: 4.7, 
+                reviewCount: 342, 
+                inStock: true, 
+                onSale: true,
+                specs: {
+                    "الشكل الصيدلاني": "أقراص",
+                    "التركيز": "500 مجم",
+                    "العمر الافتراضي": "3 سنوات",
+                    "التخزين": "درجة حرارة الغرفة"
+                },
+                featured: true
+            },
+            { 
+                id: 2, 
+                name: "فيتامين سي 1000 مجم", 
+                company: "مصنع الفيتامينات المتقدم", 
+                category: "فيتامينات", 
+                description: "مكمل غذائي من فيتامين سي، يدعم جهاز المناعة ويعزز صحة الجلد والعظام.", 
+                icon: "fa-apple-alt", 
+                images: ["fa-apple-alt", "fa-capsules", "fa-tablets"],
+                price: 45.00, 
+                originalPrice: 55.00, 
+                rating: 4.5, 
+                reviewCount: 189, 
+                inStock: true, 
+                onSale: true,
+                specs: {
+                    "الشكل الصيدلاني": "أقراص فوارة",
+                    "التركيز": "1000 مجم",
+                    "العمر الافتراضي": "2 سنوات",
+                    "التخزين": "مكان بارد وجاف"
+                },
+                featured: true
+            },
+            { 
+                id: 3, 
+                name: "أوميغا 3 كبسولات", 
+                company: "مصنع الفيتامينات المتقدم", 
+                category: "مكملات غذائية", 
+                description: "مكمل غذائي من أحماض أوميغا 3 الدهنية، يدعم صحة القلب والدماغ والمفاصل.", 
+                icon: "fa-capsules", 
+                images: ["fa-capsules", "fa-pills", "fa-tablets"],
+                price: 75.00, 
+                originalPrice: 90.00, 
+                rating: 4.6, 
+                reviewCount: 234, 
+                inStock: true, 
+                onSale: false,
+                specs: {
+                    "الشكل الصيدلاني": "كبسولات هلامية",
+                    "التركيز": "1000 مجم",
+                    "العمر الافتراضي": "2 سنوات",
+                    "التخزين": "مكان بارد وجاف"
+                },
+                featured: false
+            },
+            { 
+                id: 4, 
+                name: "كريم هيدروكورتيزون 1%", 
+                company: "مختبرات الجلدية", 
+                category: "جلدية", 
+                description: "كريم موضعي لعلاج الالتهابات الجلدية والحكة والطفح الجلدي.", 
+                icon: "fa-allergies", 
+                images: ["fa-allergies", "fa-prescription-bottle", "fa-tablets"],
+                price: 22.00, 
+                originalPrice: 25.00, 
+                rating: 4.3, 
+                reviewCount: 127, 
+                inStock: true, 
+                onSale: false,
+                specs: {
+                    "الشكل الصيدلاني": "كريم",
+                    "التركيز": "1%",
+                    "العمر الافتراضي": "2 سنوات",
+                    "التخزين": "درجة حرارة الغرفة"
+                },
+                featured: false
+            },
+            { 
+                id: 5, 
+                name: "أموكسيسيلين 500 مجم", 
+                company: "شركة المضادات الحيوية", 
+                category: "مضادات حيوية", 
+                description: "مضاد حيوي واسع المدى لعلاج الالتهابات البكتيرية المختلفة.", 
+                icon: "fa-prescription-bottle", 
+                images: ["fa-prescription-bottle", "fa-capsules", "fa-tablets"],
+                price: 35.00, 
+                originalPrice: 40.00, 
+                rating: 4.4, 
+                reviewCount: 156, 
+                inStock: true, 
+                onSale: true,
+                specs: {
+                    "الشكل الصيدلاني": "كبسولات",
+                    "التركيز": "500 مجم",
+                    "العمر الافتراضي": "3 سنوات",
+                    "التخزين": "مكان بارد وجاف"
+                },
+                featured: false
+            },
+            { 
+                id: 6, 
+                name: "قطرة العين المرطبة", 
+                company: "مختبرات العيون", 
+                category: "عيون", 
+                description: "قطرة عين لترطيب وتخفيف جفاف وتهيج العينين.", 
+                icon: "fa-eye", 
+                images: ["fa-eye", "fa-prescription-bottle", "fa-tablets"],
+                price: 28.00, 
+                originalPrice: 32.00, 
+                rating: 4.5, 
+                reviewCount: 201, 
+                inStock: true, 
+                onSale: false,
+                specs: {
+                    "الشكل الصيدلاني": "قطرة",
+                    "الحجم": "15 مل",
+                    "العمر الافتراضي": "1 سنة",
+                    "التخزين": "درجة حرارة الغرفة"
+                },
+                featured: false
+            },
+            { 
+                id: 7, 
+                name: "شراب السعال للأطفال", 
+                company: "شركة أدوية الأطفال", 
+                category: "أطفال", 
+                description: "شراب لعلاج السعال ونزلات البرد لدى الأطفال، بنكهة الفراولة المحببة.", 
+                icon: "fa-baby", 
+                images: ["fa-baby", "fa-prescription-bottle", "fa-tablets"],
+                price: 18.00, 
+                originalPrice: 22.00, 
+                rating: 4.6, 
+                reviewCount: 178, 
+                inStock: true, 
+                onSale: true,
+                specs: {
+                    "الشكل الصيدلاني": "شراب",
+                    "الحجم": "120 مل",
+                    "العمر الافتراضي": "1 سنة",
+                    "التخزين": "درجة حرارة الغرفة"
+                },
+                featured: false
+            },
+            { 
+                id: 8, 
+                name: "أدوية الضغط", 
+                company: "مختبرات القلب", 
+                category: "قلب وأوعية دموية", 
+                description: "دواء لعلاج ارتفاع ضغط الدم، يساعد في الحفاظ على مستويات ضغط الدم الطبيعية.", 
+                icon: "fa-heartbeat", 
+                images: ["fa-heartbeat", "fa-capsules", "fa-tablets"],
+                price: 42.00, 
+                originalPrice: 50.00, 
+                rating: 4.7, 
+                reviewCount: 167, 
+                inStock: false, 
+                onSale: false,
+                specs: {
+                    "الشكل الصيدلاني": "أقراص",
+                    "التركيز": "50 مجم",
+                    "العمر الافتراضي": "3 سنوات",
+                    "التخزين": "مكان بارد وجاف"
+                },
+                featured: false
+            }
+        ];
+    }
+    
+    loadWishlist() {
+        const savedWishlist = localStorage.getItem('pharma_wishlist');
+        if (savedWishlist) {
+            this.wishlist = JSON.parse(savedWishlist);
+        }
+    }
+
+    loadCart() {
+        const savedCart = localStorage.getItem('pharma_cart');
+        if (savedCart) {
+            this.cart = JSON.parse(savedCart);
+        }
+    }
+
+    saveProducts() { localStorage.setItem('pharma_products', JSON.stringify(this.products)); }
+    saveWishlist() { localStorage.setItem('pharma_wishlist', JSON.stringify(this.wishlist)); }
+    saveCart() { localStorage.setItem('pharma_cart', JSON.stringify(this.cart)); }
+
+    setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => { this.searchProducts(); });
+        }
+        
+        const cartBtn = document.getElementById('cartBtn');
+        if (cartBtn) { cartBtn.addEventListener('click', () => { this.showCart(); }); }
+        
+        const wishlistBtn = document.getElementById('wishlistBtn');
+        if (wishlistBtn) { wishlistBtn.addEventListener('click', () => { this.showWishlist(); }); }
+        
+        const filterBtn = document.getElementById('filterBtn');
+        if (filterBtn) { filterBtn.addEventListener('click', () => { this.showFilter(); }); }
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) { loadMoreBtn.addEventListener('click', () => { this.loadMoreProducts(); }); }
+        
+        const decreaseQuantity = document.getElementById('decreaseQuantity');
+        if (decreaseQuantity) { decreaseQuantity.addEventListener('click', () => { this.decreaseQuantity(); }); }
+        
+        const increaseQuantity = document.getElementById('increaseQuantity');
+        if (increaseQuantity) { increaseQuantity.addEventListener('click', () => { this.increaseQuantity(); }); }
+        
+        const addToCartDetailBtn = document.getElementById('addToCartDetailBtn');
+        if (addToCartDetailBtn) { addToCartDetailBtn.addEventListener('click', () => { this.addToCartFromDetail(); }); }
+        
+        const wishlistDetailBtn = document.getElementById('wishlistDetailBtn');
+        if (wishlistDetailBtn) { wishlistDetailBtn.addEventListener('click', () => { this.toggleWishlistFromDetail(); }); }
+        
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        if (checkoutBtn) { checkoutBtn.addEventListener('click', () => { this.showPayment(); }); }
+        
+        setInterval(() => { this.updateTime(); }, 60000);
+        
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => { if (e.target === modal) { modal.style.display = 'none'; } });
+        });
+    }
+
+    setupScrollToTop() {
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) { timeElement.textContent = timeString; }
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            'مسكنات': 'fa-pills', 'فيتامينات': 'fa-apple-alt', 'مكملات غذائية': 'fa-capsules',
+            'جلدية': 'fa-allergies', 'مضادات حيوية': 'fa-prescription-bottle', 'عيون': 'fa-eye',
+            'أطفال': 'fa-baby', 'قلب وأوعية دموية': 'fa-heartbeat', 'معدة وهضم': 'fa-stomach',
+            'أعصاب': 'fa-brain', 'غدد صماء': 'fa-vial'
+        };
+        return icons[category] || 'fa-pills';
+    }
+
+    renderCategories() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        if (!categoriesScroll) return;
+        const categories = [...new Set(this.products.map(p => p.category))];
+        
+        let categoriesHTML = `
+            <div class="category-chip active liquid-transition" data-category="all">
+                <i class="fas fa-th-large"></i>
+                الكل
+            </div>
+        `;
+
+        categories.forEach(category => {
+            const productCount = this.products.filter(p => p.category === category).length;
+            categoriesHTML += `
+                <div class="category-chip liquid-transition" data-category="${category}">
+                    <i class="fas ${this.getCategoryIcon(category)}"></i>
+                    ${category} (${productCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = categoriesHTML;
+
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                this.currentCategory = chip.dataset.category;
+                this.filterProducts();
+            });
+        });
+    }
+
+    filterProducts() {
+        if (this.currentCategory === 'all') {
+            this.filteredProducts = [...this.products];
+        } else {
+            this.filteredProducts = this.products.filter(product => product.category === this.currentCategory);
+        }
+        this.applyCurrentFilters();
+        this.visibleProducts = 8;
+        this.renderProducts();
+    }
+
+    searchProducts() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        if (searchTerm.trim() === '') {
+            this.filterProducts();
+            return;
+        }
+
+        this.filteredProducts = this.products.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) ||
+            product.company.toLowerCase().includes(searchTerm) ||
+            product.category.toLowerCase().includes(searchTerm) ||
+            product.description.toLowerCase().includes(searchTerm)
+        );
+        
+        this.visibleProducts = 8;
+        this.renderProducts();
+    }
+
+    applyCurrentFilters() {
+        this.filteredProducts = this.filteredProducts.filter(product => {
+            const priceMatch = product.price >= this.filters.minPrice && product.price <= this.filters.maxPrice;
+            const stockMatch = !this.filters.inStock || product.inStock;
+            const saleMatch = !this.filters.onSale || product.onSale;
+            
+            return priceMatch && stockMatch && saleMatch;
+        });
+    }
+
+    renderProducts() {
+        this.renderFeaturedProducts();
+        this.renderProductsGrid();
+    }
+
+    renderFeaturedProducts() {
+        const featuredProducts = document.getElementById('featuredProducts');
+        if (!featuredProducts) return;
+        
+        const featured = this.filteredProducts.filter(product => product.featured);
+        
+        let featuredHTML = '';
+        featured.forEach(product => {
+            const isInWishlist = this.wishlist.includes(product.id);
+            const discount = product.originalPrice ? Math.round((1 - product.price / product.originalPrice) * 100) : 0;
+            
+            featuredHTML += `
+                <div class="product-card liquid-transition" onclick="store.showProductDetails(${product.id})">
+                    <div class="product-image" style="background: var(--primary-light)">
+                        <i class="fas ${product.icon}"></i>
+                        ${product.onSale ? `<div class="product-badge">خصم ${discount}%</div>` : ''}
+                        ${!product.inStock ? `<div class="product-badge" style="background: var(--text-secondary)">غير متوفر</div>` : ''}
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-company">${product.company}</div>
+                        <div class="product-price">
+                            <span class="current-price">${product.price} ر.س</span>
+                            ${product.originalPrice ? `<span class="original-price">${product.originalPrice} ر.س</span>` : ''}
+                            ${product.onSale ? `<span class="discount">-${discount}%</span>` : ''}
+                        </div>
+                        <div class="product-rating">
+                            <span class="rating-stars">${this.renderStars(product.rating)}</span>
+                            <span class="rating-count">(${product.reviewCount})</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-neumorphism wishlist-btn liquid-transition" onclick="event.stopPropagation(); store.toggleWishlist(${product.id})">
+                                <i class="${isInWishlist ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                            <button class="btn-neumorphism btn-primary-neumorphism cart-btn liquid-transition" onclick="event.stopPropagation(); store.addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
+                                <i class="fas fa-cart-plus"></i>
+                                ${product.inStock ? 'أضف إلى السلة' : 'غير متوفر'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        featuredProducts.innerHTML = featuredHTML;
+    }
+
+    renderProductsGrid() {
+        const productsGrid = document.getElementById('productsGrid');
+        if (!productsGrid) return;
+        
+        const productsToShow = this.filteredProducts.slice(0, this.visibleProducts);
+        
+        let gridHTML = '';
+        productsToShow.forEach(product => {
+            const isInWishlist = this.wishlist.includes(product.id);
+            const discount = product.originalPrice ? Math.round((1 - product.price / product.originalPrice) * 100) : 0;
+            
+            gridHTML += `
+                <div class="product-card liquid-transition" onclick="store.showProductDetails(${product.id})">
+                    <div class="product-image" style="background: var(--primary-light)">
+                        <i class="fas ${product.icon}"></i>
+                        ${product.onSale ? `<div class="product-badge">خصم ${discount}%</div>` : ''}
+                        ${!product.inStock ? `<div class="product-badge" style="background: var(--text-secondary)">غير متوفر</div>` : ''}
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-company">${product.company}</div>
+                        <div class="product-price">
+                            <span class="current-price">${product.price} ر.س</span>
+                            ${product.originalPrice ? `<span class="original-price">${product.originalPrice} ر.س</span>` : ''}
+                            ${product.onSale ? `<span class="discount">-${discount}%</span>` : ''}
+                        </div>
+                        <div class="product-rating">
+                            <span class="rating-stars">${this.renderStars(product.rating)}</span>
+                            <span class="rating-count">(${product.reviewCount})</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-neumorphism wishlist-btn liquid-transition" onclick="event.stopPropagation(); store.toggleWishlist(${product.id})">
+                                <i class="${isInWishlist ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                            <button class="btn-neumorphism btn-primary-neumorphism cart-btn liquid-transition" onclick="event.stopPropagation(); store.addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
+                                <i class="fas fa-cart-plus"></i>
+                                ${product.inStock ? 'أضف إلى السلة' : 'غير متوفر'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        productsGrid.innerHTML = gridHTML;
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if (this.visibleProducts >= this.filteredProducts.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    renderStars(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        let stars = '';
+        
+        for (let i = 0; i < fullStars; i++) {
+            stars += '★';
+        }
+        
+        if (halfStar) {
+            stars += '½';
+        }
+        
+        return stars;
+    }
+
+    loadMoreProducts() {
+        this.visibleProducts += 4;
+        this.renderProductsGrid();
+    }
+
+    showProductDetails(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+        
+        this.currentProduct = product;
+        const modal = document.getElementById('productModal');
+        
+        document.getElementById('productDetailIcon').className = `fas ${product.icon}`;
+        document.getElementById('productDetailName').textContent = product.name;
+        document.getElementById('productDetailCompany').textContent = product.company;
+        document.getElementById('productDetailDescription').textContent = product.description;
+        
+        // تحديث التقييم
+        const ratingElement = document.getElementById('productDetailRating');
+        ratingElement.innerHTML = `
+            <span class="rating-stars">${this.renderStars(product.rating)}</span>
+            <span class="rating-count">${product.rating} (${product.reviewCount} تقييم)</span>
+        `;
+        
+        // تحديث السعر
+        const discount = product.originalPrice ? Math.round((1 - product.price / product.originalPrice) * 100) : 0;
+        document.getElementById('productDetailPrice').textContent = `${product.price} ر.س`;
+        
+        if (product.originalPrice) {
+            document.getElementById('productDetailOriginalPrice').textContent = `${product.originalPrice} ر.س`;
+            document.getElementById('productDetailDiscount').textContent = `خصم ${discount}%`;
+        } else {
+            document.getElementById('productDetailOriginalPrice').textContent = '';
+            document.getElementById('productDetailDiscount').textContent = '';
+        }
+        
+        // تحديث المعاينات
+        const thumbnailsContainer = document.getElementById('productThumbnails');
+        thumbnailsContainer.innerHTML = '';
+        
+        product.images.forEach((image, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = `product-thumbnail ${index === 0 ? 'active' : ''}`;
+            thumbnail.innerHTML = `<i class="fas ${image}"></i>`;
+            thumbnail.addEventListener('click', () => {
+                document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+                thumbnail.classList.add('active');
+                document.getElementById('productDetailIcon').className = `fas ${image}`;
+            });
+            thumbnailsContainer.appendChild(thumbnail);
+        });
+        
+        // تحديث المواصفات
+        const specsContainer = document.getElementById('productSpecs');
+        specsContainer.innerHTML = '';
+        
+        for (const [key, value] of Object.entries(product.specs)) {
+            const specItem = document.createElement('div');
+            specItem.className = 'spec-item';
+            specItem.innerHTML = `
+                <div class="spec-label">${key}</div>
+                <div class="spec-value">${value}</div>
+            `;
+            specsContainer.appendChild(specItem);
+        }
+        
+        // تحديث حالة المفضلة
+        const isInWishlist = this.wishlist.includes(product.id);
+        const wishlistIcon = document.getElementById('wishlistDetailIcon');
+        wishlistIcon.className = isInWishlist ? 'fas fa-heart' : 'far fa-heart';
+        
+        // إعادة تعيين الكمية
+        document.getElementById('quantityValue').textContent = '1';
+        
+        modal.style.display = 'block';
+    }
+
+    closeModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+
+    decreaseQuantity() {
+        const quantityElement = document.getElementById('quantityValue');
+        let quantity = parseInt(quantityElement.textContent);
+        if (quantity > 1) {
+            quantity--;
+            quantityElement.textContent = quantity;
+        }
+    }
+
+    increaseQuantity() {
+        const quantityElement = document.getElementById('quantityValue');
+        let quantity = parseInt(quantityElement.textContent);
+        if (quantity < 10) {
+            quantity++;
+            quantityElement.textContent = quantity;
+        }
+    }
+
+    toggleWishlist(productId = null) {
+        const id = productId || (this.currentProduct ? this.currentProduct.id : null);
+        if (!id) return;
+        
+        const index = this.wishlist.indexOf(id);
+        if (index > -1) {
+            this.wishlist.splice(index, 1);
+        } else {
+            this.wishlist.push(id);
+        }
+        
+        this.saveWishlist();
+        this.renderProducts();
+        this.updateWishlistBadge();
+        
+        if (this.currentProduct && this.currentProduct.id === id) {
+            const isInWishlist = this.wishlist.includes(id);
+            const wishlistIcon = document.getElementById('wishlistDetailIcon');
+            wishlistIcon.className = isInWishlist ? 'fas fa-heart' : 'far fa-heart';
+        }
+    }
+
+    toggleWishlistFromDetail() {
+        this.toggleWishlist();
+    }
+
+    addToCart(productId = null) {
+        const id = productId || (this.currentProduct ? this.currentProduct.id : null);
+        if (!id) return;
+        
+        const product = this.products.find(p => p.id === id);
+        if (!product || !product.inStock) return;
+        
+        const quantity = productId ? 1 : parseInt(document.getElementById('quantityValue').textContent);
+        
+        const existingItem = this.cart.find(item => item.productId === id);
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            this.cart.push({
+                productId: id,
+                quantity: quantity,
+                addedAt: new Date().toISOString()
+            });
+        }
+        
+        this.saveCart();
+        this.updateCartBadge();
+        
+        if (!productId) {
+            this.closeModal();
+        }
+        
+        // عرض رسالة نجاح
+        this.showToast(`تم إضافة ${product.name} إلى السلة`);
+    }
+
+    addToCartFromDetail() {
+        this.addToCart();
+    }
+
+    removeFromCart(productId) {
+        this.cart = this.cart.filter(item => item.productId !== productId);
+        this.saveCart();
+        this.updateCartBadge();
+        this.renderCart();
+    }
+
+    updateCartItemQuantity(productId, change) {
+        const item = this.cart.find(item => item.productId === productId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                this.removeFromCart(productId);
+            } else {
+                this.saveCart();
+                this.renderCart();
+            }
+        }
+        this.updateCartBadge();
+    }
+
+    showCart() {
+        const modal = document.getElementById('cartModal');
+        this.renderCart();
+        modal.style.display = 'block';
+    }
+
+    closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+
+    renderCart() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        
+        if (this.cart.length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>سلة التسوق فارغة</h3>
+                    <p>ابدأ التسوق الآن وأضف المنتجات إلى سلة التسوق</p>
+                </div>
+            `;
+            document.getElementById('checkoutBtn').disabled = true;
+            return;
+        }
+        
+        document.getElementById('checkoutBtn').disabled = false;
+        
+        let cartHTML = '';
+        let subtotal = 0;
+        
+        this.cart.forEach(cartItem => {
+            const product = this.products.find(p => p.id === cartItem.productId);
+            if (!product) return;
+            
+            const itemTotal = product.price * cartItem.quantity;
+            subtotal += itemTotal;
+            
+            cartHTML += `
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <i class="fas ${product.icon}"></i>
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${product.name}</div>
+                        <div class="cart-item-price">${product.price} ر.س</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="store.updateCartItemQuantity(${product.id}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="quantity-value">${cartItem.quantity}</span>
+                            <button class="quantity-btn" onclick="store.updateCartItemQuantity(${product.id}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <button class="remove-item" onclick="store.removeFromCart(${product.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <div class="item-total">${itemTotal.toFixed(2)} ر.س</div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        cartItemsContainer.innerHTML = cartHTML;
+        
+        const shipping = subtotal > 100 ? 0 : 15;
+        const total = subtotal + shipping;
+        
+        document.getElementById('subtotalPrice').textContent = `${subtotal.toFixed(2)} ر.س`;
+        document.getElementById('shippingPrice').textContent = `${shipping.toFixed(2)} ر.س`;
+        document.getElementById('totalPrice').textContent = `${total.toFixed(2)} ر.س`;
+    }
+
+    showPayment() {
+        const modal = document.getElementById('paymentModal');
+        this.renderPaymentSummary();
+        this.updateWalletBalance();
+        modal.style.display = 'block';
+    }
+
+    closePayment() {
+        document.getElementById('paymentModal').style.display = 'none';
+        this.selectedPaymentMethod = null;
+        this.clearPaymentSelection();
+    }
+
+    selectPaymentMethod(method) {
+        this.selectedPaymentMethod = method;
+        this.clearPaymentSelection();
+        
+        const selectedOption = document.querySelector(`.payment-option[data-method="${method}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+        
+        document.getElementById('confirmPaymentBtn').disabled = false;
+    }
+
+    clearPaymentSelection() {
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+    }
+
+    updateWalletBalance() {
+        const financialAccount = JSON.parse(localStorage.getItem('pharmacyFinancialAccount'));
+        const walletBalance = document.getElementById('walletBalance');
+        
+        if (financialAccount && walletBalance) {
+            walletBalance.textContent = `الرصيد المتاح: ${financialAccount.balance.toLocaleString()} ر.س`;
+        } else {
+            walletBalance.textContent = 'الرصيد المتاح: 0 ر.س';
+        }
+    }
+
+    renderPaymentSummary() {
+        const orderItemsContainer = document.getElementById('orderItems');
+        let orderHTML = '';
+        let total = 0;
+        
+        this.cart.forEach(cartItem => {
+            const product = this.products.find(p => p.id === cartItem.productId);
+            if (!product) return;
+            
+            const itemTotal = product.price * cartItem.quantity;
+            total += itemTotal;
+            
+            orderHTML += `
+                <div class="order-item">
+                    <span>${product.name} (${cartItem.quantity})</span>
+                    <span>${itemTotal.toFixed(2)} ر.س</span>
+                </div>
+            `;
+        });
+        
+        const shipping = total > 100 ? 0 : 15;
+        total += shipping;
+        
+        orderHTML += `
+            <div class="order-item">
+                <span>رسوم التوصيل</span>
+                <span>${shipping.toFixed(2)} ر.س</span>
+            </div>
+        `;
+        
+        orderItemsContainer.innerHTML = orderHTML;
+        document.getElementById('orderTotalPrice').textContent = `${total.toFixed(2)} ر.س`;
+    }
+
+    async processPayment() {
+        if (!this.selectedPaymentMethod) {
+            this.showToast('يرجى اختيار طريقة الدفع');
+            return;
+        }
+
+        const total = this.calculateTotal();
+        
+        if (this.selectedPaymentMethod === 'wallet') {
+            const financialAccount = JSON.parse(localStorage.getItem('pharmacyFinancialAccount'));
+            
+            if (!financialAccount) {
+                this.showToast('لا يوجد حساب مالي مرتبط', 'error');
+                return;
+            }
+            
+            if (financialAccount.balance < total) {
+                this.showToast('الرصيد غير كافي', 'error');
+                return;
+            }
+            
+            // خصم المبلغ من المحفظة
+            financialAccount.balance -= total;
+            localStorage.setItem('pharmacyFinancialAccount', JSON.stringify(financialAccount));
+            
+            // تسجيل المعاملة المالية
+            this.recordFinancialTransaction(total, 'شراء من المتجر');
+        }
+
+        // إنشاء الطلب
+        const order = this.createOrder(total);
+        
+        // عرض الإيصال
+        this.showReceipt(order);
+        
+        // تفريغ السلة
+        this.cart = [];
+        this.saveCart();
+        this.updateCartBadge();
+        
+        this.closePayment();
+    }
+
+    calculateTotal() {
+        let subtotal = 0;
+        this.cart.forEach(cartItem => {
+            const product = this.products.find(p => p.id === cartItem.productId);
+            if (product) {
+                subtotal += product.price * cartItem.quantity;
+            }
+        });
+        
+        const shipping = subtotal > 100 ? 0 : 15;
+        return subtotal + shipping;
+    }
+
+    recordFinancialTransaction(amount, description) {
+        const transactions = JSON.parse(localStorage.getItem('pharmacyTransactions')) || [];
+        const transactionId = 'SL' + Date.now().toString().slice(-8);
+        
+        const newTransaction = {
+            id: transactionId,
+            type: 'sale',
+            title: 'بيع من المتجر',
+            description: description,
+            amount: amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-sales'
+        };
+        
+        transactions.unshift(newTransaction);
+        localStorage.setItem('pharmacyTransactions', JSON.stringify(transactions));
+    }
+
+    createOrder(total) {
+        const orderId = 'ORD' + Date.now().toString().slice(-8);
+        const order = {
+            id: orderId,
+            date: new Date().toISOString(),
+            items: [...this.cart],
+            total: total,
+            paymentMethod: this.selectedPaymentMethod,
+            status: 'completed'
+        };
+        
+        // حفظ الطلب في localStorage
+        const orders = JSON.parse(localStorage.getItem('pharma_orders')) || [];
+        orders.unshift(order);
+        localStorage.setItem('pharma_orders', JSON.stringify(orders));
+        
+        return order;
+    }
+
+    showReceipt(order) {
+        const modal = document.getElementById('receiptModal');
+        this.renderReceipt(order);
+        modal.style.display = 'block';
+    }
+
+    closeReceipt() {
+        document.getElementById('receiptModal').style.display = 'none';
+    }
+
+    renderReceipt(order) {
+        const receiptContent = document.getElementById('receiptContent');
+        
+        let itemsHTML = '';
+        let subtotal = 0;
+        
+        order.items.forEach(cartItem => {
+            const product = this.products.find(p => p.id === cartItem.productId);
+            if (!product) return;
+            
+            const itemTotal = product.price * cartItem.quantity;
+            subtotal += itemTotal;
+            
+            itemsHTML += `
+                <div class="receipt-row">
+                    <span class="receipt-label">${product.name} (${cartItem.quantity})</span>
+                    <span class="receipt-value">${itemTotal.toFixed(2)} ر.س</span>
+                </div>
+            `;
+        });
+        
+        const shipping = subtotal > 100 ? 0 : 15;
+        
+        const receiptHTML = `
+            <div class="receipt-header">
+                <div class="receipt-title">إيصال شراء</div>
+                <div class="receipt-subtitle">PharmaHub - صيدليات 24/7</div>
+            </div>
+            
+            <div class="receipt-details">
+                <div class="receipt-row">
+                    <span class="receipt-label">رقم الطلب:</span>
+                    <span class="receipt-value">${order.id}</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">التاريخ والوقت:</span>
+                    <span class="receipt-value">${new Date(order.date).toLocaleString('ar-EG')}</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">طريقة الدفع:</span>
+                    <span class="receipt-value">${this.getPaymentMethodName(order.paymentMethod)}</span>
+                </div>
+                
+                ${itemsHTML}
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">رسوم التوصيل:</span>
+                    <span class="receipt-value">${shipping.toFixed(2)} ر.س</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">المجموع الكلي:</span>
+                    <span class="receipt-value receipt-amount">${order.total.toFixed(2)} ر.س</span>
+                </div>
+            </div>
+            
+            <div class="receipt-footer">
+                <div>شكراً لشرائك من PharmaHub</div>
+                <div>للشكاوى والاستفسارات: 800244007</div>
+            </div>
+        `;
+        
+        receiptContent.innerHTML = receiptHTML;
+    }
+
+    getPaymentMethodName(method) {
+        const methods = {
+            'wallet': 'المحفظة الرقمية',
+            'cash': 'الدفع عند الاستلام',
+            'card': 'البطاقة الائتمانية'
+        };
+        return methods[method] || method;
+    }
+
+    printReceipt() {
+        window.print();
+    }
+
+    downloadReceipt() {
+        this.showToast('جاري تحضير ملف PDF...', 'info');
+        setTimeout(() => {
+            this.showToast('تم تحميل الإيصال كملف PDF', 'success');
+        }, 1500);
+    }
+
+    showWishlist() {
+        const modal = document.getElementById('wishlistModal');
+        this.renderWishlist();
+        modal.style.display = 'block';
+    }
+
+    closeWishlist() {
+        document.getElementById('wishlistModal').style.display = 'none';
+    }
+
+    renderWishlist() {
+        const wishlistItemsContainer = document.getElementById('wishlistItems');
+        
+        if (this.wishlist.length === 0) {
+            wishlistItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-heart"></i>
+                    <h3>قائمة المفضلة فارغة</h3>
+                    <p>أضف المنتجات إلى المفضلة للعودة إليها لاحقاً</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let wishlistHTML = '';
+        
+        this.wishlist.forEach(productId => {
+            const product = this.products.find(p => p.id === productId);
+            if (!product) return;
+            
+            wishlistHTML += `
+                <div class="wishlist-item">
+                    <div class="wishlist-item-image">
+                        <i class="fas ${product.icon}"></i>
+                    </div>
+                    <div class="wishlist-item-details">
+                        <div class="wishlist-item-name">${product.name}</div>
+                        <div class="wishlist-item-price">${product.price} ر.س</div>
+                    </div>
+                    <div class="wishlist-item-actions">
+                        <button class="btn-neumorphism liquid-transition" onclick="store.toggleWishlist(${product.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="btn-neumorphism btn-primary-neumorphism liquid-transition" onclick="store.addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        wishlistItemsContainer.innerHTML = wishlistHTML;
+    }
+
+    showFilter() {
+        const modal = document.getElementById('filterModal');
+        this.renderFilterOptions();
+        modal.style.display = 'block';
+    }
+
+    closeFilter() {
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    renderFilterOptions() {
+        const filterCategoriesContainer = document.getElementById('filterCategories');
+        const categories = [...new Set(this.products.map(p => p.category))];
+        
+        let categoriesHTML = '';
+        categories.forEach(category => {
+            categoriesHTML += `
+                <label class="filter-option">
+                    <input type="radio" name="category" value="${category}" ${this.filters.category === category ? 'checked' : ''}>
+                    <span>${category}</span>
+                </label>
+            `;
+        });
+        
+        // إضافة خيار "الكل"
+        categoriesHTML = `
+            <label class="filter-option">
+                <input type="radio" name="category" value="all" ${this.filters.category === 'all' ? 'checked' : ''}>
+                <span>الكل</span>
+            </label>
+        ` + categoriesHTML;
+        
+        filterCategoriesContainer.innerHTML = categoriesHTML;
+        
+        // تحديث عناصر التحكم في السعر
+        document.getElementById('minPrice').value = this.filters.minPrice;
+        document.getElementById('maxPrice').value = this.filters.maxPrice;
+        document.getElementById('priceRange').value = this.filters.maxPrice;
+        document.getElementById('inStockFilter').checked = this.filters.inStock;
+        document.getElementById('onSaleFilter').checked = this.filters.onSale;
+        
+        // إضافة مستمعي الأحداث
+        document.querySelectorAll('input[name="category"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.filters.category = e.target.value;
+            });
+        });
+        
+        document.getElementById('minPrice').addEventListener('change', (e) => {
+            this.filters.minPrice = parseInt(e.target.value) || 0;
+        });
+        
+        document.getElementById('maxPrice').addEventListener('change', (e) => {
+            this.filters.maxPrice = parseInt(e.target.value) || 500;
+            document.getElementById('priceRange').value = this.filters.maxPrice;
+        });
+        
+        document.getElementById('priceRange').addEventListener('input', (e) => {
+            this.filters.maxPrice = parseInt(e.target.value);
+            document.getElementById('maxPrice').value = this.filters.maxPrice;
+        });
+        
+        document.getElementById('inStockFilter').addEventListener('change', (e) => {
+            this.filters.inStock = e.target.checked;
+        });
+        
+        document.getElementById('onSaleFilter').addEventListener('change', (e) => {
+            this.filters.onSale = e.target.checked;
+        });
+    }
+
+    applyFilters() {
+        this.currentCategory = this.filters.category;
+        this.filterProducts();
+        this.closeFilter();
+        
+        // تحديث التصنيفات النشطة
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.classList.remove('active');
+            if (chip.dataset.category === this.currentCategory) {
+                chip.classList.add('active');
+            }
+        });
+    }
+
+    resetFilters() {
+        this.filters = {
+            category: 'all',
+            minPrice: 0,
+            maxPrice: 500,
+            inStock: true,
+            onSale: false
+        };
+        this.renderFilterOptions();
+    }
+
+    updateCartBadge() {
+        const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+        const badge = document.getElementById('cartBadge');
+        if (badge) {
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+
+    updateWishlistBadge() {
+        const totalItems = this.wishlist.length;
+        const badge = document.getElementById('wishlistBadge');
+        if (badge) {
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+
+    showToast(message, type = 'info') {
+        // إنشاء عنصر Toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'error' ? 'var(--accent)' : 'var(--primary)'};
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            z-index: 3000;
+            font-weight: 600;
+            transition: var(--transition-liquid);
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // إزالة Toast بعد 3 ثوان
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    }
+}
+
+// تهيئة المتجر عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.store = new Store();
+});
+</script>
+</body>
+</html>l>

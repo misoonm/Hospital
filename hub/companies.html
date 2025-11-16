@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دواء - الشركات الفائقة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+:root {
+    /* الألوان الأساسية: تميل إلى الأخضر الصيدلي الهادئ */
+    --primary: #00897B; /* Teal Dark */
+    --primary-dark: #00695C;
+    --primary-light: #B2DFDB;
+    --secondary: #FFB300; /* Gold Accent */
+    --accent: #FF5252; /* Error/Alert */
+
+    /* خلفية التطبيق: فاتحة ودافئة للـ Neumorphism */
+    --bg-light: #E0F2F1; /* لون فاتح للخلفية */
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.1); /* ظل Neumorphism ناعم */
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9); /* ظل Neumorphism داخلي */
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.15); /* ظل مرتفع للبطاقات المميزة */
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* -------------------------------------- */
+/* 1. التطبيق الرئيسي والهيكل (App Shell) */
+/* -------------------------------------- */
+
+.ultra-app {
+    max-width: 450px; /* زيادة قليلة لعرض أفضل */
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05); /* إبراز التطبيق عن خلفية الشاشة */
+    overflow-x: hidden;
+}
+
+/* شريط الحالة المدمج - أكثر حداثة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* -------------------------------------- */
+/* 2. الهيدر والمحتوى البارز (Header & Featured) */
+/* -------------------------------------- */
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل - Neumorphism Style */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset); /* تأثير الضغط لـ Neumorphism */
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث النظيف */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset); /* نيو-مورفيزم داخلي */
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* إحصائيات علوية - Neumorphism */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* -------------------------------------- */
+/* 3. التصنيفات والمحتوى الجانبي */
+/* -------------------------------------- */
+
+.section-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 20px 16px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+/* شرائح التصنيف (Chips) */
+.categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 8px 20px;
+    scrollbar-width: none;
+    padding-bottom: 24px;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 12px 20px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* -------------------------------------- */
+/* 4. بطاقات الشركات الفائقة (Super Cards) */
+/* -------------------------------------- */
+
+/* بطاقة الشركة المميزة */
+.featured-companies {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 8px 20px;
+    scrollbar-width: none;
+}
+
+.featured-companies::-webkit-scrollbar {
+    display: none;
+}
+
+.featured-company-card {
+    min-width: 300px; /* حجم أكبر لجذب الانتباه */
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-liquid);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.featured-company-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-card);
+}
+
+.company-cover {
+    width: 100%;
+    height: 140px;
+    background: var(--primary-dark); /* يجب استبداله بصورة فعلية */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 20px;
+}
+
+.company-logo {
+    width: 90px;
+    height: 90px;
+    background: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: var(--primary);
+    box-shadow: var(--shadow-card);
+    position: absolute;
+    bottom: -45px; /* رفع الشعار ليطفو على الغلاف */
+}
+
+.featured-company-content {
+    padding: 20px;
+    padding-top: 30px; /* لتعويض ارتفاع الشعار */
+}
+
+/* بطاقة الشبكة العادية - Neumorphism */
+.companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* تخطيط مرن */
+    gap: 20px;
+    padding: 8px 20px 120px; /* مساحة للتنقل السفلي */
+}
+
+.company-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    text-align: center;
+}
+
+.company-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.company-card-header {
+    padding: 16px;
+    padding-bottom: 0;
+}
+
+.company-logo-small {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 20px;
+    color: var(--primary-dark);
+}
+
+.company-card-name {
+    font-family: 'Almarai', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.company-card-category {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.company-card-content {
+    padding: 16px;
+    padding-top: 8px;
+}
+
+.btn-neumorphism {
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    color: var(--primary);
+}
+
+.btn-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    color: var(--primary-dark);
+}
+
+.btn-primary-neumorphism {
+    background: var(--primary);
+    box-shadow: 0 4px 10px rgba(0, 137, 123, 0.4); /* ظل ملون */
+    color: white;
+}
+
+.btn-primary-neumorphism:active {
+    box-shadow: var(--shadow-inset);
+    background: var(--primary-dark);
+}
+
+/* -------------------------------------- */
+/* 5. شريط التنقل السفلي الفائق (Floating Dock) */
+/* -------------------------------------- */
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light); /* شكل Dock ناعم */
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5); /* إطار ناعم */
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+/* الحركة البارزة للزر النشط */
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 137, 123, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px); /* رفع الزر للأعلى */
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* لضمان نفس العرض */
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* -------------------------------------- */
+/* 6. النوافذ المنبثقة (Modal) - Glassmorphism */
+/* -------------------------------------- */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* تطبيق Glassmorphism على الخلفية */
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.company-detail {
+    padding: 20px;
+}
+
+.company-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.company-logo-large {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: var(--shadow-card);
+}
+
+.company-info h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.company-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.company-category {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.company-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 16px;
+}
+
+.stat-info .stat-value {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.stat-info .stat-label {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.company-description, .company-specialties, .company-contact {
+    margin-bottom: 24px;
+}
+
+.company-description h4, .company-specialties h4, .company-contact h4 {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.specialties-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.specialty-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-item i {
+    width: 20px;
+    color: var(--primary);
+}
+
+.notifications-list {
+    padding: 20px;
+}
+
+.notification-item {
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-light);
+}
+
+.notification-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+    opacity: 0;
+    transition: var(--transition-liquid);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+}
+
+.load-more-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 80px;
+}
+
+/* -------------------------------------- */
+/* 7. تأثيرات السوائل (Liquid Animations) */
+/* -------------------------------------- */
+
+.liquid-transition {
+    transition: var(--transition-liquid);
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>PharmaHub 💎</h1>
+                    <p>مرحباً بعودتك، اكتشف القوة الدوائية.</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">2</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="settingsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن شركة، منتج أو تخصص..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">24</div>
+                <div class="stat-label">شركة معتمدة</div>
+            </div>
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">منتج متوفر</div>
+            </div>
+            <div class="stat-item liquid-transition">
+                <div class="stat-value">⭐ 4.8</div>
+                <div class="stat-label">متوسط التقييم</div>
+            </div>
+        </div>
+
+        <div class="companies-page">
+            <div class="categories-section">
+                <div class="section-title">
+                    <i class="fas fa-filter"></i>
+                    التخصصات الطبية
+                </div>
+                <div class="categories-scroll" id="categoriesScroll">
+                    </div>
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-gem"></i>
+                الشركاء الاستراتيجيون
+            </div>
+
+            <div class="featured-companies" id="featuredCompanies">
+                </div>
+
+            <div class="section-title">
+                <i class="fas fa-list-ul"></i>
+                مكتبة الشركات الكاملة
+            </div>
+
+            <div class="companies-grid" id="companiesGrid">
+                </div>
+
+            <div class="load-more-section">
+                <button class="btn-neumorphism btn-primary-neumorphism" id="loadMoreBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+
+        <button class="action-icon scroll-to-top liquid-transition" id="scrollToTop">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="companies.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div class="nav-label">الشركات</div>
+            </a>
+            <a href="shop.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="nav-label">المتجر</div>
+            </a>
+            <a href="financ.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">حسابي</div>
+            </a>
+        </div>
+    </div>
+
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="companyModalTitle">تفاصيل الشركة</h2>
+                <span class="close" onclick="companies.closeModal()">&times;</span>
+            </div>
+            <div class="modal-body company-detail">
+                 <div class="company-header">
+                    <div class="company-logo-large">
+                        <i class="fas fa-industry" id="companyDetailIcon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3 id="companyDetailName"></h3>
+                        <div class="company-rating" id="companyDetailRating"></div>
+                        <div class="company-category" id="companyDetailCategory"></div>
+                    </div>
+                </div>
+
+                <div class="company-stats">
+                    <div class="stat-card liquid-transition">
+                        <div class="stat-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="productsCount">0</div>
+                            <div class="stat-label">منتج دوائي</div>
+                        </div>
+                    </div>
+                    <div class="stat-card liquid-transition">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="establishedYear">0</div>
+                            <div class="stat-label">سنة التأسيس</div>
+                        </div>
+                    </div>
+                    <div class="stat-card liquid-transition">
+                        <div class="stat-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="countriesCount">0</div>
+                            <div class="stat-label">دولة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-description">
+                    <h4>عن الشركة</h4>
+                    <p id="companyDetailDescription"></p>
+                </div>
+
+                <div class="company-specialties">
+                    <h4>التخصصات</h4>
+                    <div class="specialties-list" id="specialtiesList"></div>
+                </div>
+
+                <div class="company-contact">
+                    <h4>معلومات الاتصال</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <span id="companyWebsite">-</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span id="companyPhone">-</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="companyAddress">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-actions" style="margin-top: 24px; display: flex; gap: 12px;">
+                    <button class="btn-neumorphism liquid-transition" id="favoriteBtn">
+                        <i class="far fa-heart" id="favoriteIcon"></i>
+                        المفضلة
+                    </button>
+                    <button class="btn-neumorphism btn-primary-neumorphism" style="flex: 2;" id="visitStoreBtn">
+                        <i class="fas fa-store"></i>
+                        زيارة المتجر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الإشعارات</h2>
+                <span class="close" onclick="companies.closeNotifications()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-list" id="notificationsList">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام شركات الأدوية (تم تكييف الكود ليستخدم الـ CSS الجديد)
+class Companies {
+    constructor() {
+        this.companies = [];
+        this.filteredCompanies = [];
+        this.favorites = [];
+        this.currentCompany = null;
+        this.visibleCompanies = 8;
+        this.currentCategory = 'all';
+        this.notifications = [];
+        this.init();
+    }
+
+    init() {
+        this.loadCompanies();
+        this.loadFavorites();
+        this.loadNotifications();
+        this.setupEventListeners();
+        this.renderCategories();
+        this.renderCompanies();
+        this.updateNotificationsBadge();
+        this.setupScrollToTop();
+        this.updateTime();
+    }
+
+    loadCompanies() {
+        const savedCompanies = localStorage.getItem('pharma_companies');
+        
+        if (savedCompanies) {
+            this.companies = JSON.parse(savedCompanies);
+        } else {
+            this.companies = this.getDefaultCompanies();
+        }
+        
+        this.filteredCompanies = [...this.companies];
+        this.saveCompanies();
+    }
+
+    getDefaultCompanies() {
+        return [
+            { id: 1, name: "شركة الأدوية المتحدة", category: "مستحضرات دوائية", description: "شركة رائدة في مجال الصناعات الدوائية، تقدم مجموعة واسعة من الأدوية والمستحضرات الطبية بجودة عالية ومعايير عالمية.", logo: "fa-industry", coverColor: "#00897B", rating: 4.8, reviewCount: 342, productsCount: 156, establishedYear: 1985, countriesCount: 15, specialties: ["مسكنات", "مضادات حيوية", "فيتامينات", "مستحضرات جلدية"], website: "www.unitedpharma.com", phone: "+966112345678", address: "الرياض، المملكة العربية السعودية", featured: true, premium: true },
+            { id: 2, name: "مصنع الفيتامينات المتقدم", category: "مكملات غذائية", description: "متخصصون في إنتاج المكملات الغذائية والفيتامينات بتركيبات علمية متطورة تلبي احتياجات الجسم المختلفة.", logo: "fa-apple-alt", coverColor: "#00A896", rating: 4.6, reviewCount: 189, productsCount: 87, establishedYear: 1998, countriesCount: 8, specialties: ["فيتامينات", "مكملات غذائية", "معادن", "أحماض أمينية"], website: "www.advancedvitamins.com", phone: "+966112345679", address: "جدة، المملكة العربية السعودية", featured: true, premium: false },
+            { id: 3, name: "مختبرات الجهاز الهضمي", category: "تخصصي", description: "متخصصون في أدوية الجهاز الهضمي والكبد، نقدم حلولاً طبية مبتكرة لمشاكل الهضم والامتصاص.", logo: "fa-stomach", coverColor: "#FFB300", rating: 4.4, reviewCount: 127, productsCount: 45, establishedYear: 2005, countriesCount: 6, specialties: ["معدة", "كبد", "هضم", "امتصاص"], website: "www.gilabs.com", phone: "+966112345680", address: "الدمام، المملكة العربية السعودية", featured: false, premium: true },
+            { id: 4, name: "شركة المضادات الحيوية", category: "مضادات حيوية", description: "رواد في إنتاج المضادات الحيوية بجميع أشكالها، نلتزم بأعلى معايير الجودة والفعالية.", logo: "fa-prescription-bottle", coverColor: "#2196F3", rating: 4.7, reviewCount: 234, productsCount: 67, establishedYear: 1990, countriesCount: 12, specialties: ["مضادات حيوية", "مضادات فطرية", "مضادات فيروسية"], website: "www.antibioticsco.com", phone: "+966112345681", address: "الرياض، المملكة العربية السعودية", featured: true, premium: false },
+            { id: 5, name: "مختبرات القلب", category: "قلب وأوعية دموية", description: "متخصصون في أدوية القلب والأوعية الدموية، نقدم حلولاً متكاملة لصحة القلب والشرايين.", logo: "fa-heartbeat", coverColor: "#F44336", rating: 4.9, reviewCount: 178, productsCount: 34, establishedYear: 2000, countriesCount: 10, specialties: ["قلب", "شرايين", "ضغط دم", "كوليسترول"], website: "www.heartlabs.com", phone: "+966112345682", address: "الرياض، المملكة العربية السعودية", featured: false, premium: true },
+            { id: 6, name: "مختبرات السكري", category: "غدد صماء", description: "متخصصون في أدوية السكري والغدد الصماء، نطور حلولاً مبتكرة لإدارة مرض السكري.", logo: "fa-vial", coverColor: "#9C27B0", rating: 4.5, reviewCount: 156, productsCount: 28, establishedYear: 2008, countriesCount: 7, specialties: ["سكري", "أنسولين", "غدد صماء", "هرمونات"], website: "www.diabeteslabs.com", phone: "+966112345683", address: "جدة، المملكة العربية السعودية", featured: false, premium: false },
+            { id: 7, name: "شركة الأدوية الطبيعية", category: "طب بديل", description: "نقدم أدوية ومستحضرات طبية مستخلصة من مصادر طبيعية، تجمع بين الطب الحديث والطب البديل.", logo: "fa-leaf", coverColor: "#4CAF50", rating: 4.3, reviewCount: 98, productsCount: 52, establishedYear: 2010, countriesCount: 5, specialties: ["أعشاب طبية", "زيوت عطرية", "مستحضرات طبيعية"], website: "www.naturalpharma.com", phone: "+966112345684", address: "الطائف، المملكة العربية السعودية", featured: false, premium: false },
+            { id: 8, name: "مختبرات الجلدية", category: "جلدية", description: "متخصصون في مستحضرات العناية بالبشرة والأدوية الجلدية، نقدم حلولاً لمختلف مشاكل البشرة.", logo: "fa-allergies", coverColor: "#FF9800", rating: 4.6, reviewCount: 201, productsCount: 73, establishedYear: 2003, countriesCount: 9, specialties: ["عناية بالبشرة", "أدوية جلدية", "مستحضرات تجميل طبية"], website: "www.dermlabs.com", phone: "+966112345685", address: "الرياض، المملكة العربية السعودية", featured: false, premium: true },
+            { id: 9, name: "شركة أدوية الأطفال", category: "أطفال", description: "متخصصون في أدوية ومستحضرات الأطفال، نقدم منتجات آمنة وفعالة مصممة خصيصاً للأطفال.", logo: "fa-baby", coverColor: "#3F51B5", rating: 4.8, reviewCount: 167, productsCount: 41, establishedYear: 2012, countriesCount: 6, specialties: ["أدوية أطفال", "مستحضرات رضاعة", "فيتامينات أطفال"], website: "www.kidspharma.com", phone: "+966112345686", address: "جدة، المملكة العربية السعودية", featured: false, premium: false },
+            { id: 10, name: "مختبرات العيون", category: "عيون", description: "رواد في أدوية ومستحضرات العيون، نقدم حلولاً متكاملة لصحة العين والإبصار.", logo: "fa-eye", coverColor: "#673AB7", rating: 4.7, reviewCount: 134, productsCount: 29, establishedYear: 2006, countriesCount: 8, specialties: ["أدوية عيون", "قطرات", "عدسات لاصقة", "مستحضرات عينية"], website: "www.eyelabs.com", phone: "+966112345687", address: "الرياض، المملكة العربية السعودية", featured: false, premium: true }
+        ];
+    }
+    
+    loadFavorites() {
+        const savedFavorites = localStorage.getItem('pharma_favorites');
+        if (savedFavorites) {
+            this.favorites = JSON.parse(savedFavorites);
+        }
+    }
+
+    loadNotifications() {
+        const savedNotifications = localStorage.getItem('pharma_notifications');
+        if (savedNotifications) {
+            this.notifications = JSON.parse(savedNotifications);
+        } else {
+            this.notifications = [
+                { id: 1, title: "شركات جديدة", message: "تمت إضافة 3 شركات أدوية جديدة إلى المنصة.", time: "2025-11-06T10:00:00", read: false },
+                { id: 2, title: "عروض خاصة", message: "شركة الأدوية المتحدة تقدم خصومات حصرية على منتجاتها هذا الأسبوع.", time: "2025-11-06T14:30:00", read: false }
+            ];
+            this.saveNotifications();
+        }
+    }
+
+    saveCompanies() { localStorage.setItem('pharma_companies', JSON.stringify(this.companies)); }
+    saveFavorites() { localStorage.setItem('pharma_favorites', JSON.stringify(this.favorites)); }
+    saveNotifications() { localStorage.setItem('pharma_notifications', JSON.stringify(this.notifications)); }
+
+    setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => { this.searchCompanies(); });
+        }
+        const notificationBtn = document.getElementById('notificationBtn');
+        if (notificationBtn) { notificationBtn.addEventListener('click', () => { this.showNotifications(); }); }
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) { loadMoreBtn.addEventListener('click', () => { this.loadMoreCompanies(); }); }
+        
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        if (favoriteBtn) { favoriteBtn.addEventListener('click', () => { this.toggleFavorite(); }); }
+        
+        const visitStoreBtn = document.getElementById('visitStoreBtn');
+        if (visitStoreBtn) { visitStoreBtn.addEventListener('click', () => { this.visitStore(); }); }
+        
+        setInterval(() => { this.updateTime(); }, 60000);
+        
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => { if (e.target === modal) { modal.style.display = 'none'; } });
+        });
+    }
+
+    setupScrollToTop() {
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) { timeElement.textContent = timeString; }
+    }
+
+    getCategoryIcon(category) {
+        const icons = {
+            'مستحضرات دوائية': 'fa-industry', 'مكملات غذائية': 'fa-apple-alt', 'تخصصي': 'fa-stethoscope', 
+            'مضادات حيوية': 'fa-prescription-bottle', 'قلب وأوعية دموية': 'fa-heartbeat', 'غدد صماء': 'fa-vial', 
+            'طب بديل': 'fa-leaf', 'جلدية': 'fa-allergies', 'أطفال': 'fa-baby', 'عيون': 'fa-eye'
+        };
+        return icons[category] || 'fa-building';
+    }
+
+    renderCategories() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        if (!categoriesScroll) return;
+        const categories = [...new Set(this.companies.map(c => c.category))];
+        
+        let categoriesHTML = `
+            <div class="category-chip active liquid-transition" data-category="all">
+                <i class="fas fa-th-large"></i>
+                الكل
+            </div>
+        `;
+
+        categories.forEach(category => {
+            const companyCount = this.companies.filter(c => c.category === category).length;
+            categoriesHTML += `
+                <div class="category-chip liquid-transition" data-category="${category}">
+                    <i class="fas ${this.getCategoryIcon(category)}"></i>
+                    ${category} (${companyCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = categoriesHTML;
+
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                this.currentCategory = chip.dataset.category;
+                this.filterCompanies();
+            });
+        });
+    }
+
+    filterCompanies() {
+        if (this.currentCategory === 'all') {
+            this.filteredCompanies = [...this.companies];
+        } else {
+            this.filteredCompanies = this.companies.filter(company => company.category === this.currentCategory);
+        }
+        this.visibleCompanies = 8;
+        this.renderCompanies();
+    }
+
+    searchCompanies() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        if (searchTerm.trim() === '') {
+            this.filterCompanies();
+            return;
+        }
+
+        this.filteredCompanies = this.companies.filter(company => 
+            company.name.toLowerCase().includes(searchTerm) ||
+            company.category.toLowerCase().includes(searchTerm) ||
+            company.description.toLowerCase().includes(searchTerm) ||
+            company.specialties.some(specialty => specialty.toLowerCase().includes(searchTerm))
+        );
+        
+        this.visibleCompanies = 8;
+        this.renderCompanies();
+    }
+
+    renderCompanies() {
+        this.renderFeaturedCompanies();
+        this.renderCompaniesGrid();
+    }
+
+    renderFeaturedCompanies() {
+        const featuredCompanies = document.getElementById('featuredCompanies');
+        if (!featuredCompanies) return;
+        
+        const featured = this.filteredCompanies.filter(company => company.featured);
+        
+        let featuredHTML = '';
+        featured.forEach(company => {
+            featuredHTML += `
+                <div class="featured-company-card liquid-transition" onclick="companies.showCompanyDetails(${company.id})">
+                    <div class="company-cover" style="background: ${company.coverColor}">
+                        <div class="company-logo">
+                            <i class="fas ${company.logo}"></i>
+                        </div>
+                    </div>
+                    <div class="featured-company-content">
+                        <h3>${company.name}</h3>
+                        <p>${company.category}</p>
+                        <div class="company-rating" style="margin-top: 8px;">
+                            <span>⭐ ${company.rating}</span>
+                            <span style="color: var(--text-secondary); font-size: 12px;">(${company.reviewCount} تقييم)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        featuredCompanies.innerHTML = featuredHTML;
+    }
+
+    renderCompaniesGrid() {
+        const companiesGrid = document.getElementById('companiesGrid');
+        if (!companiesGrid) return;
+        
+        const companiesToShow = this.filteredCompanies.slice(0, this.visibleCompanies);
+        
+        let gridHTML = '';
+        companiesToShow.forEach(company => {
+            const isFavorite = this.favorites.includes(company.id);
+            gridHTML += `
+                <div class="company-card liquid-transition" onclick="companies.showCompanyDetails(${company.id})">
+                    <div class="company-card-header">
+                        <div class="company-logo-small" style="background: ${company.coverColor}">
+                            <i class="fas ${company.logo}"></i>
+                        </div>
+                        <div class="company-card-name">${company.name}</div>
+                        <div class="company-card-category">${company.category}</div>
+                    </div>
+                    <div class="company-card-content">
+                        <div class="company-rating" style="margin-bottom: 12px;">
+                            <span>⭐ ${company.rating}</span>
+                            <span style="color: var(--text-secondary); font-size: 10px;">(${company.reviewCount})</span>
+                        </div>
+                        <button class="btn-neumorphism ${isFavorite ? 'btn-primary-neumorphism' : ''}" onclick="event.stopPropagation(); companies.toggleFavorite(${company.id})">
+                            <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                            ${isFavorite ? 'مفضلة' : 'إضافة'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        companiesGrid.innerHTML = gridHTML;
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            if (this.visibleCompanies >= this.filteredCompanies.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    loadMoreCompanies() {
+        this.visibleCompanies += 4;
+        this.renderCompaniesGrid();
+    }
+
+    showCompanyDetails(companyId) {
+        const company = this.companies.find(c => c.id === companyId);
+        if (!company) return;
+        
+        this.currentCompany = company;
+        const modal = document.getElementById('companyModal');
+        
+        document.getElementById('companyDetailIcon').className = `fas ${company.logo}`;
+        document.getElementById('companyDetailName').textContent = company.name;
+        document.getElementById('companyDetailCategory').textContent = company.category;
+        document.getElementById('companyDetailRating').innerHTML = `⭐ ${company.rating} <span style="color: var(--text-secondary); font-size: 14px;">(${company.reviewCount} تقييم)</span>`;
+        
+        document.getElementById('productsCount').textContent = company.productsCount;
+        document.getElementById('establishedYear').textContent = company.establishedYear;
+        document.getElementById('countriesCount').textContent = company.countriesCount;
+        
+        document.getElementById('companyDetailDescription').textContent = company.description;
+        
+        const specialtiesList = document.getElementById('specialtiesList');
+        specialtiesList.innerHTML = '';
+        company.specialties.forEach(specialty => {
+            const specialtyTag = document.createElement('div');
+            specialtyTag.className = 'specialty-tag';
+            specialtyTag.textContent = specialty;
+            specialtiesList.appendChild(specialtyTag);
+        });
+        
+        document.getElementById('companyWebsite').textContent = company.website;
+        document.getElementById('companyPhone').textContent = company.phone;
+        document.getElementById('companyAddress').textContent = company.address;
+        
+        const isFavorite = this.favorites.includes(company.id);
+        const favoriteIcon = document.getElementById('favoriteIcon');
+        favoriteIcon.className = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+        
+        modal.style.display = 'block';
+    }
+
+    closeModal() {
+        document.getElementById('companyModal').style.display = 'none';
+    }
+
+    toggleFavorite(companyId = null) {
+        const id = companyId || (this.currentCompany ? this.currentCompany.id : null);
+        if (!id) return;
+        
+        const index = this.favorites.indexOf(id);
+        if (index > -1) {
+            this.favorites.splice(index, 1);
+        } else {
+            this.favorites.push(id);
+        }
+        
+        this.saveFavorites();
+        this.renderCompaniesGrid();
+        
+        if (this.currentCompany && this.currentCompany.id === id) {
+            const isFavorite = this.favorites.includes(id);
+            const favoriteIcon = document.getElementById('favoriteIcon');
+            favoriteIcon.className = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+        }
+    }
+
+    visitStore() {
+        if (!this.currentCompany) return;
+        alert(`سيتم توجيهك إلى متجر ${this.currentCompany.name}`);
+        // في التطبيق الفعلي، سيتم توجيه المستخدم إلى صفحة المتجر
+    }
+
+    showNotifications() {
+        const modal = document.getElementById('notificationsModal');
+        const notificationsList = document.getElementById('notificationsList');
+        
+        let notificationsHTML = '';
+        this.notifications.forEach(notification => {
+            const time = new Date(notification.time).toLocaleString('ar-EG');
+            notificationsHTML += `
+                <div class="notification-item liquid-transition">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-time">${time}</div>
+                </div>
+            `;
+        });
+        
+        notificationsList.innerHTML = notificationsHTML;
+        modal.style.display = 'block';
+        
+        // تحديث الإشعارات كمقروءة
+        this.notifications.forEach(notification => notification.read = true);
+        this.saveNotifications();
+        this.updateNotificationsBadge();
+    }
+
+    closeNotifications() {
+        document.getElementById('notificationsModal').style.display = 'none';
+    }
+
+    updateNotificationsBadge() {
+        const unreadCount = this.notifications.filter(n => !n.read).length;
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
+}
+
+// تهيئة التطبيق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    window.companies = new Companies();
+});
+</script>
+</body>
+</html>>
