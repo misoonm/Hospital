@@ -1,0 +1,3765 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - الإعدادات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.settings-container {
+    padding: 0 20px 120px;
+}
+
+.settings-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.section-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 18px;
+}
+
+.section-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.settings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.setting-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.setting-item:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.setting-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--success);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+/* Select Styles */
+.select-control {
+    padding: 8px 12px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    min-width: 120px;
+}
+
+/* Input Styles */
+.input-control {
+    padding: 8px 12px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    width: 120px;
+    text-align: center;
+}
+
+/* Badge Styles */
+.setting-badge {
+    background: var(--accent);
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.checkbox-group, .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-item, .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.checkbox-item:hover, .radio-item:hover {
+    background: var(--primary-light);
+}
+
+.checkbox-item input, .radio-item input {
+    width: 18px;
+    height: 18px;
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    text-align: center;
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.file-upload-label i {
+    font-size: 40px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.file-upload-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-preview {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--accent), #D32F2F);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+/* User Profile */
+.user-profile {
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 32px;
+    color: var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.change-avatar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.profile-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.profile-role {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Security Settings */
+.security-level {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.security-indicator {
+    flex: 1;
+    height: 4px;
+    background: var(--bg-light);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.security-strength {
+    height: 100%;
+    background: var(--success);
+    transition: var(--transition-liquid);
+}
+
+.security-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Backup & Restore */
+.backup-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.backup-option {
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.backup-option:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.backup-icon {
+    font-size: 24px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.backup-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.backup-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* System Info */
+.system-info {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.info-value {
+    color: var(--text-secondary);
+}
+
+.info-status {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-success {
+    background: var(--success);
+    color: white;
+}
+
+.status-warning {
+    background: var(--warning);
+    color: white;
+}
+
+.status-error {
+    background: var(--accent);
+    color: white;
+}
+
+/* Bottom Navigation */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.main-content {
+    padding-bottom: 120px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    z-index: 3000;
+    transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-toast.error {
+    background: var(--accent);
+}
+
+/* Advanced Settings */
+.advanced-settings {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 16px;
+    border-left: 4px solid var(--warning);
+}
+
+.advanced-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.advanced-title {
+    font-weight: 700;
+    color: var(--warning);
+}
+
+.advanced-content {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Color Picker */
+.color-picker {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-liquid);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.active {
+    border-color: var(--text-primary);
+}
+
+/* Language Selector */
+.language-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.language-option {
+    padding: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.language-option:hover {
+    border-color: var(--primary-light);
+}
+
+.language-option.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.language-flag {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.language-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Theme Selector */
+.theme-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.theme-option {
+    padding: 16px 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.theme-option:hover {
+    transform: translateY(-2px);
+}
+
+.theme-option.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.theme-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    background: conic-gradient(var(--primary), var(--secondary), var(--accent));
+}
+
+.theme-name {
+    font-weight: 600;
+    font-size: 12px;
+}
+
+@media (max-width: 428px) {
+    .backup-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .language-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .theme-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-picker {
+        flex-wrap: wrap;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>الإعدادات</h1>
+                    <p>إدارة إعدادات التطبيق والمختبر</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar" id="searchBar" style="display: none;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث في الإعدادات..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="settings-container">
+                <!-- قسم الحساب والمستخدم -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">الحساب والمستخدم</div>
+                            <div class="section-description">إدارة معلومات الحساب والإعدادات الشخصية</div>
+                        </div>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-item" data-setting="profile">
+                            <div class="setting-info">
+                                <div class="setting-label">الملف الشخصي</div>
+                                <div class="setting-description">إدارة معلوماتك الشخصية وصورة البروفايل</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="notifications">
+                            <div class="setting-info">
+                                <div class="setting-label">الإشعارات</div>
+                                <div class="setting-description">التحكم في الإشعارات والتنبيهات</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notificationsToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="privacy">
+                            <div class="setting-info">
+                                <div class="setting-label">الخصوصية</div>
+                                <div class="setting-description">إعدادات الخصوصية والأمان</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم إعدادات المختبر -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">إعدادات المختبر</div>
+                            <div class="section-description">تهيئة إعدادات المختبر والخدمات</div>
+                        </div>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-item" data-setting="labInfo">
+                            <div class="setting-info">
+                                <div class="setting-label">معلومات المختبر</div>
+                                <div class="setting-description">إدارة بيانات المختبر الأساسية</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="services">
+                            <div class="setting-info">
+                                <div class="setting-label">الخدمات والتحاليل</div>
+                                <div class="setting-description">إدارة قائمة الخدمات والتحاليل المتاحة</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="pricing">
+                            <div class="setting-info">
+                                <div class="setting-label">الأسعار والتكاليف</div>
+                                <div class="setting-description">إدارة أسعار الخدمات والعروض</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="workingHours">
+                            <div class="setting-info">
+                                <div class="setting-label">ساعات العمل</div>
+                                <div class="setting-description">تحديد أوقات الدوام والعطلات</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم المظهر والواجهة -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">المظهر والواجهة</div>
+                            <div class="section-description">تخصيص مظهر التطبيق وواجهة المستخدم</div>
+                        </div>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-item" data-setting="theme">
+                            <div class="setting-info">
+                                <div class="setting-label">السمة</div>
+                                <div class="setting-description">اختر بين الوضع الفاتح والداكن</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="select-control" id="themeSelect">
+                                    <option value="light">فاتح</option>
+                                    <option value="dark">داكن</option>
+                                    <option value="auto">تلقائي</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="language">
+                            <div class="setting-info">
+                                <div class="setting-label">اللغة</div>
+                                <div class="setting-description">اختر لغة واجهة التطبيق</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="select-control" id="languageSelect">
+                                    <option value="ar">العربية</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="fontSize">
+                            <div class="setting-info">
+                                <div class="setting-label">حجم الخط</div>
+                                <div class="setting-description">ضبط حجم النص في التطبيق</div>
+                            </div>
+                            <div class="setting-control">
+                                <input type="number" class="input-control" id="fontSizeInput" value="16" min="12" max="24">
+                                <span style="font-size: 12px; color: var(--text-secondary);">px</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم الإشعارات والتنبيهات -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">الإشعارات والتنبيهات</div>
+                            <div class="section-description">التحكم في الإشعارات والتنبيهات المختلفة</div>
+                        </div>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">إشعارات الطلبات الجديدة</div>
+                                <div class="setting-description">إشعارات فورية عند استلام طلبات جديدة</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="newOrdersToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">إشعارات النتائج الحرجة</div>
+                                <div class="setting-description">تنبيهات فورية للنتائج الطبية الحرجة</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="criticalResultsToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">إشعارات المخزون</div>
+                                <div class="setting-description">تنبيهات عند انخفاض مستويات المخزون</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="inventoryToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">إشعارات الصيانة</div>
+                                <div class="setting-description">تذكير بمواعيد صيانة الأجهزة</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="maintenanceToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم الأمان والحماية -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">الأمان والحماية</div>
+                            <div class="section-description">إعدادات الأمان وحماية البيانات</div>
+                        </div>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-item" data-setting="changePassword">
+                            <div class="setting-info">
+                                <div class="setting-label">تغيير كلمة المرور</div>
+                                <div class="setting-description">تحديث كلمة المرور الحالية</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">المصادقة الثنائية</div>
+                                <div class="setting-description">طبقة أمان إضافية لحسابك</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="twoFactorToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">قفل التطبيق</div>
+                                <div class="setting-description">تفعيل قفل التطبيق التلقائي</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="appLockToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="sessionManagement">
+                            <div class="setting-info">
+                                <div class="setting-label">إدارة الجلسات</div>
+                                <div class="setting-description">عرض وإدارة جلسات الدخول النشطة</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم النسخ الاحتياطي والاستعادة -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">النسخ الاحتياطي والاستعادة</div>
+                            <div class="section-description">إدارة نسخ البيانات الاحتياطية والاستعادة</div>
+                        </div>
+                    </div>
+                    <div class="backup-options">
+                        <div class="backup-option" data-action="backup">
+                            <div class="backup-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="backup-label">نسخ احتياطي</div>
+                            <div class="backup-description">إنشاء نسخة احتياطية من البيانات</div>
+                        </div>
+                        <div class="backup-option" data-action="restore">
+                            <div class="backup-icon">
+                                <i class="fas fa-cloud-download-alt"></i>
+                            </div>
+                            <div class="backup-label">استعادة</div>
+                            <div class="backup-description">استعادة البيانات من نسخة احتياطية</div>
+                        </div>
+                        <div class="backup-option" data-action="autoBackup">
+                            <div class="backup-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="backup-label">نسخ تلقائي</div>
+                            <div class="backup-description">إعداد النسخ الاحتياطي التلقائي</div>
+                        </div>
+                        <div class="backup-option" data-action="exportData">
+                            <div class="backup-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <div class="backup-label">تصدير البيانات</div>
+                            <div class="backup-description">تصدير البيانات بصيغ مختلفة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- قسم حول التطبيق -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">حول التطبيق</div>
+                            <div class="section-description">معلومات عن التطبيق والإصدار</div>
+                        </div>
+                    </div>
+                    <div class="system-info">
+                        <div class="info-item">
+                            <span class="info-label">إصدار التطبيق</span>
+                            <span class="info-value">v2.1.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">رقم البناء</span>
+                            <span class="info-value">#21045</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">آخر تحديث</span>
+                            <span class="info-value">15 ديسمبر 2023</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">حالة النظام</span>
+                            <span class="info-status status-success">يعمل بشكل طبيعي</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">مساحة التخزين</span>
+                            <span class="info-value">245 MB / 1 GB</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-secondary" id="checkUpdatesBtn">
+                            <i class="fas fa-sync"></i>
+                            التحقق من التحديثات
+                        </button>
+                        <button class="btn btn-primary" id="aboutAppBtn">
+                            <i class="fas fa-info"></i>
+                            عن التطبيق
+                        </button>
+                    </div>
+                </div>
+
+                <!-- الإعدادات المتقدمة -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">الإعدادات المتقدمة</div>
+                            <div class="section-description">إعدادات متقدمة للمستخدمين الخبراء</div>
+                        </div>
+                    </div>
+                    <div class="advanced-settings">
+                        <div class="advanced-header">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                            <div class="advanced-title">تنبيه</div>
+                        </div>
+                        <div class="advanced-content">
+                            هذه الإعدادات مخصصة للمستخدمين الخبراء فقط. التغييرات هنا قد تؤثر على أداء التطبيق.
+                        </div>
+                    </div>
+                    <div class="settings-grid" style="margin-top: 16px;">
+                        <div class="setting-item" data-setting="developerOptions">
+                            <div class="setting-info">
+                                <div class="setting-label">خيارات المطور</div>
+                                <div class="setting-description">إعدادات التطوير والتصحيح</div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="setting-item" data-setting="resetApp">
+                            <div class="setting-info">
+                                <div class="setting-label">إعادة تعيين التطبيق</div>
+                                <div class="setting-description">إعادة التطبيق إلى الإعدادات الافتراضية</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-danger" style="padding: 8px 16px; font-size: 12px;">
+                                    <i class="fas fa-trash"></i>
+                                    إعادة تعيين
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="test-requests.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <div class="nav-label">طلبات التحاليل</div>
+            </a>
+            <a href="results.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="nav-label">النتائج</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة الملف الشخصي -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الملف الشخصي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="user-profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-md"></i>
+                        <div class="change-avatar">تغيير</div>
+                    </div>
+                    <div class="profile-name">د. أحمد محمد</div>
+                    <div class="profile-role">مدير المختبر الطبي</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الاسم الكامل</label>
+                    <input type="text" class="form-input" value="د. أحمد محمد" id="fullName">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-input" value="ahmed.mohamed@lab.com" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف</label>
+                    <input type="tel" class="form-input" value="+966501234567" id="phone">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">التخصص</label>
+                    <input type="text" class="form-input" value="كيمياء حيوية طبية" id="specialty">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الخبرة</label>
+                    <input type="text" class="form-input" value="8 سنوات" id="experience">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelProfileBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveProfileBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ التغييرات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تغيير كلمة المرور -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تغيير كلمة المرور</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الحالية</label>
+                    <input type="password" class="form-input" id="currentPassword">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الجديدة</label>
+                    <input type="password" class="form-input" id="newPassword">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                    <input type="password" class="form-input" id="confirmPassword">
+                </div>
+
+                <div class="security-level">
+                    <div class="security-indicator">
+                        <div class="security-strength" style="width: 0%;"></div>
+                    </div>
+                    <div class="security-text" id="passwordStrength">ضعيفة</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelPasswordBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="savePasswordBtn">
+                        <i class="fas fa-key"></i>
+                        تغيير كلمة المرور
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة معلومات المختبر -->
+    <div id="labInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>معلومات المختبر</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">اسم المختبر</label>
+                    <input type="text" class="form-input" value="مختبر النخبة الطبي" id="labName">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">العنوان</label>
+                    <textarea class="form-textarea" id="labAddress">الرياض، حي العليا، شارع الملك فهد</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الترخيص</label>
+                    <input type="text" class="form-input" value="MED-LAB-2023-0456" id="labLicense">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">هاتف المختبر</label>
+                    <input type="tel" class="form-input" value="+966112345678" id="labPhone">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-input" value="info@elite-lab.com" id="labEmail">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الموقع الإلكتروني</label>
+                    <input type="url" class="form-input" value="https://www.elite-lab.com" id="labWebsite">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelLabInfoBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveLabInfoBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ المعلومات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة النسخ الاحتياطي -->
+    <div id="backupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>النسخ الاحتياطي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">نوع النسخ الاحتياطي</label>
+                    <select class="form-select" id="backupType">
+                        <option value="full">نسخ كامل</option>
+                        <option value="incremental">نسخ تزايدي</option>
+                        <option value="selective">نسخ انتقائي</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">البيانات المطلوبة</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="backupData" value="patients" checked>
+                            <span>بيانات المرضى</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="backupData" value="tests" checked>
+                            <span>التحاليل والنتائج</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="backupData" value="financial" checked>
+                            <span>البيانات المالية</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="backupData" value="settings" checked>
+                            <span>الإعدادات</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">وجهة الحفظ</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="backupDestination" value="cloud" checked>
+                            <span>التخزين السحابي</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="backupDestination" value="local">
+                            <span>التخزين المحلي</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="backupDestination" value="external">
+                            <span>جهاز خارجي</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelBackupBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="startBackupBtn">
+                        <i class="fas fa-play"></i>
+                        بدء النسخ الاحتياطي
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعارات التوست -->
+    <div class="notification-toast" id="notificationToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <script>
+// نظام إدارة الإعدادات المتقدم والمتكامل
+class SettingsManager {
+    constructor() {
+        this.settings = {};
+        this.currentSettings = {};
+        this.init();
+    }
+
+    init() {
+        this.loadSettings();
+        this.setupEventListeners();
+        this.setupSearch();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+        
+        // إعداد تأثيرات الظهور
+        this.setupIntersectionObserver();
+        
+        // إنشاء النوافذ المنبثقة الديناميكية
+        this.createDynamicModals();
+    }
+
+    createDynamicModals() {
+        // نافذة الخدمات
+        this.createServicesModal();
+        
+        // نافذة الخصوصية
+        this.createPrivacyModal();
+        
+        // نافذة الأسعار
+        this.createPricingModal();
+        
+        // نافذة ساعات العمل
+        this.createWorkingHoursModal();
+        
+        // نافذة إدارة الجلسات
+        this.createSessionManagementModal();
+        
+        // نافذة الاستعادة
+        this.createRestoreModal();
+        
+        // نافذة النسخ التلقائي
+        this.createAutoBackupModal();
+        
+        // نافذة المطور
+        this.createDeveloperModal();
+    }
+
+    createServicesModal() {
+        const modalHTML = `
+            <div id="servicesModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>الخدمات والتحاليل</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">إدارة الخدمات المتاحة</label>
+                            <div class="services-list" id="servicesList">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">إضافة خدمة جديدة</label>
+                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                <input type="text" class="form-input" id="newServiceName" placeholder="اسم الخدمة">
+                                <input type="number" class="form-input" id="newServicePrice" placeholder="السعر">
+                                <select class="form-select" id="newServiceCategory">
+                                    <option value="blood">تحاليل الدم</option>
+                                    <option value="urine">تحاليل البول</option>
+                                    <option value="hormones">تحاليل الهرمونات</option>
+                                    <option value="microbiology">الميكروبيولوجي</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="addServiceBtn" style="width: 100%;">
+                                <i class="fas fa-plus"></i> إضافة خدمة
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تصدير قائمة الخدمات</label>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" id="exportServicesBtn">
+                                    <i class="fas fa-file-export"></i> تصدير إلى Excel
+                                </button>
+                                <button class="btn btn-secondary" id="printServicesBtn">
+                                    <i class="fas fa-print"></i> طباعة القائمة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelServicesBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="saveServicesBtn">
+                                <i class="fas fa-save"></i> حفظ التغييرات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupServicesModal();
+    }
+
+    setupServicesModal() {
+        // تحميل الخدمات
+        this.loadServices();
+        
+        document.getElementById('addServiceBtn').addEventListener('click', () => {
+            this.addNewService();
+        });
+
+        document.getElementById('saveServicesBtn').addEventListener('click', () => {
+            this.saveServices();
+        });
+
+        document.getElementById('cancelServicesBtn').addEventListener('click', () => {
+            document.getElementById('servicesModal').style.display = 'none';
+        });
+
+        document.getElementById('exportServicesBtn').addEventListener('click', () => {
+            this.exportServices();
+        });
+
+        document.getElementById('printServicesBtn').addEventListener('click', () => {
+            this.printServices();
+        });
+    }
+
+    loadServices() {
+        const services = JSON.parse(localStorage.getItem('labServices') || '[]');
+        const servicesList = document.getElementById('servicesList');
+        
+        if (services.length === 0) {
+            // خدمات افتراضية
+            const defaultServices = [
+                { id: 1, name: 'تحليل الدم الكامل', price: 50, category: 'blood', active: true },
+                { id: 2, name: 'تحليل السكر', price: 25, category: 'blood', active: true },
+                { id: 3, name: 'تحليل وظائف الكبد', price: 80, category: 'blood', active: true },
+                { id: 4, name: 'تحليل البول', price: 30, category: 'urine', active: true },
+                { id: 5, name: 'تحليل الهرمونات', price: 120, category: 'hormones', active: true }
+            ];
+            localStorage.setItem('labServices', JSON.stringify(defaultServices));
+            this.renderServices(defaultServices);
+        } else {
+            this.renderServices(services);
+        }
+    }
+
+    renderServices(services) {
+        const servicesList = document.getElementById('servicesList');
+        servicesList.innerHTML = '';
+
+        services.forEach(service => {
+            const serviceHTML = `
+                <div class="setting-item" data-service-id="${service.id}">
+                    <div class="setting-info">
+                        <div class="setting-label">${service.name}</div>
+                        <div class="setting-description">${this.getCategoryName(service.category)} - ${service.price} ريال</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" ${service.active ? 'checked' : ''} onchange="settingsManager.toggleService(${service.id}, this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <button class="action-icon" onclick="settingsManager.editService(${service.id})" style="background: transparent; box-shadow: none;">
+                            <i class="fas fa-edit" style="color: var(--primary);"></i>
+                        </button>
+                        <button class="action-icon" onclick="settingsManager.deleteService(${service.id})" style="background: transparent; box-shadow: none;">
+                            <i class="fas fa-trash" style="color: var(--accent);"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            servicesList.insertAdjacentHTML('beforeend', serviceHTML);
+        });
+    }
+
+    getCategoryName(category) {
+        const categories = {
+            'blood': 'تحاليل الدم',
+            'urine': 'تحاليل البول',
+            'hormones': 'تحاليل الهرمونات',
+            'microbiology': 'الميكروبيولوجي',
+            'other': 'أخرى'
+        };
+        return categories[category] || 'أخرى';
+    }
+
+    addNewService() {
+        const name = document.getElementById('newServiceName').value;
+        const price = document.getElementById('newServicePrice').value;
+        const category = document.getElementById('newServiceCategory').value;
+
+        if (!name || !price) {
+            this.showToast('يرجى ملء جميع الحقول', 'error');
+            return;
+        }
+
+        const services = JSON.parse(localStorage.getItem('labServices') || '[]');
+        const newService = {
+            id: Date.now(),
+            name: name,
+            price: parseFloat(price),
+            category: category,
+            active: true
+        };
+
+        services.push(newService);
+        localStorage.setItem('labServices', JSON.stringify(services));
+        this.renderServices(services);
+
+        // مسح الحقول
+        document.getElementById('newServiceName').value = '';
+        document.getElementById('newServicePrice').value = '';
+
+        this.showToast('تم إضافة الخدمة بنجاح');
+    }
+
+    toggleService(id, active) {
+        const services = JSON.parse(localStorage.getItem('labServices') || '[]');
+        const service = services.find(s => s.id === id);
+        if (service) {
+            service.active = active;
+            localStorage.setItem('labServices', JSON.stringify(services));
+            this.showToast(active ? 'تم تفعيل الخدمة' : 'تم إيقاف الخدمة');
+        }
+    }
+
+    editService(id) {
+        const services = JSON.parse(localStorage.getItem('labServices') || '[]');
+        const service = services.find(s => s.id === id);
+        
+        if (service) {
+            const newName = prompt('اسم الخدمة الجديد:', service.name);
+            const newPrice = prompt('السعر الجديد:', service.price);
+            
+            if (newName && newPrice) {
+                service.name = newName;
+                service.price = parseFloat(newPrice);
+                localStorage.setItem('labServices', JSON.stringify(services));
+                this.renderServices(services);
+                this.showToast('تم تعديل الخدمة بنجاح');
+            }
+        }
+    }
+
+    deleteService(id) {
+        if (confirm('هل أنت متأكد من حذف هذه الخدمة؟')) {
+            const services = JSON.parse(localStorage.getItem('labServices') || '[]');
+            const filteredServices = services.filter(s => s.id !== id);
+            localStorage.setItem('labServices', JSON.stringify(filteredServices));
+            this.renderServices(filteredServices);
+            this.showToast('تم حذف الخدمة بنجاح');
+        }
+    }
+
+    saveServices() {
+        this.showToast('تم حفظ الخدمات بنجاح');
+        document.getElementById('servicesModal').style.display = 'none';
+    }
+
+    exportServices() {
+        this.showToast('جاري تصدير قائمة الخدمات...');
+        // محاكاة عملية التصدير
+        setTimeout(() => {
+            this.showToast('تم تصدير قائمة الخدمات بنجاح');
+        }, 1500);
+    }
+
+    printServices() {
+        window.print();
+    }
+
+    createPrivacyModal() {
+        const modalHTML = `
+            <div id="privacyModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>إعدادات الخصوصية</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">مشاركة البيانات للإحصائيات</div>
+                                    <div class="setting-description">السماح بمشاركة البيانات المجهولة لتحسين الخدمة</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="dataSharingToggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">تشفير البيانات المحلية</div>
+                                    <div class="setting-description">تشفير جميع البيانات المخزنة محلياً على الجهاز</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="dataEncryptionToggle" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">حذف السجلات التلقائي</div>
+                                    <div class="setting-description">حذف السجلات القديمة تلقائياً بعد 90 يوماً</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="autoDeleteToggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">إخفاء المعلومات الحساسة</div>
+                                    <div class="setting-description">إخفاء المعلومات الشخصية في الشاشات العامة</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="hideSensitiveInfoToggle" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">صلاحية الوصول للبيانات</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="dataAccess" value="reports" checked>
+                                    <span>التقارير والإحصائيات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="dataAccess" value="export" checked>
+                                    <span>تصدير البيانات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="dataAccess" value="backup">
+                                    <span>النسخ الاحتياطي</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="dataAccess" value="api">
+                                    <span>واجهة برمجة التطبيقات (API)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelPrivacyBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="savePrivacyBtn">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupPrivacyModal();
+    }
+
+    setupPrivacyModal() {
+        document.getElementById('savePrivacyBtn').addEventListener('click', () => {
+            this.savePrivacySettings();
+        });
+
+        document.getElementById('cancelPrivacyBtn').addEventListener('click', () => {
+            document.getElementById('privacyModal').style.display = 'none';
+        });
+    }
+
+    savePrivacySettings() {
+        const privacySettings = {
+            dataSharing: document.getElementById('dataSharingToggle').checked,
+            dataEncryption: document.getElementById('dataEncryptionToggle').checked,
+            autoDelete: document.getElementById('autoDeleteToggle').checked,
+            hideSensitiveInfo: document.getElementById('hideSensitiveInfoToggle').checked
+        };
+
+        this.settings.privacy = privacySettings;
+        this.saveSettings();
+        this.showToast('تم حفظ إعدادات الخصوصية بنجاح');
+        document.getElementById('privacyModal').style.display = 'none';
+    }
+
+    createPricingModal() {
+        const modalHTML = `
+            <div id="pricingModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>الأسعار والتكاليف</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">نظام التسعير</label>
+                            <select class="form-select" id="pricingSystem">
+                                <option value="fixed">أسعار ثابتة</option>
+                                <option value="dynamic">أسعار ديناميكية</option>
+                                <option value="tiered">أسعار متدرجة</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">ضريبة القيمة المضافة (%)</label>
+                            <input type="number" class="form-input" id="vatPercentage" value="15" min="0" max="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">خصم العملاء الدائمين (%)</label>
+                            <input type="number" class="form-input" id="loyaltyDiscount" value="10" min="0" max="50">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">عروض خاصة</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="specialOffers" value="weekend" checked>
+                                    <span>عروض نهاية الأسبوع</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="specialOffers" value="seasonal" checked>
+                                    <span>عروض موسمية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="specialOffers" value="bulk">
+                                    <span>خصم الكميات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="specialOffers" value="emergency">
+                                    <span>أسعار الطوارئ</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تحديث الأسعار تلقائياً</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="autoUpdate" value="monthly" checked>
+                                    <span>شهرياً</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="autoUpdate" value="quarterly">
+                                    <span>ربع سنوي</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="autoUpdate" value="manual">
+                                    <span>يدوياً</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelPricingBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="savePricingBtn">
+                                <i class="fas fa-save"></i> حفظ الأسعار
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupPricingModal();
+    }
+
+    setupPricingModal() {
+        document.getElementById('savePricingBtn').addEventListener('click', () => {
+            this.savePricingSettings();
+        });
+
+        document.getElementById('cancelPricingBtn').addEventListener('click', () => {
+            document.getElementById('pricingModal').style.display = 'none';
+        });
+    }
+
+    savePricingSettings() {
+        const pricingSettings = {
+            system: document.getElementById('pricingSystem').value,
+            vat: parseFloat(document.getElementById('vatPercentage').value),
+            loyaltyDiscount: parseFloat(document.getElementById('loyaltyDiscount').value),
+            autoUpdate: document.querySelector('input[name="autoUpdate"]:checked').value
+        };
+
+        this.settings.pricing = pricingSettings;
+        this.saveSettings();
+        this.showToast('تم حفظ إعدادات الأسعار بنجاح');
+        document.getElementById('pricingModal').style.display = 'none';
+    }
+
+    createWorkingHoursModal() {
+        const modalHTML = `
+            <div id="workingHoursModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>ساعات العمل</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">أيام العمل</label>
+                            <div class="checkbox-group">
+                                ${['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'].map(day => `
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="workingDays" value="${day}" ${['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء'].includes(day) ? 'checked' : ''}>
+                                        <span>${day}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">ساعات العمل اليومية</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">من</label>
+                                    <input type="time" class="form-input" id="workStartTime" value="08:00">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">إلى</label>
+                                    <input type="time" class="form-input" id="workEndTime" value="17:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">فترات الراحة</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">بداية الراحة</label>
+                                    <input type="time" class="form-input" id="breakStartTime" value="12:00">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">نهاية الراحة</label>
+                                    <input type="time" class="form-input" id="breakEndTime" value="13:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">ساعات العمل في العطلات</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">من</label>
+                                    <input type="time" class="form-input" id="holidayStartTime" value="10:00">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">إلى</label>
+                                    <input type="time" class="form-input" id="holidayEndTime" value="14:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelWorkingHoursBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="saveWorkingHoursBtn">
+                                <i class="fas fa-save"></i> حفظ الساعات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupWorkingHoursModal();
+    }
+
+    setupWorkingHoursModal() {
+        document.getElementById('saveWorkingHoursBtn').addEventListener('click', () => {
+            this.saveWorkingHours();
+        });
+
+        document.getElementById('cancelWorkingHoursBtn').addEventListener('click', () => {
+            document.getElementById('workingHoursModal').style.display = 'none';
+        });
+    }
+
+    saveWorkingHours() {
+        const workingHours = {
+            days: Array.from(document.querySelectorAll('input[name="workingDays"]:checked')).map(cb => cb.value),
+            workStart: document.getElementById('workStartTime').value,
+            workEnd: document.getElementById('workEndTime').value,
+            breakStart: document.getElementById('breakStartTime').value,
+            breakEnd: document.getElementById('breakEndTime').value,
+            holidayStart: document.getElementById('holidayStartTime').value,
+            holidayEnd: document.getElementById('holidayEndTime').value
+        };
+
+        this.settings.workingHours = workingHours;
+        this.saveSettings();
+        this.showToast('تم حفظ ساعات العمل بنجاح');
+        document.getElementById('workingHoursModal').style.display = 'none';
+    }
+
+    createSessionManagementModal() {
+        const modalHTML = `
+            <div id="sessionManagementModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>إدارة الجلسات</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">الجلسات النشطة</label>
+                            <div class="sessions-list" id="sessionsList">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">إعدادات الجلسات</label>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <div class="setting-label">مدة انتهاء الجلسة</div>
+                                        <div class="setting-description">الوقت قبل انتهاء الجلسة تلقائياً</div>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="select-control" id="sessionTimeout">
+                                            <option value="15">15 دقيقة</option>
+                                            <option value="30" selected>30 دقيقة</option>
+                                            <option value="60">60 دقيقة</option>
+                                            <option value="120">ساعتين</option>
+                                            <option value="0">لا ينتهي</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <div class="setting-label">جلسات متعددة</div>
+                                        <div class="setting-description">السماح بتسجيل الدخول من أجهزة متعددة</div>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="multipleSessionsToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-danger" id="logoutAllBtn">
+                                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج من جميع الأجهزة
+                            </button>
+                            <button class="btn btn-primary" id="saveSessionSettingsBtn">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupSessionManagementModal();
+    }
+
+    setupSessionManagementModal() {
+        this.loadSessions();
+
+        document.getElementById('saveSessionSettingsBtn').addEventListener('click', () => {
+            this.saveSessionSettings();
+        });
+
+        document.getElementById('logoutAllBtn').addEventListener('click', () => {
+            this.logoutAllSessions();
+        });
+    }
+
+    loadSessions() {
+        const sessions = [
+            { id: 1, device: 'جهاز كمبيوتر - Windows', location: 'الرياض, السعودية', lastActive: '2024-01-15 10:30', active: true },
+            { id: 2, device: 'هاتف - iPhone', location: 'الرياض, السعودية', lastActive: '2024-01-15 09:15', active: true },
+            { id: 3, device: 'جهاز كمبيوتر - Mac', location: 'جدة, السعودية', lastActive: '2024-01-14 16:45', active: false }
+        ];
+
+        this.renderSessions(sessions);
+    }
+
+    renderSessions(sessions) {
+        const sessionsList = document.getElementById('sessionsList');
+        sessionsList.innerHTML = '';
+
+        sessions.forEach(session => {
+            const sessionHTML = `
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">${session.device}</div>
+                        <div class="setting-description">${session.location} - ${session.lastActive}</div>
+                    </div>
+                    <div class="setting-control">
+                        <span class="setting-badge" style="background: ${session.active ? 'var(--success)' : 'var(--text-secondary)'};">
+                            ${session.active ? 'نشطة' : 'منتهية'}
+                        </span>
+                        <button class="action-icon" onclick="settingsManager.terminateSession(${session.id})" style="background: transparent; box-shadow: none;">
+                            <i class="fas fa-times" style="color: var(--accent);"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            sessionsList.insertAdjacentHTML('beforeend', sessionHTML);
+        });
+    }
+
+    terminateSession(sessionId) {
+        if (confirm('هل أنت متأكد من إنهاء هذه الجلسة؟')) {
+            this.showToast('تم إنهاء الجلسة بنجاح');
+            this.loadSessions(); // إعادة تحميل الجلسات
+        }
+    }
+
+    saveSessionSettings() {
+        const sessionSettings = {
+            timeout: document.getElementById('sessionTimeout').value,
+            multipleSessions: document.getElementById('multipleSessionsToggle').checked
+        };
+
+        this.settings.session = sessionSettings;
+        this.saveSettings();
+        this.showToast('تم حفظ إعدادات الجلسات بنجاح');
+        document.getElementById('sessionManagementModal').style.display = 'none';
+    }
+
+    logoutAllSessions() {
+        if (confirm('هل أنت متأكد من تسجيل الخروج من جميع الأجهزة؟')) {
+            this.showToast('تم تسجيل الخروج من جميع الأجهزة بنجاح');
+            document.getElementById('sessionManagementModal').style.display = 'none';
+        }
+    }
+
+    createRestoreModal() {
+        const modalHTML = `
+            <div id="restoreModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>استعادة البيانات</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">النسخ الاحتياطية المتاحة</label>
+                            <div class="backup-list" id="backupList">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">خيارات الاستعادة</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="restoreOption" value="full" checked>
+                                    <span>استعادة كاملة</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="restoreOption" value="partial">
+                                    <span>استعادة جزئية</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="restoreOption" value="merge">
+                                    <span>دمج مع البيانات الحالية</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="partialRestoreSection" style="display: none;">
+                            <label class="form-label">البيانات المطلوبة</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="restoreData" value="patients" checked>
+                                    <span>بيانات المرضى</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="restoreData" value="tests" checked>
+                                    <span>التحاليل والنتائج</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="restoreData" value="financial">
+                                    <span>البيانات المالية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="restoreData" value="settings">
+                                    <span>الإعدادات</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelRestoreBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="startRestoreBtn">
+                                <i class="fas fa-play"></i> بدء الاستعادة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupRestoreModal();
+    }
+
+    setupRestoreModal() {
+        this.loadBackups();
+
+        // إظهار/إخفاء خيارات الاستعادة الجزئية
+        document.querySelectorAll('input[name="restoreOption"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                document.getElementById('partialRestoreSection').style.display = 
+                    e.target.value === 'partial' ? 'block' : 'none';
+            });
+        });
+
+        document.getElementById('startRestoreBtn').addEventListener('click', () => {
+            this.startRestore();
+        });
+
+        document.getElementById('cancelRestoreBtn').addEventListener('click', () => {
+            document.getElementById('restoreModal').style.display = 'none';
+        });
+    }
+
+    loadBackups() {
+        const backups = [
+            { id: 1, date: '2024-01-15 10:00', size: '45.2 MB', type: 'كاملة', automatic: true },
+            { id: 2, date: '2024-01-14 22:00', size: '44.8 MB', type: 'كاملة', automatic: true },
+            { id: 3, date: '2024-01-13 10:00', size: '43.5 MB', type: 'كاملة', automatic: true },
+            { id: 4, date: '2024-01-12 15:30', size: '12.3 MB', type: 'جزئية', automatic: false }
+        ];
+
+        this.renderBackups(backups);
+    }
+
+    renderBackups(backups) {
+        const backupList = document.getElementById('backupList');
+        backupList.innerHTML = '';
+
+        backups.forEach(backup => {
+            const backupHTML = `
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">نسخة احتياطية - ${backup.date}</div>
+                        <div class="setting-description">${backup.type} - ${backup.size} ${backup.automatic ? '(تلقائية)' : '(يدوية)'}</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="radio" name="selectedBackup" value="${backup.id}">
+                    </div>
+                </div>
+            `;
+            backupList.insertAdjacentHTML('beforeend', backupHTML);
+        });
+    }
+
+    startRestore() {
+        const selectedBackup = document.querySelector('input[name="selectedBackup"]:checked');
+        if (!selectedBackup) {
+            this.showToast('يرجى اختيار نسخة احتياطية', 'error');
+            return;
+        }
+
+        const restoreOption = document.querySelector('input[name="restoreOption"]:checked').value;
+        
+        this.showToast('جاري استعادة البيانات...');
+        
+        // محاكاة عملية الاستعادة
+        setTimeout(() => {
+            document.getElementById('restoreModal').style.display = 'none';
+            this.showToast('تم استعادة البيانات بنجاح');
+        }, 2000);
+    }
+
+    createAutoBackupModal() {
+        const modalHTML = `
+            <div id="autoBackupModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>النسخ الاحتياطي التلقائي</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">النسخ الاحتياطي التلقائي</div>
+                                    <div class="setting-description">تفعيل النسخ الاحتياطي التلقائي للبيانات</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="autoBackupToggle" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تكرار النسخ الاحتياطي</label>
+                            <select class="form-select" id="backupFrequency">
+                                <option value="daily">يومياً</option>
+                                <option value="weekly" selected>أسبوعياً</option>
+                                <option value="monthly">شهرياً</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">وقت النسخ الاحتياطي</label>
+                            <input type="time" class="form-input" id="backupTime" value="02:00">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">البيانات المطلوبة</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="autoBackupData" value="patients" checked>
+                                    <span>بيانات المرضى</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="autoBackupData" value="tests" checked>
+                                    <span>التحاليل والنتائج</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="autoBackupData" value="financial" checked>
+                                    <span>البيانات المالية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="autoBackupData" value="settings" checked>
+                                    <span>الإعدادات</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">وجهة الحفظ</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="autoBackupDestination" value="cloud" checked>
+                                    <span>التخزين السحابي</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="autoBackupDestination" value="local">
+                                    <span>التخزين المحلي</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">النسخ المحفوظة</label>
+                            <input type="number" class="form-input" id="backupRetention" value="7" min="1" max="30">
+                            <div class="setting-description">عدد النسخ المحفوظة قبل الحذف التلقائي</div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="cancelAutoBackupBtn">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button class="btn btn-primary" id="saveAutoBackupBtn">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupAutoBackupModal();
+    }
+
+    setupAutoBackupModal() {
+        document.getElementById('saveAutoBackupBtn').addEventListener('click', () => {
+            this.saveAutoBackupSettings();
+        });
+
+        document.getElementById('cancelAutoBackupBtn').addEventListener('click', () => {
+            document.getElementById('autoBackupModal').style.display = 'none';
+        });
+    }
+
+    saveAutoBackupSettings() {
+        const autoBackupSettings = {
+            enabled: document.getElementById('autoBackupToggle').checked,
+            frequency: document.getElementById('backupFrequency').value,
+            time: document.getElementById('backupTime').value,
+            retention: parseInt(document.getElementById('backupRetention').value),
+            destination: document.querySelector('input[name="autoBackupDestination"]:checked').value
+        };
+
+        this.settings.autoBackup = autoBackupSettings;
+        this.saveSettings();
+        this.showToast('تم حفظ إعدادات النسخ التلقائي بنجاح');
+        document.getElementById('autoBackupModal').style.display = 'none';
+    }
+
+    createDeveloperModal() {
+        const modalHTML = `
+            <div id="developerModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>خيارات المطور</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="advanced-settings">
+                            <div class="advanced-header">
+                                <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                                <div class="advanced-title">تحذير</div>
+                            </div>
+                            <div class="advanced-content">
+                                هذه الإعدادات مخصصة للمطورين فقط. التغييرات هنا قد تؤثر على أداء واستقرار التطبيق.
+                            </div>
+                        </div>
+
+                        <div class="settings-grid" style="margin-top: 20px;">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">وضع التصحيح</div>
+                                    <div class="setting-description">تفعيل وضع التصحيح وسجلات النظام</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="debugModeToggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">واجهة برمجة التطبيقات (API)</div>
+                                    <div class="setting-description">تفعيل واجهة برمجة التطبيقات للتطوير</div>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="apiModeToggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">بيانات تجريبية</div>
+                                    <div class="setting-description">إنشاء بيانات تجريبية للاختبار</div>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="btn btn-secondary" id="generateTestDataBtn" style="padding: 8px 16px; font-size: 12px;">
+                                        <i class="fas fa-vial"></i> إنشاء بيانات
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">إعدادات قاعدة البيانات</label>
+                            <div style="display: grid; gap: 10px;">
+                                <input type="text" class="form-input" placeholder="اسم قاعدة البيانات" value="lab_system">
+                                <input type="text" class="form-input" placeholder="اسم المستخدم" value="admin">
+                                <input type="password" class="form-input" placeholder="كلمة المرور" value="********">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">أدوات المطور</label>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" id="clearCacheBtn">
+                                    <i class="fas fa-broom"></i> مسح الذاكرة المؤقتة
+                                </button>
+                                <button class="btn btn-secondary" id="viewLogsBtn">
+                                    <i class="fas fa-scroll"></i> عرض السجلات
+                                </button>
+                                <button class="btn btn-secondary" id="systemInfoBtn">
+                                    <i class="fas fa-info-circle"></i> معلومات النظام
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-danger" id="resetDevBtn">
+                                <i class="fas fa-trash"></i> إعادة تعيين الإعدادات
+                            </button>
+                            <button class="btn btn-primary" id="saveDevBtn">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupDeveloperModal();
+    }
+
+    setupDeveloperModal() {
+        document.getElementById('saveDevBtn').addEventListener('click', () => {
+            this.saveDeveloperSettings();
+        });
+
+        document.getElementById('resetDevBtn').addEventListener('click', () => {
+            this.resetDeveloperSettings();
+        });
+
+        document.getElementById('generateTestDataBtn').addEventListener('click', () => {
+            this.generateTestData();
+        });
+
+        document.getElementById('clearCacheBtn').addEventListener('click', () => {
+            this.clearCache();
+        });
+
+        document.getElementById('viewLogsBtn').addEventListener('click', () => {
+            this.viewLogs();
+        });
+
+        document.getElementById('systemInfoBtn').addEventListener('click', () => {
+            this.showSystemInfo();
+        });
+    }
+
+    saveDeveloperSettings() {
+        const devSettings = {
+            debugMode: document.getElementById('debugModeToggle').checked,
+            apiMode: document.getElementById('apiModeToggle').checked
+        };
+
+        this.settings.developer = devSettings;
+        this.saveSettings();
+        this.showToast('تم حفظ إعدادات المطور بنجاح');
+        document.getElementById('developerModal').style.display = 'none';
+    }
+
+    resetDeveloperSettings() {
+        if (confirm('هل أنت متأكد من إعادة تعيين إعدادات المطور؟')) {
+            document.getElementById('debugModeToggle').checked = false;
+            document.getElementById('apiModeToggle').checked = false;
+            this.showToast('تم إعادة تعيين إعدادات المطور');
+        }
+    }
+
+    generateTestData() {
+        this.showToast('جاري إنشاء البيانات التجريبية...');
+        // محاكاة إنشاء بيانات تجريبية
+        setTimeout(() => {
+            this.showToast('تم إنشاء البيانات التجريبية بنجاح');
+        }, 2000);
+    }
+
+    clearCache() {
+        if (confirm('هل أنت متأكد من مسح الذاكرة المؤقتة؟')) {
+            localStorage.removeItem('appCache');
+            this.showToast('تم مسح الذاكرة المؤقتة بنجاح');
+        }
+    }
+
+    viewLogs() {
+        this.showToast('جاري فتح سجلات النظام...');
+        // محاكاة فتح السجلات
+        setTimeout(() => {
+            alert('سجلات النظام:\n\n[INFO] التطبيق يعمل بشكل طبيعي\n[DEBUG] جلسة مستخدم نشطة\n[INFO] نسخة احتياطية تم إنشاؤها');
+        }, 1000);
+    }
+
+    showSystemInfo() {
+        const systemInfo = `
+            <div style="text-align: right;">
+                <h3 style="color: var(--primary-dark); margin-bottom: 16px;">معلومات النظام</h3>
+                <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>نظام التشغيل:</span>
+                        <span style="font-weight: 600;">${navigator.platform}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>المتصفح:</span>
+                        <span style="font-weight: 600;">${navigator.userAgent.split(' ')[0]}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>الذاكرة المتاحة:</span>
+                        <span style="font-weight: 600;">${Math.round(navigator.deviceMemory || 0)} GB</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>الوقت المحلي:</span>
+                        <span style="font-weight: 600;">${new Date().toLocaleString('ar-SA')}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>المنطقة الزمنية:</span>
+                        <span style="font-weight: 600;">${Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        alert(systemInfo);
+    }
+
+    // الدوال الأساسية الموجودة سابقاً
+    loadSettings() {
+        // تحميل الإعدادات من localStorage
+        const savedSettings = localStorage.getItem('appSettings');
+        if (savedSettings) {
+            this.settings = JSON.parse(savedSettings);
+        } else {
+            // الإعدادات الافتراضية
+            this.settings = {
+                // إعدادات الحساب
+                profile: {
+                    name: 'د. أحمد محمد',
+                    email: 'ahmed.mohamed@lab.com',
+                    phone: '+966501234567',
+                    specialty: 'كيمياء حيوية طبية',
+                    experience: '8 سنوات'
+                },
+                
+                // إعدادات المختبر
+                lab: {
+                    name: 'مختبر النخبة الطبي',
+                    address: 'الرياض، حي العليا، شارع الملك فهد',
+                    license: 'MED-LAB-2023-0456',
+                    phone: '+966112345678',
+                    email: 'info@elite-lab.com',
+                    website: 'https://www.elite-lab.com'
+                },
+                
+                // إعدادات المظهر
+                appearance: {
+                    theme: 'light',
+                    language: 'ar',
+                    fontSize: 16
+                },
+                
+                // إعدادات الإشعارات
+                notifications: {
+                    enabled: true,
+                    newOrders: true,
+                    criticalResults: true,
+                    inventory: true,
+                    maintenance: true
+                },
+                
+                // إعدادات الأمان
+                security: {
+                    twoFactor: false,
+                    appLock: false,
+                    autoLogout: 30
+                },
+                
+                // إعدادات النسخ الاحتياطي
+                backup: {
+                    autoBackup: true,
+                    backupFrequency: 'daily',
+                    cloudStorage: true
+                }
+            };
+            this.saveSettings();
+        }
+        
+        this.applySettings();
+    }
+
+    saveSettings() {
+        localStorage.setItem('appSettings', JSON.stringify(this.settings));
+    }
+
+    applySettings() {
+        // تطبيق إعدادات المظهر
+        this.applyTheme(this.settings.appearance.theme);
+        this.applyLanguage(this.settings.appearance.language);
+        this.applyFontSize(this.settings.appearance.fontSize);
+        
+        // تطبيق إعدادات الإشعارات
+        this.updateNotificationToggles();
+        
+        // تطبيق إعدادات الأمان
+        this.updateSecurityToggles();
+        
+        // تحديث واجهة المستخدم
+        this.updateUI();
+    }
+
+    applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+        if (document.getElementById('themeSelect')) {
+            document.getElementById('themeSelect').value = theme;
+        }
+    }
+
+    applyLanguage(language) {
+        document.documentElement.lang = language;
+        if (document.getElementById('languageSelect')) {
+            document.getElementById('languageSelect').value = language;
+        }
+    }
+
+    applyFontSize(size) {
+        document.documentElement.style.fontSize = size + 'px';
+        if (document.getElementById('fontSizeInput')) {
+            document.getElementById('fontSizeInput').value = size;
+        }
+    }
+
+    updateNotificationToggles() {
+        if (!this.settings.notifications) return;
+        
+        const notifications = this.settings.notifications;
+        if (document.getElementById('notificationsToggle')) {
+            document.getElementById('notificationsToggle').checked = notifications.enabled;
+        }
+        if (document.getElementById('newOrdersToggle')) {
+            document.getElementById('newOrdersToggle').checked = notifications.newOrders;
+        }
+        if (document.getElementById('criticalResultsToggle')) {
+            document.getElementById('criticalResultsToggle').checked = notifications.criticalResults;
+        }
+        if (document.getElementById('inventoryToggle')) {
+            document.getElementById('inventoryToggle').checked = notifications.inventory;
+        }
+        if (document.getElementById('maintenanceToggle')) {
+            document.getElementById('maintenanceToggle').checked = notifications.maintenance;
+        }
+    }
+
+    updateSecurityToggles() {
+        if (!this.settings.security) return;
+        
+        const security = this.settings.security;
+        if (document.getElementById('twoFactorToggle')) {
+            document.getElementById('twoFactorToggle').checked = security.twoFactor;
+        }
+        if (document.getElementById('appLockToggle')) {
+            document.getElementById('appLockToggle').checked = security.appLock;
+        }
+    }
+
+    updateUI() {
+        if (!this.settings.profile) return;
+        
+        // تحديث معلومات الملف الشخصي
+        const profile = this.settings.profile;
+        if (document.getElementById('fullName')) {
+            document.getElementById('fullName').value = profile.name;
+        }
+        if (document.getElementById('email')) {
+            document.getElementById('email').value = profile.email;
+        }
+        if (document.getElementById('phone')) {
+            document.getElementById('phone').value = profile.phone;
+        }
+        if (document.getElementById('specialty')) {
+            document.getElementById('specialty').value = profile.specialty;
+        }
+        if (document.getElementById('experience')) {
+            document.getElementById('experience').value = profile.experience;
+        }
+        
+        // تحديث معلومات المختبر
+        if (this.settings.lab) {
+            const lab = this.settings.lab;
+            if (document.getElementById('labName')) {
+                document.getElementById('labName').value = lab.name;
+            }
+            if (document.getElementById('labAddress')) {
+                document.getElementById('labAddress').value = lab.address;
+            }
+            if (document.getElementById('labLicense')) {
+                document.getElementById('labLicense').value = lab.license;
+            }
+            if (document.getElementById('labPhone')) {
+                document.getElementById('labPhone').value = lab.phone;
+            }
+            if (document.getElementById('labEmail')) {
+                document.getElementById('labEmail').value = lab.email;
+            }
+            if (document.getElementById('labWebsite')) {
+                document.getElementById('labWebsite').value = lab.website;
+            }
+        }
+    }
+
+    setupEventListeners() {
+        // زر البحث
+        if (document.getElementById('searchBtn')) {
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                this.toggleSearch();
+            });
+        }
+
+        // زر التحديث
+        if (document.getElementById('refreshBtn')) {
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                this.refreshSettings();
+            });
+        }
+
+        // إعدادات الحساب
+        const profileSetting = document.querySelector('[data-setting="profile"]');
+        if (profileSetting) {
+            profileSetting.addEventListener('click', () => {
+                this.showProfileModal();
+            });
+        }
+
+        const notificationsSetting = document.querySelector('[data-setting="notifications"]');
+        if (notificationsSetting) {
+            notificationsSetting.addEventListener('click', () => {
+                this.toggleNotifications();
+            });
+        }
+
+        const privacySetting = document.querySelector('[data-setting="privacy"]');
+        if (privacySetting) {
+            privacySetting.addEventListener('click', () => {
+                this.showPrivacyModal();
+            });
+        }
+
+        // إعدادات المختبر
+        const labInfoSetting = document.querySelector('[data-setting="labInfo"]');
+        if (labInfoSetting) {
+            labInfoSetting.addEventListener('click', () => {
+                this.showLabInfoModal();
+            });
+        }
+
+        const servicesSetting = document.querySelector('[data-setting="services"]');
+        if (servicesSetting) {
+            servicesSetting.addEventListener('click', () => {
+                this.showServicesModal();
+            });
+        }
+
+        const pricingSetting = document.querySelector('[data-setting="pricing"]');
+        if (pricingSetting) {
+            pricingSetting.addEventListener('click', () => {
+                this.showPricingModal();
+            });
+        }
+
+        const workingHoursSetting = document.querySelector('[data-setting="workingHours"]');
+        if (workingHoursSetting) {
+            workingHoursSetting.addEventListener('click', () => {
+                this.showWorkingHoursModal();
+            });
+        }
+
+        // إعدادات الأمان
+        const changePasswordSetting = document.querySelector('[data-setting="changePassword"]');
+        if (changePasswordSetting) {
+            changePasswordSetting.addEventListener('click', () => {
+                this.showPasswordModal();
+            });
+        }
+
+        const sessionManagementSetting = document.querySelector('[data-setting="sessionManagement"]');
+        if (sessionManagementSetting) {
+            sessionManagementSetting.addEventListener('click', () => {
+                this.showSessionManagementModal();
+            });
+        }
+
+        // النسخ الاحتياطي
+        document.querySelectorAll('.backup-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const action = option.dataset.action;
+                this.handleBackupAction(action);
+            });
+        });
+
+        // الإعدادات المتقدمة
+        const developerOptionsSetting = document.querySelector('[data-setting="developerOptions"]');
+        if (developerOptionsSetting) {
+            developerOptionsSetting.addEventListener('click', () => {
+                this.showDeveloperModal();
+            });
+        }
+
+        const resetAppSetting = document.querySelector('[data-setting="resetApp"]');
+        if (resetAppSetting) {
+            resetAppSetting.addEventListener('click', () => {
+                this.showResetConfirmation();
+            });
+        }
+
+        // عناصر التحكم في الإعدادات
+        this.setupControlListeners();
+        
+        // النوافذ المنبثقة
+        this.setupModalListeners();
+    }
+
+    setupControlListeners() {
+        // تغيير السمة
+        if (document.getElementById('themeSelect')) {
+            document.getElementById('themeSelect').addEventListener('change', (e) => {
+                this.settings.appearance.theme = e.target.value;
+                this.applyTheme(e.target.value);
+                this.saveSettings();
+                this.showToast('تم تغيير السمة بنجاح');
+            });
+        }
+
+        // تغيير اللغة
+        if (document.getElementById('languageSelect')) {
+            document.getElementById('languageSelect').addEventListener('change', (e) => {
+                this.settings.appearance.language = e.target.value;
+                this.applyLanguage(e.target.value);
+                this.saveSettings();
+                this.showToast('تم تغيير اللغة بنجاح');
+            });
+        }
+
+        // تغيير حجم الخط
+        if (document.getElementById('fontSizeInput')) {
+            document.getElementById('fontSizeInput').addEventListener('change', (e) => {
+                const size = parseInt(e.target.value);
+                if (size >= 12 && size <= 24) {
+                    this.settings.appearance.fontSize = size;
+                    this.applyFontSize(size);
+                    this.saveSettings();
+                    this.showToast('تم تغيير حجم الخط بنجاح');
+                }
+            });
+        }
+
+        // تبديل الإشعارات
+        if (document.getElementById('notificationsToggle')) {
+            document.getElementById('notificationsToggle').addEventListener('change', (e) => {
+                this.settings.notifications.enabled = e.target.checked;
+                this.saveSettings();
+                this.showToast(e.target.checked ? 'تم تفعيل الإشعارات' : 'تم إيقاف الإشعارات');
+            });
+        }
+
+        if (document.getElementById('newOrdersToggle')) {
+            document.getElementById('newOrdersToggle').addEventListener('change', (e) => {
+                this.settings.notifications.newOrders = e.target.checked;
+                this.saveSettings();
+            });
+        }
+
+        if (document.getElementById('criticalResultsToggle')) {
+            document.getElementById('criticalResultsToggle').addEventListener('change', (e) => {
+                this.settings.notifications.criticalResults = e.target.checked;
+                this.saveSettings();
+            });
+        }
+
+        if (document.getElementById('inventoryToggle')) {
+            document.getElementById('inventoryToggle').addEventListener('change', (e) => {
+                this.settings.notifications.inventory = e.target.checked;
+                this.saveSettings();
+            });
+        }
+
+        if (document.getElementById('maintenanceToggle')) {
+            document.getElementById('maintenanceToggle').addEventListener('change', (e) => {
+                this.settings.notifications.maintenance = e.target.checked;
+                this.saveSettings();
+            });
+        }
+
+        // إعدادات الأمان
+        if (document.getElementById('twoFactorToggle')) {
+            document.getElementById('twoFactorToggle').addEventListener('change', (e) => {
+                this.settings.security.twoFactor = e.target.checked;
+                this.saveSettings();
+                this.showToast(e.target.checked ? 'تم تفعيل المصادقة الثنائية' : 'تم إيقاف المصادقة الثنائية');
+            });
+        }
+
+        if (document.getElementById('appLockToggle')) {
+            document.getElementById('appLockToggle').addEventListener('change', (e) => {
+                this.settings.security.appLock = e.target.checked;
+                this.saveSettings();
+                this.showToast(e.target.checked ? 'تم تفعيل قفل التطبيق' : 'تم إيقاف قفل التطبيق');
+            });
+        }
+
+        // قوة كلمة المرور
+        if (document.getElementById('newPassword')) {
+            document.getElementById('newPassword').addEventListener('input', (e) => {
+                this.updatePasswordStrength(e.target.value);
+            });
+        }
+    }
+
+    setupModalListeners() {
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النوافذ المنبثقة
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // حفظ الملف الشخصي
+        if (document.getElementById('saveProfileBtn')) {
+            document.getElementById('saveProfileBtn').addEventListener('click', () => {
+                this.saveProfile();
+            });
+        }
+
+        if (document.getElementById('cancelProfileBtn')) {
+            document.getElementById('cancelProfileBtn').addEventListener('click', () => {
+                document.getElementById('profileModal').style.display = 'none';
+            });
+        }
+
+        // تغيير كلمة المرور
+        if (document.getElementById('savePasswordBtn')) {
+            document.getElementById('savePasswordBtn').addEventListener('click', () => {
+                this.changePassword();
+            });
+        }
+
+        if (document.getElementById('cancelPasswordBtn')) {
+            document.getElementById('cancelPasswordBtn').addEventListener('click', () => {
+                document.getElementById('passwordModal').style.display = 'none';
+            });
+        }
+
+        // حفظ معلومات المختبر
+        if (document.getElementById('saveLabInfoBtn')) {
+            document.getElementById('saveLabInfoBtn').addEventListener('click', () => {
+                this.saveLabInfo();
+            });
+        }
+
+        if (document.getElementById('cancelLabInfoBtn')) {
+            document.getElementById('cancelLabInfoBtn').addEventListener('click', () => {
+                document.getElementById('labInfoModal').style.display = 'none';
+            });
+        }
+
+        // النسخ الاحتياطي
+        if (document.getElementById('startBackupBtn')) {
+            document.getElementById('startBackupBtn').addEventListener('click', () => {
+                this.startBackup();
+            });
+        }
+
+        if (document.getElementById('cancelBackupBtn')) {
+            document.getElementById('cancelBackupBtn').addEventListener('click', () => {
+                document.getElementById('backupModal').style.display = 'none';
+            });
+        }
+
+        // التحقق من التحديثات
+        if (document.getElementById('checkUpdatesBtn')) {
+            document.getElementById('checkUpdatesBtn').addEventListener('click', () => {
+                this.checkForUpdates();
+            });
+        }
+
+        // عن التطبيق
+        if (document.getElementById('aboutAppBtn')) {
+            document.getElementById('aboutAppBtn').addEventListener('click', () => {
+                this.showAboutApp();
+            });
+        }
+    }
+
+    setupSearch() {
+        if (document.getElementById('searchInput')) {
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                this.searchSettings(e.target.value);
+            });
+        }
+    }
+
+    toggleSearch() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar) {
+            searchBar.style.display = searchBar.style.display === 'none' ? 'flex' : 'none';
+            
+            if (searchBar.style.display === 'flex') {
+                document.getElementById('searchInput').focus();
+            }
+        }
+    }
+
+    searchSettings(query) {
+        const settingsItems = document.querySelectorAll('.setting-item');
+        const queryLower = query.toLowerCase();
+        
+        settingsItems.forEach(item => {
+            const label = item.querySelector('.setting-label').textContent.toLowerCase();
+            const description = item.querySelector('.setting-description').textContent.toLowerCase();
+            
+            if (label.includes(queryLower) || description.includes(queryLower)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    showProfileModal() {
+        if (document.getElementById('profileModal')) {
+            document.getElementById('profileModal').style.display = 'block';
+        }
+    }
+
+    saveProfile() {
+        const profile = {
+            name: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            specialty: document.getElementById('specialty').value,
+            experience: document.getElementById('experience').value
+        };
+        
+        this.settings.profile = profile;
+        this.saveSettings();
+        this.updateUI();
+        
+        document.getElementById('profileModal').style.display = 'none';
+        this.showToast('تم حفظ الملف الشخصي بنجاح');
+    }
+
+    toggleNotifications() {
+        // يتم التعامل مع هذا من خلال التبديل المباشر
+    }
+
+    showPrivacyModal() {
+        if (document.getElementById('privacyModal')) {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+    }
+
+    showLabInfoModal() {
+        if (document.getElementById('labInfoModal')) {
+            document.getElementById('labInfoModal').style.display = 'block';
+        }
+    }
+
+    saveLabInfo() {
+        const lab = {
+            name: document.getElementById('labName').value,
+            address: document.getElementById('labAddress').value,
+            license: document.getElementById('labLicense').value,
+            phone: document.getElementById('labPhone').value,
+            email: document.getElementById('labEmail').value,
+            website: document.getElementById('labWebsite').value
+        };
+        
+        this.settings.lab = lab;
+        this.saveSettings();
+        this.updateUI();
+        
+        document.getElementById('labInfoModal').style.display = 'none';
+        this.showToast('تم حفظ معلومات المختبر بنجاح');
+    }
+
+    showServicesModal() {
+        if (document.getElementById('servicesModal')) {
+            document.getElementById('servicesModal').style.display = 'block';
+        }
+    }
+
+    showPricingModal() {
+        if (document.getElementById('pricingModal')) {
+            document.getElementById('pricingModal').style.display = 'block';
+        }
+    }
+
+    showWorkingHoursModal() {
+        if (document.getElementById('workingHoursModal')) {
+            document.getElementById('workingHoursModal').style.display = 'block';
+        }
+    }
+
+    showPasswordModal() {
+        if (document.getElementById('passwordModal')) {
+            document.getElementById('passwordModal').style.display = 'block';
+        }
+    }
+
+    updatePasswordStrength(password) {
+        let strength = 0;
+        const indicator = document.querySelector('.security-strength');
+        const text = document.getElementById('passwordStrength');
+        
+        if (!indicator || !text) return;
+        
+        if (password.length >= 8) strength += 25;
+        if (/[A-Z]/.test(password)) strength += 25;
+        if (/[0-9]/.test(password)) strength += 25;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+        
+        indicator.style.width = strength + '%';
+        
+        if (strength < 50) {
+            indicator.style.background = 'var(--accent)';
+            text.textContent = 'ضعيفة';
+        } else if (strength < 75) {
+            indicator.style.background = 'var(--warning)';
+            text.textContent = 'متوسطة';
+        } else {
+            indicator.style.background = 'var(--success)';
+            text.textContent = 'قوية';
+        }
+    }
+
+    changePassword() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            this.showToast('يرجى ملء جميع الحقول', 'error');
+            return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            this.showToast('كلمات المرور غير متطابقة', 'error');
+            return;
+        }
+        
+        if (newPassword.length < 8) {
+            this.showToast('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+            return;
+        }
+        
+        // هنا يمكن إضافة التحقق من كلمة المرور الحالية مع الخادم
+        
+        this.showToast('تم تغيير كلمة المرور بنجاح');
+        document.getElementById('passwordModal').style.display = 'none';
+        
+        // مسح الحقول
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    showSessionManagementModal() {
+        if (document.getElementById('sessionManagementModal')) {
+            document.getElementById('sessionManagementModal').style.display = 'block';
+        }
+    }
+
+    handleBackupAction(action) {
+        switch (action) {
+            case 'backup':
+                this.showBackupModal();
+                break;
+            case 'restore':
+                this.showRestoreModal();
+                break;
+            case 'autoBackup':
+                this.showAutoBackupModal();
+                break;
+            case 'exportData':
+                this.exportData();
+                break;
+        }
+    }
+
+    showBackupModal() {
+        if (document.getElementById('backupModal')) {
+            document.getElementById('backupModal').style.display = 'block';
+        }
+    }
+
+    startBackup() {
+        const backupType = document.getElementById('backupType').value;
+        const selectedData = Array.from(document.querySelectorAll('input[name="backupData"]:checked'))
+            .map(checkbox => checkbox.value);
+        const destination = document.querySelector('input[name="backupDestination"]:checked').value;
+        
+        this.showToast('جاري إنشاء النسخ الاحتياطي...');
+        
+        // محاكاة عملية النسخ الاحتياطي
+        setTimeout(() => {
+            document.getElementById('backupModal').style.display = 'none';
+            this.showToast('تم إنشاء النسخ الاحتياطي بنجاح');
+        }, 2000);
+    }
+
+    showRestoreModal() {
+        if (document.getElementById('restoreModal')) {
+            document.getElementById('restoreModal').style.display = 'block';
+        }
+    }
+
+    showAutoBackupModal() {
+        if (document.getElementById('autoBackupModal')) {
+            document.getElementById('autoBackupModal').style.display = 'block';
+        }
+    }
+
+    exportData() {
+        this.showToast('جاري تصدير البيانات...');
+        // تنفيذ تصدير البيانات
+    }
+
+    showDeveloperModal() {
+        if (document.getElementById('developerModal')) {
+            document.getElementById('developerModal').style.display = 'block';
+        }
+    }
+
+    showResetConfirmation() {
+        if (confirm('هل أنت متأكد من رغبتك في إعادة تعيين التطبيق؟ سيتم حذف جميع الإعدادات الشخصية.')) {
+            this.resetApp();
+        }
+    }
+
+    resetApp() {
+        localStorage.removeItem('appSettings');
+        localStorage.removeItem('labRequests');
+        localStorage.removeItem('labResults');
+        localStorage.removeItem('labReports');
+        localStorage.removeItem('financialAccount');
+        
+        this.showToast('تم إعادة تعيين التطبيق بنجاح');
+        setTimeout(() => {
+            location.reload();
+        }, 2000);
+    }
+
+    checkForUpdates() {
+        this.showToast('جاري التحقق من التحديثات...');
+        
+        // محاكاة التحقق من التحديثات
+        setTimeout(() => {
+            this.showToast('التطبيق محدث لأحدث إصدار');
+        }, 1500);
+    }
+
+    showAboutApp() {
+        const aboutInfo = `
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 48px; color: var(--primary); margin-bottom: 16px;">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3 style="color: var(--primary-dark); margin-bottom: 8px;">طبيب 24/7</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">نظام إدارة المختبرات الطبية المتكامل</p>
+                <div style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-md); text-align: right;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>الإصدار:</span>
+                        <span style="font-weight: 600;">v2.1.0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>رقم البناء:</span>
+                        <span style="font-weight: 600;">#21045</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>آخر تحديث:</span>
+                        <span style="font-weight: 600;">15 ديسمبر 2023</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>الدعم الفني:</span>
+                        <span style="font-weight: 600;">support@med24.com</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        alert(aboutInfo);
+    }
+
+    refreshSettings() {
+        this.showToast('جاري تحديث الإعدادات...');
+        this.loadSettings();
+        setTimeout(() => {
+            this.showToast('تم تحديث الإعدادات بنجاح');
+        }, 1000);
+    }
+
+    setupIntersectionObserver() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        const messageEl = document.getElementById('toastMessage');
+        
+        if (!toast || !messageEl) return;
+        
+        messageEl.textContent = message;
+        toast.className = `notification-toast ${type === 'error' ? 'error' : ''}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const currentTimeElement = document.getElementById('currentTime');
+        if (currentTimeElement) {
+            currentTimeElement.textContent = timeString;
+        }
+    }
+}
+
+// جعل الكلاس متاحاً عالمياً
+window.settingsManager = new SettingsManager();
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', () => {
+    window.settingsManager.init();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - نتائج التحاليل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.results-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+}
+
+.summary-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.summary-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.summary-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.pending-results .summary-value { color: var(--warning); }
+.completed-results .summary-value { color: var(--success); }
+.critical-results .summary-value { color: var(--accent); }
+
+.quick-actions {
+    display: flex;
+    gap: 8px;
+    margin: 0 20px 20px;
+}
+
+.quick-action-btn {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.quick-action-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.quick-action-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.results-list {
+    padding: 0 20px 120px;
+}
+
+.result-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    border-right: 4px solid var(--primary);
+    position: relative;
+}
+
+.result-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-3px);
+}
+
+.result-item.completed {
+    border-right-color: var(--success);
+}
+
+.result-item.pending {
+    border-right-color: var(--warning);
+}
+
+.result-item.critical {
+    border-right-color: var(--accent);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: var(--shadow-light); }
+    50% { box-shadow: 0 0 20px rgba(255, 82, 82, 0.3); }
+    100% { box-shadow: var(--shadow-light); }
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.result-patient {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary);
+}
+
+.result-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.result-tests {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.result-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.status-pending {
+    background: var(--warning);
+    color: white;
+}
+
+.status-completed {
+    background: var(--success);
+    color: white;
+}
+
+.status-critical {
+    background: var(--accent);
+    color: white;
+}
+
+.critical-badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.result-form-container {
+    padding: 20px;
+}
+
+.patient-info {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.info-value {
+    color: var(--text-secondary);
+}
+
+.tests-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.test-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--primary-light);
+}
+
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.test-name {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 16px;
+}
+
+.test-parameters {
+    margin-top: 12px;
+}
+
+.parameter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-sm);
+}
+
+.parameter-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.parameter-input {
+    width: 100px;
+    padding: 8px;
+    border: none;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset);
+    text-align: center;
+}
+
+.parameter-unit {
+    width: 60px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.parameter-range {
+    width: 120px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: left;
+}
+
+.parameter-status {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.status-normal {
+    background: var(--success);
+    color: white;
+}
+
+.status-abnormal {
+    background: var(--warning);
+    color: white;
+}
+
+.status-critical {
+    background: var(--accent);
+    color: white;
+}
+
+.notes-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-light);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #388E3C);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.export-options {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.export-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.export-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.main-content {
+    padding-bottom: 120px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 60px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    z-index: 3000;
+    transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-toast.error {
+    background: var(--accent);
+}
+
+.result-preview {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.preview-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.preview-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.preview-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.preview-patient {
+    margin-bottom: 20px;
+}
+
+.preview-tests {
+    margin-bottom: 20px;
+}
+
+.preview-test {
+    margin-bottom: 16px;
+}
+
+.preview-test-name {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.preview-parameters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.preview-parameter {
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+}
+
+.param-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.param-value {
+    color: var(--text-secondary);
+}
+
+.param-range {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.param-status {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.status-preview-normal {
+    background: var(--success);
+    color: white;
+}
+
+.status-preview-abnormal {
+    background: var(--warning);
+    color: white;
+}
+
+.status-preview-critical {
+    background: var(--accent);
+    color: white;
+}
+
+.preview-notes {
+    background: var(--bg-surface);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border-right: 4px solid var(--primary);
+}
+
+.notes-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.notes-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.history-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+    border-right: 4px solid var(--success);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.history-date {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.history-tests {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.history-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.history-btn {
+    padding: 6px 12px;
+    background: var(--bg-surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.history-btn:hover {
+    background: var(--primary-light);
+}
+
+.analytics-chart {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.chart-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.chart-container {
+    height: 200px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    padding: 16px;
+}
+
+.chart-bar {
+    background: linear-gradient(to top, var(--primary), var(--primary-light));
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    width: 30px;
+    transition: var(--transition-liquid);
+    position: relative;
+}
+
+.chart-bar:hover {
+    transform: scale(1.1);
+}
+
+.chart-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.chart-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+@media (max-width: 428px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .export-options {
+        flex-direction: column;
+    }
+    
+    .preview-parameters {
+        grid-template-columns: 1fr;
+    }
+    
+    .parameter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .parameter-input, .parameter-unit, .parameter-range {
+        width: 100%;
+        text-align: right;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>نتائج التحاليل</h1>
+                    <p>إدارة وتدوين نتائج التحاليل الطبية</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">0</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="analyticsBtn">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن مريض، نوع تحليل، رقم طلب..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- تبويبات النتائج -->
+            <div class="tabs-container">
+                <div class="tab active" data-tab="pending">قيد الانتظار</div>
+                <div class="tab" data-tab="completed">مكتملة</div>
+                <div class="tab" data-tab="history">السجل</div>
+            </div>
+
+            <!-- ملخص النتائج -->
+            <div class="results-summary">
+                <div class="summary-item pending-results" data-filter="pending">
+                    <div class="summary-value" id="pendingResultsCount">0</div>
+                    <div class="summary-label">نتائج بانتظار الإدخال</div>
+                </div>
+                <div class="summary-item completed-results" data-filter="completed">
+                    <div class="summary-value" id="completedResultsCount">0</div>
+                    <div class="summary-label">نتائج مكتملة</div>
+                </div>
+                <div class="summary-item critical-results" data-filter="critical">
+                    <div class="summary-value" id="criticalResultsCount">0</div>
+                    <div class="summary-label">نتائج حرجة</div>
+                </div>
+            </div>
+
+            <!-- أزرار سريعة -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="bulkEntryBtn">
+                    <i class="fas fa-tasks"></i> إدخال جماعي
+                </button>
+                <button class="quick-action-btn" id="templateBtn">
+                    <i class="fas fa-layer-group"></i> القوالب
+                </button>
+                <button class="quick-action-btn" id="reportsBtn">
+                    <i class="fas fa-file-alt"></i> التقارير
+                </button>
+            </div>
+
+            <!-- مؤشر التحميل -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>جاري تحميل النتائج...</p>
+            </div>
+
+            <!-- قائمة النتائج -->
+            <div class="results-list" id="resultsList">
+                <!-- سيتم ملؤها ديناميكياً بالنتائج -->
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="test-requests.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <div class="nav-label">طلبات التحاليل</div>
+            </a>
+            <a href="results.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="nav-label">النتائج</div>
+            </a>
+            <a href="financial-account.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="nav-label">الحساب المالي</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إدخال النتائج -->
+    <div id="resultsEntryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إدخال نتائج التحاليل</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="result-form-container">
+                <!-- معلومات المريض -->
+                <div class="patient-info">
+                    <div class="info-row">
+                        <span class="info-label">اسم المريض:</span>
+                        <span class="info-value" id="entryPatientName">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">رقم الطلب:</span>
+                        <span class="info-value" id="entryRequestNumber">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">تاريخ الطلب:</span>
+                        <span class="info-value" id="entryRequestDate">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">العمر:</span>
+                        <span class="info-value" id="entryPatientAge">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">الجنس:</span>
+                        <span class="info-value" id="entryPatientGender">-</span>
+                    </div>
+                </div>
+
+                <!-- نتائج التحاليل -->
+                <div class="tests-container" id="testsContainer">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+
+                <!-- الملاحظات -->
+                <div class="notes-section">
+                    <div class="form-group">
+                        <label class="form-label">ملاحظات الطبيب</label>
+                        <textarea class="form-textarea" id="doctorNotes" placeholder="أدخل ملاحظات الطبيب حول النتائج..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">التوصيات</label>
+                        <textarea class="form-textarea" id="recommendations" placeholder="أدخل التوصيات الطبية..."></textarea>
+                    </div>
+                </div>
+
+                <!-- أزرار الإجراء -->
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="saveDraftBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ مسودة
+                    </button>
+                    <button class="btn btn-success" id="completeResultsBtn">
+                        <i class="fas fa-check-circle"></i>
+                        إكمال النتائج
+                    </button>
+                </div>
+
+                <!-- خيارات التصدير -->
+                <div class="export-options">
+                    <button class="export-btn" id="previewResultsBtn">
+                        <i class="fas fa-eye"></i> معاينة
+                    </button>
+                    <button class="export-btn" id="printResultsBtn">
+                        <i class="fas fa-print"></i> طباعة
+                    </button>
+                    <button class="export-btn" id="sendResultsBtn">
+                        <i class="fas fa-paper-plane"></i> إرسال للمريض
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة معاينة النتائج -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>معاينة النتائج</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="result-form-container">
+                <div class="result-preview" id="resultPreview">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="backToEditBtn">
+                        <i class="fas fa-edit"></i>
+                        العودة للتعديل
+                    </button>
+                    <button class="btn btn-success" id="finalizeResultsBtn">
+                        <i class="fas fa-check-double"></i>
+                        تأكيد وإرسال
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة السجل -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>السجل التاريخي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="result-form-container">
+                <div class="patient-info">
+                    <div class="info-row">
+                        <span class="info-label">اسم المريض:</span>
+                        <span class="info-value" id="historyPatientName">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">رقم السجل:</span>
+                        <span class="info-value" id="historyRecordNumber">-</span>
+                    </div>
+                </div>
+
+                <div id="historyList">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الإحصائيات -->
+    <div id="analyticsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إحصائيات النتائج</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="result-form-container">
+                <div class="analytics-chart">
+                    <div class="chart-title">توزيع النتائج خلال الأسبوع</div>
+                    <div class="chart-container" id="resultsChart">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </div>
+                </div>
+
+                <div class="results-summary">
+                    <div class="summary-item pending-results">
+                        <div class="summary-value" id="analyticsPending">0</div>
+                        <div class="summary-label">قيد الانتظار</div>
+                    </div>
+                    <div class="summary-item completed-results">
+                        <div class="summary-value" id="analyticsCompleted">0</div>
+                        <div class="summary-label">مكتملة</div>
+                    </div>
+                    <div class="summary-item critical-results">
+                        <div class="summary-value" id="analyticsCritical">0</div>
+                        <div class="summary-label">حرجة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعارات التوست -->
+    <div class="notification-toast" id="notificationToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <script>
+// نظام إدارة نتائج التحاليل المتقدم
+class ResultsManager {
+    constructor() {
+        this.results = [];
+        this.filteredResults = [];
+        this.currentResult = null;
+        this.currentRequest = null;
+        this.filters = {
+            tab: 'pending',
+            search: ''
+        };
+        
+        this.testTemplates = {
+            'cbc': {
+                name: 'تحليل الدم الكامل (CBC)',
+                parameters: [
+                    { name: 'الهيموجلوبين', unit: 'g/dL', range: '13.5-17.5', gender: 'male' },
+                    { name: 'الهيموجلوبين', unit: 'g/dL', range: '12.0-15.5', gender: 'female' },
+                    { name: 'كريات الدم الحمراء', unit: 'million/μL', range: '4.5-5.9' },
+                    { name: 'كريات الدم البيضاء', unit: 'cells/μL', range: '4000-11000' },
+                    { name: 'الصفائح الدموية', unit: 'platelets/μL', range: '150000-400000' },
+                    { name: 'الهيماتوكريت', unit: '%', range: '40-52', gender: 'male' },
+                    { name: 'الهيماتوكريت', unit: '%', range: '36-48', gender: 'female' }
+                ]
+            },
+            'liver': {
+                name: 'وظائف الكبد',
+                parameters: [
+                    { name: 'ALT', unit: 'U/L', range: '7-56' },
+                    { name: 'AST', unit: 'U/L', range: '5-40' },
+                    { name: 'الالبومين', unit: 'g/dL', range: '3.5-5.0' },
+                    { name: 'البليروبين الكلي', unit: 'mg/dL', range: '0.1-1.2' },
+                    { name: 'البليروبين المباشر', unit: 'mg/dL', range: '0.0-0.3' },
+                    { name: 'الفسفاتاز القلوية', unit: 'U/L', range: '44-147' }
+                ]
+            },
+            'kidney': {
+                name: 'وظائف الكلى',
+                parameters: [
+                    { name: 'الكرياتينين', unit: 'mg/dL', range: '0.6-1.2' },
+                    { name: 'اليوريا', unit: 'mg/dL', range: '7-20' },
+                    { name: 'حمض البوليك', unit: 'mg/dL', range: '3.4-7.0', gender: 'male' },
+                    { name: 'حمض البوليك', unit: 'mg/dL', range: '2.4-6.0', gender: 'female' },
+                    { name: 'الكالسيوم', unit: 'mg/dL', range: '8.5-10.5' },
+                    { name: 'الفوسفور', unit: 'mg/dL', range: '2.5-4.5' }
+                ]
+            },
+            'sugar': {
+                name: 'تحليل السكر',
+                parameters: [
+                    { name: 'السكر الصائم', unit: 'mg/dL', range: '70-100' },
+                    { name: 'السكر بعد الأكل', unit: 'mg/dL', range: '<140' },
+                    { name: 'السكر العشوائي', unit: 'mg/dL', range: '<200' },
+                    { name: 'الهيموجلوبين السكري', unit: '%', range: '4.0-5.6' }
+                ]
+            }
+        };
+
+        this.init();
+    }
+
+    init() {
+        this.loadResults();
+        this.setupEventListeners();
+        this.setupNotifications();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    loadResults() {
+        // تحميل الطلبات من localStorage
+        const savedRequests = localStorage.getItem('labRequests');
+        const requests = savedRequests ? JSON.parse(savedRequests) : [];
+
+        // تحميل النتائج من localStorage
+        const savedResults = localStorage.getItem('labResults');
+        this.results = savedResults ? JSON.parse(savedResults) : [];
+
+        // إنشاء نتائج للطلبات المكتملة التي ليس لها نتائج
+        this.syncResultsWithRequests(requests);
+        
+        this.applyFilters();
+        this.renderResults();
+        this.updateSummary();
+    }
+
+    syncResultsWithRequests(requests) {
+        const completedRequests = requests.filter(req => 
+            req.status === 'completed' || req.status === 'pending'
+        );
+
+        completedRequests.forEach(request => {
+            const existingResult = this.results.find(res => res.requestId === request.id);
+            
+            if (!existingResult) {
+                const newResult = {
+                    id: this.generateId(),
+                    requestId: request.id,
+                    patientName: request.patientName,
+                    patientAge: this.calculateAge(request.patientBirthDate) || '35',
+                    patientGender: request.patientGender || 'male',
+                    requestNumber: request.invoiceNumber,
+                    requestDate: request.date,
+                    tests: request.services.map(service => ({
+                        name: service.name,
+                        template: this.findTestTemplate(service.name),
+                        parameters: this.getTestParameters(service.name, request.patientGender),
+                        results: {}
+                    })),
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    doctorNotes: '',
+                    recommendations: '',
+                    isCritical: false
+                };
+
+                this.results.push(newResult);
+            }
+        });
+
+        this.saveResults();
+    }
+
+    findTestTemplate(testName) {
+        const lowerName = testName.toLowerCase();
+        if (lowerName.includes('دم كامل') || lowerName.includes('cbc')) return 'cbc';
+        if (lowerName.includes('كبد') || lowerName.includes('liver')) return 'liver';
+        if (lowerName.includes('كلى') || lowerName.includes('kidney')) return 'kidney';
+        if (lowerName.includes('سكر') || lowerName.includes('sugar')) return 'sugar';
+        return null;
+    }
+
+    getTestParameters(testName, gender) {
+        const template = this.findTestTemplate(testName);
+        if (!template || !this.testTemplates[template]) return [];
+
+        return this.testTemplates[template].parameters.map(param => {
+            if (param.gender && param.gender !== gender) return null;
+            return {
+                name: param.name,
+                unit: param.unit,
+                range: param.range,
+                value: '',
+                status: 'pending'
+            };
+        }).filter(Boolean);
+    }
+
+    calculateAge(birthDate) {
+        if (!birthDate) return null;
+        const today = new Date();
+        const birth = new Date(birthDate);
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+        
+        return age;
+    }
+
+    setupEventListeners() {
+        // تبويبات النتائج
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.filters.tab = tab.dataset.tab;
+                this.applyFilters();
+                this.renderResults();
+            });
+        });
+
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+            this.renderResults();
+        });
+
+        // زر التحديث
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            this.showLoading();
+            setTimeout(() => {
+                this.loadResults();
+                this.showToast('تم تحديث البيانات بنجاح', 'success');
+            }, 1000);
+        });
+
+        // زر الإشعارات
+        document.getElementById('notificationBtn').addEventListener('click', () => {
+            this.showPendingResultsNotification();
+        });
+
+        // زر الإحصائيات
+        document.getElementById('analyticsBtn').addEventListener('click', () => {
+            this.showAnalytics();
+        });
+
+        // الأزرار السريعة
+        document.getElementById('bulkEntryBtn').addEventListener('click', () => {
+            this.showBulkEntry();
+        });
+
+        document.getElementById('templateBtn').addEventListener('click', () => {
+            this.showTemplates();
+        });
+
+        document.getElementById('reportsBtn').addEventListener('click', () => {
+            this.generateReports();
+        });
+
+        // ملخص النتائج
+        document.querySelectorAll('.summary-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const filter = item.dataset.filter;
+                if (filter === 'critical') {
+                    this.filters.tab = 'completed';
+                    this.filters.search = 'حرج';
+                } else {
+                    this.filters.tab = filter;
+                }
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelector(`.tab[data-tab="${this.filters.tab}"]`).classList.add('active');
+                this.applyFilters();
+                this.renderResults();
+            });
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النوافذ المنبثقة
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // أزرار النتائج
+        document.getElementById('saveDraftBtn').addEventListener('click', () => {
+            this.saveDraft();
+        });
+
+        document.getElementById('completeResultsBtn').addEventListener('click', () => {
+            this.showPreview();
+        });
+
+        document.getElementById('previewResultsBtn').addEventListener('click', () => {
+            this.showPreview();
+        });
+
+        document.getElementById('printResultsBtn').addEventListener('click', () => {
+            this.printResults();
+        });
+
+        document.getElementById('sendResultsBtn').addEventListener('click', () => {
+            this.sendResultsToPatient();
+        });
+
+        document.getElementById('backToEditBtn').addEventListener('click', () => {
+            document.getElementById('previewModal').style.display = 'none';
+            document.getElementById('resultsEntryModal').style.display = 'block';
+        });
+
+        document.getElementById('finalizeResultsBtn').addEventListener('click', () => {
+            this.finalizeResults();
+        });
+    }
+
+    applyFilters() {
+        let filtered = [...this.results];
+
+        // فلتر التبويب
+        if (this.filters.tab !== 'history') {
+            filtered = filtered.filter(result => result.status === this.filters.tab);
+        } else {
+            filtered = filtered.filter(result => result.status === 'completed');
+        }
+
+        // فلتر البحث
+        if (this.filters.search) {
+            filtered = filtered.filter(result => 
+                result.patientName.toLowerCase().includes(this.filters.search) ||
+                result.requestNumber.toLowerCase().includes(this.filters.search) ||
+                result.tests.some(test => test.name.toLowerCase().includes(this.filters.search)) ||
+                (this.filters.search === 'حرج' && result.isCritical)
+            );
+        }
+
+        // ترتيب من الأقدم إلى الأحدث
+        this.filteredResults = filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }
+
+    renderResults() {
+        const resultsList = document.getElementById('resultsList');
+        
+        if (this.filteredResults.length === 0) {
+            resultsList.innerHTML = this.getEmptyStateHTML();
+            return;
+        }
+
+        if (this.filters.tab === 'history') {
+            resultsList.innerHTML = this.filteredResults.map(result => `
+                <div class="history-item fade-in" data-result-id="${result.id}">
+                    <div class="history-header">
+                        <div class="history-date">${this.formatDate(result.completedAt || result.createdAt)}</div>
+                        <div class="result-status ${this.getStatusClass(result.status)}">
+                            ${this.getStatusText(result.status)}
+                        </div>
+                    </div>
+                    <div class="result-patient">${result.patientName}</div>
+                    <div class="history-tests">
+                        ${result.tests.map(test => test.name).join('، ')}
+                    </div>
+                    <div class="history-actions">
+                        <button class="history-btn view-history-btn" data-result-id="${result.id}">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                        <button class="history-btn print-history-btn" data-result-id="${result.id}">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                        <button class="history-btn share-history-btn" data-result-id="${result.id}">
+                            <i class="fas fa-share"></i> مشاركة
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            resultsList.innerHTML = this.filteredResults.map(result => `
+                <div class="result-item fade-in ${result.status} ${result.isCritical ? 'critical' : ''}" 
+                     data-result-id="${result.id}">
+                    ${result.isCritical ? '<div class="critical-badge"><i class="fas fa-exclamation"></i></div>' : ''}
+                    <div class="result-header">
+                        <div class="result-patient">${result.patientName}</div>
+                        <div class="result-date">${this.formatDate(result.requestDate)}</div>
+                    </div>
+                    <div class="result-tests">
+                        ${result.tests.map(test => test.name).slice(0, 2).join('، ')}
+                        ${result.tests.length > 2 ? ` +${result.tests.length - 2} أكثر` : ''}
+                    </div>
+                    <div class="result-footer">
+                        <div class="result-number">${result.requestNumber}</div>
+                        <div class="result-status ${this.getStatusClass(result.status)}">
+                            ${this.getStatusText(result.status)}
+                            ${result.isCritical ? ' - حرج' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // إضافة مستمعي الأحداث
+        this.setupResultEventListeners();
+        this.setupIntersectionObserver();
+    }
+
+    setupResultEventListeners() {
+        // عناصر النتائج العادية
+        document.querySelectorAll('.result-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const resultId = item.dataset.resultId;
+                this.showResultsEntry(resultId);
+            });
+        });
+
+        // عناصر السجل
+        document.querySelectorAll('.history-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (!e.target.closest('.history-btn')) {
+                    const resultId = item.dataset.resultId;
+                    this.showHistoryDetails(resultId);
+                }
+            });
+        });
+
+        // أزرار السجل
+        document.querySelectorAll('.view-history-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const resultId = btn.dataset.resultId;
+                this.showHistoryDetails(resultId);
+            });
+        });
+
+        document.querySelectorAll('.print-history-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const resultId = btn.dataset.resultId;
+                this.printHistoryResult(resultId);
+            });
+        });
+
+        document.querySelectorAll('.share-history-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const resultId = btn.dataset.resultId;
+                this.shareHistoryResult(resultId);
+            });
+        });
+    }
+
+    showResultsEntry(resultId) {
+        this.currentResult = this.results.find(result => result.id === resultId);
+        
+        if (!this.currentResult) return;
+
+        // تحديث معلومات المريض
+        document.getElementById('entryPatientName').textContent = this.currentResult.patientName;
+        document.getElementById('entryRequestNumber').textContent = this.currentResult.requestNumber;
+        document.getElementById('entryRequestDate').textContent = this.formatDate(this.currentResult.requestDate);
+        document.getElementById('entryPatientAge').textContent = `${this.currentResult.patientAge} سنة`;
+        document.getElementById('entryPatientGender').textContent = this.currentResult.patientGender === 'male' ? 'ذكر' : 'أنثى';
+
+        // تحديث نتائج التحاليل
+        this.renderTestInputs();
+
+        // تعبئة الملاحظات إذا كانت موجودة
+        document.getElementById('doctorNotes').value = this.currentResult.doctorNotes || '';
+        document.getElementById('recommendations').value = this.currentResult.recommendations || '';
+
+        document.getElementById('resultsEntryModal').style.display = 'block';
+    }
+
+    renderTestInputs() {
+        const testsContainer = document.getElementById('testsContainer');
+        
+        testsContainer.innerHTML = this.currentResult.tests.map((test, testIndex) => `
+            <div class="test-item">
+                <div class="test-header">
+                    <div class="test-name">${test.name}</div>
+                </div>
+                <div class="test-parameters">
+                    ${test.parameters.map((param, paramIndex) => `
+                        <div class="parameter-row">
+                            <div class="parameter-name">${param.name}</div>
+                            <input type="text" 
+                                   class="parameter-input" 
+                                   data-test-index="${testIndex}" 
+                                   data-param-index="${paramIndex}"
+                                   value="${param.value || ''}"
+                                   placeholder="القيمة">
+                            <div class="parameter-unit">${param.unit}</div>
+                            <div class="parameter-range">${param.range}</div>
+                            <div class="parameter-status ${this.getParameterStatusClass(param.value, param.range)}">
+                                <i class="fas ${this.getParameterStatusIcon(param.value, param.range)}"></i>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        // إضافة مستمعي الأحداث لحقول الإدخال
+        document.querySelectorAll('.parameter-input').forEach(input => {
+            input.addEventListener('input', (e) => {
+                this.updateParameterValue(e.target);
+            });
+        });
+    }
+
+    updateParameterValue(input) {
+        const testIndex = parseInt(input.dataset.testIndex);
+        const paramIndex = parseInt(input.dataset.paramIndex);
+        const value = input.value.trim();
+        
+        this.currentResult.tests[testIndex].parameters[paramIndex].value = value;
+        
+        // تحديث حالة المعلمة
+        const param = this.currentResult.tests[testIndex].parameters[paramIndex];
+        const statusElement = input.parentElement.querySelector('.parameter-status');
+        
+        statusElement.className = `parameter-status ${this.getParameterStatusClass(value, param.range)}`;
+        statusElement.innerHTML = `<i class="fas ${this.getParameterStatusIcon(value, param.range)}"></i>`;
+        
+        // التحقق من النتائج الحرجة
+        this.checkForCriticalResults();
+    }
+
+    getParameterStatusClass(value, range) {
+        if (!value) return 'status-pending';
+        
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) return 'status-pending';
+        
+        const rangeParts = range.split('-');
+        const min = parseFloat(rangeParts[0]);
+        const max = parseFloat(rangeParts[1]);
+        
+        if (numValue < min * 0.7 || numValue > max * 1.3) return 'status-critical';
+        if (numValue < min || numValue > max) return 'status-abnormal';
+        return 'status-normal';
+    }
+
+    getParameterStatusIcon(value, range) {
+        const statusClass = this.getParameterStatusClass(value, range);
+        
+        switch (statusClass) {
+            case 'status-normal': return 'fa-check';
+            case 'status-abnormal': return 'fa-exclamation-triangle';
+            case 'status-critical': return 'fa-exclamation-circle';
+            default: return 'fa-clock';
+        }
+    }
+
+    checkForCriticalResults() {
+        let hasCritical = false;
+        
+        this.currentResult.tests.forEach(test => {
+            test.parameters.forEach(param => {
+                if (this.getParameterStatusClass(param.value, param.range) === 'status-critical') {
+                    hasCritical = true;
+                }
+            });
+        });
+        
+        this.currentResult.isCritical = hasCritical;
+    }
+
+    showPreview() {
+        if (!this.currentResult) return;
+
+        // حفظ البيانات الحالية
+        this.saveCurrentResults();
+
+        // إنشاء معاينة النتائج
+        const preview = document.getElementById('resultPreview');
+        preview.innerHTML = this.generatePreviewHTML();
+
+        document.getElementById('resultsEntryModal').style.display = 'none';
+        document.getElementById('previewModal').style.display = 'block';
+    }
+
+    generatePreviewHTML() {
+        return `
+            <div class="preview-header">
+                <div class="preview-title">مختبر النخبة الطبي</div>
+                <div class="preview-subtitle">نتائج التحاليل الطبية</div>
+            </div>
+            
+            <div class="preview-patient">
+                <div class="info-row">
+                    <span class="info-label">اسم المريض:</span>
+                    <span class="info-value">${this.currentResult.patientName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">رقم الطلب:</span>
+                    <span class="info-value">${this.currentResult.requestNumber}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">تاريخ النتائج:</span>
+                    <span class="info-value">${this.formatDate(new Date().toISOString())}</span>
+                </div>
+            </div>
+            
+            <div class="preview-tests">
+                ${this.currentResult.tests.map(test => `
+                    <div class="preview-test">
+                        <div class="preview-test-name">${test.name}</div>
+                        <div class="preview-parameters">
+                            ${test.parameters.map(param => `
+                                <div class="preview-parameter">
+                                    <div class="param-name">${param.name}</div>
+                                    <div class="param-value">${param.value || 'لم يتم الإدخال'} ${param.unit}</div>
+                                    <div class="param-range">النطاق الطبيعي: ${param.range}</div>
+                                    ${param.value ? `
+                                        <div class="param-status ${this.getPreviewStatusClass(param.value, param.range)}">
+                                            ${this.getPreviewStatusText(param.value, param.range)}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            
+            ${this.currentResult.doctorNotes || this.currentResult.recommendations ? `
+                <div class="preview-notes">
+                    <div class="notes-title">الملاحظات والتوصيات:</div>
+                    <div class="notes-content">
+                        ${this.currentResult.doctorNotes ? `<p><strong>ملاحظات الطبيب:</strong> ${this.currentResult.doctorNotes}</p>` : ''}
+                        ${this.currentResult.recommendations ? `<p><strong>التوصيات:</strong> ${this.currentResult.recommendations}</p>` : ''}
+                    </div>
+                </div>
+            ` : ''}
+        `;
+    }
+
+    getPreviewStatusClass(value, range) {
+        const statusClass = this.getParameterStatusClass(value, range);
+        
+        switch (statusClass) {
+            case 'status-normal': return 'status-preview-normal';
+            case 'status-abnormal': return 'status-preview-abnormal';
+            case 'status-critical': return 'status-preview-critical';
+            default: return '';
+        }
+    }
+
+    getPreviewStatusText(value, range) {
+        const statusClass = this.getParameterStatusClass(value, range);
+        
+        switch (statusClass) {
+            case 'status-normal': return 'طبيعي';
+            case 'status-abnormal': return 'غير طبيعي';
+            case 'status-critical': return 'حرج';
+            default: return 'قيد الانتظار';
+        }
+    }
+
+    saveDraft() {
+        if (!this.currentResult) return;
+
+        this.saveCurrentResults();
+        this.currentResult.status = 'pending';
+        this.saveResults();
+        
+        this.showToast('تم حفظ المسودة بنجاح', 'success');
+    }
+
+    finalizeResults() {
+        if (!this.currentResult) return;
+
+        this.saveCurrentResults();
+        this.currentResult.status = 'completed';
+        this.currentResult.completedAt = new Date().toISOString();
+        this.currentResult.completedBy = 'طبيب المختبر';
+        
+        this.saveResults();
+        
+        // إرسال إشعار للمريض
+        this.sendResultsToPatient();
+        
+        document.getElementById('previewModal').style.display = 'none';
+        this.applyFilters();
+        this.renderResults();
+        this.updateSummary();
+        
+        this.showToast('تم إكمال النتائج وإرسالها للمريض بنجاح', 'success');
+    }
+
+    saveCurrentResults() {
+        if (!this.currentResult) return;
+
+        this.currentResult.doctorNotes = document.getElementById('doctorNotes').value;
+        this.currentResult.recommendations = document.getElementById('recommendations').value;
+        
+        // تحديث النتائج من الحقول
+        document.querySelectorAll('.parameter-input').forEach(input => {
+            const testIndex = parseInt(input.dataset.testIndex);
+            const paramIndex = parseInt(input.dataset.paramIndex);
+            this.currentResult.tests[testIndex].parameters[paramIndex].value = input.value;
+        });
+    }
+
+    sendResultsToPatient() {
+        if (!this.currentResult) return;
+
+        if (Notification.permission === 'granted') {
+            new Notification('نتائج تحاليلك جاهزة', {
+                body: `عزيزي/عزيزتي ${this.currentResult.patientName}، نتائج تحاليلك جاهزة الآن. يمكنك الاطلاع عليها من خلال التطبيق.`,
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+            });
+        }
+
+        // هنا يمكن إضافة إرسال بريد إلكتروني أو رسالة نصية
+        this.showToast('تم إرسال النتائج للمريض بنجاح', 'success');
+    }
+
+    showHistoryDetails(resultId) {
+        const result = this.results.find(res => res.id === resultId);
+        if (!result) return;
+
+        document.getElementById('historyPatientName').textContent = result.patientName;
+        document.getElementById('historyRecordNumber').textContent = result.requestNumber;
+
+        const historyList = document.getElementById('historyList');
+        historyList.innerHTML = this.generateHistoryDetailsHTML(result);
+
+        document.getElementById('historyModal').style.display = 'block';
+    }
+
+    generateHistoryDetailsHTML(result) {
+        return `
+            <div class="result-preview">
+                ${this.generatePreviewHTML.call({ currentResult: result, formatDate: this.formatDate.bind(this) })}
+            </div>
+        `;
+    }
+
+    showAnalytics() {
+        this.updateAnalytics();
+        document.getElementById('analyticsModal').style.display = 'block';
+    }
+
+    updateAnalytics() {
+        const pendingCount = this.results.filter(r => r.status === 'pending').length;
+        const completedCount = this.results.filter(r => r.status === 'completed').length;
+        const criticalCount = this.results.filter(r => r.isCritical).length;
+
+        document.getElementById('analyticsPending').textContent = pendingCount;
+        document.getElementById('analyticsCompleted').textContent = completedCount;
+        document.getElementById('analyticsCritical').textContent = criticalCount;
+
+        this.renderAnalyticsChart();
+    }
+
+    renderAnalyticsChart() {
+        const chartContainer = document.getElementById('resultsChart');
+        const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        
+        // بيانات عشوائية للرسم البياني
+        const data = days.map(() => Math.floor(Math.random() * 20) + 5);
+        
+        chartContainer.innerHTML = data.map((value, index) => `
+            <div class="chart-bar" style="height: ${value * 5}px">
+                <div class="chart-value">${value}</div>
+                <div class="chart-label">${days[index]}</div>
+            </div>
+        `).join('');
+    }
+
+    showBulkEntry() {
+        this.showToast('جاري فتح نافذة الإدخال الجماعي...', 'success');
+        // تنفيذ الإدخال الجماعي
+    }
+
+    showTemplates() {
+        this.showToast('جاري فتح نافذة القوالب...', 'success');
+        // تنفيذ إدارة القوالب
+    }
+
+    generateReports() {
+        this.showToast('جاري إنشاء التقارير...', 'success');
+        // تنفيذ إنشاء التقارير
+    }
+
+    printResults() {
+        window.print();
+    }
+
+    printHistoryResult(resultId) {
+        this.showToast('جاري الطباعة...', 'success');
+        // تنفيذ الطباعة
+    }
+
+    shareHistoryResult(resultId) {
+        if (navigator.share) {
+            navigator.share({
+                title: `نتائج تحاليل - ${this.currentResult.patientName}`,
+                text: `نتائج التحاليل الطبية للمريض ${this.currentResult.patientName}`,
+                url: window.location.href
+            });
+        } else {
+            this.showToast('ميزة المشاركة غير متاحة في هذا المتصفح', 'error');
+        }
+    }
+
+    showPendingResultsNotification() {
+        const pendingCount = this.results.filter(r => r.status === 'pending').length;
+        const criticalCount = this.results.filter(r => r.isCritical).length;
+
+        if (pendingCount > 0 && Notification.permission === 'granted') {
+            let message = `لديك ${pendingCount} نتيجة بانتظار الإدخال`;
+            if (criticalCount > 0) {
+                message += ` منها ${criticalCount} نتيجة حرجة`;
+            }
+
+            new Notification('نتائج بانتظار الإدخال', {
+                body: message,
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+            });
+        }
+    }
+
+    setupNotifications() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    }
+
+    showLoading() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('resultsList').style.display = 'none';
+    }
+
+    hideLoading() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('resultsList').style.display = 'block';
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        const messageEl = document.getElementById('toastMessage');
+        
+        messageEl.textContent = message;
+        toast.className = `notification-toast ${type === 'error' ? 'error' : ''}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    setupIntersectionObserver() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+    }
+
+    updateSummary() {
+        const pendingCount = this.results.filter(r => r.status === 'pending').length;
+        const completedCount = this.results.filter(r => r.status === 'completed').length;
+        const criticalCount = this.results.filter(r => r.isCritical).length;
+
+        document.getElementById('pendingResultsCount').textContent = pendingCount;
+        document.getElementById('completedResultsCount').textContent = completedCount;
+        document.getElementById('criticalResultsCount').textContent = criticalCount;
+
+        // تحديث عداد الإشعارات
+        document.getElementById('notificationBadge').textContent = pendingCount + criticalCount;
+    }
+
+    saveResults() {
+        localStorage.setItem('labResults', JSON.stringify(this.results));
+    }
+
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('ar-EG', options);
+    }
+
+    getStatusText(status) {
+        const statusTexts = {
+            'pending': 'قيد الانتظار',
+            'completed': 'مكتمل'
+        };
+        return statusTexts[status] || status;
+    }
+
+    getStatusClass(status) {
+        const statusClasses = {
+            'pending': 'status-pending',
+            'completed': 'status-completed'
+        };
+        return statusClasses[status] || 'status-pending';
+    }
+
+    getEmptyStateHTML() {
+        const messages = {
+            'pending': 'لا توجد نتائج بانتظار الإدخال',
+            'completed': 'لا توجد نتائج مكتملة',
+            'history': 'لا توجد نتائج في السجل'
+        };
+
+        return `
+            <div class="empty-state">
+                <i class="fas fa-file-medical"></i>
+                <h3>لا توجد نتائج</h3>
+                <p>${messages[this.filters.tab] || 'لا توجد نتائج لعرضها'}</p>
+            </div>
+        `;
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', () => {
+    new ResultsManager();
+});
+</script>
+</body>
+</html>

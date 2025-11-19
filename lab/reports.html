@@ -1,0 +1,2592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - التقارير والإحصائيات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.reports-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 20px 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.summary-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-3px);
+}
+
+.summary-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.summary-label {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.summary-trend {
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.trend-up {
+    color: var(--success);
+}
+
+.trend-down {
+    color: var(--accent);
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0 20px 20px;
+}
+
+.quick-action-btn {
+    padding: 16px 12px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.quick-action-btn i {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.reports-list {
+    padding: 0 20px 120px;
+}
+
+.report-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    border-right: 4px solid var(--primary);
+    position: relative;
+}
+
+.report-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-3px);
+}
+
+.report-item.financial {
+    border-right-color: var(--success);
+}
+
+.report-item.medical {
+    border-right-color: var(--info);
+}
+
+.report-item.operational {
+    border-right-color: var(--warning);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.report-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary);
+    flex: 1;
+}
+
+.report-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.report-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.report-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-size {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.report-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.report-btn {
+    padding: 6px 12px;
+    background: var(--bg-surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.report-btn:hover {
+    background: var(--primary-light);
+}
+
+.report-badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.report-builder {
+    padding: 20px;
+}
+
+.report-config {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.config-section {
+    margin-bottom: 24px;
+}
+
+.config-section:last-child {
+    margin-bottom: 0;
+}
+
+.config-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.config-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.config-item:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.config-item.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.config-icon {
+    font-size: 24px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.config-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.config-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.date-range-selector {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.date-range-btn {
+    flex: 1;
+    padding: 12px 8px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.date-range-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.date-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.checkbox-item:hover {
+    background: var(--primary-light);
+}
+
+.checkbox-item input {
+    width: 18px;
+    height: 18px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #388E3C);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.export-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.export-btn {
+    padding: 12px 8px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.export-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.export-btn i {
+    font-size: 16px;
+}
+
+.report-preview {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.preview-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.preview-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.preview-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.preview-meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.meta-item {
+    background: var(--bg-surface);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.meta-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.meta-value {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 14px;
+}
+
+.preview-content {
+    margin-bottom: 20px;
+}
+
+.content-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.section-content {
+    background: var(--bg-surface);
+    padding: 16px;
+    border-radius: var(--radius-md);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.chart-container {
+    height: 200px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.chart-bar {
+    background: linear-gradient(to top, var(--primary), var(--primary-light));
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    width: 30px;
+    transition: var(--transition-liquid);
+    position: relative;
+}
+
+.chart-bar:hover {
+    transform: scale(1.1);
+}
+
+.chart-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.chart-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 8px 12px;
+    text-align: right;
+    border-bottom: 1px solid var(--primary-light);
+}
+
+.data-table th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.data-table tr:hover {
+    background: var(--bg-light);
+}
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.main-content {
+    padding-bottom: 120px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 60px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    z-index: 3000;
+    transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-toast.error {
+    background: var(--accent);
+}
+
+.advanced-filters {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+    display: none;
+}
+
+.filter-group {
+    margin-bottom: 16px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.filter-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.scheduled-reports {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+}
+
+.schedule-info {
+    flex: 1;
+}
+
+.schedule-name {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.schedule-details {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.schedule-actions {
+    display: flex;
+    gap: 8px;
+}
+
+@media (max-width: 428px) {
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .preview-meta {
+        grid-template-columns: 1fr;
+    }
+    
+    .export-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .date-range-selector {
+        flex-direction: column;
+    }
+    
+    .date-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>التقارير والإحصائيات</h1>
+                    <p>تحليلات متقدمة وتقارير شاملة</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">0</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث في التقارير..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- تبويبات التقارير -->
+            <div class="tabs-container">
+                <div class="tab active" data-tab="overview">نظرة عامة</div>
+                <div class="tab" data-tab="financial">مالية</div>
+                <div class="tab" data-tab="medical">طبية</div>
+                <div class="tab" data-tab="operational">تشغيلية</div>
+            </div>
+
+            <!-- ملخص التقارير -->
+            <div class="reports-summary">
+                <div class="summary-item">
+                    <div class="summary-value" id="totalReports">0</div>
+                    <div class="summary-label">إجمالي التقارير</div>
+                    <div class="summary-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+١٢٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="revenueReports">0 ر.س</div>
+                    <div class="summary-label">إجمالي الإيرادات</div>
+                    <div class="summary-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+٨٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="completedTests">0</div>
+                    <div class="summary-label">تحليل مكتمل</div>
+                    <div class="summary-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+١٥٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value" id="criticalCases">0</div>
+                    <div class="summary-label">حالة حرجة</div>
+                    <div class="summary-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>-٥٪ عن الشهر الماضي</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار سريعة -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="generateReportBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    إنشاء تقرير جديد
+                </button>
+                <button class="quick-action-btn" id="scheduleReportBtn">
+                    <i class="fas fa-clock"></i>
+                    تقارير مجدولة
+                </button>
+                <button class="quick-action-btn" id="analyticsBtn">
+                    <i class="fas fa-chart-line"></i>
+                    تحليلات متقدمة
+                </button>
+                <button class="quick-action-btn" id="exportAllBtn">
+                    <i class="fas fa-download"></i>
+                    تصدير الكل
+                </button>
+            </div>
+
+            <!-- الفلاتر المتقدمة -->
+            <div class="advanced-filters" id="advancedFilters">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label class="form-label">نوع التقرير</label>
+                        <select class="form-select" id="filterType">
+                            <option value="">جميع الأنواع</option>
+                            <option value="financial">تقارير مالية</option>
+                            <option value="medical">تقارير طبية</option>
+                            <option value="operational">تقارير تشغيلية</option>
+                            <option value="analytical">تقارير تحليلية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الفترة</label>
+                        <select class="form-select" id="filterPeriod">
+                            <option value="">جميع الفترات</option>
+                            <option value="today">اليوم</option>
+                            <option value="week">هذا الأسبوع</option>
+                            <option value="month">هذا الشهر</option>
+                            <option value="quarter">هذا الربع</option>
+                            <option value="year">هذه السنة</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label class="form-label">من تاريخ</label>
+                        <input type="date" class="form-input" id="filterFromDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">إلى تاريخ</label>
+                        <input type="date" class="form-input" id="filterToDate">
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="clearFiltersBtn">
+                        <i class="fas fa-times"></i> مسح الفلاتر
+                    </button>
+                    <button class="btn btn-primary" id="applyFiltersBtn">
+                        <i class="fas fa-check"></i> تطبيق الفلاتر
+                    </button>
+                </div>
+            </div>
+
+            <!-- التقارير المجدولة -->
+            <div class="scheduled-reports" id="scheduledReports" style="display: none;">
+                <h3 style="margin-bottom: 16px; color: var(--primary-dark);">التقارير المجدولة</h3>
+                <div id="schedulesList">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </div>
+
+            <!-- مؤشر التحميل -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>جاري تحميل التقارير...</p>
+            </div>
+
+            <!-- قائمة التقارير -->
+            <div class="reports-list" id="reportsList">
+                <!-- سيتم ملؤها ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="test-requests.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <div class="nav-label">طلبات التحاليل</div>
+            </a>
+            <a href="results.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="nav-label">النتائج</div>
+            </a>
+            <a href="reports.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="nav-label">التقارير</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء التقرير -->
+    <div id="createReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إنشاء تقرير جديد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="report-builder">
+                <div class="report-config">
+                    <!-- نوع التقرير -->
+                    <div class="config-section">
+                        <div class="config-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            نوع التقرير
+                        </div>
+                        <div class="config-grid">
+                            <div class="config-item" data-type="financial">
+                                <div class="config-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="config-label">تقرير مالي</div>
+                                <div class="config-description">الإيرادات والمصروفات والأرباح</div>
+                            </div>
+                            <div class="config-item" data-type="medical">
+                                <div class="config-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <div class="config-label">تقرير طبي</div>
+                                <div class="config-description">الإحصائيات والنتائج الطبية</div>
+                            </div>
+                            <div class="config-item" data-type="operational">
+                                <div class="config-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="config-label">تقرير تشغيلي</div>
+                                <div class="config-description">الأداء والكفاءة التشغيلية</div>
+                            </div>
+                            <div class="config-item" data-type="analytical">
+                                <div class="config-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="config-label">تقرير تحليلي</div>
+                                <div class="config-description">تحليلات متقدمة ومؤشرات</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الفترة الزمنية -->
+                    <div class="config-section">
+                        <div class="config-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            الفترة الزمنية
+                        </div>
+                        <div class="date-range-selector">
+                            <button class="date-range-btn active" data-range="today">اليوم</button>
+                            <button class="date-range-btn" data-range="week">هذا الأسبوع</button>
+                            <button class="date-range-btn" data-range="month">هذا الشهر</button>
+                            <button class="date-range-btn" data-range="quarter">هذا الربع</button>
+                            <button class="date-range-btn" data-range="year">هذه السنة</button>
+                            <button class="date-range-btn" data-range="custom">مخصص</button>
+                        </div>
+                        <div class="date-inputs" id="customDateRange" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">من تاريخ</label>
+                                <input type="date" class="form-input" id="reportFromDate">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">إلى تاريخ</label>
+                                <input type="date" class="form-input" id="reportToDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- إعدادات التقرير -->
+                    <div class="config-section">
+                        <div class="config-title">
+                            <i class="fas fa-sliders-h"></i>
+                            إعدادات التقرير
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عنوان التقرير</label>
+                            <input type="text" class="form-input" id="reportTitle" placeholder="أدخل عنوان التقرير">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">وصف التقرير</label>
+                            <textarea class="form-textarea" id="reportDescription" placeholder="أدخل وصف التقرير"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الأقسام المطلوبة</label>
+                            <div class="checkbox-group" id="reportSections">
+                                <!-- سيتم ملؤها ديناميكياً -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="previewReportBtn">
+                        <i class="fas fa-eye"></i>
+                        معاينة التقرير
+                    </button>
+                    <button class="btn btn-primary" id="generateReportBtn">
+                        <i class="fas fa-magic"></i>
+                        إنشاء التقرير
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة معاينة التقرير -->
+    <div id="previewReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>معاينة التقرير</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="report-builder">
+                <div class="report-preview" id="reportPreview">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+                
+                <div class="export-options">
+                    <button class="export-btn" id="printReportBtn">
+                        <i class="fas fa-print"></i>
+                        طباعة
+                    </button>
+                    <button class="export-btn" id="exportPdfBtn">
+                        <i class="fas fa-file-pdf"></i>
+                        PDF
+                    </button>
+                    <button class="export-btn" id="exportExcelBtn">
+                        <i class="fas fa-file-excel"></i>
+                        Excel
+                    </button>
+                    <button class="export-btn" id="exportWordBtn">
+                        <i class="fas fa-file-word"></i>
+                        Word
+                    </button>
+                    <button class="export-btn" id="shareReportBtn">
+                        <i class="fas fa-share"></i>
+                        مشاركة
+                    </button>
+                    <button class="export-btn" id="scheduleReportBtn">
+                        <i class="fas fa-clock"></i>
+                        جدولة
+                    </button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="backToEditBtn">
+                        <i class="fas fa-edit"></i>
+                        العودة للتعديل
+                    </button>
+                    <button class="btn btn-success" id="saveReportBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ التقرير
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الجدولة -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>جدولة التقرير</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="report-builder">
+                <div class="report-config">
+                    <div class="form-group">
+                        <label class="form-label">تكرار الجدولة</label>
+                        <select class="form-select" id="scheduleFrequency">
+                            <option value="daily">يومي</option>
+                            <option value="weekly">أسبوعي</option>
+                            <option value="monthly">شهري</option>
+                            <option value="quarterly">ربع سنوي</option>
+                            <option value="yearly">سنوي</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">وقت الإرسال</label>
+                        <input type="time" class="form-input" id="scheduleTime" value="09:00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">طريقة الإرسال</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="deliveryMethods" value="email" checked>
+                                <span>البريد الإلكتروني</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="deliveryMethods" value="notification">
+                                <span>إشعار التطبيق</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="deliveryMethods" value="download">
+                                <span>تحميل تلقائي</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">المستلمون</label>
+                        <textarea class="form-textarea" id="scheduleRecipients" placeholder="أدخل عناوين البريد الإلكتروني للمستلمين (مفصولة بفواصل)"></textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelScheduleBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveScheduleBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ الجدولة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعارات التوست -->
+    <div class="notification-toast" id="notificationToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <script>
+// نظام إدارة التقارير المتقدم والمتكامل
+class ReportsManager {
+    constructor() {
+        this.reports = [];
+        this.filteredReports = [];
+        this.currentReport = null;
+        this.reportConfig = {
+            type: '',
+            period: 'month',
+            title: '',
+            description: '',
+            sections: [],
+            fromDate: '',
+            toDate: ''
+        };
+        this.filters = {
+            tab: 'overview',
+            search: '',
+            type: '',
+            period: '',
+            fromDate: '',
+            toDate: ''
+        };
+        
+        this.init();
+    }
+
+    init() {
+        this.loadReports();
+        this.setupEventListeners();
+        this.setupNotifications();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+        
+        // توليد تقارير افتراضية
+        this.generateSampleReports();
+    }
+
+    loadReports() {
+        const savedReports = localStorage.getItem('labReports');
+        if (savedReports) {
+            this.reports = JSON.parse(savedReports);
+        } else {
+            this.reports = [];
+        }
+        
+        this.applyFilters();
+        this.renderReports();
+        this.updateSummary();
+    }
+
+    generateSampleReports() {
+        if (this.reports.length === 0) {
+            const sampleReports = [
+                {
+                    id: this.generateId(),
+                    title: 'التقرير المالي الشهري',
+                    description: 'تحليل شامل للإيرادات والمصروفات والأرباح',
+                    type: 'financial',
+                    period: 'month',
+                    date: new Date().toISOString(),
+                    size: '2.4 MB',
+                    sections: ['revenue', 'expenses', 'profits', 'trends'],
+                    data: {
+                        totalRevenue: 154200,
+                        totalExpenses: 89200,
+                        netProfit: 65000,
+                        growthRate: 12.5,
+                        topServices: [
+                            { name: 'تحاليل الدم', revenue: 45000 },
+                            { name: 'الكيمياء الحيوية', revenue: 38000 },
+                            { name: 'الهرمونات', revenue: 28500 }
+                        ]
+                    },
+                    isScheduled: true,
+                    schedule: 'شهري'
+                },
+                {
+                    id: this.generateId(),
+                    title: 'تقرير الأداء الطبي',
+                    description: 'إحصائيات التحاليل والنتائج الطبية',
+                    type: 'medical',
+                    period: 'week',
+                    date: new Date(Date.now() - 86400000).toISOString(),
+                    size: '1.8 MB',
+                    sections: ['tests', 'results', 'critical_cases', 'efficiency'],
+                    data: {
+                        totalTests: 456,
+                        completedTests: 432,
+                        pendingTests: 24,
+                        criticalCases: 8,
+                        accuracyRate: 98.2,
+                        popularTests: [
+                            { name: 'CBC', count: 124 },
+                            { name: 'السكر', count: 89 },
+                            { name: 'وظائف الكبد', count: 67 }
+                        ]
+                    }
+                },
+                {
+                    id: this.generateId(),
+                    title: 'تقرير الكفاءة التشغيلية',
+                    description: 'تحليل أداء المختبر والموارد',
+                    type: 'operational',
+                    period: 'quarter',
+                    date: new Date(Date.now() - 172800000).toISOString(),
+                    size: '3.1 MB',
+                    sections: ['efficiency', 'resources', 'timeliness', 'quality'],
+                    data: {
+                        efficiencyRate: 94.5,
+                        avgProcessingTime: '2.3 ساعة',
+                        resourceUtilization: 88.7,
+                        qualityScore: 96.8,
+                        equipmentPerformance: [
+                            { name: 'جهاز CBC', performance: 98.2 },
+                            { name: 'جهاز الكيمياء', performance: 95.7 },
+                            { name: 'جهاز الهرمونات', performance: 97.3 }
+                        ]
+                    }
+                }
+            ];
+            
+            this.reports = sampleReports;
+            this.saveReports();
+        }
+    }
+
+    setupEventListeners() {
+        // تبويبات التقارير
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.filters.tab = tab.dataset.tab;
+                this.applyFilters();
+                this.renderReports();
+            });
+        });
+
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+            this.renderReports();
+        });
+
+        // زر الفلاتر
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const filters = document.getElementById('advancedFilters');
+            filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // زر التحديث
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            this.showLoading();
+            setTimeout(() => {
+                this.loadReports();
+                this.showToast('تم تحديث التقارير بنجاح', 'success');
+            }, 1000);
+        });
+
+        // تطبيق الفلاتر
+        document.getElementById('applyFiltersBtn').addEventListener('click', () => {
+            this.filters.type = document.getElementById('filterType').value;
+            this.filters.period = document.getElementById('filterPeriod').value;
+            this.filters.fromDate = document.getElementById('filterFromDate').value;
+            this.filters.toDate = document.getElementById('filterToDate').value;
+            this.applyFilters();
+            this.renderReports();
+            this.showToast('تم تطبيق الفلاتر بنجاح', 'success');
+        });
+
+        // مسح الفلاتر
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            this.clearFilters();
+            this.applyFilters();
+            this.renderReports();
+            this.showToast('تم مسح جميع الفلاتر', 'success');
+        });
+
+        // الأزرار السريعة
+        document.getElementById('generateReportBtn').addEventListener('click', () => {
+            this.showCreateReportModal();
+        });
+
+        document.getElementById('scheduleReportBtn').addEventListener('click', () => {
+            this.toggleScheduledReports();
+        });
+
+        document.getElementById('analyticsBtn').addEventListener('click', () => {
+            this.showAdvancedAnalytics();
+        });
+
+        document.getElementById('exportAllBtn').addEventListener('click', () => {
+            this.exportAllReports();
+        });
+
+        // نافذة إنشاء التقرير
+        document.querySelectorAll('.config-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.config-item').forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                this.reportConfig.type = item.dataset.type;
+                this.updateReportSections();
+            });
+        });
+
+        // اختيار الفترة
+        document.querySelectorAll('.date-range-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.date-range-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (btn.dataset.range === 'custom') {
+                    document.getElementById('customDateRange').style.display = 'grid';
+                } else {
+                    document.getElementById('customDateRange').style.display = 'none';
+                    this.reportConfig.period = btn.dataset.range;
+                }
+            });
+        });
+
+        // معاينة التقرير
+        document.getElementById('previewReportBtn').addEventListener('click', () => {
+            this.previewReport();
+        });
+
+        // إنشاء التقرير
+        document.getElementById('generateReportBtn').addEventListener('click', () => {
+            this.generateNewReport();
+        });
+
+        // حفظ التقرير
+        document.getElementById('saveReportBtn').addEventListener('click', () => {
+            this.saveCurrentReport();
+        });
+
+        // العودة للتعديل
+        document.getElementById('backToEditBtn').addEventListener('click', () => {
+            document.getElementById('previewReportModal').style.display = 'none';
+            document.getElementById('createReportModal').style.display = 'block';
+        });
+
+        // خيارات التصدير
+        document.getElementById('printReportBtn').addEventListener('click', () => {
+            this.printReport();
+        });
+
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            this.exportToPDF();
+        });
+
+        document.getElementById('exportExcelBtn').addEventListener('click', () => {
+            this.exportToExcel();
+        });
+
+        document.getElementById('exportWordBtn').addEventListener('click', () => {
+            this.exportToWord();
+        });
+
+        document.getElementById('shareReportBtn').addEventListener('click', () => {
+            this.shareReport();
+        });
+
+        document.getElementById('scheduleReportBtn').addEventListener('click', () => {
+            this.showScheduleModal();
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النوافذ المنبثقة
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+    }
+
+    applyFilters() {
+        let filtered = [...this.reports];
+
+        // فلتر التبويب
+        if (this.filters.tab !== 'overview') {
+            filtered = filtered.filter(report => report.type === this.filters.tab);
+        }
+
+        // فلتر البحث
+        if (this.filters.search) {
+            filtered = filtered.filter(report => 
+                report.title.toLowerCase().includes(this.filters.search) ||
+                report.description.toLowerCase().includes(this.filters.search)
+            );
+        }
+
+        // فلتر النوع
+        if (this.filters.type) {
+            filtered = filtered.filter(report => report.type === this.filters.type);
+        }
+
+        // فلتر الفترة
+        if (this.filters.period) {
+            filtered = filtered.filter(report => report.period === this.filters.period);
+        }
+
+        // فلتر التاريخ
+        if (this.filters.fromDate) {
+            filtered = filtered.filter(report => new Date(report.date) >= new Date(this.filters.fromDate));
+        }
+
+        if (this.filters.toDate) {
+            filtered = filtered.filter(report => new Date(report.date) <= new Date(this.filters.toDate));
+        }
+
+        this.filteredReports = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    renderReports() {
+        const reportsList = document.getElementById('reportsList');
+        
+        if (this.filteredReports.length === 0) {
+            reportsList.innerHTML = this.getEmptyStateHTML();
+            return;
+        }
+
+        reportsList.innerHTML = this.filteredReports.map(report => `
+            <div class="report-item fade-in ${report.type}" data-report-id="${report.id}">
+                ${report.isScheduled ? '<div class="report-badge">مجدول</div>' : ''}
+                <div class="report-header">
+                    <div class="report-title">${report.title}</div>
+                    <div class="report-date">${this.formatDate(report.date)}</div>
+                </div>
+                <div class="report-description">${report.description}</div>
+                <div class="report-footer">
+                    <div class="report-size">${report.size}</div>
+                    <div class="report-actions">
+                        <button class="report-btn view-report-btn" data-report-id="${report.id}">
+                            <i class="fas fa-eye"></i> عرض
+                        </button>
+                        <button class="report-btn download-report-btn" data-report-id="${report.id}">
+                            <i class="fas fa-download"></i> تحميل
+                        </button>
+                        <button class="report-btn share-report-btn" data-report-id="${report.id}">
+                            <i class="fas fa-share"></i> مشاركة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // إضافة مستمعي الأحداث
+        this.setupReportEventListeners();
+        this.setupIntersectionObserver();
+    }
+
+    setupReportEventListeners() {
+        // عناصر التقارير
+        document.querySelectorAll('.report-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (!e.target.closest('.report-btn')) {
+                    const reportId = item.dataset.reportId;
+                    this.viewReport(reportId);
+                }
+            });
+        });
+
+        // أزرار التقارير
+        document.querySelectorAll('.view-report-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const reportId = btn.dataset.reportId;
+                this.viewReport(reportId);
+            });
+        });
+
+        document.querySelectorAll('.download-report-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const reportId = btn.dataset.reportId;
+                this.downloadReport(reportId);
+            });
+        });
+
+        document.querySelectorAll('.share-report-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const reportId = btn.dataset.reportId;
+                this.shareReport(reportId);
+            });
+        });
+    }
+
+    viewReport(reportId) {
+        this.currentReport = this.reports.find(report => report.id === reportId);
+        if (!this.currentReport) return;
+
+        this.showReportPreview(this.currentReport);
+    }
+
+    showReportPreview(report) {
+        const preview = document.getElementById('reportPreview');
+        preview.innerHTML = this.generateReportPreviewHTML(report);
+
+        document.getElementById('previewReportModal').style.display = 'block';
+    }
+
+    generateReportPreviewHTML(report) {
+        let content = '';
+        
+        switch (report.type) {
+            case 'financial':
+                content = this.generateFinancialReportHTML(report);
+                break;
+            case 'medical':
+                content = this.generateMedicalReportHTML(report);
+                break;
+            case 'operational':
+                content = this.generateOperationalReportHTML(report);
+                break;
+            default:
+                content = this.generateGeneralReportHTML(report);
+        }
+
+        return `
+            <div class="preview-header">
+                <div class="preview-title">${report.title}</div>
+                <div class="preview-subtitle">${report.description}</div>
+            </div>
+            
+            <div class="preview-meta">
+                <div class="meta-item">
+                    <div class="meta-label">تاريخ الإنشاء</div>
+                    <div class="meta-value">${this.formatDate(report.date)}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">نوع التقرير</div>
+                    <div class="meta-value">${this.getReportTypeText(report.type)}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">الفترة</div>
+                    <div class="meta-value">${this.getPeriodText(report.period)}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">الحجم</div>
+                    <div class="meta-value">${report.size}</div>
+                </div>
+            </div>
+            
+            ${content}
+        `;
+    }
+
+    generateFinancialReportHTML(report) {
+        const data = report.data;
+        return `
+            <div class="preview-content">
+                <div class="content-section">
+                    <div class="section-title">ملخص مالي</div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${this.formatCurrency(data.totalRevenue)}</div>
+                            <div class="stat-label">إجمالي الإيرادات</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${this.formatCurrency(data.totalExpenses)}</div>
+                            <div class="stat-label">إجمالي المصروفات</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${this.formatCurrency(data.netProfit)}</div>
+                            <div class="stat-label">صافي الربح</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.growthRate}%</div>
+                            <div class="stat-label">معدل النمو</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">أفضل الخدمات ربحية</div>
+                    <div class="section-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>الخدمة</th>
+                                        <th>الإيرادات</th>
+                                        <th>النسبة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.topServices.map(service => `
+                                        <tr>
+                                            <td>${service.name}</td>
+                                            <td>${this.formatCurrency(service.revenue)}</td>
+                                            <td>${((service.revenue / data.totalRevenue) * 100).toFixed(1)}%</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">اتجاهات الإيرادات</div>
+                    <div class="chart-container">
+                        <div class="chart-bar" style="height: 120px">
+                            <div class="chart-value">${this.formatCurrency(120000)}</div>
+                            <div class="chart-label">الشهر 1</div>
+                        </div>
+                        <div class="chart-bar" style="height: 140px">
+                            <div class="chart-value">${this.formatCurrency(140000)}</div>
+                            <div class="chart-label">الشهر 2</div>
+                        </div>
+                        <div class="chart-bar" style="height: 160px">
+                            <div class="chart-value">${this.formatCurrency(160000)}</div>
+                            <div class="chart-label">الشهر 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    generateMedicalReportHTML(report) {
+        const data = report.data;
+        return `
+            <div class="preview-content">
+                <div class="content-section">
+                    <div class="section-title">إحصائيات طبية</div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.totalTests}</div>
+                            <div class="stat-label">إجمالي التحاليل</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.completedTests}</div>
+                            <div class="stat-label">تحاليل مكتملة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.pendingTests}</div>
+                            <div class="stat-label">قيد الانتظار</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.criticalCases}</div>
+                            <div class="stat-label">حالات حرجة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">أكثر التحاليل طلباً</div>
+                    <div class="section-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>نوع التحليل</th>
+                                        <th>عدد المرات</th>
+                                        <th>النسبة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.popularTests.map(test => `
+                                        <tr>
+                                            <td>${test.name}</td>
+                                            <td>${test.count}</td>
+                                            <td>${((test.count / data.totalTests) * 100).toFixed(1)}%</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    generateOperationalReportHTML(report) {
+        const data = report.data;
+        return `
+            <div class="preview-content">
+                <div class="content-section">
+                    <div class="section-title">مؤشرات الأداء</div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.efficiencyRate}%</div>
+                            <div class="stat-label">كفاءة التشغيل</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.avgProcessingTime}</div>
+                            <div class="stat-label">متوسط وقت المعالجة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.resourceUtilization}%</div>
+                            <div class="stat-label">استخدام الموارد</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.qualityScore}%</div>
+                            <div class="stat-label">جودة الخدمة</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-title">أداء الأجهزة</div>
+                    <div class="section-content">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>الجهاز</th>
+                                        <th>معدل الأداء</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.equipmentPerformance.map(equipment => `
+                                        <tr>
+                                            <td>${equipment.name}</td>
+                                            <td>${equipment.performance}%</td>
+                                            <td>${equipment.performance > 95 ? 'ممتاز' : equipment.performance > 90 ? 'جيد' : 'يحتاج صيانة'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    showCreateReportModal() {
+        this.resetReportConfig();
+        document.getElementById('createReportModal').style.display = 'block';
+    }
+
+    resetReportConfig() {
+        this.reportConfig = {
+            type: '',
+            period: 'month',
+            title: '',
+            description: '',
+            sections: [],
+            fromDate: '',
+            toDate: ''
+        };
+
+        document.querySelectorAll('.config-item').forEach(item => item.classList.remove('selected'));
+        document.querySelectorAll('.date-range-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.date-range-btn[data-range="month"]').classList.add('active');
+        document.getElementById('customDateRange').style.display = 'none';
+        document.getElementById('reportTitle').value = '';
+        document.getElementById('reportDescription').value = '';
+    }
+
+    updateReportSections() {
+        const sectionsContainer = document.getElementById('reportSections');
+        const sections = this.getReportSections(this.reportConfig.type);
+        
+        sectionsContainer.innerHTML = sections.map(section => `
+            <label class="checkbox-item">
+                <input type="checkbox" name="reportSections" value="${section.id}" checked>
+                <span>${section.name}</span>
+                <small>${section.description}</small>
+            </label>
+        `).join('');
+    }
+
+    getReportSections(type) {
+        const sections = {
+            financial: [
+                { id: 'revenue', name: 'تحليل الإيرادات', description: 'تفصيل الإيرادات ومصادرها' },
+                { id: 'expenses', name: 'تحليل المصروفات', description: 'تفصيل المصروفات والتكاليف' },
+                { id: 'profits', name: 'تحليل الأرباح', description: 'صافي الأرباح والهوامش' },
+                { id: 'trends', name: 'الاتجاهات المالية', description: 'تحليل النمو والاتجاهات' }
+            ],
+            medical: [
+                { id: 'tests', name: 'إحصائيات التحاليل', description: 'أعداد وأنواع التحاليل' },
+                { id: 'results', name: 'تحليل النتائج', description: 'نتائج التحاليل والإحصائيات' },
+                { id: 'critical_cases', name: 'الحالات الحرجة', description: 'تحليل الحالات الحرجة' },
+                { id: 'efficiency', name: 'كفاءة المختبر', description: 'مؤشرات الأداء الطبي' }
+            ],
+            operational: [
+                { id: 'efficiency', name: 'كفاءة التشغيل', description: 'معدلات الكفاءة والإنتاجية' },
+                { id: 'resources', name: 'إدارة الموارد', description: 'استخدام الموارد والتجهيزات' },
+                { id: 'timeliness', name: 'الالتزام بالوقت', description: 'مؤشرات الوقت والتسليم' },
+                { id: 'quality', name: 'جودة الخدمة', description: 'مؤشرات الجودة والرضا' }
+            ]
+        };
+
+        return sections[type] || [];
+    }
+
+    previewReport() {
+        if (!this.validateReportConfig()) return;
+
+        this.collectReportConfig();
+        this.generatePreview();
+    }
+
+    validateReportConfig() {
+        if (!this.reportConfig.type) {
+            this.showToast('يرجى اختيار نوع التقرير', 'error');
+            return false;
+        }
+
+        if (!document.getElementById('reportTitle').value) {
+            this.showToast('يرجى إدخال عنوان التقرير', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    collectReportConfig() {
+        this.reportConfig.title = document.getElementById('reportTitle').value;
+        this.reportConfig.description = document.getElementById('reportDescription').value;
+        
+        // جمع الأقسام المختارة
+        this.reportConfig.sections = Array.from(document.querySelectorAll('input[name="reportSections"]:checked'))
+            .map(checkbox => checkbox.value);
+
+        // جمع إعدادات التاريخ
+        if (this.reportConfig.period === 'custom') {
+            this.reportConfig.fromDate = document.getElementById('reportFromDate').value;
+            this.reportConfig.toDate = document.getElementById('reportToDate').value;
+        }
+    }
+
+    generatePreview() {
+        // توليد بيانات عشوائية للتقرير
+        const reportData = this.generateReportData(this.reportConfig.type);
+        
+        const previewReport = {
+            id: 'preview',
+            title: this.reportConfig.title,
+            description: this.reportConfig.description,
+            type: this.reportConfig.type,
+            period: this.reportConfig.period,
+            date: new Date().toISOString(),
+            size: '1.2 MB',
+            sections: this.reportConfig.sections,
+            data: reportData
+        };
+
+        this.showReportPreview(previewReport);
+        document.getElementById('createReportModal').style.display = 'none';
+    }
+
+    generateReportData(type) {
+        // بيانات عشوائية لأغراض المعاينة
+        const baseData = {
+            financial: {
+                totalRevenue: Math.floor(Math.random() * 200000) + 100000,
+                totalExpenses: Math.floor(Math.random() * 120000) + 50000,
+                netProfit: 0,
+                growthRate: (Math.random() * 20 + 5).toFixed(1),
+                topServices: [
+                    { name: 'تحاليل الدم', revenue: Math.floor(Math.random() * 50000) + 30000 },
+                    { name: 'الكيمياء الحيوية', revenue: Math.floor(Math.random() * 40000) + 25000 },
+                    { name: 'الهرمونات', revenue: Math.floor(Math.random() * 30000) + 15000 }
+                ]
+            },
+            medical: {
+                totalTests: Math.floor(Math.random() * 500) + 300,
+                completedTests: 0,
+                pendingTests: 0,
+                criticalCases: Math.floor(Math.random() * 15) + 5,
+                accuracyRate: (Math.random() * 5 + 95).toFixed(1),
+                popularTests: [
+                    { name: 'CBC', count: Math.floor(Math.random() * 150) + 80 },
+                    { name: 'السكر', count: Math.floor(Math.random() * 120) + 60 },
+                    { name: 'وظائف الكبد', count: Math.floor(Math.random() * 100) + 40 }
+                ]
+            },
+            operational: {
+                efficiencyRate: (Math.random() * 10 + 90).toFixed(1),
+                avgProcessingTime: (Math.random() * 2 + 1.5).toFixed(1) + ' ساعة',
+                resourceUtilization: (Math.random() * 15 + 80).toFixed(1),
+                qualityScore: (Math.random() * 8 + 92).toFixed(1),
+                equipmentPerformance: [
+                    { name: 'جهاز CBC', performance: (Math.random() * 8 + 92).toFixed(1) },
+                    { name: 'جهاز الكيمياء', performance: (Math.random() * 10 + 88).toFixed(1) },
+                    { name: 'جهاز الهرمونات', performance: (Math.random() * 6 + 93).toFixed(1) }
+                ]
+            }
+        };
+
+        const data = baseData[type];
+        
+        // حساب القيم المشتقة
+        if (type === 'financial') {
+            data.netProfit = data.totalRevenue - data.totalExpenses;
+        } else if (type === 'medical') {
+            data.completedTests = data.totalTests - Math.floor(Math.random() * 50);
+            data.pendingTests = data.totalTests - data.completedTests;
+        }
+
+        return data;
+    }
+
+    generateNewReport() {
+        if (!this.validateReportConfig()) return;
+
+        this.collectReportConfig();
+        
+        const newReport = {
+            id: this.generateId(),
+            title: this.reportConfig.title,
+            description: this.reportConfig.description,
+            type: this.reportConfig.type,
+            period: this.reportConfig.period,
+            date: new Date().toISOString(),
+            size: '1.5 MB',
+            sections: this.reportConfig.sections,
+            data: this.generateReportData(this.reportConfig.type)
+        };
+
+        this.reports.unshift(newReport);
+        this.saveReports();
+        this.applyFilters();
+        this.renderReports();
+        this.updateSummary();
+
+        document.getElementById('createReportModal').style.display = 'none';
+        this.showToast('تم إنشاء التقرير بنجاح', 'success');
+    }
+
+    saveCurrentReport() {
+        if (this.currentReport && this.currentReport.id !== 'preview') {
+            this.showToast('تم حفظ التقرير', 'success');
+            document.getElementById('previewReportModal').style.display = 'none';
+        }
+    }
+
+    downloadReport(reportId) {
+        const report = this.reports.find(r => r.id === reportId);
+        if (report) {
+            this.showToast(`جاري تحميل التقرير: ${report.title}`, 'success');
+        }
+    }
+
+    shareReport(reportId) {
+        const report = this.reports.find(r => r.id === reportId);
+        if (report && navigator.share) {
+            navigator.share({
+                title: report.title,
+                text: report.description,
+                url: window.location.href
+            });
+        } else {
+            this.showToast('ميزة المشاركة غير متاحة في هذا المتصفح', 'error');
+        }
+    }
+
+    printReport() {
+        window.print();
+    }
+
+    exportToPDF() {
+        this.showToast('جاري تصدير التقرير بصيغة PDF...', 'success');
+    }
+
+    exportToExcel() {
+        this.showToast('جاري تصدير التقرير بصيغة Excel...', 'success');
+    }
+
+    exportToWord() {
+        this.showToast('جاري تصدير التقرير بصيغة Word...', 'success');
+    }
+
+    showScheduleModal() {
+        document.getElementById('scheduleModal').style.display = 'block';
+    }
+
+    toggleScheduledReports() {
+        const scheduledSection = document.getElementById('scheduledReports');
+        scheduledSection.style.display = scheduledSection.style.display === 'none' ? 'block' : 'none';
+    }
+
+    showAdvancedAnalytics() {
+        this.showToast('جاري فتح التحليلات المتقدمة...', 'success');
+    }
+
+    exportAllReports() {
+        this.showToast('جاري تصدير جميع التقارير...', 'success');
+    }
+
+    updateSummary() {
+        const totalReports = this.reports.length;
+        const revenue = this.reports.filter(r => r.type === 'financial')
+            .reduce((sum, report) => sum + (report.data.totalRevenue || 0), 0);
+        const completedTests = this.reports.filter(r => r.type === 'medical')
+            .reduce((sum, report) => sum + (report.data.completedTests || 0), 0);
+        const criticalCases = this.reports.filter(r => r.type === 'medical')
+            .reduce((sum, report) => sum + (report.data.criticalCases || 0), 0);
+
+        document.getElementById('totalReports').textContent = totalReports;
+        document.getElementById('revenueReports').textContent = this.formatCurrency(revenue);
+        document.getElementById('completedTests').textContent = completedTests;
+        document.getElementById('criticalCases').textContent = criticalCases;
+    }
+
+    clearFilters() {
+        this.filters = {
+            tab: 'overview',
+            search: '',
+            type: '',
+            period: '',
+            fromDate: '',
+            toDate: ''
+        };
+
+        document.getElementById('searchInput').value = '';
+        document.getElementById('filterType').value = '';
+        document.getElementById('filterPeriod').value = '';
+        document.getElementById('filterFromDate').value = '';
+        document.getElementById('filterToDate').value = '';
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.tab[data-tab="overview"]').classList.add('active');
+    }
+
+    setupNotifications() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    }
+
+    showLoading() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('reportsList').style.display = 'none';
+    }
+
+    hideLoading() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('reportsList').style.display = 'block';
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        const messageEl = document.getElementById('toastMessage');
+        
+        messageEl.textContent = message;
+        toast.className = `notification-toast ${type === 'error' ? 'error' : ''}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    setupIntersectionObserver() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+    }
+
+    saveReports() {
+        localStorage.setItem('labReports', JSON.stringify(this.reports));
+    }
+
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('ar-EG', options);
+    }
+
+    formatCurrency(amount) {
+        return new Intl.NumberFormat('ar-SA', {
+            style: 'currency',
+            currency: 'SAR'
+        }).format(amount);
+    }
+
+    getReportTypeText(type) {
+        const types = {
+            'financial': 'تقرير مالي',
+            'medical': 'تقرير طبي',
+            'operational': 'تقرير تشغيلي',
+            'analytical': 'تقرير تحليلي'
+        };
+        return types[type] || type;
+    }
+
+    getPeriodText(period) {
+        const periods = {
+            'today': 'اليوم',
+            'week': 'أسبوع',
+            'month': 'شهر',
+            'quarter': 'ربع سنة',
+            'year': 'سنة'
+        };
+        return periods[period] || period;
+    }
+
+    getEmptyStateHTML() {
+        return `
+            <div class="empty-state">
+                <i class="fas fa-chart-bar"></i>
+                <h3>لا توجد تقارير</h3>
+                <p>${this.filters.tab === 'overview' ? 'لم يتم إنشاء أي تقارير بعد' : `لا توجد تقارير ${this.getReportTypeText(this.filters.tab)}`}</p>
+                <button class="btn btn-primary" style="margin-top: 16px;" onclick="reportsManager.showCreateReportModal()">
+                    <i class="fas fa-plus"></i>
+                    إنشاء تقرير جديد
+                </button>
+            </div>
+        `;
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+}
+
+// تهيئة التطبيق
+let reportsManager;
+document.addEventListener('DOMContentLoaded', () => {
+    reportsManager = new ReportsManager();
+});
+</script>
+</body>
+</html>

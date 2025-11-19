@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - واجهة المختبر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+/* جميع الأنماط السابقة تبقى كما هي */
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2; /* أزرق طبي */
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50; /* أخضر صحي */
+    --accent: #FF5252; /* تنبيهات */
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* خلفية التطبيق: فاتحة ومريحة للعين */
+    --bg-light: #F5F9FF; /* أزرق فاتح جداً */
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* -------------------------------------- */
+/* 1. التطبيق الرئيسي والهيكل (App Shell) */
+/* -------------------------------------- */
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة المدمج */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* -------------------------------------- */
+/* 2. الهيدر والمحتوى البارز */
+/* -------------------------------------- */
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل - Neumorphism Style */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث النظيف */
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+/* إحصائيات المختبر */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.stat-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+/* -------------------------------------- */
+/* 3. قائمة الإجراءات السريعة */
+/* -------------------------------------- */
+
+.section-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 30px 20px 16px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.quick-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.nav-card {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-md);
+    padding: 16px 8px;
+    text-align: center;
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid transparent;
+}
+
+.nav-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.nav-card:active {
+    transform: scale(0.95);
+}
+
+.nav-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 20px;
+    color: white;
+}
+
+.nav-1 .nav-icon { background: linear-gradient(135deg, #1976D2, #1565C0); }
+.nav-2 .nav-icon { background: linear-gradient(135deg, #4CAF50, #388E3C); }
+.nav-3 .nav-icon { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+.nav-4 .nav-icon { background: linear-gradient(135deg, #FF9800, #F57C00); }
+.nav-5 .nav-icon { background: linear-gradient(135deg, #2196F3, #1976D2); }
+.nav-6 .nav-icon { background: linear-gradient(135deg, #607D8B, #455A64); }
+.nav-7 .nav-icon { background: linear-gradient(135deg, #F44336, #D32F2F); }
+.nav-8 .nav-icon { background: linear-gradient(135deg, #795548, #5D4037); }
+
+.nav-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* -------------------------------------- */
+/* 4. لوحة التحكم */
+/* -------------------------------------- */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.dashboard-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-5px);
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.card-1 .card-icon { background: linear-gradient(135deg, #1976D2, #1565C0); }
+.card-2 .card-icon { background: linear-gradient(135deg, #4CAF50, #388E3C); }
+.card-3 .card-icon { background: linear-gradient(135deg, #FF9800, #F57C00); }
+.card-4 .card-icon { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+
+.card-value {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--primary-dark);
+}
+
+.card-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.card-trend {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.trend-up { color: var(--success); }
+.trend-down { color: var(--accent); }
+
+/* -------------------------------------- */
+/* 5. قسم التحاليل */
+/* -------------------------------------- */
+
+.tests-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 0 20px 24px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.tests-section:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.tests-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tests-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.tests-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.tests-stat {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.tests-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-inset);
+}
+
+.tests-stat.completed {
+    border-color: var(--success);
+}
+
+.tests-stat.pending {
+    border-color: var(--warning);
+}
+
+.tests-stat.critical {
+    border-color: var(--accent);
+}
+
+.tests-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.tests-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* -------------------------------------- */
+/* 6. شريط التحاليل العاجلة المتحرك */
+/* -------------------------------------- */
+
+.urgent-tests-container {
+    overflow: hidden;
+    height: 220px;
+    margin: 0 20px 24px;
+    position: relative;
+}
+
+.urgent-tests-slider {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.8s ease-in-out;
+    height: 100%;
+}
+
+.urgent-test-slide {
+    display: flex;
+    gap: 12px;
+    height: 100px;
+    margin-bottom: 12px;
+}
+
+.urgent-test-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+    flex: 1;
+    cursor: pointer;
+}
+
+.urgent-test-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-5px);
+}
+
+.urgent-test-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.urgent-test-info {
+    flex: 1;
+}
+
+.urgent-test-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.urgent-test-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* -------------------------------------- */
+/* 7. تنبيهات المخزون */
+/* -------------------------------------- */
+
+.inventory-alerts {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 0 20px 24px;
+    box-shadow: var(--shadow-light);
+    border-right: 4px solid var(--warning);
+}
+
+.inventory-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--warning);
+}
+
+.inventory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+}
+
+.inventory-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--warning);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.inventory-text {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* -------------------------------------- */
+/* 8. شريط الأجهزة المتحرك */
+/* -------------------------------------- */
+
+.equipment-container {
+    overflow: hidden;
+    height: 140px;
+    margin: 0 20px 24px;
+    position: relative;
+}
+
+.equipment-slider {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.8s ease-in-out;
+    height: 100%;
+}
+
+.equipment-slide {
+    height: 140px;
+    margin-bottom: 12px;
+}
+
+.equipment-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    height: 100%;
+}
+
+.equipment-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-5px);
+}
+
+.equipment-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.equipment-content {
+    flex: 1;
+}
+
+.equipment-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: var(--primary);
+}
+
+.equipment-preview {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* -------------------------------------- */
+/* 9. شريط التنقل السفلي الفائق (Floating Dock) */
+/* -------------------------------------- */
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* زر التحاليل العاجلة العائم */
+.urgent-fab {
+    position: fixed;
+    bottom: 90px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent), #D32F2F);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-card);
+    z-index: 999;
+    transition: var(--transition-liquid);
+    border: none;
+    cursor: pointer;
+}
+
+.urgent-fab:hover {
+    transform: scale(1.1);
+}
+
+.urgent-fab:active {
+    transform: scale(0.9);
+}
+
+/* -------------------------------------- */
+/* 10. النوافذ المنبثقة (Modal) */
+/* -------------------------------------- */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* تأثيرات الظهور */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* مساحة للتنقل السفلي */
+.main-content {
+    padding-bottom: 120px;
+}
+
+/* تفاصيل التحاليل */
+.test-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.test-item {
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    border-right: 4px solid var(--primary);
+    box-shadow: var(--shadow-light);
+}
+
+.test-item.completed {
+    border-right-color: var(--success);
+}
+
+.test-item.pending {
+    border-right-color: var(--warning);
+}
+
+.test-item.critical {
+    border-right-color: var(--accent);
+}
+
+.test-patient {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+.test-type {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.test-date, .test-time, .test-priority {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+/* تفاصيل التحليل العاجل */
+.urgent-test-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.urgent-test-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: var(--primary);
+    border: 4px solid var(--primary);
+}
+
+.urgent-test-info-details {
+    text-align: center;
+}
+
+.urgent-test-name-large {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+.urgent-test-type-large {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.urgent-test-bio {
+    text-align: right;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.urgent-test-parameters {
+    width: 100%;
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.parameters-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--primary);
+    text-align: right;
+}
+
+.parameters-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.parameters-item:last-child {
+    border-bottom: none;
+}
+
+.urgent-test-priority {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.priority-label {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.priority-level {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.process-test-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    width: 100%;
+}
+
+.process-test-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+/* تفاصيل الجهاز */
+.equipment-details {
+    text-align: right;
+    line-height: 1.8;
+}
+
+.equipment-title-large {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--primary);
+    text-align: center;
+}
+
+.equipment-content {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.equipment-specs {
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.specs-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--primary);
+}
+
+.specs-list {
+    list-style-type: none;
+}
+
+.specs-list li {
+    margin-bottom: 8px;
+    padding-right: 20px;
+    position: relative;
+}
+
+.specs-list li:before {
+    content: "✓";
+    position: absolute;
+    right: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+/* التكيف مع الشاشات */
+@media (max-width: 428px) {
+    .quick-nav {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -------------------------------------- */
+/* 11. نماذج البيانات */
+/* -------------------------------------- */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+    outline: none;
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-item input {
+    width: 18px;
+    height: 18px;
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed var(--primary-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    text-align: center;
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.file-upload-label i {
+    font-size: 40px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.file-upload-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-preview {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+}
+
+.form-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.form-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section-title i {
+    color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* صفحة بيانات المختبر */
+.lab-profile {
+    padding: 0 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--primary);
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--primary-dark);
+}
+
+.profile-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.profile-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.profile-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.profile-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-card-title i {
+    color: var(--primary);
+}
+
+.profile-field {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profile-field:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.field-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.field-value {
+    color: var(--text-secondary);
+}
+
+.services-list, .equipment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.service-tag, .equipment-tag {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.licenses-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.license-item {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.license-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.edit-profile-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-card);
+    z-index: 999;
+    transition: var(--transition-liquid);
+    border: none;
+    cursor: pointer;
+}
+
+.edit-profile-btn:hover {
+    transform: scale(1.1);
+}
+
+.create-profile-btn {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: var(--radius-xl);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-card);
+    z-index: 1000;
+}
+
+.create-profile-btn:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.welcome-message {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.welcome-message h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: var(--primary-dark);
+}
+
+.welcome-message p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+/* زر إنشاء الحساب في الصفحة الرئيسية */
+.create-profile-home-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+.create-profile-home-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+/* تنبيه بيانات المختبر */
+.lab-data-alert {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+    border-right: 4px solid var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lab-data-alert i {
+    color: var(--warning);
+    font-size: 20px;
+}
+
+.lab-data-alert p {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+/* بطاقة معلومات المختبر في الصفحة الرئيسية */
+.lab-info-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.lab-info-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 24px;
+    overflow: hidden;
+}
+
+.lab-info-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lab-info-content {
+    flex: 1;
+}
+
+.lab-info-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--primary-dark);
+    font-size: 18px;
+}
+
+.lab-info-address {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.lab-info-capacity {
+    font-size: 12px;
+    color: var(--success);
+    font-weight: 600;
+}
+
+.lab-info-edit {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.lab-info-edit:hover {
+    background: var(--primary);
+    color: white;
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1 id="mainLabName">مختبر النخبة 🧪</h1>
+                    <p id="mainLabSubtitle">المركز الرئيسي للتحاليل الطبية</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">7</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="settingsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن تحليل، مريض، جهاز..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- تنبيه بيانات المختبر (يظهر فقط عند عدم وجود بيانات) -->
+            <div id="labDataAlert" class="lab-data-alert" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>لم تقم بإنشاء بيانات المختبر بعد. يرجى إنشاء حسابك لتحسين تجربة الاستخدام.</p>
+            </div>
+
+            <!-- بطاقة معلومات المختبر (تظهر فقط عند وجود بيانات) -->
+            <div id="labInfoCard" class="lab-info-card" style="display: none;">
+                <div class="lab-info-avatar" id="mainLabAvatar">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <div class="lab-info-content">
+                    <div class="lab-info-name" id="mainLabNameCard">مختبر النخبة الطبي</div>
+                    <div class="lab-info-address" id="mainLabAddressCard">الرياض، حي العليا، شارع الملك فهد</div>
+                    <div class="lab-info-capacity" id="mainLabCapacity">الطاقة الاستيعابية: 200 تحليل/يوم</div>
+                </div>
+                <button class="lab-info-edit" id="editLabInfoBtn">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item liquid-transition">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">تحليل اليوم</div>
+                </div>
+                <div class="stat-item liquid-transition">
+                    <div class="stat-value">92%</div>
+                    <div class="stat-label">مكتملة</div>
+                </div>
+                <div class="stat-item liquid-transition">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">عاجلة</div>
+                </div>
+            </div>
+
+            <!-- زر إنشاء الحساب في الصفحة الرئيسية -->
+            <button id="createProfileHomeBtn" class="create-profile-home-btn" style="display: none;">
+                <i class="fas fa-plus-circle"></i>
+                إنشاء بيانات المختبر
+            </button>
+
+            <!-- قائمة الإجراءات السريعة -->
+            <div class="section-title">
+                <i class="fas fa-bolt"></i>
+                الإجراءات السريعة
+            </div>
+            <div class="quick-nav">
+                <!-- الإجراءات السريعة المعدلة -->
+                <a href="test-requests.html" class="nav-card nav-1 fade-in">
+                    <div class="nav-icon">
+                        <i class="fas fa-file-medical-alt"></i>
+                    </div>
+                    <div class="nav-label">طلبات التحاليل</div>
+                </a>
+                <a href="financial-account.html" class="nav-card nav-2 fade-in">
+                    <div class="nav-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="nav-label">الحساب المالي</div>
+                </a>
+                <a href="results.html" class="nav-card nav-3 fade-in">
+                    <div class="nav-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="nav-label">نتائج التحليل</div>
+                </a>
+                <a href="reports.html" class="nav-card nav-4 fade-in">
+                    <div class="nav-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="nav-label">التقارير</div>
+                </a>
+            </div>
+
+            <!-- لوحة التحكم -->
+            <div class="section-title">
+                <i class="fas fa-chart-line"></i>
+                لوحة التحكم
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card card-1 fade-in">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-value">156</div>
+                            <div class="card-label">تحليل اليوم</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                    </div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+١٢ من الأمس</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-card card-2 fade-in">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-value">92%</div>
+                            <div class="card-label">مكتملة</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+٣٪ هذا الأسبوع</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-card card-3 fade-in">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-value">8</div>
+                            <div class="card-label">عاجلة</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <div class="card-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>-٢ من الأمس</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-card card-4 fade-in">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-value">45</div>
+                            <div class="card-label">قيد المعالجة</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                    </div>
+                    <div class="card-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+٥ جديدة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم التحاليل -->
+            <div class="tests-section fade-in">
+                <div class="tests-header">
+                    <div class="tests-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--primary-dark); margin-bottom: 4px;">إحصائيات التحاليل</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">آخر تحديث: الآن</p>
+                    </div>
+                </div>
+                <div class="tests-stats">
+                    <div class="tests-stat completed" data-type="completed">
+                        <div class="tests-value">143</div>
+                        <div class="tests-label">مكتملة</div>
+                    </div>
+                    <div class="tests-stat pending" data-type="pending">
+                        <div class="tests-value">45</div>
+                        <div class="tests-label">قيد المعالجة</div>
+                    </div>
+                    <div class="tests-stat critical" data-type="critical">
+                        <div class="tests-value">8</div>
+                        <div class="tests-label">عاجلة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التحاليل العاجلة -->
+            <div class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                التحاليل العاجلة
+            </div>
+            <div class="urgent-tests-container">
+                <div class="urgent-tests-slider" id="urgentTestsSlider">
+                    <!-- صف 1 -->
+                    <div class="urgent-test-slide">
+                        <div class="urgent-test-card fade-in" data-test-id="1">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">محمد أحمد - CBC</div>
+                                <div class="urgent-test-status">انخفاض حاد في الصفائح • عاجل</div>
+                            </div>
+                        </div>
+                        <div class="urgent-test-card fade-in" data-test-id="2">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">فاطمة خالد - Troponin</div>
+                                <div class="urgent-test-status">اشتباه نوبة قلبية • فوري</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- صف 2 -->
+                    <div class="urgent-test-slide">
+                        <div class="urgent-test-card fade-in" data-test-id="3">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">سعيد محمد - CRP</div>
+                                <div class="urgent-test-status">التهاب حاد • عاجل</div>
+                            </div>
+                        </div>
+                        <div class="urgent-test-card fade-in" data-test-id="4">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">نورة عبدالله - D-Dimer</div>
+                                <div class="urgent-test-status">اشتباه جلطة • فوري</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- صف 3 -->
+                    <div class="urgent-test-slide">
+                        <div class="urgent-test-card fade-in" data-test-id="5">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">خالد سليمان - Blood Culture</div>
+                                <div class="urgent-test-status">تجرثم الدم • عاجل</div>
+                            </div>
+                        </div>
+                        <div class="urgent-test-card fade-in" data-test-id="6">
+                            <div class="urgent-test-avatar">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <div class="urgent-test-info">
+                                <div class="urgent-test-name">لينا محمود - ABG</div>
+                                <div class="urgent-test-status">قصور تنفسي • فوري</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تنبيهات المخزون -->
+            <div class="inventory-alerts fade-in">
+                <div class="inventory-header">
+                    <i class="fas fa-boxes"></i>
+                    <h3 style="font-size: 16px;">تنبيهات المخزون</h3>
+                </div>
+                <div class="inventory-list">
+                    <div class="inventory-item">
+                        <div class="inventory-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <div class="inventory-text">أنابيب CBC على وشك النفاد - متبقي 50 فقط</div>
+                    </div>
+                    <div class="inventory-item">
+                        <div class="inventory-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="inventory-text">كاشف الكيمياء السريرية يحتاج تجديد - متبقي 3 أيام</div>
+                    </div>
+                    <div class="inventory-item">
+                        <div class="inventory-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div class="inventory-text">محاقن سحب الدم تحتاج طلب - متبقي 100 فقط</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- حالة الأجهزة -->
+            <div class="section-title">
+                <i class="fas fa-microscope"></i>
+                حالة الأجهزة
+            </div>
+            <div class="equipment-container">
+                <div class="equipment-slider" id="equipmentSlider">
+                    <!-- صف 1 -->
+                    <div class="equipment-slide">
+                        <div class="equipment-card fade-in" data-equipment-id="1">
+                            <div class="equipment-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <div class="equipment-content">
+                                <div class="equipment-title">جهاز تحليل CBC</div>
+                                <div class="equipment-preview">يعمل بشكل طبيعي • 156 تحليل اليوم • 98% دقة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- صف 2 -->
+                    <div class="equipment-slide">
+                        <div class="equipment-card fade-in" data-equipment-id="2">
+                            <div class="equipment-icon">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <div class="equipment-content">
+                                <div class="equipment-title">جهاز الكيمياء السريرية</div>
+                                <div class="equipment-preview">يعمل بشكل طبيعي • 89 تحليل اليوم • 96% دقة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- صف 3 -->
+                    <div class="equipment-slide">
+                        <div class="equipment-card fade-in" data-equipment-id="3">
+                            <div class="equipment-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="equipment-content">
+                                <div class="equipment-title">جهاز تحليل الهرمونات</div>
+                                <div class="equipment-preview">يعمل بشكل طبيعي • 45 تحليل اليوم • 97% دقة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- صف 4 -->
+                    <div class="equipment-slide">
+                        <div class="equipment-card fade-in" data-equipment-id="4">
+                            <div class="equipment-icon">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            <div class="equipment-content">
+                                <div class="equipment-title">جهاز PCR</div>
+                                <div class="equipment-preview">يعمل بشكل طبيعي • 23 تحليل اليوم • 99% دقة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- زر التحاليل العاجلة العائم -->
+        <button class="urgent-fab">
+            <i class="fas fa-bolt"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي المعدل -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="tests.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-vial"></i>
+                </div>
+                <div class="nav-label">التحاليل</div>
+            </a>
+            <a href="results.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="nav-label">النتائج</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">بياناتي</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء/تعديل بيانات المختبر -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="profileModalTitle">إنشاء بيانات المختبر</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="labProfileForm">
+                    <!-- معلومات المختبر الأساسية -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-info-circle"></i>
+                            معلومات المختبر الأساسية
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">اسم المختبر *</label>
+                            <input type="text" class="form-input" id="labName" required placeholder="أدخل اسم المختبر">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">العنوان التفصيلي *</label>
+                            <textarea class="form-textarea" id="labAddress" required placeholder="أدخل العنوان التفصيلي للمختبر"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">صورة البروفايل/الشعار</label>
+                            <div class="file-upload">
+                                <label class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>انقر لرفع صورة الشعار</span>
+                                    <span style="font-size: 12px; color: var(--text-secondary);">الحجم الأقصى: 5MB</span>
+                                    <input type="file" class="file-upload-input" id="labLogo" accept="image/*">
+                                </label>
+                            </div>
+                            <div class="image-preview" id="logoPreview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">نبذة عن المختبر</label>
+                            <textarea class="form-textarea" id="labBio" placeholder="أدخل نبذة مختصرة عن المختبر وخدماته"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- بيانات الخدمة -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-concierge-bell"></i>
+                            بيانات الخدمة
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">ساعات الدوام *</label>
+                            <input type="text" class="form-input" id="workingHours" required placeholder="مثال: 8:00 ص - 10:00 م">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">أنواع الفحوصات المتاحة *</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="تحاليل الدم">
+                                    <span>تحاليل الدم</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="الكيمياء الحيوية">
+                                    <span>الكيمياء الحيوية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="الهرمونات">
+                                    <span>الهرمونات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="الأجسام المضادة">
+                                    <span>الأجسام المضادة</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="المناعة">
+                                    <span>المناعة</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableTests" value="الأنسجة">
+                                    <span>الأنسجة</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">أنواع الأشعة المتاحة</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableScans" value="الأشعة السينية">
+                                    <span>الأشعة السينية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableScans" value="الموجات فوق الصوتية">
+                                    <span>الموجات فوق الصوتية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableScans" value="الأشعة المقطعية">
+                                    <span>الأشعة المقطعية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableScans" value="الرنين المغناطيسي">
+                                    <span>الرنين المغناطيسي</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">أنواع الأجهزة المتاحة</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableEquipment" value="جهاز تحليل CBC">
+                                    <span>جهاز تحليل CBC</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableEquipment" value="جهاز الكيمياء السريرية">
+                                    <span>جهاز الكيمياء السريرية</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableEquipment" value="جهاز تحليل الهرمونات">
+                                    <span>جهاز تحليل الهرمونات</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="availableEquipment" value="جهاز PCR">
+                                    <span>جهاز PCR</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">الطاقة الاستيعابية في اليوم *</label>
+                            <input type="number" class="form-input" id="dailyCapacity" required placeholder="أدخل عدد التحاليل اليومية">
+                        </div>
+                    </div>
+
+                    <!-- بيانات التراخيص -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-file-certificate"></i>
+                            بيانات التراخيص
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">صور التراخيص المعتمدة</label>
+                            <div class="file-upload">
+                                <label class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>انقر لرفع صور التراخيص</span>
+                                    <span style="font-size: 12px; color: var(--text-secondary);">يمكن رفع أكثر من صورة</span>
+                                    <input type="file" class="file-upload-input" id="labLicenses" accept="image/*" multiple>
+                                </label>
+                            </div>
+                            <div class="image-preview" id="licensesPreview"></div>
+                        </div>
+                    </div>
+
+                    <!-- بيانات الاتصال -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-phone-alt"></i>
+                            بيانات الاتصال
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف الرئيسي *</label>
+                            <input type="tel" class="form-input" id="phone1" required placeholder="أدخل رقم الهاتف الرئيسي">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني *</label>
+                            <input type="email" class="form-input" id="email" required placeholder="أدخل البريد الإلكتروني">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">رقم هاتف إضافي</label>
+                            <input type="tel" class="form-input" id="phone2" placeholder="أدخل رقم هاتف إضافي (اختياري)">
+                        </div>
+                    </div>
+
+                    <!-- أزرار الإجراء -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">
+                            <i class="fas fa-times"></i>
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">
+                            <i class="fas fa-save"></i>
+                            حفظ البيانات
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// التحكم في عرض الصفحة بناءً على وجود البيانات
+document.addEventListener('DOMContentLoaded', function() {
+    updateMainPageWithLabData();
+    setupNotifications();
+    setupSettingsButton();
+});
+
+// تفعيل الإشعارات الحقيقية
+function setupNotifications() {
+    // طلب الإذن للإشعارات
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+    
+    // إعداد زر الإشعارات
+    document.getElementById('notificationBtn').addEventListener('click', function() {
+        if (Notification.permission === 'granted') {
+            // محاكاة إشعار جديد
+            new Notification('مختبر النخبة - إشعار جديد', {
+                body: 'لديك 3 تحاليل عاجلة تحتاج للمعالجة',
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+            });
+            
+            // تحديث العداد
+            const badge = document.getElementById('notificationBadge');
+            let count = parseInt(badge.textContent);
+            if (count > 0) {
+                badge.textContent = count - 1;
+            }
+        } else if (Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    });
+}
+
+// إعداد زر الإعدادات
+function setupSettingsButton() {
+    document.getElementById('settingsBtn').addEventListener('click', function() {
+        // توجيه المستخدم إلى صفحة الإعدادات
+        window.location.href = 'settings.html';
+    });
+}
+
+// تحديث الصفحة الرئيسية بناءً على بيانات المختبر
+function updateMainPageWithLabData() {
+    const labProfile = JSON.parse(localStorage.getItem('labProfile'));
+    
+    if (labProfile) {
+        // إخفاء التنبيه وإظهار بطاقة المختبر
+        document.getElementById('labDataAlert').style.display = 'none';
+        document.getElementById('labInfoCard').style.display = 'flex';
+        document.getElementById('createProfileHomeBtn').style.display = 'none';
+        
+        // تحديث بيانات المختبر في الصفحة الرئيسية
+        document.getElementById('mainLabName').textContent = labProfile.labName + ' 🧪';
+        document.getElementById('mainLabSubtitle').textContent = labProfile.labAddress.split('،')[0]; // أول جزء من العنوان
+        
+        document.getElementById('mainLabNameCard').textContent = labProfile.labName;
+        document.getElementById('mainLabAddressCard').textContent = labProfile.labAddress;
+        document.getElementById('mainLabCapacity').textContent = `الطاقة الاستيعابية: ${labProfile.dailyCapacity} تحليل/يوم`;
+        
+        // تحديث صورة الشعار إذا كانت موجودة
+        if (labProfile.logo) {
+            document.getElementById('mainLabAvatar').innerHTML = `<img src="${labProfile.logo}" alt="شعار المختبر">`;
+        }
+    } else {
+        // إظهار التنبيه وإخفاء بطاقة المختبر
+        document.getElementById('labDataAlert').style.display = 'flex';
+        document.getElementById('labInfoCard').style.display = 'none';
+        document.getElementById('createProfileHomeBtn').style.display = 'flex';
+    }
+}
+
+// فتح نافذة إنشاء الحساب من الصفحة الرئيسية
+document.getElementById('createProfileHomeBtn').addEventListener('click', function() {
+    openProfileModal('create');
+});
+
+// فتح نافذة تعديل البيانات من بطاقة المختبر
+document.getElementById('editLabInfoBtn').addEventListener('click', function() {
+    openProfileModal('edit');
+});
+
+// فتح نافذة البيانات
+function openProfileModal(mode) {
+    const labProfile = JSON.parse(localStorage.getItem('labProfile'));
+    
+    if (mode === 'create') {
+        document.getElementById('profileModalTitle').textContent = 'إنشاء بيانات المختبر';
+        document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> حفظ البيانات';
+        document.getElementById('labProfileForm').reset();
+        document.getElementById('logoPreview').innerHTML = '';
+        document.getElementById('licensesPreview').innerHTML = '';
+    } else if (mode === 'edit' && labProfile) {
+        document.getElementById('profileModalTitle').textContent = 'تعديل بيانات المختبر';
+        document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> حفظ التعديلات';
+        fillFormWithData(labProfile);
+    }
+    
+    document.getElementById('profileModal').style.display = 'block';
+}
+
+// تعبئة النموذج بالبيانات الحالية
+function fillFormWithData(profile) {
+    document.getElementById('labName').value = profile.labName || '';
+    document.getElementById('labAddress').value = profile.labAddress || '';
+    document.getElementById('labBio').value = profile.labBio || '';
+    document.getElementById('workingHours').value = profile.workingHours || '';
+    document.getElementById('dailyCapacity').value = profile.dailyCapacity || '';
+    document.getElementById('phone1').value = profile.phone1 || '';
+    document.getElementById('email').value = profile.email || '';
+    document.getElementById('phone2').value = profile.phone2 || '';
+    
+    // تعبئة أنواع الفحوصات
+    if (profile.availableTests) {
+        profile.availableTests.forEach(test => {
+            const checkbox = document.querySelector(`input[name="availableTests"][value="${test}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    // تعبئة أنواع الأشعة
+    if (profile.availableScans) {
+        profile.availableScans.forEach(scan => {
+            const checkbox = document.querySelector(`input[name="availableScans"][value="${scan}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    // تعبئة أنواع الأجهزة
+    if (profile.availableEquipment) {
+        profile.availableEquipment.forEach(equipment => {
+            const checkbox = document.querySelector(`input[name="availableEquipment"][value="${equipment}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    // عرض معاينة الصور إذا كانت موجودة
+    if (profile.logo) {
+        document.getElementById('logoPreview').innerHTML = `<img src="${profile.logo}" alt="شعار المختبر">`;
+    }
+    
+    if (profile.licenses && profile.licenses.length > 0) {
+        let licensesHTML = '';
+        profile.licenses.forEach(license => {
+            licensesHTML += `<img src="${license}" alt="ترخيص المختبر" style="max-width: 100px; margin: 5px;">`;
+        });
+        document.getElementById('licensesPreview').innerHTML = licensesHTML;
+    }
+}
+
+// معالجة رفع صورة الشعار
+document.getElementById('labLogo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('logoPreview').innerHTML = `<img src="${e.target.result}" alt="معاينة الشعار">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// معالجة رفع صور التراخيص
+document.getElementById('labLicenses').addEventListener('change', function(e) {
+    const files = e.target.files;
+    if (files.length > 0) {
+        let previewHTML = '';
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+            reader.onload = (function(file) {
+                return function(e) {
+                    previewHTML += `<img src="${e.target.result}" alt="معاينة الترخيص" style="max-width: 100px; margin: 5px;">`;
+                    if (i === files.length - 1) {
+                        document.getElementById('licensesPreview').innerHTML = previewHTML;
+                    }
+                };
+            })(files[i]);
+            reader.readAsDataURL(files[i]);
+        }
+    }
+});
+
+// حفظ بيانات المختبر
+document.getElementById('labProfileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // جمع البيانات من النموذج
+    const labProfile = {
+        labName: document.getElementById('labName').value,
+        labAddress: document.getElementById('labAddress').value,
+        labBio: document.getElementById('labBio').value,
+        workingHours: document.getElementById('workingHours').value,
+        dailyCapacity: document.getElementById('dailyCapacity').value,
+        phone1: document.getElementById('phone1').value,
+        email: document.getElementById('email').value,
+        phone2: document.getElementById('phone2').value,
+        availableTests: getSelectedCheckboxes('availableTests'),
+        availableScans: getSelectedCheckboxes('availableScans'),
+        availableEquipment: getSelectedCheckboxes('availableEquipment'),
+        logo: document.getElementById('logoPreview').querySelector('img')?.src || '',
+        licenses: getLicenseImages()
+    };
+    
+    // حفظ البيانات في localStorage
+    localStorage.setItem('labProfile', JSON.stringify(labProfile));
+    
+    // إغلاق النافذة المنبثقة
+    document.getElementById('profileModal').style.display = 'none';
+    
+    // تحديث عرض البيانات في الصفحة الرئيسية
+    updateMainPageWithLabData();
+    
+    // إشعار بنجاح الحفظ
+    alert('تم حفظ بيانات المختبر بنجاح!');
+});
+
+// دالة مساعدة للحصول على القيم المحددة من checkboxes
+function getSelectedCheckboxes(name) {
+    const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(checkboxes).map(cb => cb.value);
+}
+
+// دالة مساعدة للحصول على صور التراخيص
+function getLicenseImages() {
+    const licenseImgs = document.getElementById('licensesPreview').querySelectorAll('img');
+    return Array.from(licenseImgs).map(img => img.src);
+}
+
+// إغلاق النافذة المنبثقة
+document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+        this.closest('.modal').style.display = 'none';
+    });
+});
+
+// إغلاق النافذة عند النقر خارجها
+window.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+});
+
+// زر الإلغاء
+document.getElementById('cancelBtn').addEventListener('click', function() {
+    document.getElementById('profileModal').style.display = 'none';
+});
+
+// تأثيرات الظهور عند التمرير
+const fadeElements = document.querySelectorAll('.fade-in');
+
+const appearOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        appearOnScroll.unobserve(entry.target);
+    });
+}, appearOptions);
+
+fadeElements.forEach(element => {
+    appearOnScroll.observe(element);
+});
+
+// تأثيرات التفاعل
+document.querySelectorAll('.nav-card, .nav-item-dock, .dashboard-card, .urgent-test-card, .equipment-card').forEach(item => {
+    item.addEventListener('click', function() {
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+    });
+});
+
+// تفعيل شريط التنقل
+document.querySelectorAll('.nav-item-dock').forEach(item => {
+    item.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item-dock').forEach(i => {
+            i.classList.remove('active');
+        });
+        this.classList.add('active');
+    });
+});
+
+// تأثيرات زر التحاليل العاجلة
+const urgentFab = document.querySelector('.urgent-fab');
+urgentFab.addEventListener('click', function() {
+    this.innerHTML = '<i class="fas fa-hourglass-half"></i>';
+    this.style.background = 'var(--warning)';
+    
+    // محاكاة معالجة عاجلة
+    setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-bolt"></i>';
+        this.style.background = 'linear-gradient(135deg, var(--accent), #D32F2F)';
+        
+        // إشعار معالجة ناجحة
+        if (Notification.permission === 'granted') {
+            new Notification('مختبر النخبة - تحاليل عاجلة', {
+                body: 'جاري معالجة التحاليل العاجلة...',
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+            });
+        }
+    }, 3000);
+});
+
+// محاكاة تحديث بيانات المختبر
+function updateLabData() {
+    // تحديث إحصائيات المختبر
+    const stats = document.querySelectorAll('.stat-value');
+    if (stats.length >= 3) {
+        let todayTests = parseInt(stats[0].textContent);
+        let completed = parseInt(stats[1].textContent);
+        let urgent = parseInt(stats[2].textContent);
+        
+        stats[0].textContent = Math.min(200, Math.max(140, todayTests + Math.floor(Math.random() * 5) - 2));
+        stats[1].textContent = Math.min(98, Math.max(90, completed + Math.floor(Math.random() * 2) - 1)) + '%';
+        stats[2].textContent = Math.max(5, Math.min(12, urgent + Math.floor(Math.random() * 2) - 1));
+    }
+}
+
+setInterval(updateLabData, 15000);
+
+// تحديث الوقت في شريط الحالة
+function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('ar-EG', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
+    document.getElementById('currentTime').textContent = timeString;
+}
+
+setInterval(updateTime, 60000);
+updateTime();
+
+// شريط التحاليل العاجلة المتحرك
+let currentUrgentTestSlide = 0;
+const urgentTestSlider = document.querySelector('.urgent-tests-slider');
+const totalUrgentTestSlides = document.querySelectorAll('.urgent-test-slide').length;
+
+function moveUrgentTestSlider() {
+    currentUrgentTestSlide = (currentUrgentTestSlide + 1) % totalUrgentTestSlides;
+    const translateY = -currentUrgentTestSlide * 112; // 100px للشريحة + 12px للمسافة
+    urgentTestSlider.style.transform = `translateY(${translateY}px)`;
+}
+
+// شريط الأجهزة المتحرك
+let currentEquipmentSlide = 0;
+const equipmentSlider = document.querySelector('.equipment-slider');
+const totalEquipmentSlides = document.querySelectorAll('.equipment-slide').length;
+
+function moveEquipmentSlider() {
+    currentEquipmentSlide = (currentEquipmentSlide + 1) % totalEquipmentSlides;
+    const translateY = -currentEquipmentSlide * 152; // 140px للشريحة + 12px للمسافة
+    equipmentSlider.style.transform = `translateY(${translateY}px)`;
+}
+
+// بدء الحركة التلقائية
+setInterval(moveUrgentTestSlider, 3000);
+setInterval(moveEquipmentSlider, 3000);
+</script>
+</body>
+</html>

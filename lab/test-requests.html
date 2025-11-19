@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - طلبات التحاليل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+.app-header {
+    padding: 24px 20px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-section h1 {
+    font-family: 'Almarai', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 18px;
+}
+
+.action-icon:active, .action-icon.active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.requests-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+}
+
+.summary-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.98);
+}
+
+.summary-value {
+    font-family: 'Almarai', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.summary-label {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.new-requests .summary-value { color: var(--primary-dark); }
+.completed-requests .summary-value { color: var(--success); }
+.pending-requests .summary-value { color: var(--warning); }
+.urgent-requests .summary-value { color: var(--accent); }
+
+.requests-list {
+    padding: 0 20px 120px;
+}
+
+.request-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    border-right: 4px solid var(--primary);
+    position: relative;
+}
+
+.request-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-3px);
+}
+
+.request-item.completed {
+    border-right-color: var(--success);
+}
+
+.request-item.pending {
+    border-right-color: var(--warning);
+}
+
+.request-item.urgent {
+    border-right-color: var(--accent);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: var(--shadow-light); }
+    50% { box-shadow: 0 0 20px rgba(255, 82, 82, 0.3); }
+    100% { box-shadow: var(--shadow-light); }
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.request-patient {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary);
+}
+
+.request-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.request-services {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.request-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.request-amount {
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.request-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+.status-new {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.status-completed {
+    background: var(--success);
+    color: white;
+}
+
+.status-pending {
+    background: var(--warning);
+    color: white;
+}
+
+.status-urgent {
+    background: var(--accent);
+    color: white;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.7; }
+}
+
+.urgent-badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.invoice-container {
+    padding: 20px;
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed var(--primary-light);
+}
+
+.invoice-title {
+    font-family: 'Almarai', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.invoice-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.invoice-number {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: left;
+}
+
+.invoice-details {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.detail-value {
+    color: var(--text-secondary);
+}
+
+.services-list {
+    margin-top: 16px;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+}
+
+.service-name {
+    flex: 1;
+}
+
+.service-price {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.total-amount {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    text-align: left;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid var(--primary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--accent), #D32F2F);
+    color: white;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.schedule-form, .confirm-form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 8px 10px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 360px;
+    width: calc(100% - 40px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translateY(-10px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.main-content {
+    padding-bottom: 120px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 60px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+.advanced-filters {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin: 0 20px 20px;
+    box-shadow: var(--shadow-light);
+    display: none;
+}
+
+.filter-group {
+    margin-bottom: 16px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.filter-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.quick-action-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.quick-action-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.quick-action-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.request-priority {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.priority-high {
+    background: var(--accent);
+    color: white;
+}
+
+.priority-medium {
+    background: var(--warning);
+    color: white;
+}
+
+.priority-low {
+    background: var(--info);
+    color: white;
+}
+
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    z-index: 3000;
+    transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification-toast.error {
+    background: var(--accent);
+}
+
+.export-options {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.export-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.export-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+@media (max-width: 428px) {
+    .filter-row {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .export-options {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>طلبات التحاليل</h1>
+                    <p>إدارة طلبات التحاليل الطبية المتقدمة</p>
+                </div>
+                <div class="customer-actions" style="display: flex; gap: 10px;">
+                    <button class="action-icon liquid-transition" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">0</span>
+                    </button>
+                    <button class="action-icon liquid-transition" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon liquid-transition" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="ابحث عن مريض، نوع تحليل، رقم طلب..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- الفلاتر المتقدمة -->
+            <div class="advanced-filters" id="advancedFilters">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-filter="today">
+                        <i class="fas fa-calendar-day"></i> اليوم
+                    </button>
+                    <button class="quick-action-btn" data-filter="week">
+                        <i class="fas fa-calendar-week"></i> هذا الأسبوع
+                    </button>
+                    <button class="quick-action-btn" data-filter="month">
+                        <i class="fas fa-calendar-alt"></i> هذا الشهر
+                    </button>
+                    <button class="quick-action-btn" data-filter="urgent">
+                        <i class="fas fa-exclamation-circle"></i> عاجلة
+                    </button>
+                </div>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label class="form-label">من تاريخ</label>
+                        <input type="date" class="form-input" id="filterFromDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">إلى تاريخ</label>
+                        <input type="date" class="form-input" id="filterToDate">
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label class="form-label">الحالة</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="">جميع الحالات</option>
+                            <option value="new">جديدة</option>
+                            <option value="pending">قيد الانتظار</option>
+                            <option value="completed">مكتملة</option>
+                            <option value="cancelled">ملغاة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الأولوية</label>
+                        <select class="form-select" id="filterPriority">
+                            <option value="">جميع الأولويات</option>
+                            <option value="high">عاجلة</option>
+                            <option value="medium">متوسطة</option>
+                            <option value="low">عادية</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="clearFiltersBtn">
+                        <i class="fas fa-times"></i> مسح الفلاتر
+                    </button>
+                    <button class="btn btn-primary" id="applyFiltersBtn">
+                        <i class="fas fa-check"></i> تطبيق الفلاتر
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويبات الطلبات -->
+            <div class="tabs-container">
+                <div class="tab active" data-tab="all">جميع الطلبات</div>
+                <div class="tab" data-tab="new">جديدة</div>
+                <div class="tab" data-tab="pending">قيد المعالجة</div>
+                <div class="tab" data-tab="completed">مكتملة</div>
+            </div>
+
+            <!-- ملخص الطلبات -->
+            <div class="requests-summary">
+                <div class="summary-item new-requests" data-filter="new">
+                    <div class="summary-value" id="newRequestsCount">0</div>
+                    <div class="summary-label">طلبات جديدة</div>
+                </div>
+                <div class="summary-item completed-requests" data-filter="completed">
+                    <div class="summary-value" id="completedRequestsCount">0</div>
+                    <div class="summary-label">مكتملة</div>
+                </div>
+                <div class="summary-item pending-requests" data-filter="pending">
+                    <div class="summary-value" id="pendingRequestsCount">0</div>
+                    <div class="summary-label">قيد الانتظار</div>
+                </div>
+            </div>
+
+            <!-- مؤشر التحميل -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>جاري تحميل الطلبات...</p>
+            </div>
+
+            <!-- قائمة الطلبات -->
+            <div class="requests-list" id="requestsList">
+                <!-- سيتم ملؤها ديناميكياً بالطلبات -->
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="test-requests.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <div class="nav-label">طلبات التحاليل</div>
+            </a>
+            <a href="financial-account.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="nav-label">الحساب المالي</div>
+            </a>
+            <a href="results.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="nav-label">النتائج</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الطلب -->
+    <div id="requestDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تفاصيل الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="invoice-container">
+                <div class="invoice-header">
+                    <div class="invoice-title">M24</div>
+                    <div class="invoice-logo">M24</div>
+                    <div class="invoice-number" id="invoiceNumber">رقم الطلب: #00000</div>
+                </div>
+                
+                <div class="invoice-details">
+                    <div class="detail-row">
+                        <div class="detail-label">اسم المريض:</div>
+                        <div class="detail-value" id="patientName">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">عنوان المريض:</div>
+                        <div class="detail-value" id="patientAddress">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">هاتف المريض:</div>
+                        <div class="detail-value" id="patientPhone">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">البريد الإلكتروني:</div>
+                        <div class="detail-value" id="patientEmail">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">تاريخ الطلب:</div>
+                        <div class="detail-value" id="requestDate">-</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">الأولوية:</div>
+                        <div class="detail-value" id="requestPriority">-</div>
+                    </div>
+                    
+                    <div class="services-list">
+                        <div class="detail-label">الخدمات المطلوبة:</div>
+                        <div id="servicesList">
+                            <!-- سيتم ملؤها ديناميكياً -->
+                        </div>
+                    </div>
+                    
+                    <div class="total-amount" id="totalAmount">الإجمالي: 0 ر.س</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="scheduleBtn">
+                        <i class="fas fa-calendar-alt"></i>
+                        جدولة
+                    </button>
+                    <button class="btn btn-primary" id="confirmBtn">
+                        <i class="fas fa-check-circle"></i>
+                        تأكيد الطلب
+                    </button>
+                    <button class="btn btn-danger" id="cancelBtn">
+                        <i class="fas fa-times-circle"></i>
+                        إلغاء الطلب
+                    </button>
+                </div>
+
+                <div class="export-options">
+                    <button class="export-btn" id="printInvoiceBtn">
+                        <i class="fas fa-print"></i> طباعة الفاتورة
+                    </button>
+                    <button class="export-btn" id="exportPdfBtn">
+                        <i class="fas fa-file-pdf"></i> تصدير PDF
+                    </button>
+                    <button class="export-btn" id="shareBtn">
+                        <i class="fas fa-share"></i> مشاركة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد الطلب -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تأكيد الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="confirm-form">
+                <div class="form-group">
+                    <label class="form-label">تاريخ التنفيذ</label>
+                    <input type="date" class="form-input" id="executionDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">وقت التنفيذ</label>
+                    <input type="time" class="form-input" id="executionTime" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الفني المسؤول</label>
+                    <select class="form-select" id="assignedTechnician" required>
+                        <option value="">اختر الفني المسؤول</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية</label>
+                    <textarea class="form-textarea" id="additionalNotes" placeholder="أضف ملاحظات إضافية (اختياري)"></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelConfirmBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="sendNotificationBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال إشعار للمريض
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الجدولة -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>جدولة الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="schedule-form">
+                <div class="form-group">
+                    <label class="form-label">تاريخ الجدولة</label>
+                    <input type="date" class="form-input" id="scheduleDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">وقت الجدولة</label>
+                    <input type="time" class="form-input" id="scheduleTime" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الفني المسؤول</label>
+                    <select class="form-select" id="scheduleTechnician" required>
+                        <option value="">اختر الفني المسؤول</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ملاحظات الجدولة</label>
+                    <textarea class="form-textarea" id="scheduleNotes" placeholder="أضف ملاحظات حول الجدولة"></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelScheduleBtn">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn btn-primary" id="saveScheduleBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ الجدولة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إلغاء الطلب -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إلغاء الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="schedule-form">
+                <div class="form-group">
+                    <label class="form-label">سبب الإلغاء</label>
+                    <select class="form-select" id="cancelReason" required>
+                        <option value="">اختر سبب الإلغاء</option>
+                        <option value="patient_request">طلب من المريض</option>
+                        <option value="no_availability">عدم توفر الخدمة</option>
+                        <option value="technical_issue">مشكلة فنية</option>
+                        <option value="duplicate">طلب مكرر</option>
+                        <option value="other">أسباب أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">تفاصيل الإلغاء</label>
+                    <textarea class="form-textarea" id="cancelDetails" placeholder="أضف تفاصيل الإلغاء" required></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="cancelCancelBtn">
+                        <i class="fas fa-times"></i>
+                        تراجع
+                    </button>
+                    <button class="btn btn-danger" id="confirmCancelBtn">
+                        <i class="fas fa-trash"></i>
+                        تأكيد الإلغاء
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعارات التوست -->
+    <div class="notification-toast" id="notificationToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <script>
+// نظام إدارة طلبات التحاليل المتقدم
+class TestRequestsManager {
+    constructor() {
+        this.requests = [];
+        this.filteredRequests = [];
+        this.currentRequest = null;
+        this.filters = {
+            tab: 'all',
+            search: '',
+            status: '',
+            priority: '',
+            fromDate: '',
+            toDate: '',
+            dateRange: ''
+        };
+        this.technicians = [
+            { id: 'tech1', name: 'أحمد محمد - فني مختبر', specialty: 'تحاليل الدم' },
+            { id: 'tech2', name: 'سارة خالد - فنية مختبر', specialty: 'الكيمياء الحيوية' },
+            { id: 'tech3', name: 'خالد عبدالله - فني أجهزة', specialty: 'الأجهزة المتقدمة' },
+            { id: 'tech4', name: 'فاطمة علي - فنية مناعة', specialty: 'المناعة والهرمونات' }
+        ];
+        
+        this.init();
+    }
+
+    init() {
+        this.loadRequests();
+        this.setupEventListeners();
+        this.setupNotifications();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+        
+        // محاكاة استلام طلبات جديدة
+        this.simulateRealTimeUpdates();
+    }
+
+    loadRequests() {
+        const savedRequests = localStorage.getItem('labRequests');
+        if (savedRequests) {
+            this.requests = JSON.parse(savedRequests);
+        } else {
+            // بيانات أولية للطلبات
+            this.requests = this.generateSampleRequests();
+            this.saveRequests();
+        }
+        
+        this.applyFilters();
+        this.renderRequests();
+        this.updateSummary();
+    }
+
+    generateSampleRequests() {
+        const sampleRequests = [
+            {
+                id: this.generateId(),
+                patientName: "محمد أحمد",
+                patientAddress: "الرياض، حي العليا، شارع الملك فهد",
+                patientPhone: "+966501234567",
+                patientEmail: "mohamed.ahmed@example.com",
+                services: [
+                    { name: "تحليل الدم الكامل (CBC)", price: 120 },
+                    { name: "تحليل السكر في الدم", price: 80 },
+                    { name: "تحليل وظائف الكبد", price: 150 }
+                ],
+                amount: 350,
+                date: "2023-12-15",
+                status: "new",
+                priority: "high",
+                invoiceNumber: "REQ-" + this.generateId().slice(-6),
+                createdAt: new Date().toISOString(),
+                isUrgent: true
+            },
+            {
+                id: this.generateId(),
+                patientName: "فاطمة خالد",
+                patientAddress: "جدة، حي الصفا، شارع الأمير سلطان",
+                patientPhone: "+966502345678",
+                patientEmail: "fatima.khaled@example.com",
+                services: [
+                    { name: "تحليل الهرمونات", price: 200 },
+                    { name: "تحليل فيتامين د", price: 120 }
+                ],
+                amount: 320,
+                date: "2023-12-14",
+                status: "completed",
+                priority: "medium",
+                invoiceNumber: "REQ-" + this.generateId().slice(-6),
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                completedAt: new Date().toISOString(),
+                assignedTechnician: "tech2"
+            },
+            {
+                id: this.generateId(),
+                patientName: "سعيد محمد",
+                patientAddress: "الدمام، حي النخيل، شارع الملك عبدالله",
+                patientPhone: "+966503456789",
+                patientEmail: "saied.mohamed@example.com",
+                services: [
+                    { name: "تحليل الكوليسترول", price: 100 },
+                    { name: "تحليل وظائف الكلى", price: 180 }
+                ],
+                amount: 280,
+                date: "2023-12-13",
+                status: "pending",
+                priority: "low",
+                invoiceNumber: "REQ-" + this.generateId().slice(-6),
+                createdAt: new Date(Date.now() - 172800000).toISOString(),
+                scheduledAt: new Date().toISOString(),
+                assignedTechnician: "tech1"
+            }
+        ];
+        
+        return sampleRequests;
+    }
+
+    setupEventListeners() {
+        // تبويبات الطلبات
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.filters.tab = tab.dataset.tab;
+                this.applyFilters();
+                this.renderRequests();
+            });
+        });
+
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+            this.renderRequests();
+        });
+
+        // زر الفلاتر
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const filters = document.getElementById('advancedFilters');
+            filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // زر التحديث
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            this.showLoading();
+            setTimeout(() => {
+                this.loadRequests();
+                this.showToast('تم تحديث البيانات بنجاح', 'success');
+            }, 1000);
+        });
+
+        // الفلاتر السريعة
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.quick-action-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.filters.dateRange = btn.dataset.filter;
+                this.applyFilters();
+                this.renderRequests();
+            });
+        });
+
+        // تطبيق الفلاتر
+        document.getElementById('applyFiltersBtn').addEventListener('click', () => {
+            this.filters.status = document.getElementById('filterStatus').value;
+            this.filters.priority = document.getElementById('filterPriority').value;
+            this.filters.fromDate = document.getElementById('filterFromDate').value;
+            this.filters.toDate = document.getElementById('filterToDate').value;
+            this.applyFilters();
+            this.renderRequests();
+            this.showToast('تم تطبيق الفلاتر بنجاح', 'success');
+        });
+
+        // مسح الفلاتر
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            this.clearFilters();
+            this.applyFilters();
+            this.renderRequests();
+            this.showToast('تم مسح جميع الفلاتر', 'success');
+        });
+
+        // ملخص الطلبات
+        document.querySelectorAll('.summary-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const filter = item.dataset.filter;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelector(`.tab[data-tab="${filter}"]`).classList.add('active');
+                this.filters.tab = filter;
+                this.applyFilters();
+                this.renderRequests();
+            });
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النوافذ المنبثقة
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // زر الإشعارات
+        document.getElementById('notificationBtn').addEventListener('click', () => {
+            this.showNewRequestsNotification();
+        });
+
+        // أزرار الطلب
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            document.getElementById('requestDetailsModal').style.display = 'none';
+            this.showConfirmModal();
+        });
+
+        document.getElementById('scheduleBtn').addEventListener('click', () => {
+            document.getElementById('requestDetailsModal').style.display = 'none';
+            this.showScheduleModal();
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('requestDetailsModal').style.display = 'none';
+            this.showCancelModal();
+        });
+
+        // تأكيد الطلب
+        document.getElementById('sendNotificationBtn').addEventListener('click', () => {
+            this.confirmRequest();
+        });
+
+        // الجدولة
+        document.getElementById('saveScheduleBtn').addEventListener('click', () => {
+            this.scheduleRequest();
+        });
+
+        // إلغاء الطلب
+        document.getElementById('confirmCancelBtn').addEventListener('click', () => {
+            this.cancelRequest();
+        });
+
+        // أزرار التصدير
+        document.getElementById('printInvoiceBtn').addEventListener('click', () => {
+            this.printInvoice();
+        });
+
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            this.exportToPDF();
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            this.shareRequest();
+        });
+
+        // إلغاء الأزرار
+        document.getElementById('cancelConfirmBtn').addEventListener('click', () => {
+            document.getElementById('confirmModal').style.display = 'none';
+        });
+
+        document.getElementById('cancelScheduleBtn').addEventListener('click', () => {
+            document.getElementById('scheduleModal').style.display = 'none';
+        });
+
+        document.getElementById('cancelCancelBtn').addEventListener('click', () => {
+            document.getElementById('cancelModal').style.display = 'none';
+        });
+    }
+
+    applyFilters() {
+        let filtered = [...this.requests];
+
+        // فلتر التبويب
+        if (this.filters.tab !== 'all') {
+            filtered = filtered.filter(request => request.status === this.filters.tab);
+        }
+
+        // فلتر البحث
+        if (this.filters.search) {
+            filtered = filtered.filter(request => 
+                request.patientName.toLowerCase().includes(this.filters.search) ||
+                request.invoiceNumber.toLowerCase().includes(this.filters.search) ||
+                request.services.some(service => service.name.toLowerCase().includes(this.filters.search))
+            );
+        }
+
+        // فلتر الحالة
+        if (this.filters.status) {
+            filtered = filtered.filter(request => request.status === this.filters.status);
+        }
+
+        // فلتر الأولوية
+        if (this.filters.priority) {
+            filtered = filtered.filter(request => request.priority === this.filters.priority);
+        }
+
+        // فلتر التاريخ
+        if (this.filters.fromDate) {
+            filtered = filtered.filter(request => request.date >= this.filters.fromDate);
+        }
+
+        if (this.filters.toDate) {
+            filtered = filtered.filter(request => request.date <= this.filters.toDate);
+        }
+
+        // فلتر النطاق الزمني
+        if (this.filters.dateRange) {
+            const today = new Date();
+            let startDate;
+
+            switch (this.filters.dateRange) {
+                case 'today':
+                    startDate = new Date(today);
+                    break;
+                case 'week':
+                    startDate = new Date(today.setDate(today.getDate() - 7));
+                    break;
+                case 'month':
+                    startDate = new Date(today.setMonth(today.getMonth() - 1));
+                    break;
+                case 'urgent':
+                    filtered = filtered.filter(request => request.isUrgent);
+                    break;
+            }
+
+            if (startDate) {
+                filtered = filtered.filter(request => new Date(request.date) >= startDate);
+            }
+        }
+
+        // ترتيب من الأقدم إلى الأحدث
+        this.filteredRequests = filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }
+
+    renderRequests() {
+        const requestsList = document.getElementById('requestsList');
+        
+        if (this.filteredRequests.length === 0) {
+            requestsList.innerHTML = this.getEmptyStateHTML();
+            return;
+        }
+
+        requestsList.innerHTML = this.filteredRequests.map(request => `
+            <div class="request-item fade-in ${request.status} ${request.isUrgent ? 'urgent' : ''}" 
+                 data-request-id="${request.id}">
+                ${request.isUrgent ? '<div class="urgent-badge"><i class="fas fa-exclamation"></i></div>' : ''}
+                <div class="request-header">
+                    <div class="request-patient">
+                        <span class="request-priority priority-${request.priority}">${this.getPriorityText(request.priority)}</span>
+                        ${request.patientName}
+                    </div>
+                    <div class="request-date">${this.formatDate(request.date)}</div>
+                </div>
+                <div class="request-services">
+                    ${request.services.map(service => service.name).slice(0, 2).join('، ')}
+                    ${request.services.length > 2 ? ` +${request.services.length - 2} أكثر` : ''}
+                </div>
+                <div class="request-footer">
+                    <div class="request-amount">${request.amount} ر.س</div>
+                    <div class="request-status ${this.getStatusClass(request.status)}">
+                        ${this.getStatusText(request.status)}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // إضافة مستمعي الأحداث
+        document.querySelectorAll('.request-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const requestId = item.dataset.requestId;
+                this.showRequestDetails(requestId);
+            });
+        });
+
+        // تأثيرات الظهور
+        this.setupIntersectionObserver();
+    }
+
+    showRequestDetails(requestId) {
+        this.currentRequest = this.requests.find(request => request.id === requestId);
+        
+        if (!this.currentRequest) return;
+
+        // تحديث بيانات الفاتورة
+        document.getElementById('invoiceNumber').textContent = `رقم الطلب: ${this.currentRequest.invoiceNumber}`;
+        document.getElementById('patientName').textContent = this.currentRequest.patientName;
+        document.getElementById('patientAddress').textContent = this.currentRequest.patientAddress;
+        document.getElementById('patientPhone').textContent = this.currentRequest.patientPhone;
+        document.getElementById('patientEmail').textContent = this.currentRequest.patientEmail;
+        document.getElementById('requestDate').textContent = this.formatDate(this.currentRequest.date);
+        document.getElementById('requestPriority').innerHTML = 
+            `<span class="request-priority priority-${this.currentRequest.priority}">${this.getPriorityText(this.currentRequest.priority)}</span>`;
+        
+        // تحديث قائمة الخدمات
+        const servicesList = document.getElementById('servicesList');
+        servicesList.innerHTML = this.currentRequest.services.map(service => `
+            <div class="service-item">
+                <span class="service-name">${service.name}</span>
+                <span class="service-price">${service.price} ر.س</span>
+            </div>
+        `).join('');
+        
+        document.getElementById('totalAmount').textContent = `الإجمالي: ${this.currentRequest.amount} ر.س`;
+
+        // إظهار/إخفاء الأزرار بناءً على الحالة
+        this.updateActionButtons();
+
+        document.getElementById('requestDetailsModal').style.display = 'block';
+    }
+
+    updateActionButtons() {
+        const confirmBtn = document.getElementById('confirmBtn');
+        const scheduleBtn = document.getElementById('scheduleBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        switch (this.currentRequest.status) {
+            case 'new':
+                confirmBtn.style.display = 'flex';
+                scheduleBtn.style.display = 'flex';
+                cancelBtn.style.display = 'flex';
+                break;
+            case 'pending':
+                confirmBtn.style.display = 'none';
+                scheduleBtn.style.display = 'flex';
+                cancelBtn.style.display = 'flex';
+                break;
+            case 'completed':
+            case 'cancelled':
+                confirmBtn.style.display = 'none';
+                scheduleBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+                break;
+        }
+    }
+
+    showConfirmModal() {
+        this.populateTechnicians('assignedTechnician');
+        document.getElementById('executionDate').valueAsDate = new Date();
+        document.getElementById('executionTime').value = '09:00';
+        document.getElementById('confirmModal').style.display = 'block';
+    }
+
+    showScheduleModal() {
+        this.populateTechnicians('scheduleTechnician');
+        document.getElementById('scheduleDate').valueAsDate = new Date();
+        document.getElementById('scheduleTime').value = '10:00';
+        document.getElementById('scheduleModal').style.display = 'block';
+    }
+
+    showCancelModal() {
+        document.getElementById('cancelModal').style.display = 'block';
+    }
+
+    populateTechnicians(selectId) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">اختر الفني المسؤول</option>' +
+            this.technicians.map(tech => 
+                `<option value="${tech.id}">${tech.name} - ${tech.specialty}</option>`
+            ).join('');
+    }
+
+    confirmRequest() {
+        if (!this.currentRequest) return;
+
+        const executionDate = document.getElementById('executionDate').value;
+        const executionTime = document.getElementById('executionTime').value;
+        const assignedTechnician = document.getElementById('assignedTechnician').value;
+        const additionalNotes = document.getElementById('additionalNotes').value;
+
+        if (!executionDate || !executionTime || !assignedTechnician) {
+            this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        // تحديث حالة الطلب
+        this.currentRequest.status = 'pending';
+        this.currentRequest.executionDate = executionDate;
+        this.currentRequest.executionTime = executionTime;
+        this.currentRequest.assignedTechnician = assignedTechnician;
+        this.currentRequest.additionalNotes = additionalNotes;
+        this.currentRequest.confirmedAt = new Date().toISOString();
+
+        // إضافة إلى الحساب المالي
+        this.addToFinancialAccount(this.currentRequest);
+
+        // حفظ التغييرات
+        this.saveRequests();
+
+        // إرسال إشعار
+        this.sendPatientNotification(this.currentRequest, 'confirmed');
+
+        // إغلاق النوافذ وتحديث العرض
+        document.getElementById('confirmModal').style.display = 'none';
+        this.applyFilters();
+        this.renderRequests();
+        this.updateSummary();
+
+        this.showToast('تم تأكيد الطلب وإرسال الإشعار للمريض بنجاح!', 'success');
+    }
+
+    scheduleRequest() {
+        if (!this.currentRequest) return;
+
+        const scheduleDate = document.getElementById('scheduleDate').value;
+        const scheduleTime = document.getElementById('scheduleTime').value;
+        const assignedTechnician = document.getElementById('scheduleTechnician').value;
+        const scheduleNotes = document.getElementById('scheduleNotes').value;
+
+        if (!scheduleDate || !scheduleTime || !assignedTechnician) {
+            this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        // تحديث بيانات الجدولة
+        this.currentRequest.scheduleDate = scheduleDate;
+        this.currentRequest.scheduleTime = scheduleTime;
+        this.currentRequest.assignedTechnician = assignedTechnician;
+        this.currentRequest.scheduleNotes = scheduleNotes;
+        this.currentRequest.scheduledAt = new Date().toISOString();
+
+        // حفظ التغييرات
+        this.saveRequests();
+
+        // إغلاق النافذة
+        document.getElementById('scheduleModal').style.display = 'none';
+
+        this.showToast('تم جدولة الطلب بنجاح!', 'success');
+    }
+
+    cancelRequest() {
+        if (!this.currentRequest) return;
+
+        const cancelReason = document.getElementById('cancelReason').value;
+        const cancelDetails = document.getElementById('cancelDetails').value;
+
+        if (!cancelReason || !cancelDetails) {
+            this.showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+            return;
+        }
+
+        // تحديث حالة الطلب
+        this.currentRequest.status = 'cancelled';
+        this.currentRequest.cancelReason = cancelReason;
+        this.currentRequest.cancelDetails = cancelDetails;
+        this.currentRequest.cancelledAt = new Date().toISOString();
+
+        // حفظ التغييرات
+        this.saveRequests();
+
+        // إرسال إشعار
+        this.sendPatientNotification(this.currentRequest, 'cancelled');
+
+        // إغلاق النوافذ وتحديث العرض
+        document.getElementById('cancelModal').style.display = 'none';
+        this.applyFilters();
+        this.renderRequests();
+        this.updateSummary();
+
+        this.showToast('تم إلغاء الطلب بنجاح!', 'success');
+    }
+
+    addToFinancialAccount(request) {
+        let financialAccount = JSON.parse(localStorage.getItem('financialAccount')) || {
+            totalIncome: 0,
+            transactions: []
+        };
+
+        financialAccount.totalIncome += request.amount;
+        financialAccount.transactions.push({
+            id: this.generateId(),
+            type: 'income',
+            amount: request.amount,
+            description: `طلب تحاليل - ${request.patientName}`,
+            date: new Date().toISOString(),
+            requestId: request.id,
+            invoiceNumber: request.invoiceNumber
+        });
+
+        localStorage.setItem('financialAccount', JSON.stringify(financialAccount));
+    }
+
+    sendPatientNotification(request, type) {
+        if (Notification.permission === 'granted') {
+            let title, body;
+
+            switch (type) {
+                case 'confirmed':
+                    title = 'تم تأكيد طلبك';
+                    body = `عزيزي/عزيزتي ${request.patientName}، تم تأكيد طلب التحاليل الخاص بك وسيتم معالجته قريباً.`;
+                    break;
+                case 'completed':
+                    title = 'نتائج تحاليلك جاهزة';
+                    body = `عزيزي/عزيزتي ${request.patientName}، نتائج تحاليلك جاهزة الآن. يمكنك الاطلاع عليها من خلال التطبيق.`;
+                    break;
+                case 'cancelled':
+                    title = 'تم إلغاء طلبك';
+                    body = `عزيزي/عزيزتي ${request.patientName}، نعتذر لإبلاغك بأن طلب التحاليل الخاص بك قد تم إلغاؤه.`;
+                    break;
+                case 'new':
+                    title = 'طلب تحاليل جديد';
+                    body = `تم استلام طلب تحاليل جديد من ${request.patientName}.`;
+                    break;
+            }
+
+            new Notification(title, {
+                body: body,
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+            });
+        }
+    }
+
+    printInvoice() {
+        window.print();
+    }
+
+    exportToPDF() {
+        this.showToast('جاري تصدير الفاتورة بصيغة PDF...', 'success');
+        // هنا يمكن إضافة كود التصدير الفعلي لـ PDF
+    }
+
+    shareRequest() {
+        if (navigator.share) {
+            navigator.share({
+                title: `طلب تحاليل - ${this.currentRequest.patientName}`,
+                text: `تفاصيل طلب التحاليل للمريض ${this.currentRequest.patientName}`,
+                url: window.location.href
+            });
+        } else {
+            this.showToast('ميزة المشاركة غير متاحة في هذا المتصفح', 'error');
+        }
+    }
+
+    updateSummary() {
+        const newCount = this.requests.filter(request => request.status === 'new').length;
+        const completedCount = this.requests.filter(request => request.status === 'completed').length;
+        const pendingCount = this.requests.filter(request => request.status === 'pending').length;
+        const urgentCount = this.requests.filter(request => request.isUrgent).length;
+
+        document.getElementById('newRequestsCount').textContent = newCount;
+        document.getElementById('completedRequestsCount').textContent = completedCount;
+        document.getElementById('pendingRequestsCount').textContent = pendingCount;
+
+        // تحديث عداد الإشعارات
+        document.getElementById('notificationBadge').textContent = newCount + urgentCount;
+    }
+
+    clearFilters() {
+        this.filters = {
+            tab: 'all',
+            search: '',
+            status: '',
+            priority: '',
+            fromDate: '',
+            toDate: '',
+            dateRange: ''
+        };
+
+        document.getElementById('searchInput').value = '';
+        document.getElementById('filterStatus').value = '';
+        document.getElementById('filterPriority').value = '';
+        document.getElementById('filterFromDate').value = '';
+        document.getElementById('filterToDate').value = '';
+        document.querySelectorAll('.quick-action-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.tab[data-tab="all"]').classList.add('active');
+    }
+
+    showNewRequestsNotification() {
+        if (Notification.permission === 'granted') {
+            const newRequests = this.requests.filter(request => request.status === 'new').length;
+            const urgentRequests = this.requests.filter(request => request.isUrgent).length;
+
+            if (newRequests > 0 || urgentRequests > 0) {
+                let message = '';
+                if (urgentRequests > 0) {
+                    message = `لديك ${urgentRequests} طلبات عاجلة و ${newRequests} طلبات جديدة تحتاج للمراجعة.`;
+                } else {
+                    message = `لديك ${newRequests} طلبات تحاليل جديدة تحتاج للمراجعة.`;
+                }
+
+                new Notification('طلبات جديدة', {
+                    body: message,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧪</text></svg>'
+                });
+            }
+        }
+    }
+
+    setupNotifications() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    }
+
+    showLoading() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        document.getElementById('requestsList').style.display = 'none';
+    }
+
+    hideLoading() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        document.getElementById('requestsList').style.display = 'block';
+    }
+
+    showToast(message, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        const messageEl = document.getElementById('toastMessage');
+        
+        messageEl.textContent = message;
+        toast.className = `notification-toast ${type === 'error' ? 'error' : ''}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    setupIntersectionObserver() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+    }
+
+    simulateRealTimeUpdates() {
+        // محاكاة استلام طلبات جديدة كل دقيقة
+        setInterval(() => {
+            if (Math.random() > 0.7) { // 30% فرصة لطلب جديد
+                this.addNewRandomRequest();
+            }
+        }, 60000);
+    }
+
+    addNewRandomRequest() {
+        const names = ["عمر عبدالرحمن", "لينا محمد", "ياسر أحمد", "هناء سعيد", "رامي خالد"];
+        const services = [
+            [{ name: "تحليل الدم الكامل", price: 120 }],
+            [{ name: "تحليل السكر", price: 80 }, { name: "تحليل الكوليسترول", price: 100 }],
+            [{ name: "تحليل وظائف الكبد", price: 150 }, { name: "تحليل وظائف الكلى", price: 180 }],
+            [{ name: "تحليل الهرمونات", price: 200 }, { name: "تحليل فيتامين د", price: 120 }]
+        ];
+
+        const newRequest = {
+            id: this.generateId(),
+            patientName: names[Math.floor(Math.random() * names.length)],
+            patientAddress: "عنوان عشوائي",
+            patientPhone: "+96650" + Math.floor(Math.random() * 10000000).toString().padStart(7, '0'),
+            patientEmail: "patient@example.com",
+            services: services[Math.floor(Math.random() * services.length)],
+            amount: Math.floor(Math.random() * 300) + 100,
+            date: new Date().toISOString().split('T')[0],
+            status: "new",
+            priority: Math.random() > 0.7 ? "high" : Math.random() > 0.5 ? "medium" : "low",
+            invoiceNumber: "REQ-" + this.generateId().slice(-6),
+            createdAt: new Date().toISOString(),
+            isUrgent: Math.random() > 0.8
+        };
+
+        this.requests.unshift(newRequest);
+        this.saveRequests();
+        this.applyFilters();
+        this.renderRequests();
+        this.updateSummary();
+
+        // إرسال إشعار
+        this.sendPatientNotification(newRequest, 'new');
+        this.showToast('تم استلام طلب جديد!', 'success');
+    }
+
+    saveRequests() {
+        localStorage.setItem('labRequests', JSON.stringify(this.requests));
+    }
+
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('ar-EG', options);
+    }
+
+    getStatusText(status) {
+        const statusTexts = {
+            'new': 'جديد',
+            'completed': 'مكتمل',
+            'pending': 'قيد الانتظار',
+            'cancelled': 'ملغى'
+        };
+        return statusTexts[status] || status;
+    }
+
+    getStatusClass(status) {
+        const statusClasses = {
+            'new': 'status-new',
+            'completed': 'status-completed',
+            'pending': 'status-pending',
+            'cancelled': 'status-cancelled'
+        };
+        return statusClasses[status] || 'status-new';
+    }
+
+    getPriorityText(priority) {
+        const priorityTexts = {
+            'high': 'عاجل',
+            'medium': 'متوسط',
+            'low': 'عادي'
+        };
+        return priorityTexts[priority] || priority;
+    }
+
+    getEmptyStateHTML() {
+        return `
+            <div class="empty-state">
+                <i class="fas fa-file-medical-alt"></i>
+                <h3>لا توجد طلبات</h3>
+                <p>${this.filters.tab === 'all' ? 'لم يتم استلام أي طلبات بعد' : `لا توجد طلبات ${this.getStatusText(this.filters.tab)}`}</p>
+            </div>
+        `;
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', () => {
+    new TestRequestsManager();
+});
+</script>
+</body>
+</html>
