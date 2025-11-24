@@ -1,0 +1,4057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - حجز موعد في مختبر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* خلفية التطبيق: فاتحة ومريحة للعين */
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* الخطوط المحدثة */
+    --font-primary: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 20px 16px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 16px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث والتصفية */
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 10px 16px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.filter-btn {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.filter-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* شريط الإعلانات المتحركة */
+.ad-banner-container {
+    position: relative;
+    height: 140px;
+    margin: 0 16px 18px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.ad-banner-slider {
+    height: 100%;
+    position: relative;
+}
+
+.ad-slide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.ad-slide.active {
+    opacity: 1;
+}
+
+.ad-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ad-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 16px;
+    color: white;
+}
+
+.ad-overlay h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.ad-overlay p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.ad-indicators {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+}
+
+.ad-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.ad-indicator.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* التصنيفات */
+.categories-section {
+    padding: 0 16px;
+    margin-bottom: 18px;
+}
+
+.categories-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+}
+
+.categories-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    padding: 10px 16px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+    font-size: 13px;
+}
+
+.category-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.category-chip:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.category-chip i {
+    font-size: 12px;
+}
+
+/* شريط آخر المختبرات المضافين */
+.latest-doctors-section {
+    padding: 0 16px;
+    margin-bottom: 18px;
+}
+
+.latest-doctors-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.latest-doctors-scroll {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 8px 0;
+    scroll-behavior: smooth;
+}
+
+.latest-doctors-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-btn {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: absolute;
+    z-index: 10;
+    font-size: 12px;
+}
+
+.scroll-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.scroll-left {
+    left: -8px;
+}
+
+.scroll-right {
+    right: -8px;
+}
+
+/* بطاقة المختبر في شريط آخر المختبرات */
+.latest-doctor-card {
+    min-width: 120px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    text-align: center;
+}
+
+.latest-doctor-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-4px);
+}
+
+.latest-doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--primary);
+    border: 2px solid white;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.latest-doctor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.latest-doctor-avatar::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: var(--bg-light);
+    border-radius: 50%;
+}
+
+.latest-doctor-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--secondary);
+    color: white;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.latest-doctor-name {
+    font-weight: 700;
+    margin-bottom: 3px;
+    font-size: 13px;
+    color: var(--primary-dark);
+}
+
+.latest-doctor-specialty {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.latest-doctor-price {
+    font-weight: 700;
+    color: var(--success);
+    font-size: 12px;
+    background: var(--bg-light);
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset);
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    padding: 0 16px 100px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.view-controls {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-md);
+    padding: 3px;
+}
+
+.view-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 12px;
+}
+
+.view-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+/* حاوية المختبرات */
+.doctors-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.doctors-container.list-view {
+    grid-template-columns: 1fr;
+}
+
+/* بطاقة المختبر */
+.doctor-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.doctor-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-4px);
+}
+
+.doctor-card.list-view {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+}
+
+.doctor-header {
+    padding: 14px;
+    text-align: center;
+    position: relative;
+}
+
+.doctor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 20px;
+    color: var(--primary);
+    border: 2px solid white;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.doctor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor-card.list-view .doctor-avatar {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    font-size: 16px;
+}
+
+.doctor-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--secondary);
+    color: white;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.doctor-info {
+    padding: 0 14px 14px;
+    text-align: center;
+}
+
+.doctor-card.list-view .doctor-info {
+    text-align: right;
+    flex: 1;
+    padding: 0;
+}
+
+.doctor-name {
+    font-weight: 700;
+    margin-bottom: 3px;
+    font-size: 14px;
+    color: var(--primary-dark);
+}
+
+.doctor-specialty {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.doctor-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-bottom: 10px;
+    color: var(--warning);
+    font-size: 12px;
+}
+
+.doctor-card.list-view .doctor-rating {
+    justify-content: flex-start;
+}
+
+.doctor-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.doctor-price {
+    font-weight: 700;
+    color: var(--success);
+    font-size: 14px;
+}
+
+.doctor-location {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* زر الحجز العائم */
+.booking-fab {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-card);
+    z-index: 999;
+    transition: var(--transition-liquid);
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.booking-fab:hover {
+    transform: scale(1.1);
+}
+
+.booking-fab:active {
+    transform: scale(0.9);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 6px 8px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 340px;
+    width: calc(100% - 32px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translateY(-8px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* تفاصيل المختبر في النافذة - التصميم الجديد */
+.doctor-detail {
+    padding: 18px;
+}
+
+.doctor-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.doctor-profile-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-light);
+    text-align: center;
+}
+
+.doctor-avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 32px;
+    color: var(--primary);
+    border: 3px solid white;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.doctor-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor-avatar-large::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: var(--bg-light);
+    border-radius: 50%;
+}
+
+.doctor-name-large {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--primary-dark);
+}
+
+.doctor-specialty-large {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+
+.rating-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.doctor-rating-large {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--warning);
+    font-size: 14px;
+}
+
+.rating-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.rating-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* بطاقة المواعيد */
+.schedule-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-light);
+}
+
+.schedule-title {
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--primary);
+    text-align: right;
+    font-size: 16px;
+}
+
+.available-times-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.time-slot {
+    background: var(--bg-surface);
+    border: 2px solid transparent;
+    padding: 10px 6px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-weight: 600;
+    box-shadow: var(--shadow-light);
+    font-size: 12px;
+}
+
+.time-slot:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.time-slot.selected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary-dark);
+    box-shadow: var(--shadow-inset);
+}
+
+.booking-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.fee-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.booking-action {
+    display: flex;
+    gap: 8px;
+}
+
+/* بطاقة الفحوصات */
+.services-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-light);
+}
+
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+}
+
+.service-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.service-price {
+    font-weight: 700;
+    color: var(--success);
+    font-size: 13px;
+}
+
+/* بطاقة النبذة */
+.bio-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-light);
+}
+
+.bio-content {
+    line-height: 1.6;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+/* نماذج الحجز */
+.booking-form {
+    padding: 18px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* الأزرار */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* الفواتير المحسنة */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    border-bottom: 2px solid var(--primary);
+    margin-bottom: 18px;
+}
+
+.invoice-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.invoice-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.invoice-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.invoice-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.invoice-app-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.invoice-doctor-name {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.invoice-meta {
+    text-align: left;
+}
+
+.invoice-number {
+    font-weight: 700;
+    margin-bottom: 3px;
+    font-size: 13px;
+}
+
+.invoice-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.invoice-body {
+    padding: 0 18px 18px;
+}
+
+.invoice-section {
+    margin-bottom: 20px;
+}
+
+.invoice-section h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 16px;
+    border-bottom: 1px solid var(--primary-light);
+    padding-bottom: 6px;
+}
+
+.invoice-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+}
+
+.invoice-items th,
+.invoice-items td {
+    padding: 10px;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.invoice-items th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.invoice-total {
+    background: var(--bg-light);
+    padding: 18px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.total-row.final {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--success);
+    border-top: 2px solid var(--primary-light);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.invoice-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* سجل المواعيد */
+.appointments-history {
+    padding: 18px;
+}
+
+.appointment-item {
+    background: var(--bg-light);
+    padding: 14px;
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-light);
+    border-right: 4px solid var(--primary);
+}
+
+.appointment-item.completed {
+    border-right-color: var(--success);
+}
+
+.appointment-item.cancelled {
+    border-right-color: var(--accent);
+}
+
+.appointment-item.upcoming {
+    border-right-color: var(--warning);
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.appointment-doctor {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.appointment-specialty {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.appointment-status {
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-upcoming {
+    background: var(--warning);
+    color: white;
+}
+
+.status-completed {
+    background: var(--success);
+    color: white;
+}
+
+.status-cancelled {
+    background: var(--accent);
+    color: white;
+}
+
+.appointment-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.appointment-detail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+}
+
+.appointment-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+/* نماذج التقييم */
+.rating-form {
+    padding: 18px;
+}
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 16px 0;
+}
+
+.rating-star {
+    font-size: 28px;
+    color: #ddd;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.rating-star.active {
+    color: var(--warning);
+}
+
+.rating-star:hover {
+    transform: scale(1.2);
+}
+
+.rating-criteria {
+    margin-bottom: 20px;
+}
+
+.rating-criterion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.criterion-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.criterion-stars {
+    display: flex;
+    gap: 3px;
+}
+
+.criterion-star {
+    font-size: 14px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.criterion-star.active {
+    color: var(--warning);
+}
+
+.rating-summary {
+    background: var(--bg-light);
+    padding: 14px;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+}
+
+.rating-overall {
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.rating-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--warning);
+}
+
+.rating-count {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.rating-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rating-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    width: 50px;
+}
+
+.rating-progress {
+    flex: 1;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.rating-progress-fill {
+    height: 100%;
+    background: var(--warning);
+    border-radius: 3px;
+}
+
+.rating-percentage {
+    font-size: 11px;
+    color: var(--text-secondary);
+    width: 25px;
+}
+
+/* التصفية */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 13px;
+}
+
+.filter-option:hover {
+    background: var(--primary-light);
+}
+
+.filter-option input {
+    margin: 0;
+    transform: scale(0.9);
+}
+
+.price-range {
+    padding: 0 10px;
+}
+
+.price-range input {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.price-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* أنماط جديدة لنافذة الدفع */
+.payment-confirmation {
+    padding: 18px;
+}
+
+.payment-summary {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-light);
+}
+
+.payment-summary h3 {
+    color: var(--primary);
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.payment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.payment-item:last-child {
+    border-bottom: none;
+}
+
+.payment-amount {
+    font-weight: 700;
+    color: var(--success);
+    font-size: 16px;
+}
+
+.current-balance {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.new-balance {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.payment-security {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    margin: 15px 0;
+    border-right: 4px solid var(--success);
+}
+
+.payment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.no-account-payment, .insufficient-balance {
+    padding: 18px;
+    text-align: center;
+}
+
+.payment-warning {
+    margin-bottom: 25px;
+}
+
+/* أنماط جديدة لاختيار الفحوصات */
+.test-selection {
+    padding: 18px;
+}
+
+.test-type-selection {
+    margin-bottom: 20px;
+}
+
+.test-type-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.test-type-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+    background: var(--bg-light);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-weight: 600;
+    box-shadow: var(--shadow-light);
+}
+
+.test-type-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary-dark);
+    box-shadow: var(--shadow-inset);
+}
+
+.test-type-btn:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.test-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.test-checkbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.test-checkbox:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.test-checkbox.selected {
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+}
+
+.test-checkbox-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.test-checkbox input {
+    transform: scale(1.2);
+}
+
+.test-checkbox-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.test-checkbox-price {
+    font-weight: 700;
+    color: var(--success);
+}
+
+.test-summary {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-top: 20px;
+    box-shadow: var(--shadow-light);
+}
+
+.test-summary h3 {
+    color: var(--primary);
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.selected-tests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.selected-test-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+}
+
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 2px solid var(--primary-light);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--success);
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .doctors-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .invoice-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .appointment-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .available-times-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .ad-banner-container {
+        height: 120px;
+    }
+    
+    .scroll-btn {
+        display: none;
+    }
+    
+    .status-bar {
+        padding: 8px 16px;
+    }
+    
+    .app-header {
+        padding: 16px 12px 0;
+    }
+    
+    .main-content {
+        padding: 0 12px 90px;
+    }
+    
+    .payment-actions {
+        flex-direction: column;
+    }
+    
+    .test-type-buttons {
+        flex-direction: column;
+    }
+    
+    .test-checkboxes {
+        max-height: 250px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>حجز موعد في مختبر 🔬</h1>
+                    <p>اختر المختبر ونوع الفحص</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">2</span>
+                    </button>
+                    <button class="action-icon" id="appointmentsHistoryBtn">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- شريط البحث والتصفية -->
+            <div class="search-filter-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="ابحث عن مختبر، فحص أو تحليل..." id="searchInput">
+                </div>
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- شريط الإعلانات المتحركة -->
+        <div class="ad-banner-container">
+            <div class="ad-banner-slider" id="adBannerSlider">
+                <div class="ad-slide active">
+                    <img src="../img/1.jpg" alt="عروض خاصة">
+                    <div class="ad-overlay">
+                        <h3>عروض خاصة</h3>
+                        <p>خصم 20% على الفحوصات الشاملة</p>
+                    </div>
+                </div>
+                <div class="ad-slide">
+                    <img src="../img/2.jpg" alt="مختبرات متخصصة">
+                    <div class="ad-overlay">
+                        <h3>مختبرات متخصصة</h3>
+                        <p>أحدث الأجهزة والتقنيات الطبية</p>
+                    </div>
+                </div>
+                <div class="ad-slide">
+                    <img src="../img/3.jpg" alt="خدمة منزلية">
+                    <div class="ad-overlay">
+                        <h3>خدمة منزلية</h3>
+                        <p>سحب عينات من المنزل</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ad-indicators">
+                <span class="ad-indicator active" data-index="0"></span>
+                <span class="ad-indicator" data-index="1"></span>
+                <span class="ad-indicator" data-index="2"></span>
+            </div>
+        </div>
+
+        <!-- التصنيفات -->
+        <div class="categories-section">
+            <div class="categories-scroll" id="categoriesScroll">
+                <!-- سيتم تعبئة التصنيفات ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- شريط آخر المختبرات المضافين -->
+        <div class="latest-doctors-section">
+            <div class="section-header">
+                <h2>المختبرات المتاحة</h2>
+                <a href="#" class="view-all">عرض الكل</a>
+            </div>
+            <div class="latest-doctors-container">
+                <button class="scroll-btn scroll-left" id="scrollLeft">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="latest-doctors-scroll" id="latestDoctorsScroll">
+                    <!-- سيتم تعبئة آخر المختبرات المضافين ديناميكياً -->
+                </div>
+                <button class="scroll-btn scroll-right" id="scrollRight">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- قسم المختبرات -->
+            <div class="doctors-section">
+                <div class="section-header">
+                    <h2>المختبرات المتاحة</h2>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="doctors-container" id="doctorsContainer">
+                    <!-- سيتم تعبئة المختبرات ديناميكياً -->
+                </div>
+            </div>
+        </div>
+
+        <!-- زر الحجز العائم -->
+        <button class="booking-fab" id="quickBookingBtn">
+            <i class="fas fa-calendar-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="lab-appointment.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <div class="nav-label">حجز مختبر</div>
+            </a>
+            <a href="appointments.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">مواعيدي</div>
+            </a>
+            <a href="financial.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المحفظة</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل المختبر -->
+    <div id="labModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="labModalTitle">تفاصيل المختبر</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="labModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة حجز الموعد -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="bookingModalTitle">حجز موعد جديد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="bookingModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة اختيار الفحوصات -->
+    <div id="testsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="testsModalTitle">اختيار الفحوصات</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="testsModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الدفع -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="paymentModalTitle">إتمام عملية الدفع</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="paymentModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفواتير -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="invoiceModalTitle">فاتورة الحجز</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="invoiceModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة سجل المواعيد -->
+    <div id="appointmentsHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>سجل المواعيد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="appointmentsHistoryBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التقييم -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="ratingModalTitle">تقييم الخدمة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="ratingModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التصفية -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية النتائج</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <h3>نوع الفحص</h3>
+                    <div class="filter-options" id="testTypeFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="دم">
+                            <span>فحوصات الدم</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="بول">
+                            <span>فحوصات البول</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="هرمونات">
+                            <span>فحوصات الهرمونات</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="كيمياء">
+                            <span>الكيمياء الحيوية</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>المكان</h3>
+                    <div class="filter-options" id="locationFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="صنعاء">
+                            <span>صنعاء</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="تعز">
+                            <span>تعز</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="عدن">
+                            <span>عدن</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>السعر</h3>
+                    <div class="price-range">
+                        <input type="range" id="priceRange" min="0" max="500" value="250">
+                        <div class="price-labels">
+                            <span>0 ر.س</span>
+                            <span id="currentPrice">250 ر.س</span>
+                            <span>500 ر.س</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-secondary" id="resetFilters">إعادة التعيين</button>
+                    <button class="btn-primary" id="applyFilters">تطبيق التصفية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام حجز المواعيد في المختبر
+class LabAppointmentSystem {
+    constructor() {
+        this.labs = [];
+        this.filteredLabs = [];
+        this.latestLabs = [];
+        this.appointments = [];
+        this.invoices = [];
+        this.ratings = [];
+        this.currentLab = null;
+        this.currentAppointment = null;
+        this.currentView = 'grid';
+        this.selectedTests = [];
+        this.selectedTestType = 'دم';
+        this.filters = {
+            testType: [],
+            location: [],
+            maxPrice: 500
+        };
+        this.currentRating = 0;
+        this.adSlideIndex = 0;
+        this.adSlideInterval = null;
+        this.init();
+    }
+
+    init() {
+        this.loadLabs();
+        this.loadAppointments();
+        this.loadInvoices();
+        this.loadRatings();
+        this.setupEventListeners();
+        this.renderCategories();
+        this.renderLatestLabs();
+        this.renderLabs();
+        this.updateTime();
+        this.startAdSlider();
+    }
+
+    // دالة جديدة للتحقق من وجود حساب مالي
+    checkFinancialAccount() {
+        const financialAccount = localStorage.getItem('financialAccount');
+        return financialAccount ? JSON.parse(financialAccount) : null;
+    }
+
+    // دالة جديدة للتحقق من الرصيد
+    checkBalance(amount) {
+        const account = this.checkFinancialAccount();
+        if (!account) {
+            return { success: false, message: 'لا يوجد حساب مالي. يرجى إنشاء حساب أولاً.' };
+        }
+        
+        if (account.balance < amount) {
+            return { success: false, message: 'رصيدك غير كافي. يرجى شحن المحفظة.' };
+        }
+        
+        return { success: true, balance: account.balance };
+    }
+
+    // دالة جديدة لخصم المبلغ من الحساب المالي
+    deductFromWallet(amount, description) {
+        const account = this.checkFinancialAccount();
+        if (!account) {
+            return { success: false, message: 'لا يوجد حساب مالي' };
+        }
+
+        if (account.balance < amount) {
+            return { success: false, message: 'الرصيد غير كافي' };
+        }
+
+        // خصم المبلغ
+        account.balance -= amount;
+        localStorage.setItem('financialAccount', JSON.stringify(account));
+
+        // تسجيل المعاملة في الحساب المالي
+        const financialTransactions = JSON.parse(localStorage.getItem('financialTransactions')) || [];
+        const transaction = {
+            id: 'LB' + Date.now().toString().slice(-8),
+            type: 'lab',
+            title: `حجز موعد - ${description}`,
+            description: `دفع رسوم حجز موعد في مختبر`,
+            amount: -amount,
+            ref: 'LB' + Date.now().toString().slice(-8),
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-lab'
+        };
+        
+        financialTransactions.unshift(transaction);
+        localStorage.setItem('financialTransactions', JSON.stringify(financialTransactions));
+
+        // تسجيل النشاط في الحساب المالي
+        const financialActivities = JSON.parse(localStorage.getItem('financialActivities')) || [];
+        const activity = {
+            id: Date.now(),
+            type: 'payment',
+            title: `دفع رسوم موعد - ${description}`,
+            amount: -amount,
+            time: 'الآن',
+            icon: 'fa-flask'
+        };
+        
+        financialActivities.unshift(activity);
+        if (financialActivities.length > 10) {
+            financialActivities.pop();
+        }
+        localStorage.setItem('financialActivities', JSON.stringify(financialActivities));
+
+        return { 
+            success: true, 
+            newBalance: account.balance,
+            transactionId: transaction.id
+        };
+    }
+
+    // دالة جديدة لعرض نافذة الدفع
+    showPaymentModal(lab, amount) {
+        const account = this.checkFinancialAccount();
+        
+        if (!account) {
+            this.showNoAccountModal(lab, amount);
+            return;
+        }
+
+        const balanceCheck = this.checkBalance(amount);
+        if (!balanceCheck.success) {
+            this.showInsufficientBalanceModal(lab, amount, balanceCheck.message);
+            return;
+        }
+
+        const modal = document.getElementById('paymentModal');
+        document.getElementById('paymentModalTitle').textContent = 'تأكيد عملية الدفع';
+
+        const modalBody = document.getElementById('paymentModalBody');
+        modalBody.innerHTML = `
+            <div class="payment-confirmation">
+                <div class="payment-summary">
+                    <h3>تفاصيل الدفع</h3>
+                    <div class="payment-details">
+                        <div class="payment-item">
+                            <span>المختبر:</span>
+                            <span>${lab.name}</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>نوع المختبر:</span>
+                            <span>${lab.type}</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>عدد الفحوصات:</span>
+                            <span>${this.selectedTests.length} فحص</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>المبلغ:</span>
+                            <span class="payment-amount">${amount} ر.ي</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>الرصيد الحالي:</span>
+                            <span class="current-balance">${account.balance} ر.ي</span>
+                        </div>
+                        <div class="payment-item">
+                            <span>الرصيد بعد الدفع:</span>
+                            <span class="new-balance">${account.balance - amount} ر.ي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-security">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                        <span style="font-weight: 700; color: var(--text-primary);">عملية آمنة</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-secondary); text-align: center;">
+                        يتم خصم المبلغ مباشرة من محفظتك الإلكترونية بشكل آمن
+                    </p>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-secondary" onclick="labAppointmentSystem.closePaymentModal()">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn-primary" onclick="labAppointmentSystem.processPayment(${lab.id}, ${amount})">
+                        <i class="fas fa-check-circle"></i>
+                        تأكيد الدفع
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    // دالة جديدة لعرض نافذة عدم وجود حساب
+    showNoAccountModal(lab, amount) {
+        const modal = document.getElementById('paymentModal');
+        document.getElementById('paymentModalTitle').textContent = 'إنشاء حساب مالي';
+
+        const modalBody = document.getElementById('paymentModalBody');
+        modalBody.innerHTML = `
+            <div class="no-account-payment">
+                <div class="payment-warning">
+                    <i class="fas fa-wallet" style="font-size: 48px; color: var(--warning); margin-bottom: 16px;"></i>
+                    <h3 style="color: var(--text-primary); margin-bottom: 8px;">لا يوجد حساب مالي</h3>
+                    <p style="color: var(--text-secondary); text-align: center; line-height: 1.6;">
+                        تحتاج إلى إنشاء حساب مالي لدفع رسوم الحجز.<br>
+                        يمكنك إنشاء حساب مجاني الآن والاستفادة من جميع خدماتنا.
+                    </p>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-secondary" onclick="labAppointmentSystem.closePaymentModal()">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn-primary" onclick="labAppointmentSystem.redirectToFinancialPage()">
+                        <i class="fas fa-wallet"></i>
+                        إنشاء حساب مالي
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    // دالة جديدة لعرض نافذة الرصيد غير كافي
+    showInsufficientBalanceModal(lab, amount, message) {
+        const modal = document.getElementById('paymentModal');
+        document.getElementById('paymentModalTitle').textContent = 'رصيد غير كافي';
+
+        const modalBody = document.getElementById('paymentModalBody');
+        modalBody.innerHTML = `
+            <div class="insufficient-balance">
+                <div class="payment-warning">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: var(--warning); margin-bottom: 16px;"></i>
+                    <h3 style="color: var(--text-primary); margin-bottom: 8px;">رصيد غير كافي</h3>
+                    <p style="color: var(--text-secondary); text-align: center; line-height: 1.6;">
+                        ${message}<br>
+                        يرجى شحن محفظتك للمتابعة في حجز الموعد.
+                    </p>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-secondary" onclick="labAppointmentSystem.closePaymentModal()">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button class="btn-primary" onclick="labAppointmentSystem.redirectToFinancialPage()">
+                        <i class="fas fa-coins"></i>
+                        شحن المحفظة
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    // دالة جديدة لإغلاق نافذة الدفع
+    closePaymentModal() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    // دالة جديدة للتوجيه لصفحة الحساب المالي
+    redirectToFinancialPage() {
+        window.location.href = 'financial.html';
+    }
+
+    // دالة جديدة لمعالجة الدفع
+    processPayment(labId, amount) {
+        const lab = this.labs.find(l => l.id === labId);
+        if (!lab) return;
+
+        // خصم المبلغ من الحساب المالي
+        const paymentResult = this.deductFromWallet(amount, `${lab.name} - ${lab.type}`);
+        
+        if (paymentResult.success) {
+            // متابعة عملية الحجز
+            this.completeBooking(lab, amount, paymentResult.transactionId);
+            this.closePaymentModal();
+        } else {
+            alert(paymentResult.message);
+        }
+    }
+
+    // دالة جديدة لإكمال الحجز بعد الدفع الناجح
+    completeBooking(lab, amount, transactionId) {
+        const date = document.getElementById('appointmentDate')?.value || new Date().toISOString().split('T')[0];
+        const selectedTime = document.querySelector('.time-slot.selected');
+        const notes = document.getElementById('appointmentNotes')?.value || '';
+
+        const appointment = {
+            id: Date.now(),
+            labId: lab.id,
+            labName: lab.name,
+            labType: lab.type,
+            date: date,
+            time: selectedTime ? selectedTime.dataset.time : '10:00',
+            tests: [...this.selectedTests],
+            notes: notes,
+            status: 'confirmed',
+            paymentMethod: 'المحفظة الإلكترونية',
+            totalAmount: amount,
+            transactionId: transactionId,
+            createdAt: new Date().toISOString()
+        };
+
+        this.appointments.push(appointment);
+        this.saveAppointments();
+
+        // إنشاء الفاتورة
+        this.generateInvoice(appointment);
+
+        alert('تم حجز الموعد ودفع الرسوم بنجاح! سيتم إرسال تأكيد إلى بريدك الإلكتروني.');
+        document.getElementById('bookingModal').style.display = 'none';
+        
+        // عرض الفاتورة
+        this.showInvoice(appointment.id);
+    }
+
+    loadLabs() {
+        const savedLabs = localStorage.getItem('lab_appointments_labs');
+        
+        if (savedLabs) {
+            this.labs = JSON.parse(savedLabs);
+        } else {
+            this.labs = this.getDefaultLabs();
+        }
+        
+        this.filteredLabs = [...this.labs];
+        this.latestLabs = [...this.labs].sort((a, b) => b.id - a.id).slice(0, 6);
+        this.saveLabs();
+    }
+
+    getDefaultLabs() {
+        return [
+            {
+                id: 1,
+                name: "مختبر النخبة الطبي",
+                type: "مختبر مرجعي",
+                bio: "مختبر طبي متكامل يقدم أحدث الفحوصات المخبرية بدقة عالية، مجهز بأحدث الأجهزة العالمية وبكادر طبي متخصص.",
+                avatar: "../img/lab1.jpg",
+                rating: 4.8,
+                reviewCount: 342,
+                experience: 15,
+                patients: 12000,
+                fee: 20,
+                location: "صنعاء",
+                address: "شارع الزبيري - مقابل مستشفى العربي",
+                available: true,
+                badge: "مميز",
+                schedule: {
+                    "الأحد": ["07:00-22:00"],
+                    "الاثنين": ["07:00-22:00"],
+                    "الثلاثاء": ["07:00-22:00"],
+                    "الأربعاء": ["07:00-22:00"],
+                    "الخميس": ["07:00-22:00"],
+                    "الجمعة": ["16:00-22:00"],
+                    "السبت": ["07:00-22:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 25, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 15, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 30, id: "blood3", duration: "1-2 ساعات" },
+                        { name: "أنزيمات الكبد", price: 35, id: "blood4", duration: "1-2 ساعات" },
+                        { name: "وظائف الكلى", price: 30, id: "blood5", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 20, id: "urine1", duration: "1 ساعة" },
+                        { name: "زراعة بول", price: 40, id: "urine2", duration: "2-3 أيام" },
+                        { name: "تحليل بروتين البول", price: 25, id: "urine3", duration: "1-2 ساعات" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 45, id: "hormone1", duration: "1-2 ساعات" },
+                        { name: "هرمون النمو", price: 60, id: "hormone2", duration: "1-2 ساعات" },
+                        { name: "هرمونات الغدة الكظرية", price: 55, id: "hormone3", duration: "1-2 ساعات" },
+                        { name: "هرمونات الخصوبة", price: 70, id: "hormone4", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الشاملة", price: 80, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "أملاح الدم", price: 25, id: "chem2", duration: "1-2 ساعات" },
+                        { name: "فيتامين د", price: 50, id: "chem3", duration: "1-2 ساعات" },
+                        { name: "فيتامين ب12", price: 45, id: "chem4", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.8,
+                    breakdown: {
+                        "الدقة": 4.9,
+                        "السرعة": 4.7,
+                        "النظافة": 4.8,
+                        "الخدمة": 4.8
+                    }
+                }
+            },
+            {
+                id: 2,
+                name: "مختبر السلام الطبي",
+                type: "مختبر عام",
+                bio: "مختبر طبي يقدم خدمات الفحوصات المخبرية الأساسية والمتقدمة، مع التركيز على الدقة والسرعة في النتائج.",
+                avatar: "../img/lab2.jpg",
+                rating: 4.5,
+                reviewCount: 289,
+                experience: 12,
+                patients: 8000,
+                fee: 15,
+                location: "صنعاء",
+                address: "حي التحرير - شارع المستشفيات",
+                available: true,
+                badge: "",
+                schedule: {
+                    "الأحد": ["08:00-20:00"],
+                    "الاثنين": ["08:00-20:00"],
+                    "الثلاثاء": ["08:00-20:00"],
+                    "الأربعاء": ["08:00-20:00"],
+                    "الخميس": ["08:00-20:00"],
+                    "الجمعة": ["16:00-20:00"],
+                    "السبت": ["08:00-20:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 20, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 12, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 25, id: "blood3", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 15, id: "urine1", duration: "1 ساعة" },
+                        { name: "زراعة بول", price: 35, id: "urine2", duration: "2-3 أيام" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 40, id: "hormone1", duration: "1-2 ساعات" },
+                        { name: "هرمونات الخصوبة", price: 60, id: "hormone2", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الشاملة", price: 70, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "فيتامين د", price: 45, id: "chem2", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.5,
+                    breakdown: {
+                        "الدقة": 4.6,
+                        "السرعة": 4.4,
+                        "النظافة": 4.5,
+                        "الخدمة": 4.5
+                    }
+                }
+            },
+            {
+                id: 3,
+                name: "مختبر الأمل المتخصص",
+                type: "مختبر متخصص",
+                bio: "مختبر متخصص في الفحوصات الدقيقة والتحاليل المتقدمة، مع فريق طبي ذو خبرة عالية في التشخيص الدقيق.",
+                avatar: "../img/lab3.jpg",
+                rating: 4.9,
+                reviewCount: 156,
+                experience: 8,
+                patients: 5000,
+                fee: 30,
+                location: "صنعاء",
+                address: "حي السبعين - مجمع العيادات",
+                available: true,
+                badge: "متخصص",
+                schedule: {
+                    "الأحد": ["08:00-18:00"],
+                    "الاثنين": ["08:00-18:00"],
+                    "الثلاثاء": ["08:00-18:00"],
+                    "الأربعاء": ["08:00-18:00"],
+                    "الخميس": ["08:00-18:00"],
+                    "الجمعة": ["مغلق"],
+                    "السبت": ["08:00-18:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 30, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 18, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 35, id: "blood3", duration: "1-2 ساعات" },
+                        { name: "أنزيمات الكبد", price: 40, id: "blood4", duration: "1-2 ساعات" },
+                        { name: "وظائف الكلى", price: 35, id: "blood5", duration: "1-2 ساعات" },
+                        { name: "تخثر الدم", price: 45, id: "blood6", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 25, id: "urine1", duration: "1 ساعة" },
+                        { name: "زراعة بول", price: 50, id: "urine2", duration: "2-3 أيام" },
+                        { name: "تحليل بروتين البول", price: 30, id: "urine3", duration: "1-2 ساعات" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 50, id: "hormone1", duration: "1-2 ساعات" },
+                        { name: "هرمون النمو", price: 70, id: "hormone2", duration: "1-2 ساعات" },
+                        { name: "هرمونات الغدة الكظرية", price: 65, id: "hormone3", duration: "1-2 ساعات" },
+                        { name: "هرمونات الخصوبة", price: 85, id: "hormone4", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الشاملة", price: 95, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "أملاح الدم", price: 30, id: "chem2", duration: "1-2 ساعات" },
+                        { name: "فيتامين د", price: 60, id: "chem3", duration: "1-2 ساعات" },
+                        { name: "فيتامين ب12", price: 55, id: "chem4", duration: "1-2 ساعات" },
+                        { name: "حموضة الدم", price: 40, id: "chem5", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.9,
+                    breakdown: {
+                        "الدقة": 4.9,
+                        "السرعة": 4.8,
+                        "النظافة": 4.9,
+                        "الخدمة": 4.9
+                    }
+                }
+            },
+            {
+                id: 4,
+                name: "مختبر النور التشخيصي",
+                type: "مختبر تشخيصي",
+                bio: "مركز تشخيصي متكامل يقدم خدمات المختبرات والفحوصات المتخصصة، مع تقارير مفصلة ونتائج دقيقة.",
+                avatar: "../img/lab4.jpg",
+                rating: 4.7,
+                reviewCount: 198,
+                experience: 10,
+                patients: 7000,
+                fee: 25,
+                location: "صنعاء",
+                address: "شارع النصر - حي المعلا",
+                available: true,
+                badge: "جديد",
+                schedule: {
+                    "الأحد": ["07:30-21:00"],
+                    "الاثنين": ["07:30-21:00"],
+                    "الثلاثاء": ["07:30-21:00"],
+                    "الأربعاء": ["07:30-21:00"],
+                    "الخميس": ["07:30-21:00"],
+                    "الجمعة": ["17:00-21:00"],
+                    "السبت": ["07:30-21:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 28, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 16, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 32, id: "blood3", duration: "1-2 ساعات" },
+                        { name: "أنزيمات الكبد", price: 38, id: "blood4", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 22, id: "urine1", duration: "1 ساعة" },
+                        { name: "زراعة بول", price: 45, id: "urine2", duration: "2-3 أيام" },
+                        { name: "تحليل بروتين البول", price: 28, id: "urine3", duration: "1-2 ساعات" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 48, id: "hormone1", duration: "1-2 ساعات" },
+                        { name: "هرمونات الخصوبة", price: 75, id: "hormone2", duration: "1-2 ساعات" },
+                        { name: "هرمونات الغدة الكظرية", price: 60, id: "hormone3", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الشاملة", price: 85, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "فيتامين د", price: 55, id: "chem2", duration: "1-2 ساعات" },
+                        { name: "فيتامين ب12", price: 50, id: "chem3", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.7,
+                    breakdown: {
+                        "الدقة": 4.8,
+                        "السرعة": 4.6,
+                        "النظافة": 4.7,
+                        "الخدمة": 4.7
+                    }
+                }
+            },
+            {
+                id: 5,
+                name: "مختبر الصحة والوقاية",
+                type: "مختبر وقائي",
+                bio: "مختبر متخصص في الفحوصات الوقائية والكشف المبكر عن الأمراض، مع برامج متابعة صحية شاملة.",
+                avatar: "../img/lab5.jpg",
+                rating: 4.6,
+                reviewCount: 123,
+                experience: 6,
+                patients: 4000,
+                fee: 18,
+                location: "صنعاء",
+                address: "حي أزال - مركز commercial",
+                available: true,
+                badge: "",
+                schedule: {
+                    "الأحد": ["08:00-17:00"],
+                    "الاثنين": ["08:00-17:00"],
+                    "الثلاثاء": ["08:00-17:00"],
+                    "الأربعاء": ["08:00-17:00"],
+                    "الخميس": ["08:00-17:00"],
+                    "الجمعة": ["مغلق"],
+                    "السبت": ["08:00-17:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 22, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 14, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 28, id: "blood3", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 18, id: "urine1", duration: "1 ساعة" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 42, id: "hormone1", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الأساسية", price: 65, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "فيتامين د", price: 48, id: "chem2", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.6,
+                    breakdown: {
+                        "الدقة": 4.7,
+                        "السرعة": 4.5,
+                        "النظافة": 4.6,
+                        "الخدمة": 4.6
+                    }
+                }
+            },
+            {
+                id: 6,
+                name: "مختبر المستقبل للتحاليل",
+                type: "مختبر أبحاث",
+                bio: "مختبر متقدم يدمج بين الخدمات التشخيصية والبحث العلمي، مع تركيز على التحاليل المتخصصة والدقيقة.",
+                avatar: "../img/lab6.jpg",
+                rating: 4.8,
+                reviewCount: 89,
+                experience: 5,
+                patients: 3000,
+                fee: 35,
+                location: "صنعاء",
+                address: "مجمع الجامعة - حي العلوم",
+                available: true,
+                badge: "متقدم",
+                schedule: {
+                    "الأحد": ["09:00-16:00"],
+                    "الاثنين": ["09:00-16:00"],
+                    "الثلاثاء": ["09:00-16:00"],
+                    "الأربعاء": ["09:00-16:00"],
+                    "الخميس": ["09:00-16:00"],
+                    "الجمعة": ["مغلق"],
+                    "السبت": ["09:00-16:00"]
+                },
+                tests: {
+                    "دم": [
+                        { name: "صورة دم كاملة", price: 35, id: "blood1", duration: "1-2 ساعات" },
+                        { name: "سكر الدم", price: 20, id: "blood2", duration: "30 دقيقة" },
+                        { name: "دهون الدم", price: 40, id: "blood3", duration: "1-2 ساعات" },
+                        { name: "أنزيمات الكبد", price: 45, id: "blood4", duration: "1-2 ساعات" },
+                        { name: "وظائف الكلى", price: 40, id: "blood5", duration: "1-2 ساعات" },
+                        { name: "تخثر الدم", price: 50, id: "blood6", duration: "1-2 ساعات" }
+                    ],
+                    "بول": [
+                        { name: "تحليل بول كامل", price: 30, id: "urine1", duration: "1 ساعة" },
+                        { name: "زراعة بول", price: 55, id: "urine2", duration: "2-3 أيام" }
+                    ],
+                    "هرمونات": [
+                        { name: "هرمون الغدة الدرقية", price: 55, id: "hormone1", duration: "1-2 ساعات" },
+                        { name: "هرمون النمو", price: 75, id: "hormone2", duration: "1-2 ساعات" },
+                        { name: "هرمونات الغدة الكظرية", price: 70, id: "hormone3", duration: "1-2 ساعات" },
+                        { name: "هرمونات الخصوبة", price: 90, id: "hormone4", duration: "1-2 ساعات" }
+                    ],
+                    "كيمياء": [
+                        { name: "الكيمياء الحيوية الشاملة", price: 100, id: "chem1", duration: "2-3 ساعات" },
+                        { name: "أملاح الدم", price: 35, id: "chem2", duration: "1-2 ساعات" },
+                        { name: "فيتامين د", price: 65, id: "chem3", duration: "1-2 ساعات" },
+                        { name: "فيتامين ب12", price: 60, id: "chem4", duration: "1-2 ساعات" },
+                        { name: "حموضة الدم", price: 45, id: "chem5", duration: "1-2 ساعات" }
+                    ]
+                },
+                ratings: {
+                    overall: 4.8,
+                    breakdown: {
+                        "الدقة": 4.9,
+                        "السرعة": 4.7,
+                        "النظافة": 4.8,
+                        "الخدمة": 4.8
+                    }
+                }
+            }
+        ];
+    }
+
+    loadAppointments() {
+        const savedAppointments = localStorage.getItem('lab_appointments_bookings');
+        this.appointments = savedAppointments ? JSON.parse(savedAppointments) : [];
+    }
+
+    loadInvoices() {
+        const savedInvoices = localStorage.getItem('lab_appointments_invoices');
+        this.invoices = savedInvoices ? JSON.parse(savedInvoices) : [];
+    }
+
+    loadRatings() {
+        const savedRatings = localStorage.getItem('lab_appointments_ratings');
+        this.ratings = savedRatings ? JSON.parse(savedRatings) : [];
+    }
+
+    saveLabs() {
+        localStorage.setItem('lab_appointments_labs', JSON.stringify(this.labs));
+    }
+
+    saveAppointments() {
+        localStorage.setItem('lab_appointments_bookings', JSON.stringify(this.appointments));
+    }
+
+    saveInvoices() {
+        localStorage.setItem('lab_appointments_invoices', JSON.stringify(this.invoices));
+    }
+
+    saveRatings() {
+        localStorage.setItem('lab_appointments_ratings', JSON.stringify(this.ratings));
+    }
+
+    setupEventListeners() {
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.searchLabs(e.target.value);
+        });
+
+        // التصفية
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            this.showFilterModal();
+        });
+
+        // تغيير طريقة العرض
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.changeView(e.target.closest('.view-btn').dataset.view);
+            });
+        });
+
+        // زر الحجز السريع
+        document.getElementById('quickBookingBtn').addEventListener('click', () => {
+            this.showQuickBooking();
+        });
+
+        // سجل المواعيد
+        document.getElementById('appointmentsHistoryBtn').addEventListener('click', () => {
+            this.showAppointmentsHistory();
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // تحديث الوقت
+        setInterval(() => this.updateTime(), 60000);
+
+        // شريط الإعلانات
+        document.querySelectorAll('.ad-indicator').forEach(indicator => {
+            indicator.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.showAdSlide(index);
+            });
+        });
+
+        // التمرير في شريط آخر المختبرات
+        document.getElementById('scrollLeft').addEventListener('click', () => {
+            this.scrollLatestLabs('left');
+        });
+
+        document.getElementById('scrollRight').addEventListener('click', () => {
+            this.scrollLatestLabs('right');
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    startAdSlider() {
+        this.adSlideInterval = setInterval(() => {
+            this.nextAdSlide();
+        }, 3000);
+    }
+
+    nextAdSlide() {
+        this.adSlideIndex = (this.adSlideIndex + 1) % 3;
+        this.showAdSlide(this.adSlideIndex);
+    }
+
+    showAdSlide(index) {
+        this.adSlideIndex = index;
+        
+        // إخفاء جميع الشرائح
+        document.querySelectorAll('.ad-slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // إظهار الشريحة المحددة
+        document.querySelectorAll('.ad-slide')[index].classList.add('active');
+        
+        // تحديث المؤشرات
+        document.querySelectorAll('.ad-indicator').forEach((indicator, i) => {
+            if (i === index) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+    }
+
+    renderCategories() {
+        const categoriesScroll = document.getElementById('categoriesScroll');
+        const categories = [...new Set(this.labs.map(l => l.type))];
+        
+        let categoriesHTML = `
+            <div class="category-chip active" data-category="all">
+                <i class="fas fa-th-large"></i>
+                الكل
+            </div>
+        `;
+
+        categories.forEach(category => {
+            const labCount = this.labs.filter(l => l.type === category).length;
+            categoriesHTML += `
+                <div class="category-chip" data-category="${category}">
+                    <i class="fas fa-flask"></i>
+                    ${category} (${labCount})
+                </div>
+            `;
+        });
+
+        categoriesScroll.innerHTML = categoriesHTML;
+
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                this.filterByCategory(chip.dataset.category);
+            });
+        });
+    }
+
+    renderLatestLabs() {
+        const latestScroll = document.getElementById('latestDoctorsScroll');
+        
+        let latestHTML = '';
+        
+        this.latestLabs.forEach(lab => {
+            latestHTML += `
+                <div class="latest-doctor-card" onclick="labAppointmentSystem.showLabDetails(${lab.id})">
+                    ${lab.badge ? `<div class="latest-doctor-badge">${lab.badge}</div>` : ''}
+                    <div class="latest-doctor-avatar">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="latest-doctor-name">${lab.name}</div>
+                    <div class="latest-doctor-specialty">${lab.type}</div>
+                    <div class="latest-doctor-price">${lab.fee} ر.ي</div>
+                </div>
+            `;
+        });
+
+        latestScroll.innerHTML = latestHTML;
+    }
+
+    scrollLatestLabs(direction) {
+        const scrollContainer = document.getElementById('latestDoctorsScroll');
+        const scrollAmount = 140;
+        
+        if (direction === 'left') {
+            scrollContainer.scrollLeft -= scrollAmount;
+        } else {
+            scrollContainer.scrollLeft += scrollAmount;
+        }
+    }
+
+    filterByCategory(category) {
+        if (category === 'all') {
+            this.filteredLabs = [...this.labs];
+        } else {
+            this.filteredLabs = this.labs.filter(lab => lab.type === category);
+        }
+        this.applyFilters();
+    }
+
+    searchLabs(query) {
+        const searchTerm = query.toLowerCase();
+        if (searchTerm.trim() === '') {
+            this.filteredLabs = [...this.labs];
+        } else {
+            this.filteredLabs = this.labs.filter(lab => 
+                lab.name.toLowerCase().includes(searchTerm) ||
+                lab.type.toLowerCase().includes(searchTerm) ||
+                lab.location.toLowerCase().includes(searchTerm)
+            );
+        }
+        this.applyFilters();
+        this.renderLabs();
+    }
+
+    applyFilters() {
+        let filtered = this.filteredLabs;
+
+        // تصفية حسب نوع الفحص
+        if (this.filters.testType.length > 0) {
+            filtered = filtered.filter(lab => {
+                return this.filters.testType.some(testType => 
+                    lab.tests[testType] && lab.tests[testType].length > 0
+                );
+            });
+        }
+
+        // تصفية حسب المكان
+        if (this.filters.location.length > 0) {
+            filtered = filtered.filter(lab => this.filters.location.includes(lab.location));
+        }
+
+        // تصفية حسب السعر
+        filtered = filtered.filter(lab => lab.fee <= this.filters.maxPrice);
+
+        this.filteredLabs = filtered;
+        this.renderLabs();
+    }
+
+    renderLabs() {
+        const container = document.getElementById('doctorsContainer');
+        const viewClass = this.currentView === 'list' ? 'list-view' : '';
+        
+        container.className = `doctors-container ${viewClass}`;
+        
+        let labsHTML = '';
+
+        this.filteredLabs.forEach(lab => {
+            const isAvailable = lab.available;
+            labsHTML += `
+                <div class="doctor-card ${viewClass}" onclick="labAppointmentSystem.showLabDetails(${lab.id})">
+                    ${lab.badge ? `<div class="doctor-badge">${lab.badge}</div>` : ''}
+                    <div class="doctor-header">
+                        <div class="doctor-avatar">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                    </div>
+                    <div class="doctor-info">
+                        <div class="doctor-name">${lab.name}</div>
+                        <div class="doctor-specialty">${lab.type}</div>
+                        <div class="doctor-rating">
+                            <i class="fas fa-star"></i>
+                            <span>${lab.rating}</span>
+                            <span>(${lab.reviewCount})</span>
+                        </div>
+                        <div class="doctor-meta">
+                            <div class="doctor-price">${lab.fee} ر.ي</div>
+                            <div class="doctor-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${lab.location}
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="event.stopPropagation(); labAppointmentSystem.showTestsModal(${lab.id})" ${!isAvailable ? 'disabled' : ''}>
+                            <i class="fas fa-calendar-plus"></i>
+                            ${isAvailable ? 'حجز موعد' : 'غير متاح'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = labsHTML;
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-view="${view}"]`).classList.add('active');
+        this.renderLabs();
+    }
+
+    showLabDetails(labId) {
+        const lab = this.labs.find(l => l.id === labId);
+        if (!lab) return;
+
+        this.currentLab = lab;
+        const modal = document.getElementById('labModal');
+        
+        document.getElementById('labModalTitle').textContent = `تفاصيل المختبر - ${lab.name}`;
+        
+        // توليد الفحوصات
+        const testsHTML = Object.entries(lab.tests).map(([type, tests]) => `
+            <div class="service-item">
+                <span class="service-name">${type}</span>
+                <span class="service-price">${tests.length} فحص</span>
+            </div>
+        `).join('');
+        
+        const modalBody = document.getElementById('labModalBody');
+        modalBody.innerHTML = `
+            <div class="doctor-detail">
+                <div class="doctor-detail-grid">
+                    <!-- البطاقة الأولى: الملف الشخصي -->
+                    <div class="doctor-profile-card">
+                        <div class="doctor-avatar-large">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="doctor-name-large">${lab.name}</div>
+                        <div class="doctor-specialty-large">${lab.type}</div>
+                        <div class="rating-section">
+                            <div class="doctor-rating-large">
+                                <i class="fas fa-star"></i>
+                                <span>${lab.rating} (${lab.reviewCount} تقييم)</span>
+                            </div>
+                            <button class="rating-btn" onclick="labAppointmentSystem.showRatingModal(${lab.id})">
+                                <i class="fas fa-star"></i>
+                                تقييم
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- البطاقة الثانية: المواعيد والسعر -->
+                    <div class="schedule-card">
+                        <div class="schedule-title">أوقات العمل</div>
+                        <div class="available-times-grid">
+                            ${Object.entries(lab.schedule).map(([day, times]) => `
+                                <div class="time-slot">
+                                    <div>${day}</div>
+                                    <div>${times.join('، ')}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="booking-info">
+                            <div class="fee-amount">${lab.fee} ر.ي</div>
+                            <div class="booking-action">
+                                <button class="btn-primary btn-small" onclick="labAppointmentSystem.showTestsModal(${lab.id})" ${!lab.available ? 'disabled' : ''}>
+                                    <i class="fas fa-calendar-plus"></i>
+                                    حجز موعد
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- البطاقة الثالثة: الفحوصات -->
+                    <div class="services-card">
+                        <div class="schedule-title">الفحوصات المتاحة</div>
+                        <div class="services-list">
+                            ${testsHTML}
+                        </div>
+                    </div>
+
+                    <!-- البطاقة الرابعة: النبذة -->
+                    <div class="bio-card">
+                        <div class="schedule-title">نبذة عن المختبر</div>
+                        <div class="bio-content">
+                            <p>${lab.bio}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    showTestsModal(labId) {
+        const lab = this.labs.find(l => l.id === labId);
+        if (!lab || !lab.available) return;
+
+        this.currentLab = lab;
+        this.selectedTests = [];
+        this.selectedTestType = 'دم';
+        
+        const modal = document.getElementById('testsModal');
+        document.getElementById('testsModalTitle').textContent = `اختيار الفحوصات - ${lab.name}`;
+
+        const modalBody = document.getElementById('testsModalBody');
+        modalBody.innerHTML = `
+            <div class="test-selection">
+                <div class="test-type-selection">
+                    <h3>نوع الفحص</h3>
+                    <div class="test-type-buttons">
+                        <button class="test-type-btn active" data-type="دم">فحوصات الدم</button>
+                        <button class="test-type-btn" data-type="بول">فحوصات البول</button>
+                        <button class="test-type-btn" data-type="هرمونات">الهرمونات</button>
+                        <button class="test-type-btn" data-type="كيمياء">الكيمياء الحيوية</button>
+                    </div>
+                    <div class="test-checkboxes" id="testCheckboxes">
+                        ${this.renderTestCheckboxes('دم')}
+                    </div>
+                </div>
+
+                <div class="test-summary">
+                    <h3>الفحوصات المختارة</h3>
+                    <div class="selected-tests-list" id="selectedTestsList">
+                        ${this.renderSelectedTests()}
+                    </div>
+                    <div class="total-amount">
+                        <span>المجموع:</span>
+                        <span id="totalAmount">0 ر.ي</span>
+                    </div>
+                </div>
+
+                <div class="booking-action" style="margin-top: 20px;">
+                    <button class="btn-primary" onclick="labAppointmentSystem.proceedToBooking()">
+                        <i class="fas fa-arrow-left"></i>
+                        المتابعة للحجز
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // إضافة أحداث لأزرار نوع الفحص
+        document.querySelectorAll('.test-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.test-type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.selectedTestType = btn.dataset.type;
+                this.updateTestCheckboxes();
+            });
+        });
+
+        // إضافة أحداث لخانات الاختيار
+        this.setupTestCheckboxEvents();
+
+        modal.style.display = 'block';
+    }
+
+    renderTestCheckboxes(testType) {
+        const tests = this.currentLab.tests[testType] || [];
+        return tests.map(test => `
+            <div class="test-checkbox" data-test-id="${test.id}">
+                <div class="test-checkbox-info">
+                    <input type="checkbox" id="test_${test.id}" value="${test.id}">
+                    <label for="test_${test.id}" class="test-checkbox-name">${test.name}</label>
+                </div>
+                <div class="test-checkbox-price">${test.price} ر.ي</div>
+            </div>
+        `).join('');
+    }
+
+    setupTestCheckboxEvents() {
+        document.querySelectorAll('.test-checkbox input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const testId = e.target.value;
+                const test = this.findTestById(testId);
+                
+                if (e.target.checked) {
+                    this.selectedTests.push(test);
+                } else {
+                    this.selectedTests = this.selectedTests.filter(t => t.id !== testId);
+                }
+                
+                this.updateSelectedTests();
+                this.updateTotalAmount();
+            });
+        });
+    }
+
+    findTestById(testId) {
+        for (const type in this.currentLab.tests) {
+            const test = this.currentLab.tests[type].find(t => t.id === testId);
+            if (test) return test;
+        }
+        return null;
+    }
+
+    updateTestCheckboxes() {
+        const checkboxesContainer = document.getElementById('testCheckboxes');
+        checkboxesContainer.innerHTML = this.renderTestCheckboxes(this.selectedTestType);
+        this.setupTestCheckboxEvents();
+    }
+
+    renderSelectedTests() {
+        if (this.selectedTests.length === 0) {
+            return '<p style="text-align: center; color: var(--text-secondary);">لم يتم اختيار أي فحوصات</p>';
+        }
+
+        return this.selectedTests.map(test => `
+            <div class="selected-test-item">
+                <span>${test.name}</span>
+                <span>${test.price} ر.ي</span>
+            </div>
+        `).join('');
+    }
+
+    updateSelectedTests() {
+        const selectedTestsList = document.getElementById('selectedTestsList');
+        selectedTestsList.innerHTML = this.renderSelectedTests();
+    }
+
+    updateTotalAmount() {
+        const totalAmount = this.selectedTests.reduce((sum, test) => sum + test.price, 0);
+        document.getElementById('totalAmount').textContent = `${totalAmount} ر.ي`;
+    }
+
+    proceedToBooking() {
+        if (this.selectedTests.length === 0) {
+            alert('يرجى اختيار فحص واحد على الأقل');
+            return;
+        }
+
+        document.getElementById('testsModal').style.display = 'none';
+        this.showBookingModal();
+    }
+
+    showBookingModal() {
+        const modal = document.getElementById('bookingModal');
+        document.getElementById('bookingModalTitle').textContent = `حجز موعد في ${this.currentLab.name}`;
+
+        const totalAmount = this.selectedTests.reduce((sum, test) => sum + test.price, 0);
+        
+        const modalBody = document.getElementById('bookingModalBody');
+        modalBody.innerHTML = `
+            <div class="booking-form">
+                <div class="form-group">
+                    <label class="form-label">المختبر</label>
+                    <div style="background: var(--bg-light); padding: 10px 14px; border-radius: var(--radius-md);">
+                        <strong>${this.currentLab.name}</strong> - ${this.currentLab.type}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الفحوصات المختارة</label>
+                    <div style="background: var(--bg-light); padding: 10px 14px; border-radius: var(--radius-md);">
+                        ${this.selectedTests.map(test => `
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>${test.name}</span>
+                                <span>${test.price} ر.ي</span>
+                            </div>
+                        `).join('')}
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-weight: bold; border-top: 1px solid #ddd; padding-top: 5px;">
+                            <span>المجموع:</span>
+                            <span>${totalAmount} ر.ي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تاريخ الموعد</label>
+                    <input type="date" class="form-input" id="appointmentDate" min="${new Date().toISOString().split('T')[0]}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الوقت</label>
+                    <div class="available-times-grid" id="availableTimes">
+                        ${this.generateAvailableTimes()}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                    <textarea class="form-textarea" id="appointmentNotes" placeholder="أي معلومات إضافية تريد إضافتها..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">طريقة الدفع</label>
+                    <select class="form-select" id="paymentMethod">
+                        <option value="نقدي">نقدي في المختبر</option>
+                        <option value="بطاقة">بطاقة ائتمان</option>
+                        <option value="تحويل">تحويل بنكي</option>
+                        <option value="محفظة">المحفظة الإلكترونية</option>
+                    </select>
+                </div>
+
+                <div class="booking-info">
+                    <div class="fee-amount">${totalAmount} ر.ي</div>
+                    <div class="booking-action">
+                        <button class="btn-primary" onclick="labAppointmentSystem.confirmBooking()">
+                            <i class="fas fa-check-circle"></i>
+                            تأكيد الحجز
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // إضافة أحداث للأوقات
+        setTimeout(() => {
+            document.querySelectorAll('.time-slot:not(.unavailable)').forEach(slot => {
+                slot.addEventListener('click', () => {
+                    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                    slot.classList.add('selected');
+                });
+            });
+        }, 100);
+
+        modal.style.display = 'block';
+    }
+
+    generateAvailableTimes() {
+        const times = [];
+        for (let hour = 8; hour <= 18; hour++) {
+            if (hour === 12) continue;
+            const time = `${hour}:00`;
+            const isAvailable = Math.random() > 0.3;
+            times.push(`
+                <div class="time-slot ${isAvailable ? '' : 'unavailable'}" data-time="${time}">
+                    ${time}
+                </div>
+            `);
+        }
+        return times.join('');
+    }
+
+    confirmBooking() {
+        const date = document.getElementById('appointmentDate').value;
+        const selectedTime = document.querySelector('.time-slot.selected');
+        const notes = document.getElementById('appointmentNotes').value;
+        const paymentMethod = document.getElementById('paymentMethod').value;
+
+        if (!date || !selectedTime) {
+            alert('يرجى اختيار التاريخ والوقت للموعد');
+            return;
+        }
+
+        const totalAmount = this.selectedTests.reduce((sum, test) => sum + test.price, 0);
+
+        // إذا كانت طريقة الدفع بالمحفظة الإلكترونية
+        if (paymentMethod === 'محفظة') {
+            this.showPaymentModal(this.currentLab, totalAmount);
+        } else {
+            // طرق الدفع الأخرى
+            const appointment = {
+                id: Date.now(),
+                labId: this.currentLab.id,
+                labName: this.currentLab.name,
+                labType: this.currentLab.type,
+                date: date,
+                time: selectedTime.dataset.time,
+                tests: [...this.selectedTests],
+                notes: notes,
+                status: 'confirmed',
+                paymentMethod: paymentMethod,
+                totalAmount: totalAmount,
+                createdAt: new Date().toISOString()
+            };
+
+            this.appointments.push(appointment);
+            this.saveAppointments();
+
+            // إنشاء الفاتورة
+            this.generateInvoice(appointment);
+
+            alert('تم حجز الموعد بنجاح! سيتم إرسال تأكيد إلى بريدك الإلكتروني.');
+            document.getElementById('bookingModal').style.display = 'none';
+            
+            // عرض الفاتورة
+            this.showInvoice(appointment.id);
+        }
+    }
+
+    generateInvoice(appointment) {
+        const invoice = {
+            id: `INV-${Date.now()}`,
+            appointmentId: appointment.id,
+            labName: appointment.labName,
+            patientName: "محمد أحمد",
+            patientId: "PAT-001",
+            date: new Date().toISOString(),
+            items: appointment.tests.map(test => ({
+                description: `${test.name} - ${appointment.labName}`,
+                amount: test.price
+            })),
+            total: appointment.totalAmount,
+            status: appointment.paymentMethod === 'المحفظة الإلكترونية' ? 'paid' : 'pending',
+            paymentMethod: appointment.paymentMethod,
+            transactionId: appointment.transactionId || null
+        };
+
+        this.invoices.push(invoice);
+        this.saveInvoices();
+        return invoice;
+    }
+
+    showInvoice(appointmentId) {
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        const invoice = this.invoices.find(i => i.appointmentId === appointmentId);
+
+        if (!appointment || !invoice) return;
+
+        const modal = document.getElementById('invoiceModal');
+        document.getElementById('invoiceModalTitle').textContent = `فاتورة الحجز - ${invoice.id}`;
+
+        const modalBody = document.getElementById('invoiceModalBody');
+        modalBody.innerHTML = `
+            <div class="invoice-details">
+                <div class="invoice-header">
+                    <div class="invoice-brand">
+                        <div class="invoice-logo">
+                            <div style="width: 100%; height: 100%; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">M24</div>
+                        </div>
+                        <div class="invoice-brand-text">
+                            <div class="invoice-app-name">M24</div>
+                            <div class="invoice-doctor-name">${invoice.labName}</div>
+                        </div>
+                    </div>
+                    <div class="invoice-meta">
+                        <div class="invoice-number">رقم الفاتورة: ${invoice.id}</div>
+                        <div class="invoice-date">التاريخ: ${new Date(invoice.date).toLocaleDateString('ar-EG')}</div>
+                    </div>
+                </div>
+
+                <div class="invoice-body">
+                    <div class="invoice-section">
+                        <h3>معلومات المختبر</h3>
+                        <div class="invoice-info-grid">
+                            <div>
+                                <p><strong>الاسم:</strong> ${invoice.labName}</p>
+                                <p><strong>النوع:</strong> ${appointment.labType}</p>
+                            </div>
+                            <div>
+                                <p><strong>العنوان:</strong> ${this.currentLab.address}</p>
+                                <p><strong>الهاتف:</strong> 0123456789</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invoice-section">
+                        <h3>معلومات المريض</h3>
+                        <div class="invoice-info-grid">
+                            <div>
+                                <p><strong>الاسم:</strong> ${invoice.patientName}</p>
+                                <p><strong>رقم المريض:</strong> ${invoice.patientId}</p>
+                            </div>
+                            <div>
+                                <p><strong>البريد الإلكتروني:</strong> patient@example.com</p>
+                                <p><strong>الهاتف:</strong> 0551234567</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invoice-section">
+                        <h3>تفاصيل الموعد</h3>
+                        <table class="invoice-items">
+                            <thead>
+                                <tr>
+                                    <th>الوصف</th>
+                                    <th>المبلغ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${invoice.items.map(item => `
+                                    <tr>
+                                        <td>${item.description}</td>
+                                        <td>${item.amount} ر.ي</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="invoice-total">
+                        <div class="total-row">
+                            <span>المجموع:</span>
+                            <span>${invoice.total} ر.ي</span>
+                        </div>
+                        <div class="total-row">
+                            <span>الضريبة:</span>
+                            <span>0 ر.ي</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>الإجمالي النهائي:</span>
+                            <span>${invoice.total} ر.ي</span>
+                        </div>
+                    </div>
+
+                    <div class="invoice-section">
+                        <h3>بيانات الدفع</h3>
+                        <div class="invoice-info-grid">
+                            <div>
+                                <p><strong>طريقة الدفع:</strong> ${invoice.paymentMethod}</p>
+                                <p><strong>حالة الدفع:</strong> 
+                                    <span style="color: ${invoice.status === 'paid' ? 'var(--success)' : 'var(--warning)'};">
+                                        ${invoice.status === 'paid' ? 'مدفوع' : 'بانتظار الدفع'}
+                                    </span>
+                                </p>
+                            </div>
+                            <div>
+                                <p><strong>تاريخ الحجز:</strong> ${new Date(invoice.date).toLocaleDateString('ar-EG')}</p>
+                                ${invoice.transactionId ? `
+                                    <p><strong>رقم المرجع:</strong> ${invoice.transactionId}</p>
+                                ` : `
+                                    <p><strong>رقم المرجع:</strong> REF-${Date.now()}</p>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invoice-actions">
+                        <button class="btn-secondary" onclick="labAppointmentSystem.printInvoice('${invoice.id}')">
+                            <i class="fas fa-print"></i>
+                            طباعة الفاتورة
+                        </button>
+                        <button class="btn-primary" onclick="labAppointmentSystem.downloadInvoice('${invoice.id}')">
+                            <i class="fas fa-download"></i>
+                            تحميل PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    showRatingModal(labId) {
+        const lab = this.labs.find(l => l.id === labId);
+        if (!lab) return;
+
+        this.currentLab = lab;
+        const modal = document.getElementById('ratingModal');
+        
+        document.getElementById('ratingModalTitle').textContent = `تقييم المختبر - ${lab.name}`;
+        
+        const modalBody = document.getElementById('ratingModalBody');
+        modalBody.innerHTML = `
+            <div class="rating-form">
+                <div class="rating-stars" id="ratingStars">
+                    <i class="fas fa-star rating-star" data-rating="1"></i>
+                    <i class="fas fa-star rating-star" data-rating="2"></i>
+                    <i class="fas fa-star rating-star" data-rating="3"></i>
+                    <i class="fas fa-star rating-star" data-rating="4"></i>
+                    <i class="fas fa-star rating-star" data-rating="5"></i>
+                </div>
+
+                <div class="rating-criteria">
+                    <h3>التقييم التفصيلي</h3>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">الدقة</div>
+                        <div class="criterion-stars" data-criterion="الدقة">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">السرعة</div>
+                        <div class="criterion-stars" data-criterion="السرعة">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">النظافة</div>
+                        <div class="criterion-stars" data-criterion="النظافة">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">الخدمة</div>
+                        <div class="criterion-stars" data-criterion="الخدمة">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تعليقك (اختياري)</label>
+                    <textarea class="form-textarea" id="ratingComment" placeholder="شاركنا تجربتك مع المختبر..."></textarea>
+                </div>
+
+                <button class="btn-primary" onclick="labAppointmentSystem.submitRating()">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال التقييم
+                </button>
+            </div>
+        `;
+
+        // إضافة أحداث النجوم
+        setTimeout(() => {
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.dataset.rating);
+                    this.setRatingStars(rating);
+                });
+            });
+
+            document.querySelectorAll('.criterion-stars .criterion-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const criterion = star.closest('.criterion-stars').dataset.criterion;
+                    const rating = parseInt(star.dataset.rating);
+                    this.setCriterionStars(criterion, rating);
+                });
+            });
+        }, 100);
+
+        modal.style.display = 'block';
+    }
+
+    setRatingStars(rating) {
+        this.currentRating = rating;
+        document.querySelectorAll('.rating-star').forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    setCriterionStars(criterion, rating) {
+        const stars = document.querySelectorAll(`[data-criterion="${criterion}"] .criterion-star`);
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    submitRating() {
+        if (this.currentRating === 0) {
+            alert('يرجى اختيار تقييم عام للمختبر');
+            return;
+        }
+
+        const comment = document.getElementById('ratingComment').value;
+        
+        // جمع تقييمات المعايير
+        const criteriaRatings = {};
+        document.querySelectorAll('.criterion-stars').forEach(criterionStars => {
+            const criterion = criterionStars.dataset.criterion;
+            const activeStars = criterionStars.querySelectorAll('.criterion-star.active').length;
+            criteriaRatings[criterion] = activeStars;
+        });
+
+        const rating = {
+            id: Date.now(),
+            labId: this.currentLab.id,
+            labName: this.currentLab.name,
+            rating: this.currentRating,
+            criteriaRatings: criteriaRatings,
+            comment: comment,
+            date: new Date().toISOString(),
+            patientName: "محمد أحمد"
+        };
+
+        this.ratings.push(rating);
+        this.saveRatings();
+
+        // تحديث تقييم المختبر
+        this.updateLabRating(this.currentLab.id);
+
+        alert('شكراً لك! تم إرسال تقييمك بنجاح.');
+        document.getElementById('ratingModal').style.display = 'none';
+    }
+
+    updateLabRating(labId) {
+        const lab = this.labs.find(l => l.id === labId);
+        if (!lab) return;
+
+        const labRatings = this.ratings.filter(r => r.labId === labId);
+        
+        if (labRatings.length === 0) return;
+
+        // حساب التقييم العام
+        const overallRating = labRatings.reduce((sum, r) => sum + r.rating, 0) / labRatings.length;
+        
+        // حساب تقييمات المعايير
+        const criteriaRatings = {};
+        const criteriaCount = {};
+        
+        labRatings.forEach(rating => {
+            Object.entries(rating.criteriaRatings).forEach(([criterion, value]) => {
+                if (!criteriaRatings[criterion]) {
+                    criteriaRatings[criterion] = 0;
+                    criteriaCount[criterion] = 0;
+                }
+                criteriaRatings[criterion] += value;
+                criteriaCount[criterion]++;
+            });
+        });
+
+        Object.keys(criteriaRatings).forEach(criterion => {
+            criteriaRatings[criterion] = criteriaRatings[criterion] / criteriaCount[criterion];
+        });
+
+        // تحديث بيانات المختبر
+        lab.rating = Math.round(overallRating * 10) / 10;
+        lab.reviewCount = labRatings.length;
+        lab.ratings = {
+            overall: lab.rating,
+            breakdown: criteriaRatings
+        };
+
+        this.saveLabs();
+    }
+
+    printInvoice(invoiceId) {
+        const invoice = this.invoices.find(i => i.id === invoiceId);
+        if (invoice) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html dir="rtl">
+                <head>
+                    <title>طباعة فاتورة ${invoice.id}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; font-size: 14px; }
+                        .invoice-header { text-align: center; margin-bottom: 30px; }
+                        .invoice-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+                        .invoice-items { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+                        .invoice-items th, .invoice-items td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+                        .invoice-total { background: #f5f5f5; padding: 15px; border-radius: 5px; }
+                        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+                        .total-row.final { font-weight: bold; font-size: 16px; border-top: 2px solid #ccc; padding-top: 8px; margin-top: 8px; }
+                        @media print {
+                            body { margin: 0; }
+                            .invoice-header { margin-bottom: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="invoice-header">
+                        <h1>فاتورة طبية</h1>
+                        <p>رقم الفاتورة: ${invoice.id}</p>
+                        <p>التاريخ: ${new Date(invoice.date).toLocaleDateString('ar-EG')}</p>
+                    </div>
+                    <div class="invoice-info">
+                        <div>
+                            <h3>معلومات المختبر</h3>
+                            <p>الاسم: ${invoice.labName}</p>
+                        </div>
+                        <div>
+                            <h3>معلومات المريض</h3>
+                            <p>الاسم: ${invoice.patientName}</p>
+                            <p>رقم المريض: ${invoice.patientId}</p>
+                        </div>
+                    </div>
+                    <table class="invoice-items">
+                        <thead>
+                            <tr>
+                                <th>الوصف</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${invoice.items.map(item => `
+                                <tr>
+                                    <td>${item.description}</td>
+                                    <td>${item.amount} ر.ي</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="invoice-total">
+                        <div class="total-row final">
+                            <span>الإجمالي النهائي:</span>
+                            <span>${invoice.total} ر.ي</span>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    }
+
+    downloadInvoice(invoiceId) {
+        alert('جاري تحميل الفاتورة بصيغة PDF...');
+    }
+
+    showAppointmentsHistory() {
+        const modal = document.getElementById('appointmentsHistoryModal');
+        const modalBody = document.getElementById('appointmentsHistoryBody');
+
+        let appointmentsHTML = '';
+
+        if (this.appointments.length === 0) {
+            appointmentsHTML = '<p style="text-align: center; color: var(--text-secondary);">لا توجد مواعيد سابقة</p>';
+        } else {
+            this.appointments.forEach(appointment => {
+                const statusClass = {
+                    'confirmed': 'upcoming',
+                    'completed': 'completed',
+                    'cancelled': 'cancelled'
+                }[appointment.status] || 'upcoming';
+
+                const statusText = {
+                    'confirmed': 'قادم',
+                    'completed': 'مكتمل',
+                    'cancelled': 'ملغي'
+                }[appointment.status] || 'قادم';
+
+                appointmentsHTML += `
+                    <div class="appointment-item ${statusClass}">
+                        <div class="appointment-header">
+                            <div>
+                                <div class="appointment-doctor">${appointment.labName}</div>
+                                <div class="appointment-specialty">${appointment.labType}</div>
+                            </div>
+                            <div class="appointment-status status-${statusClass}">${statusText}</div>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="appointment-detail">
+                                <i class="fas fa-calendar"></i>
+                                ${appointment.date}
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-clock"></i>
+                                ${appointment.time}
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-flask"></i>
+                                ${appointment.tests.length} فحوصات
+                            </div>
+                            <div class="appointment-detail">
+                                <i class="fas fa-money-bill"></i>
+                                ${appointment.totalAmount} ر.ي
+                            </div>
+                        </div>
+                        <div class="appointment-actions">
+                            <button class="btn-secondary" onclick="labAppointmentSystem.showInvoice(${appointment.id})">
+                                <i class="fas fa-receipt"></i>
+                                الفاتورة
+                            </button>
+                            ${appointment.status === 'confirmed' ? `
+                                <button class="btn-secondary" onclick="labAppointmentSystem.cancelAppointment(${appointment.id})">
+                                    <i class="fas fa-times"></i>
+                                    إلغاء
+                                </button>
+                            ` : ''}
+                            ${appointment.status === 'completed' ? `
+                                <button class="btn-secondary" onclick="labAppointmentSystem.showRatingModal(${appointment.labId})">
+                                    <i class="fas fa-star"></i>
+                                    تقييم
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        modalBody.innerHTML = `
+            <div class="appointments-history">
+                ${appointmentsHTML}
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    cancelAppointment(appointmentId) {
+        if (confirm('هل أنت متأكد من إلغاء هذا الموعد؟')) {
+            const appointment = this.appointments.find(a => a.id === appointmentId);
+            if (appointment) {
+                appointment.status = 'cancelled';
+                this.saveAppointments();
+                this.showAppointmentsHistory();
+                alert('تم إلغاء الموعد بنجاح');
+            }
+        }
+    }
+
+    showFilterModal() {
+        const modal = document.getElementById('filterModal');
+        
+        document.getElementById('priceRange').value = this.filters.maxPrice;
+        document.getElementById('currentPrice').textContent = `${this.filters.maxPrice} ر.ي`;
+
+        document.getElementById('priceRange').addEventListener('input', (e) => {
+            document.getElementById('currentPrice').textContent = `${e.target.value} ر.ي`;
+        });
+
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            this.resetFilters();
+        });
+
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            this.applyUserFilters();
+        });
+
+        modal.style.display = 'block';
+    }
+
+    applyUserFilters() {
+        this.filters.testType = Array.from(document.querySelectorAll('#testTypeFilter input:checked'))
+            .map(input => input.value);
+
+        this.filters.location = Array.from(document.querySelectorAll('#locationFilter input:checked'))
+            .map(input => input.value);
+
+        this.filters.maxPrice = parseInt(document.getElementById('priceRange').value);
+
+        this.applyFilters();
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    resetFilters() {
+        this.filters = {
+            testType: [],
+            location: [],
+            maxPrice: 500
+        };
+        document.querySelectorAll('.filter-option input').forEach(input => input.checked = false);
+        document.getElementById('priceRange').value = 500;
+        document.getElementById('currentPrice').textContent = '500 ر.ي';
+    }
+
+    showQuickBooking() {
+        const availableLabs = this.labs.filter(l => l.available);
+        if (availableLabs.length === 0) {
+            alert('لا توجد مواعيد متاحة حالياً للحجز الفوري');
+            return;
+        }
+
+        let quickHTML = '<div class="quick-booking"><h3>الحجز الفوري</h3>';
+        availableLabs.forEach(lab => {
+            quickHTML += `
+                <div class="quick-doctor" onclick="labAppointmentSystem.showTestsModal(${lab.id})">
+                    <div class="quick-avatar">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="quick-info">
+                        <div class="quick-name">${lab.name}</div>
+                        <div class="quick-specialty">${lab.type}</div>
+                        <div class="quick-fee">${lab.fee} ر.ي</div>
+                    </div>
+                    <div class="quick-action">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            `;
+        });
+        quickHTML += '</div>';
+
+        const modalBody = document.getElementById('bookingModalBody');
+        modalBody.innerHTML = quickHTML;
+        document.getElementById('bookingModalTitle').textContent = 'الحجز الفوري';
+        document.getElementById('bookingModal').style.display = 'block';
+    }
+}
+
+// تهيئة النظام
+document.addEventListener('DOMContentLoaded', function() {
+    window.labAppointmentSystem = new LabAppointmentSystem();
+});
+</script>
+</body>
+</html>
