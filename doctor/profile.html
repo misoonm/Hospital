@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - الملف الشخصي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #1565C0;
+            --primary-light: #BBDEFB;
+            --secondary: #4CAF50;
+            --accent: #FF5252;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --info: #2196F3;
+            --bg-light: #F5F9FF;
+            --bg-surface: #ffffff;
+            --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+            --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+            --radius-xl: 30px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .ultra-app {
+            max-width: 450px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--bg-light);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+            overflow-x: hidden;
+        }
+
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .app-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .title-section h1 {
+            font-family: 'Almarai', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .title-section p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .profile-specialty {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .profile-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 16px 8px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-light);
+            transition: var(--transition-liquid);
+        }
+
+        .stat-item:hover {
+            box-shadow: var(--shadow-inset);
+            transform: scale(0.98);
+        }
+
+        .stat-value {
+            font-family: 'Almarai', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            padding: 20px;
+            padding-bottom: 120px;
+        }
+
+        .section-title {
+            font-family: 'Almarai', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 24px 0 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .info-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 16px;
+            transition: var(--transition-liquid);
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(25, 118, 210, 0.2);
+        }
+
+        .info-group {
+            margin-bottom: 16px;
+        }
+
+        .info-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .clinics-section {
+            margin-bottom: 24px;
+        }
+
+        .clinic-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 16px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .clinic-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .clinic-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .clinic-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: var(--bg-light);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .clinic-address {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .working-hours {
+            margin-top: 12px;
+        }
+
+        .hours-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .hour-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: var(--bg-light);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+        }
+
+        .day-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .hour-time {
+            color: var(--text-secondary);
+        }
+
+        .documents-section {
+            margin-bottom: 24px;
+        }
+
+        .document-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition-liquid);
+        }
+
+        .document-card:hover {
+            transform: translateX(-5px);
+        }
+
+        .document-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .document-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-verified {
+            background: #D1ECF1;
+            color: #0C5460;
+        }
+
+        .status-rejected {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .pricing-section {
+            margin-bottom: 24px;
+        }
+
+        .price-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .price-item {
+            text-align: center;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+        }
+
+        .price-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .bottom-nav-dock {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            padding: 8px 10px;
+            border-radius: var(--radius-xl);
+            z-index: 1000;
+            max-width: 360px;
+            width: calc(100% - 40px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item-dock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 0;
+            border-radius: var(--radius-md);
+            transition: var(--transition-liquid);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-item-dock.active {
+            color: var(--primary-dark);
+        }
+
+        .nav-item-dock.active .nav-icon-dock {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transform: translateY(-10px);
+            transition: var(--transition-liquid);
+        }
+
+        .nav-icon-dock {
+            font-size: 20px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 4px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-item-dock.active .nav-label {
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        /* النوافذ المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease-out;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: var(--shadow-card);
+            animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideUp {
+            from {opacity: 0; transform: translateY(100%);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition-liquid);
+            background: var(--surface);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .file-upload {
+            border: 2px dashed #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            position: relative;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .file-upload input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-icon {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .file-text {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .file-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .modal-actions {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+        }
+
+        @media (max-width: 428px) {
+            .price-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .hours-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ultra-app">
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="header-top">
+                <button class="back-btn" onclick="window.location.href='index1.html'">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="title-section">
+                    <h1>الملف الشخصي</h1>
+                    <p>إدارة بياناتك الشخصية والمهنية</p>
+                </div>
+            </div>
+
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profileName">جاري التحميل...</div>
+                    <div class="profile-specialty" id="profileSpecialty">التخصص</div>
+                    <div class="profile-rating">
+                        <i class="fas fa-star" style="color: #FFD700;"></i>
+                        <span>4.8 (124 تقييم)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalPatients">0</div>
+                <div class="stat-label">المرضى الكلي</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="successRate">0%</div>
+                <div class="stat-label">معدل النجاح</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="experience">0</div>
+                <div class="stat-label">سنوات الخبرة</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- المعلومات الشخصية -->
+            <div class="section-title">
+                <i class="fas fa-user"></i>
+                المعلومات الشخصية
+            </div>
+            <div class="info-card">
+                <div class="info-group">
+                    <div class="info-label">الاسم الرباعي</div>
+                    <div class="info-value" id="infoFullName">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">رقم الهاتف</div>
+                    <div class="info-value" id="infoPhone">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">تاريخ الميلاد</div>
+                    <div class="info-value" id="infoBirthDate">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">العنوان</div>
+                    <div class="info-value" id="infoAddress">-</div>
+                </div>
+            </div>
+
+            <!-- المعلومات المهنية -->
+            <div class="section-title">
+                <i class="fas fa-briefcase-medical"></i>
+                المعلومات المهنية
+            </div>
+            <div class="info-card">
+                <div class="info-group">
+                    <div class="info-label">التخصص</div>
+                    <div class="info-value" id="infoSpecialty">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">رقم البطاقة الشخصية</div>
+                    <div class="info-value" id="infoIdNumber">-</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">نبذة عنك</div>
+                    <div class="info-value" id="infoBio">-</div>
+                </div>
+            </div>
+
+            <!-- العيادات -->
+            <div class="section-title">
+                <i class="fas fa-clinic-medical"></i>
+                العيادات
+            </div>
+            <div class="clinics-section" id="clinicsContainer">
+                <!-- سيتم تعبئة العيادات هنا ديناميكياً -->
+            </div>
+
+            <!-- الأسعار -->
+            <div class="section-title">
+                <i class="fas fa-tags"></i>
+                الأسعار
+            </div>
+            <div class="pricing-section">
+                <div class="price-card">
+                    <div class="price-item">
+                        <div class="price-label">سعر الاستشارة الطبية</div>
+                        <div class="price-value" id="consultationPrice">0 ر.س</div>
+                    </div>
+                    <div class="price-item">
+                        <div class="price-label">سعر حجز الموعد</div>
+                        <div class="price-value" id="appointmentPrice">0 ر.س</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المستندات -->
+            <div class="section-title">
+                <i class="fas fa-file-contract"></i>
+                المستندات
+            </div>
+            <div class="documents-section" id="documentsContainer">
+                <!-- سيتم تعبئة المستندات هنا ديناميكياً -->
+            </div>
+
+            <!-- أزرار الإجراءات -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="openEditModal()">
+                    <i class="fas fa-edit"></i>
+                    تعديل البيانات
+                </button>
+                <button class="btn btn-primary" onclick="openChangePasswordModal()">
+                    <i class="fas fa-key"></i>
+                    تغيير كلمة المرور
+                </button>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index1.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="schedule.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">الجدول</div>
+            </a>
+            <a href="patients.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <div class="nav-label">المرضى</div>
+            </a>
+            <a href="consultations.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="profile.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">الملف</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل البيانات -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تعديل البيانات الشخصية</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">صورة البروفايل</label>
+                    <div class="file-upload">
+                        <input type="file" id="editProfileImage" accept="image/*">
+                        <div class="file-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="file-text">انقر لتغيير صورة البروفايل</div>
+                        <div class="file-hint">PNG, JPG - الحد الأقصى 2MB</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الاسم الرباعي الكامل</label>
+                    <input type="text" class="form-input" id="editFullName" placeholder="أدخل الاسم الرباعي الكامل">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف</label>
+                    <input type="tel" class="form-input" id="editPhone" placeholder="7XXXXXXX" pattern="[7][0-9]{8}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تاريخ الميلاد</label>
+                    <input type="date" class="form-input" id="editBirthDate">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">العنوان</label>
+                    <input type="text" class="form-input" id="editAddress" placeholder="أدخل العنوان الكامل">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">التخصص</label>
+                    <select class="form-input" id="editSpecialty">
+                        <option value="">اختر التخصص</option>
+                        <option value="مسالك">مسالك</option>
+                        <option value="باطنية">باطنية</option>
+                        <option value="أطفال">أطفال</option>
+                        <option value="جراحة">جراحة</option>
+                        <option value="نساء وتوليد">نساء وتوليد</option>
+                        <option value="عظام">عظام</option>
+                        <option value="قلب">قلب</option>
+                        <option value="أعصاب">أعصاب</option>
+                        <option value="جلدية">جلدية</option>
+                        <option value="أنف وأذن وحنجرة">أنف وأذن وحنجرة</option>
+                        <option value="عيون">عيون</option>
+                        <option value="نفسية">نفسية</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">نبذة عنك</label>
+                    <textarea class="form-input" id="editBio" placeholder="أدخل نبذة مختصرة عنك وخبراتك" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">سعر الاستشارة الطبية (ريال)</label>
+                    <input type="number" class="form-input" id="editConsultationPrice" placeholder="مثال: 100" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">سعر حجز الموعد (ريال)</label>
+                    <input type="number" class="form-input" id="editAppointmentPrice" placeholder="مثال: 50" min="0">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeEditModal()">إلغاء</button>
+                    <button class="btn btn-primary" onclick="saveProfileChanges()">حفظ التغييرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تغيير كلمة المرور -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تغيير كلمة المرور</h2>
+                <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الحالية</label>
+                    <input type="password" class="form-input" id="currentPassword" placeholder="أدخل كلمة المرور الحالية">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الجديدة</label>
+                    <input type="password" class="form-input" id="newPassword" placeholder="أنشئ كلمة مرور قوية">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                    <input type="password" class="form-input" id="confirmNewPassword" placeholder="أعد إدخال كلمة المرور الجديدة">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeChangePasswordModal()">إلغاء</button>
+                    <button class="btn btn-primary" onclick="changePassword()">تغيير كلمة المرور</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التحقق من وجود حساب طبيب مسجل
+        function checkDoctorAuthentication() {
+            const currentDoctor = localStorage.getItem('currentDoctor');
+            
+            if (!currentDoctor) {
+                window.location.href = 'doctor-register.html';
+                return null;
+            }
+            
+            return JSON.parse(currentDoctor);
+        }
+
+        // تحميل بيانات الطبيب
+        let currentDoctor = null;
+
+        function loadDoctorData() {
+            currentDoctor = checkDoctorAuthentication();
+            if (!currentDoctor) return;
+
+            // تحديث البيانات الشخصية
+            document.getElementById('profileName').textContent = `د. ${currentDoctor.fullName}`;
+            document.getElementById('profileSpecialty').textContent = currentDoctor.specialty;
+            
+            // تحديث صورة البروفايل إذا كانت موجودة
+            if (currentDoctor.profileImage) {
+                document.getElementById('profileAvatar').innerHTML = `<img src="${currentDoctor.profileImage}" alt="صورة البروفايل">`;
+            }
+
+            // تحديث الإحصائيات
+            document.getElementById('totalPatients').textContent = Math.floor(Math.random() * 500) + 100;
+            document.getElementById('successRate').textContent = '96%';
+            document.getElementById('experience').textContent = Math.floor(Math.random() * 20) + 5;
+
+            // تحديث المعلومات الشخصية
+            document.getElementById('infoFullName').textContent = currentDoctor.fullName;
+            document.getElementById('infoPhone').textContent = currentDoctor.phone;
+            document.getElementById('infoBirthDate').textContent = currentDoctor.birthDate || 'غير محدد';
+            document.getElementById('infoAddress').textContent = currentDoctor.address;
+            document.getElementById('infoSpecialty').textContent = currentDoctor.specialty;
+            document.getElementById('infoIdNumber').textContent = currentDoctor.idNumber;
+            document.getElementById('infoBio').textContent = currentDoctor.bio || 'لا توجد نبذة';
+
+            // تحديث الأسعار
+            document.getElementById('consultationPrice').textContent = `${currentDoctor.consultationPrice} ر.س`;
+            document.getElementById('appointmentPrice').textContent = `${currentDoctor.appointmentPrice} ر.س`;
+
+            // تحديث العيادات
+            loadClinics();
+
+            // تحديث المستندات
+            loadDocuments();
+        }
+
+        // تحميل بيانات العيادات
+        function loadClinics() {
+            const clinicsContainer = document.getElementById('clinicsContainer');
+            clinicsContainer.innerHTML = '';
+
+            if (!currentDoctor.clinics || currentDoctor.clinics.length === 0) {
+                clinicsContainer.innerHTML = '<div class="info-card">لا توجد عيادات مسجلة</div>';
+                return;
+            }
+
+            currentDoctor.clinics.forEach((clinic, index) => {
+                const clinicCard = document.createElement('div');
+                clinicCard.className = 'clinic-card';
+                
+                let hoursHTML = '';
+                if (clinic.workingHours) {
+                    Object.entries(clinic.workingHours).forEach(([day, hours]) => {
+                        if (hours.from && hours.to) {
+                            hoursHTML += `
+                                <div class="hour-item">
+                                    <span class="day-name">${day}</span>
+                                    <span class="hour-time">${hours.from} - ${hours.to}</span>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+
+                clinicCard.innerHTML = `
+                    <div class="clinic-header">
+                        <div class="clinic-name">${clinic.name}</div>
+                        <div class="clinic-actions">
+                            <button class="action-btn" onclick="editClinic(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" onclick="deleteClinic(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="clinic-address">${clinic.address}</div>
+                    ${hoursHTML ? `
+                    <div class="working-hours">
+                        <div class="hours-title">أوقات الدوام:</div>
+                        <div class="hours-grid">${hoursHTML}</div>
+                    </div>
+                    ` : ''}
+                `;
+
+                clinicsContainer.appendChild(clinicCard);
+            });
+        }
+
+        // تحميل بيانات المستندات
+        function loadDocuments() {
+            const documentsContainer = document.getElementById('documentsContainer');
+            documentsContainer.innerHTML = '';
+
+            const documents = [
+                { name: 'البطاقة الشخصية (الوجه الأمامي)', status: 'pending' },
+                { name: 'البطاقة الشخصية (الوجه الخلفي)', status: 'pending' },
+                { name: 'رخصة المزاولة', status: 'pending' },
+                { name: 'المؤهل العلمي', status: 'pending' },
+                { name: 'سيلفي مع البطاقة', status: 'pending' }
+            ];
+
+            documents.forEach(doc => {
+                const documentCard = document.createElement('div');
+                documentCard.className = 'document-card';
+                
+                let icon = 'fa-file';
+                if (doc.name.includes('بطاقة')) icon = 'fa-id-card';
+                else if (doc.name.includes('رخصة')) icon = 'fa-file-certificate';
+                else if (doc.name.includes('مؤهل')) icon = 'fa-graduation-cap';
+                else if (doc.name.includes('سيلفي')) icon = 'fa-camera';
+
+                documentCard.innerHTML = `
+                    <div class="document-icon">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="document-info">
+                        <div class="document-name">${doc.name}</div>
+                        <div class="document-status status-${doc.status}">
+                            ${doc.status === 'pending' ? 'قيد المراجعة' : 
+                              doc.status === 'verified' ? 'تم التحقق' : 'مرفوض'}
+                        </div>
+                    </div>
+                    <button class="action-btn" onclick="uploadDocument('${doc.name}')">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                `;
+
+                documentsContainer.appendChild(documentCard);
+            });
+        }
+
+        // فتح نافذة تعديل البيانات
+        function openEditModal() {
+            if (!currentDoctor) return;
+
+            // تعبئة الحقول بالبيانات الحالية
+            document.getElementById('editFullName').value = currentDoctor.fullName;
+            document.getElementById('editPhone').value = currentDoctor.phone;
+            document.getElementById('editBirthDate').value = currentDoctor.birthDate || '';
+            document.getElementById('editAddress').value = currentDoctor.address;
+            document.getElementById('editSpecialty').value = currentDoctor.specialty;
+            document.getElementById('editBio').value = currentDoctor.bio || '';
+            document.getElementById('editConsultationPrice').value = currentDoctor.consultationPrice;
+            document.getElementById('editAppointmentPrice').value = currentDoctor.appointmentPrice;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // إغلاق نافذة تعديل البيانات
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // حفظ التغييرات
+        function saveProfileChanges() {
+            if (!currentDoctor) return;
+
+            // جمع البيانات المحدثة
+            const updatedData = {
+                ...currentDoctor,
+                fullName: document.getElementById('editFullName').value,
+                phone: document.getElementById('editPhone').value,
+                birthDate: document.getElementById('editBirthDate').value,
+                address: document.getElementById('editAddress').value,
+                specialty: document.getElementById('editSpecialty').value,
+                bio: document.getElementById('editBio').value,
+                consultationPrice: parseInt(document.getElementById('editConsultationPrice').value),
+                appointmentPrice: parseInt(document.getElementById('editAppointmentPrice').value)
+            };
+
+            // التحقق من صحة البيانات
+            if (!updatedData.fullName || !updatedData.phone || !updatedData.address || !updatedData.specialty) {
+                alert('يرجى ملء جميع الحقول الإلزامية');
+                return;
+            }
+
+            // تحديث البيانات في localStorage
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const doctorIndex = doctors.findIndex(d => d.username === currentDoctor.username);
+            
+            if (doctorIndex !== -1) {
+                doctors[doctorIndex] = updatedData;
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+                localStorage.setItem('currentDoctor', JSON.stringify(updatedData));
+                
+                currentDoctor = updatedData;
+                loadDoctorData();
+                closeEditModal();
+                
+                alert('تم حفظ التغييرات بنجاح');
+            }
+        }
+
+        // فتح نافذة تغيير كلمة المرور
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        // إغلاق نافذة تغيير كلمة المرور
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+            // مسح الحقول
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmNewPassword').value = '';
+        }
+
+        // تغيير كلمة المرور
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmNewPassword) {
+                alert('يرجى ملء جميع الحقول');
+                return;
+            }
+
+            if (currentPassword !== currentDoctor.password) {
+                alert('كلمة المرور الحالية غير صحيحة');
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                alert('كلمة المرور الجديدة غير متطابقة');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                alert('كلمة المرور يجب أن تتكون من 8 أحرف على الأقل');
+                return;
+            }
+
+            // تحديث كلمة المرور
+            const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+            const doctorIndex = doctors.findIndex(d => d.username === currentDoctor.username);
+            
+            if (doctorIndex !== -1) {
+                doctors[doctorIndex].password = newPassword;
+                localStorage.setItem('doctors', JSON.stringify(doctors));
+                
+                // تحديث الطبيب الحالي
+                currentDoctor.password = newPassword;
+                localStorage.setItem('currentDoctor', JSON.stringify(currentDoctor));
+                
+                closeChangePasswordModal();
+                alert('تم تغيير كلمة المرور بنجاح');
+            }
+        }
+
+        // تحميل صورة البروفايل
+        document.getElementById('editProfileImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('حجم الصورة يجب أن لا يتجاوز 2MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // حفظ الصورة في البيانات
+                    currentDoctor.profileImage = e.target.result;
+                    
+                    // تحديث العرض
+                    document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="صورة البروفايل">`;
+                    
+                    // تحديث localStorage
+                    const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+                    const doctorIndex = doctors.findIndex(d => d.username === currentDoctor.username);
+                    if (doctorIndex !== -1) {
+                        doctors[doctorIndex].profileImage = e.target.result;
+                        localStorage.setItem('doctors', JSON.stringify(doctors));
+                        localStorage.setItem('currentDoctor', JSON.stringify(currentDoctor));
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // وظائف العيادات (يمكن تطويرها أكثر)
+        function editClinic(index) {
+            alert(`سيتم تطوير وظيفة تعديل العيادة ${index + 1} في المستقبل`);
+        }
+
+        function deleteClinic(index) {
+            if (confirm('هل أنت متأكد من حذف هذه العيادة؟')) {
+                currentDoctor.clinics.splice(index, 1);
+                
+                // تحديث localStorage
+                const doctors = JSON.parse(localStorage.getItem('doctors') || '[]');
+                const doctorIndex = doctors.findIndex(d => d.username === currentDoctor.username);
+                if (doctorIndex !== -1) {
+                    doctors[doctorIndex].clinics = currentDoctor.clinics;
+                    localStorage.setItem('doctors', JSON.stringify(doctors));
+                    localStorage.setItem('currentDoctor', JSON.stringify(currentDoctor));
+                    
+                    loadClinics();
+                    alert('تم حذف العيادة بنجاح');
+                }
+            }
+        }
+
+        function uploadDocument(docName) {
+            alert(`سيتم تطوير وظيفة رفع المستند: ${docName}`);
+        }
+
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-EG', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        setInterval(updateTime, 60000);
+        updateTime();
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDoctorData();
+        });
+
+        // إغلاق النوافذ عند النقر خارجها
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
