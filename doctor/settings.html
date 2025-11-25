@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/settings2.css">
 </head>
 <body>
     <div class="ultra-app">
@@ -404,7 +405,202 @@
     </div>
 
     <!-- النوافذ المنبثقة -->
-    
+    <!-- نافذة الخصوصية والأمان -->
+    <div id="privacySecurityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="privacySecurity.title">الخصوصية والأمان</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-options">
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <i class="fas fa-fingerprint"></i>
+                            <div>
+                                <div class="privacy-title" data-translate="privacySecurity.biometric">المصادقة البيومترية</div>
+                                <div class="privacy-description" data-translate="privacySecurity.biometricDesc">استخدم البصمة أو التعرف على الوجه</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="biometricToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <div class="privacy-title" data-translate="privacySecurity.autoLock">القفل التلقائي</div>
+                                <div class="privacy-description" data-translate="privacySecurity.autoLockDesc">قفل التطبيق تلقائياً بعد فترة</div>
+                            </div>
+                        </div>
+                        <select class="form-select" id="autoLockTimeout">
+                            <option value="0" data-translate="privacySecurity.never">أبداً</option>
+                            <option value="1" data-translate="privacySecurity.after1min">بعد دقيقة واحدة</option>
+                            <option value="5" data-translate="privacySecurity.after5min">بعد 5 دقائق</option>
+                            <option value="10" data-translate="privacySecurity.after10min">بعد 10 دقائق</option>
+                        </select>
+                    </div>
+
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <i class="fas fa-eye-slash"></i>
+                            <div>
+                                <div class="privacy-title" data-translate="privacySecurity.hideSensitive">إخفاء البيانات الحساسة</div>
+                                <div class="privacy-description" data-translate="privacySecurity.hideSensitiveDesc">إخفاء المعلومات الحساسة في الإشعارات</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="hideSensitiveToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <i class="fas fa-history"></i>
+                            <div>
+                                <div class="privacy-title" data-translate="privacySecurity.clearHistory">مسح السجل</div>
+                                <div class="privacy-description" data-translate="privacySecurity.clearHistoryDesc">مسح سجل البحث والأنشطة</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" onclick="clearActivityHistory()" data-translate="privacySecurity.clearNow">مسح الآن</button>
+                    </div>
+
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <div class="privacy-title" data-translate="privacySecurity.twoFactor">المصادقة الثنائية</div>
+                                <div class="privacy-description" data-translate="privacySecurity.twoFactorDesc">طبقة أمان إضافية لحسابك</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="twoFactorToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-audit">
+                    <h3 data-translate="privacySecurity.securityAudit">التدقيق الأمني</h3>
+                    <div class="audit-result">
+                        <div class="audit-score">
+                            <span class="score" id="securityScore">85%</span>
+                            <span class="score-label" data-translate="privacySecurity.securityLevel">مستوى الأمان</span>
+                        </div>
+                        <div class="audit-recommendations">
+                            <div class="recommendation" data-translate="privacySecurity.recommendation1">✓ كلمة مرور قوية</div>
+                            <div class="recommendation" data-translate="privacySecurity.recommendation2">✗ تفعيل المصادقة الثنائية</div>
+                            <div class="recommendation" data-translate="privacySecurity.recommendation3">✓ تحديثات النظام محدثة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الخدمات والأسعار -->
+    <div id="servicesPricingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="servicesPricing.title">الخدمات والأسعار</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="services-list" id="servicesList">
+                    <!-- سيتم تعبئة الخدمات هنا ديناميكياً -->
+                </div>
+
+                <button class="btn btn-primary btn-full" onclick="addNewService()" data-translate="servicesPricing.addService">
+                    <i class="fas fa-plus"></i>
+                    إضافة خدمة جديدة
+                </button>
+
+                <div class="pricing-settings">
+                    <h3 data-translate="servicesPricing.globalSettings">الإعدادات العامة</h3>
+                    <div class="setting-group">
+                        <label class="form-label" data-translate="servicesPricing.currency">العملة:</label>
+                        <select class="form-select" id="currencySelect">
+                            <option value="SAR">ريال سعودي (ر.س)</option>
+                            <option value="USD">دولار أمريكي ($)</option>
+                            <option value="EUR">يورو (€)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="form-label" data-translate="servicesPricing.taxRate">معدل الضريبة:</label>
+                        <div class="input-with-suffix">
+                            <input type="number" class="form-input" id="taxRate" value="15" min="0" max="100">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="form-label" data-translate="servicesPricing.discounts">تفعيل نظام الخصومات:</label>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="discountsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة أوقات العمل -->
+    <div id="workingHoursModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-translate="workingHours.title">أوقات العمل</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="working-hours-setup">
+                    <div class="clinic-selector">
+                        <label class="form-label" data-translate="workingHours.selectClinic">اختر العيادة:</label>
+                        <select class="form-select" id="clinicSelect">
+                            <!-- سيتم تعبئة العيادات هنا ديناميكياً -->
+                        </select>
+                    </div>
+
+                    <div class="hours-grid" id="workingHoursGrid">
+                        <!-- سيتم تعبئة أوقات العمل هنا ديناميكياً -->
+                    </div>
+
+                    <div class="working-hours-actions">
+                        <button class="btn btn-outline" onclick="applyToAllClinics()" data-translate="workingHours.applyToAll">
+                            تطبيق على جميع العيادات
+                        </button>
+                        <button class="btn btn-primary" onclick="saveWorkingHours()" data-translate="workingHours.save">
+                            حفظ الأوقات
+                        </button>
+                    </div>
+
+                    <div class="vacation-settings">
+                        <h3 data-translate="workingHours.vacationSettings">إعدادات الإجازات</h3>
+                        <div class="vacation-list" id="vacationList">
+                            <!-- سيتم تعبئة الإجازات هنا ديناميكياً -->
+                        </div>
+                        <button class="btn btn-outline btn-full" onclick="addVacation()" data-translate="workingHours.addVacation">
+                            <i class="fas fa-plus"></i>
+                            إضافة إجازة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- نافذة المظهر -->
     <div id="appearanceModal" class="modal">
         <div class="modal-content">
