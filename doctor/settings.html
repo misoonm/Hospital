@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - الإعدادات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر -->
+        <div class="app-header">
+            <div class="header-top">
+                <button class="back-btn" onclick="window.history.back()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="title-section">
+                    <h1>الإعدادات</h1>
+                    <p>إدارة إعدادات التطبيق والخصوصية</p>
+                </div>
+                <button class="action-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- محتوى الإعدادات -->
+        <div class="settings-container">
+            <!-- البحث في الإعدادات -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="settingsSearch" placeholder="ابحث في الإعدادات...">
+                    <button class="search-clear" id="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- الحساب -->
+            <div class="settings-section" data-category="account">
+                <div class="section-header">
+                    <i class="fas fa-user-cog"></i>
+                    <h3>الحساب</h3>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item" data-search="معلومات الحساب بيانات شخصية">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">معلومات الحساب</div>
+                                <div class="setting-description">إدارة بياناتك الشخصية والمهنية</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="خصوصية أمان حماية">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">الخصوصية والأمان</div>
+                                <div class="setting-description">إعدادات الخصوصية وكلمة المرور</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="اشعارات تنبيهات">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">الإشعارات</div>
+                                <div class="setting-description">إدارة التنبيهات والإشعارات</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notificationsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- العيادة -->
+            <div class="settings-section" data-category="clinic">
+                <div class="section-header">
+                    <i class="fas fa-clinic-medical"></i>
+                    <h3>إعدادات العيادة</h3>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item" data-search="مواعيد جدول حجوزات">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">إدارة المواعيد</div>
+                                <div class="setting-description">إعدادات الجدول والحجوزات</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="خدمات عيادة">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-hand-holding-medical"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">الخدمات والأسعار</div>
+                                <div class="setting-description">إدارة الخدمات المقدمة والأسعار</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="اوقات دوام عمل">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">أوقات العمل</div>
+                                <div class="setting-description">تحديد أوقات الدوام والإجازات</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="حالة متاحة غير متاحة">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">الحالة المهنية</div>
+                                <div class="setting-description">تعيين حالتك كمتاح أو غير متاح</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="availabilityToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التطبيق -->
+            <div class="settings-section" data-category="app">
+                <div class="section-header">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>إعدادات التطبيق</h3>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item" data-search="مظهر سمة الوان">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">المظهر</div>
+                                <div class="setting-description">تخصيص سمة الألوان والمظهر</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="لغة عربية انجليزية">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">اللغة</div>
+                                <div class="setting-description">اختر لغة التطبيق</div>
+                            </div>
+                        </div>
+                        <div class="setting-value">العربية</div>
+                    </div>
+
+                    <div class="setting-item" data-search="بيانات تخزين ذاكرة">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">إدارة التخزين</div>
+                                <div class="setting-description">مسح البيانات المؤقتة والمخزنة</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="تحديث اصدار">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">التحديثات</div>
+                                <div class="setting-description">التحقق من وجود تحديثات</div>
+                            </div>
+                        </div>
+                        <div class="setting-badge">1.2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الخصوصية -->
+            <div class="settings-section" data-category="privacy">
+                <div class="section-header">
+                    <i class="fas fa-lock"></i>
+                    <h3>الخصوصية</h3>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item" data-search="بيانات مزامنة سحابية">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">المزامنة السحابية</div>
+                                <div class="setting-description">مزامنة بياناتك مع السحابة</div>
+                            </div>
+                        </div>
+                        <div class="setting-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="cloudSyncToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item" data-search="نسخ احتياطي بيانات">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-save"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">النسخ الاحتياطي</div>
+                                <div class="setting-description">إنشاء نسخة احتياطية من بياناتك</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="تصدير بيانات">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">تصدير البيانات</div>
+                                <div class="setting-description">تصدير بيانات المرضى والتقارير</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الدعم -->
+            <div class="settings-section" data-category="support">
+                <div class="section-header">
+                    <i class="fas fa-headset"></i>
+                    <h3>الدعم والمساعدة</h3>
+                </div>
+                <div class="settings-list">
+                    <div class="setting-item" data-search="مساعدة دعم">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">المركز المساعدة</div>
+                                <div class="setting-description">إجابات على الأسئلة الشائعة</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="اتصل بنا تواصل">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">اتصل بنا</div>
+                                <div class="setting-description">تواصل مع فريق الدعم</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+
+                    <div class="setting-item" data-search="شروط استخدام سياسة">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">الشروط والسياسات</div>
+                                <div class="setting-description">شروط الاستخدام وسياسة الخصوصية</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-left setting-arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الإجراءات -->
+            <div class="settings-section" data-category="actions">
+                <div class="settings-list">
+                    <div class="setting-item destructive" data-search="تسجيل خروج">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">تسجيل الخروج</div>
+                                <div class="setting-description">تسجيل الخروج من حسابك</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-item destructive" data-search="حذف حساب">
+                        <div class="setting-info">
+                            <div class="setting-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                            <div class="setting-content">
+                                <div class="setting-title">حذف الحساب</div>
+                                <div class="setting-description">حذف حسابك بشكل نهائي</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات التطبيق -->
+            <div class="app-info">
+                <div class="app-version">طبيب 24/7 - الإصدار 1.2.0</div>
+                <div class="app-copyright">© 2024 جميع الحقوق محفوظة</div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index1.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="schedule.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">الجدول</div>
+            </a>
+            <a href="patients.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <div class="nav-label">المرضى</div>
+            </a>
+            <a href="consultations.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    
+    <!-- نافذة المظهر -->
+    <div id="appearanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>المظهر</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="theme-options">
+                    <div class="theme-option active" data-theme="light">
+                        <div class="theme-preview light-theme"></div>
+                        <div class="theme-name">فاتح</div>
+                    </div>
+                    <div class="theme-option" data-theme="dark">
+                        <div class="theme-preview dark-theme"></div>
+                        <div class="theme-name">داكن</div>
+                    </div>
+                    <div class="theme-option" data-theme="auto">
+                        <div class="theme-preview auto-theme"></div>
+                        <div class="theme-name">تلقائي</div>
+                    </div>
+                </div>
+                
+                <div class="color-options">
+                    <h3>لون السمة</h3>
+                    <div class="color-grid">
+                        <div class="color-option active" data-color="blue" style="background: #1976D2;"></div>
+                        <div class="color-option" data-color="green" style="background: #4CAF50;"></div>
+                        <div class="color-option" data-color="purple" style="background: #9C27B0;"></div>
+                        <div class="color-option" data-color="orange" style="background: #FF9800;"></div>
+                        <div class="color-option" data-color="teal" style="background: #009688;"></div>
+                        <div class="color-option" data-color="pink" style="background: #E91E63;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة اللغة -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>اختر اللغة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="language-options">
+                    <div class="language-option active">
+                        <span class="language-name">العربية</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="language-option">
+                        <span class="language-name">English</span>
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إدارة التخزين -->
+    <div id="storageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إدارة التخزين</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="storage-stats">
+                    <div class="storage-item">
+                        <div class="storage-info">
+                            <div class="storage-name">البيانات المؤقتة</div>
+                            <div class="storage-size">45.2 MB</div>
+                        </div>
+                        <button class="btn btn-outline" onclick="clearCache()">مسح</button>
+                    </div>
+                    
+                    <div class="storage-item">
+                        <div class="storage-info">
+                            <div class="storage-name">صور المرضى</div>
+                            <div class="storage-size">128.7 MB</div>
+                        </div>
+                        <button class="btn btn-outline" onclick="clearImages()">إدارة</button>
+                    </div>
+                    
+                    <div class="storage-item">
+                        <div class="storage-info">
+                            <div class="storage-name">بيانات التطبيق</div>
+                            <div class="storage-size">23.1 MB</div>
+                        </div>
+                        <button class="btn btn-outline" onclick="exportData()">تصدير</button>
+                    </div>
+                </div>
+                
+                <div class="storage-total">
+                    <div class="total-label">إجمالي المساحة المستخدمة</div>
+                    <div class="total-size">196.8 MB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة النسخ الاحتياطي -->
+    <div id="backupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>النسخ الاحتياطي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="backup-options">
+                    <div class="backup-option">
+                        <div class="backup-info">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div>
+                                <div class="backup-title">نسخ احتياطي إلى السحابة</div>
+                                <div class="backup-description">حفظ بياناتك بشكل آمن على السحابة</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="backupToCloud()">نسخ احتياطي</button>
+                    </div>
+                    
+                    <div class="backup-option">
+                        <div class="backup-info">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <div class="backup-title">نسخ احتياطي محلي</div>
+                                <div class="backup-description">تحميل نسخة احتياطية إلى جهازك</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" onclick="downloadBackup()">تحميل</button>
+                    </div>
+                </div>
+                
+                <div class="backup-history">
+                    <h3>آخر النسخ الاحتياطية</h3>
+                    <div class="backup-item">
+                        <div class="backup-date">15 فبراير 2024 - 10:30 ص</div>
+                        <div class="backup-size">45.2 MB</div>
+                    </div>
+                    <div class="backup-item">
+                        <div class="backup-date">14 فبراير 2024 - 09:15 ص</div>
+                        <div class="backup-size">44.8 MB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+</body>
+</html>
