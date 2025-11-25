@@ -1,0 +1,407 @@
+/* إضافة الأنماط الجديدة */
+
+/* نافذة الخصوصية والأمان */
+.privacy-options {
+    margin-bottom: 24px;
+}
+
+.privacy-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+}
+
+.privacy-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.privacy-info i {
+    font-size: 20px;
+    color: var(--primary);
+    width: 24px;
+    text-align: center;
+}
+
+.privacy-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.privacy-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.security-audit {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.security-audit h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.audit-result {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--radius-md);
+}
+
+.audit-score {
+    text-align: center;
+}
+
+.score {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    display: block;
+}
+
+.score-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.audit-recommendations {
+    flex: 1;
+}
+
+.recommendation {
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.recommendation:last-child {
+    border-bottom: none;
+}
+
+/* نافذة الخدمات والأسعار */
+.services-list {
+    margin-bottom: 20px;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    border: 2px solid transparent;
+    transition: var(--transition-liquid);
+}
+
+.service-item:hover {
+    border-color: var(--primary-light);
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.service-details {
+    display: flex;
+    gap: 16px;
+}
+
+.service-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.service-duration {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.service-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.pricing-settings {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.pricing-settings h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.setting-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.form-select {
+    padding: 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    background: white;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.input-with-suffix {
+    position: relative;
+    display: inline-block;
+}
+
+.input-suffix {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.input-with-suffix .form-input {
+    padding-left: 40px;
+}
+
+.btn-full {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* نافذة أوقات العمل */
+.working-hours-setup {
+    margin-bottom: 20px;
+}
+
+.clinic-selector {
+    margin-bottom: 20px;
+}
+
+.hours-grid {
+    margin-bottom: 20px;
+}
+
+.hour-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+}
+
+.hour-day {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.hour-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hour-input {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+}
+
+.hour-separator {
+    color: var(--text-secondary);
+}
+
+.hour-toggle {
+    margin-right: auto;
+}
+
+.working-hours-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.vacation-settings {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.vacation-settings h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.vacation-list {
+    margin-bottom: 16px;
+}
+
+.vacation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+}
+
+.vacation-info {
+    flex: 1;
+}
+
+.vacation-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.vacation-dates {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* إشعارات التحديث */
+.update-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    z-index: 3000;
+    max-width: 400px;
+    width: 90%;
+    animation: slideInDown 0.3s ease-out;
+}
+
+.update-content {
+    padding: 20px;
+}
+
+.update-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.update-header i {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.update-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.update-info ul {
+    margin: 12px 0;
+    padding-right: 20px;
+}
+
+.update-info li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.update-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .audit-result {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .service-actions {
+        align-self: flex-end;
+    }
+    
+    .working-hours-actions {
+        flex-direction: column;
+    }
+    
+    .hour-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .hour-inputs {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
