@@ -1611,7 +1611,760 @@ body {
     </div>
 
     <script>
-      hhhhhh
+      // نظام إدارة المرضى للطبيب
+class PatientsManager {
+    constructor() {
+        this.patients = [];
+        this.filteredPatients = [];
+        this.currentTab = 'all';
+        this.currentSort = 'name';
+        this.filters = {
+            status: ['active', 'inactive', 'vip'],
+            gender: ['male', 'female'],
+            bloodType: [],
+            minVisits: 0
+        };
+        this.editingPatient = null;
+        this.init();
+    }
+
+    init() {
+        this.loadPatients();
+        this.setupEventListeners();
+        this.updateStats();
+        this.renderPatients();
+        this.updateTime();
+        this.renderBloodTypeFilter();
+    }
+
+    loadPatients() {
+        // تحميل المرضى من localStorage أو من API
+        const savedPatients = localStorage.getItem('doctor_patients');
+        
+        if (savedPatients) {
+            this.patients = JSON.parse(savedPatients);
+        } else {
+            // توليد بيانات تجريبية من المواعيد
+            this.generatePatientsFromAppointments();
+        }
+        
+        this.applyFilters();
+    }
+
+    generatePatientsFromAppointments() {
+        // تحميل المواعيد من localStorage
+        const appointments = JSON.parse(localStorage.getItem('doctor_appointments_bookings')) || [];
+        
+        // استخراج المرضى من المواعيد
+        const patientMap = new Map();
+        
+        appointments.forEach(appointment => {
+            if (!patientMap.has(appointment.patientId)) {
+                patientMap.set(appointment.patientId, {
+                    id: appointment.patientId,
+                    name: appointment.patientName,
+                    phone: appointment.patientPhone,
+                    email: appointment.patientEmail,
+                    appointments: [],
+                    totalSpent: 0,
+                    lastVisit: appointment.date,
+                    status: 'active',
+                    visitsCount: 0,
+                    createdAt: appointment.createdAt
+                });
+            }
+            
+            const patient = patientMap.get(appointment.patientId);
+            patient.appointments.push(appointment);
+            patient.visitsCount++;
+            
+            if (appointment.status === 'completed' || appointment.status === 'confirmed') {
+                patient.totalSpent += appointment.fee;
+            }
+            
+            // تحديث آخر زيارة
+            if (new Date(appointment.date) > new Date(patient.lastVisit)) {
+                patient.lastVisit = appointment.date;
+            }
+        });
+
+        // إضافة معلومات إضافية للمرضى
+        this.patients = Array.from(patientMap.values()).map((patient, index) => ({
+            ...patient,
+            age: Math.floor(Math.random() * 50) + 18,
+            gender: Math.random() > 0.5 ? 'male' : 'female',
+            bloodType: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'][Math.floor(Math.random() * 8)],
+            address: `عنوان المريض ${index + 1}`,
+            medicalNotes: Math.random() > 0.7 ? 'يعاني من حساسية البنسلين' : '',
+            isNew: index < 3, // أول 3 مرضى يعتبرون جدد
+            isVip: Math.random() > 0.8 // 20% من المرضى مميزين
+        }));
+
+        this.savePatients();
+    }
+
+    savePatients() {
+        localStorage.setItem('doctor_patients', JSON.stringify(this.patients));
+    }
+
+    setupEventListeners() {
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.searchPatients(e.target.value);
+        });
+
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.changeTab(e.target.dataset.tab);
+            });
+        });
+
+        // الترتيب
+        document.getElementById('sortSelect').addEventListener('change', (e) => {
+            this.currentSort = e.target.value;
+            this.applyFilters();
+            this.renderPatients();
+        });
+
+        // إضافة مريض
+        document.getElementById('addPatientBtn').addEventListener('click', () => {
+            this.showPatientForm();
+        });
+
+        document.getElementById('addFirstPatientBtn').addEventListener('click', () => {
+            this.showPatientForm();
+        });
+
+        // التصدير
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            this.showExportModal();
+        });
+
+        // التصفية
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            this.showFilterModal();
+        });
+
+        // نموذج المريض
+        document.getElementById('patientForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.savePatientForm();
+        });
+
+        document.getElementById('cancelPatientForm').addEventListener('click', () => {
+            this.closePatientForm();
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // تحديث الوقت
+        setInterval(() => this.updateTime(), 60000);
+
+        // التصفية
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            this.applyUserFilters();
+        });
+
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            this.resetFilters();
+        });
+
+        // نطاق الزيارات
+        document.getElementById('visitsRange').addEventListener('input', (e) => {
+            document.getElementById('visitsRangeValue').textContent = 
+                e.target.value === '10' ? '5+' : e.target.value;
+        });
+
+        // التصدير
+        document.getElementById('confirmExport').addEventListener('click', () => {
+            this.exportPatients();
+        });
+
+        document.getElementById('cancelExport').addEventListener('click', () => {
+            document.getElementById('exportModal').style.display = 'none';
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    updateStats() {
+        const total = this.patients.length;
+        const active = this.patients.filter(p => p.status === 'active').length;
+        const newPatients = this.patients.filter(p => p.isNew).length;
+        const revenue = this.patients.reduce((sum, p) => sum + p.totalSpent, 0);
+
+        document.getElementById('totalPatients').textContent = total;
+        document.getElementById('activePatients').textContent = active;
+        document.getElementById('newPatients').textContent = newPatients;
+        document.getElementById('patientsRevenue').textContent = `${revenue} ر.ي`;
+    }
+
+    searchPatients(query) {
+        const searchTerm = query.toLowerCase();
+        if (searchTerm.trim() === '') {
+            this.applyFilters();
+        } else {
+            this.filteredPatients = this.filteredPatients.filter(patient => 
+                patient.name.toLowerCase().includes(searchTerm) ||
+                patient.phone.includes(searchTerm) ||
+                patient.id.toLowerCase().includes(searchTerm)
+            );
+        }
+        this.renderPatients();
+    }
+
+    changeTab(tab) {
+        this.currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+        this.applyFilters();
+        this.renderPatients();
+    }
+
+    applyFilters() {
+        let filtered = [...this.patients];
+
+        // تصفية حسب التبويب
+        switch (this.currentTab) {
+            case 'active':
+                filtered = filtered.filter(patient => patient.status === 'active');
+                break;
+            case 'new':
+                filtered = filtered.filter(patient => patient.isNew);
+                break;
+            case 'inactive':
+                filtered = filtered.filter(patient => patient.status === 'inactive');
+                break;
+            case 'vip':
+                filtered = filtered.filter(patient => patient.isVip);
+                break;
+        }
+
+        // تصفية حسب الحالة
+        filtered = filtered.filter(patient => this.filters.status.includes(patient.status));
+
+        // تصفية حسب الجنس
+        filtered = filtered.filter(patient => this.filters.gender.includes(patient.gender));
+
+        // تصفية حسب فصيلة الدم
+        if (this.filters.bloodType.length > 0) {
+            filtered = filtered.filter(patient => this.filters.bloodType.includes(patient.bloodType));
+        }
+
+        // تصفية حسب عدد الزيارات
+        filtered = filtered.filter(patient => patient.visitsCount >= this.filters.minVisits);
+
+        // الترتيب
+        filtered.sort((a, b) => {
+            switch (this.currentSort) {
+                case 'name':
+                    return a.name.localeCompare(b.name);
+                case 'name_desc':
+                    return b.name.localeCompare(a.name);
+                case 'recent':
+                    return new Date(b.lastVisit) - new Date(a.lastVisit);
+                case 'oldest':
+                    return new Date(a.lastVisit) - new Date(b.lastVisit);
+                case 'visits':
+                    return b.visitsCount - a.visitsCount;
+                default:
+                    return 0;
+            }
+        });
+
+        this.filteredPatients = filtered;
+    }
+
+    applyUserFilters() {
+        // جمع حالات المرضى المختارة
+        this.filters.status = Array.from(document.querySelectorAll('#statusFilter input:checked'))
+            .map(input => input.value);
+
+        // جمع الجنس المختار
+        this.filters.gender = Array.from(document.querySelectorAll('#genderFilter input:checked'))
+            .map(input => input.value);
+
+        // جمع فصائل الدم المختارة
+        this.filters.bloodType = Array.from(document.querySelectorAll('#bloodTypeFilter input:checked'))
+            .map(input => input.value);
+
+        // تحديث نطاق الزيارات
+        this.filters.minVisits = parseInt(document.getElementById('visitsRange').value);
+
+        this.applyFilters();
+        this.renderPatients();
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    resetFilters() {
+        this.filters = {
+            status: ['active', 'inactive', 'vip'],
+            gender: ['male', 'female'],
+            bloodType: [],
+            minVisits: 0
+        };
+        document.querySelectorAll('#statusFilter input').forEach(input => {
+            input.checked = ['active', 'inactive', 'vip'].includes(input.value);
+        });
+        document.querySelectorAll('#genderFilter input').forEach(input => {
+            input.checked = true;
+        });
+        document.querySelectorAll('#bloodTypeFilter input').forEach(input => {
+            input.checked = false;
+        });
+        document.getElementById('visitsRange').value = 0;
+        document.getElementById('visitsRangeValue').textContent = '0';
+    }
+
+    renderBloodTypeFilter() {
+        const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+        const container = document.getElementById('bloodTypeFilter');
+        
+        container.innerHTML = bloodTypes.map(type => `
+            <label class="filter-option">
+                <input type="checkbox" value="${type}">
+                <span>${type}</span>
+            </label>
+        `).join('');
+    }
+
+    renderPatients() {
+        const container = document.getElementById('patientsContainer');
+        const emptyState = document.getElementById('emptyState');
+
+        if (this.filteredPatients.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'block';
+        emptyState.style.display = 'none';
+
+        let patientsHTML = '';
+
+        this.filteredPatients.forEach(patient => {
+            const statusClass = patient.isVip ? 'vip' : patient.status;
+            const statusText = patient.isVip ? 'مميز' : 
+                             patient.status === 'active' ? 'نشط' : 'غير نشط';
+            
+            const genderText = patient.gender === 'male' ? 'ذكر' : 'أنثى';
+            const genderIcon = patient.gender === 'male' ? 'fas fa-mars' : 'fas fa-venus';
+
+            patientsHTML += `
+                <div class="patient-card ${statusClass}" onclick="patientsManager.showPatientDetails('${patient.id}')">
+                    <div class="patient-header">
+                        <div class="patient-info-main">
+                            <div class="patient-avatar ${patient.isVip ? 'vip' : ''}">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="patient-details">
+                                <div class="patient-name">
+                                    ${patient.name}
+                                    ${patient.isNew ? '<span class="status-badge status-active" style="font-size: 10px; padding: 2px 6px;">جديد</span>' : ''}
+                                </div>
+                                <div class="patient-meta">
+                                    <span><i class="fas fa-phone"></i> ${patient.phone}</span>
+                                    <span><i class="${genderIcon}"></i> ${genderText}</span>
+                                    ${patient.bloodType ? `<span><i class="fas fa-tint"></i> ${patient.bloodType}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="patient-status status-${statusClass}">${statusText}</div>
+                    </div>
+                    
+                    <div class="patient-details-grid">
+                        <div class="patient-detail">
+                            <i class="fas fa-calendar"></i>
+                            آخر زيارة: ${new Date(patient.lastVisit).toLocaleDateString('ar-EG')}
+                        </div>
+                        <div class="patient-detail">
+                            <i class="fas fa-user-clock"></i>
+                            العمر: ${patient.age} سنة
+                        </div>
+                        <div class="patient-detail">
+                            <i class="fas fa-stethoscope"></i>
+                            عدد الزيارات: ${patient.visitsCount}
+                        </div>
+                        <div class="patient-detail">
+                            <i class="fas fa-money-bill"></i>
+                            إجمالي الإنفاق: ${patient.totalSpent} ر.ي
+                        </div>
+                    </div>
+
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${patient.visitsCount}</div>
+                            <div class="stat-label">زيارة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${patient.totalSpent}</div>
+                            <div class="stat-label">ريال</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${Math.round(patient.totalSpent / Math.max(patient.visitsCount, 1))}</div>
+                            <div class="stat-label">معدل</div>
+                        </div>
+                    </div>
+
+                    <div class="patient-actions">
+                        <button class="btn-primary btn-small" onclick="event.stopPropagation(); patientsManager.showMedicalHistory('${patient.id}')">
+                            <i class="fas fa-file-medical"></i>
+                            السجل
+                        </button>
+                        <button class="btn-secondary btn-small" onclick="event.stopPropagation(); patientsManager.editPatient('${patient.id}')">
+                            <i class="fas fa-edit"></i>
+                            تعديل
+                        </button>
+                        ${patient.isVip ? `
+                            <button class="btn-vip btn-small" onclick="event.stopPropagation(); patientsManager.toggleVip('${patient.id}')">
+                                <i class="fas fa-star"></i>
+                                إلغاء التميز
+                            </button>
+                        ` : `
+                            <button class="btn-warning btn-small" onclick="event.stopPropagation(); patientsManager.toggleVip('${patient.id}')">
+                                <i class="fas fa-crown"></i>
+                                تمييز
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = patientsHTML;
+    }
+
+    showPatientDetails(patientId) {
+        const patient = this.patients.find(p => p.id === patientId);
+        if (!patient) return;
+
+        const modal = document.getElementById('patientModal');
+        document.getElementById('patientModalTitle').textContent = `تفاصيل المريض - ${patient.name}`;
+
+        const genderText = patient.gender === 'male' ? 'ذكر' : 'أنثى';
+        const statusText = patient.isVip ? 'مميز' : 
+                         patient.status === 'active' ? 'نشط' : 'غير نشط';
+
+        const modalBody = document.getElementById('patientModalBody');
+        modalBody.innerHTML = `
+            <div class="patient-detail-modal">
+                <div class="detail-section">
+                    <h3><i class="fas fa-user"></i> المعلومات الشخصية</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">الاسم الكامل</div>
+                            <div class="detail-value">${patient.name}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم الهاتف</div>
+                            <div class="detail-value">${patient.phone}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">البريد الإلكتروني</div>
+                            <div class="detail-value">${patient.email || 'غير متوفر'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">العمر</div>
+                            <div class="detail-value">${patient.age} سنة</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الجنس</div>
+                            <div class="detail-value">${genderText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">فصيلة الدم</div>
+                            <div class="detail-value">${patient.bloodType || 'غير معروفة'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الحالة</div>
+                            <div class="detail-value">${statusText}</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${patient.address ? `
+                <div class="detail-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> العنوان</h3>
+                    <div class="detail-value">${patient.address}</div>
+                </div>
+                ` : ''}
+
+                ${patient.medicalNotes ? `
+                <div class="detail-section">
+                    <h3><i class="fas fa-notes-medical"></i> ملاحظات طبية</h3>
+                    <div class="medical-notes">
+                        <div class="notes-content">${patient.medicalNotes}</div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-chart-bar"></i> الإحصائيات</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">عدد الزيارات</div>
+                            <div class="detail-value">${patient.visitsCount}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">إجمالي الإنفاق</div>
+                            <div class="detail-value">${patient.totalSpent} ر.ي</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">متوسط الإنفاق</div>
+                            <div class="detail-value">${Math.round(patient.totalSpent / Math.max(patient.visitsCount, 1))} ر.ي</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">أول زيارة</div>
+                            <div class="detail-value">${new Date(patient.createdAt).toLocaleDateString('ar-EG')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">آخر زيارة</div>
+                            <div class="detail-value">${new Date(patient.lastVisit).toLocaleDateString('ar-EG')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">مريض منذ</div>
+                            <div class="detail-value">${this.getDaysSince(patient.createdAt)} يوم</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient-actions" style="margin-top: 20px;">
+                    <button class="btn-primary" onclick="patientsManager.showMedicalHistory('${patient.id}')">
+                        <i class="fas fa-file-medical"></i>
+                        السجل الطبي
+                    </button>
+                    <button class="btn-secondary" onclick="patientsManager.editPatient('${patient.id}')">
+                        <i class="fas fa-edit"></i>
+                        تعديل البيانات
+                    </button>
+                    ${patient.isVip ? `
+                        <button class="btn-vip" onclick="patientsManager.toggleVip('${patient.id}')">
+                            <i class="fas fa-star"></i>
+                            إلغاء التميز
+                        </button>
+                    ` : `
+                        <button class="btn-warning" onclick="patientsManager.toggleVip('${patient.id}')">
+                            <i class="fas fa-crown"></i>
+                            تمييز المريض
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    showMedicalHistory(patientId) {
+        const patient = this.patients.find(p => p.id === patientId);
+        if (!patient) return;
+
+        const modal = document.getElementById('medicalHistoryModal');
+        document.getElementById('medicalHistoryTitle').textContent = `السجل الطبي - ${patient.name}`;
+
+        // توليد السجل الطبي من المواعيد
+        const medicalHistory = patient.appointments || [];
+        
+        let historyHTML = '';
+        
+        if (medicalHistory.length === 0) {
+            historyHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">لا توجد سجلات طبية</p>';
+        } else {
+            medicalHistory.forEach((appointment, index) => {
+                historyHTML += `
+                    <div class="history-item visit">
+                        <div class="history-header">
+                            <div class="history-title">زيارة ${index + 1} - ${appointment.visitType}</div>
+                            <div class="history-date">${new Date(appointment.date).toLocaleDateString('ar-EG')}</div>
+                        </div>
+                        <div class="history-details">
+                            <strong>التشخيص:</strong> ${appointment.notes || 'لا توجد ملاحظات'}<br>
+                            <strong>الرسوم:</strong> ${appointment.fee} ر.ي<br>
+                            <strong>الحالة:</strong> ${appointment.status === 'completed' ? 'مكتملة' : appointment.status === 'confirmed' ? 'مؤكدة' : 'في الانتظار'}
+                        </div>
+                        <div class="history-actions">
+                            <button class="btn-small btn-secondary">
+                                <i class="fas fa-print"></i>
+                                طباعة
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        const modalBody = document.getElementById('medicalHistoryBody');
+        modalBody.innerHTML = `
+            <div class="medical-history">
+                <div class="history-tabs">
+                    <button class="history-tab active">الزيارات (${medicalHistory.length})</button>
+                    <button class="history-tab">الوصفات</button>
+                    <button class="history-tab">التحاليل</button>
+                </div>
+                <div class="history-list">
+                    ${historyHTML}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    showPatientForm(patientId = null) {
+        this.editingPatient = patientId ? this.patients.find(p => p.id === patientId) : null;
+        
+        const modal = document.getElementById('patientFormModal');
+        const title = document.getElementById('patientFormTitle');
+        const form = document.getElementById('patientForm');
+
+        if (this.editingPatient) {
+            title.textContent = `تعديل بيانات المريض - ${this.editingPatient.name}`;
+            this.fillPatientForm(this.editingPatient);
+        } else {
+            title.textContent = 'إضافة مريض جديد';
+            form.reset();
+        }
+
+        modal.style.display = 'block';
+    }
+
+    fillPatientForm(patient) {
+        document.getElementById('patientName').value = patient.name;
+        document.getElementById('patientPhone').value = patient.phone;
+        document.getElementById('patientEmail').value = patient.email || '';
+        document.getElementById('patientAge').value = patient.age || '';
+        document.getElementById('patientGender').value = patient.gender || '';
+        document.getElementById('patientBloodType').value = patient.bloodType || '';
+        document.getElementById('patientAddress').value = patient.address || '';
+        document.getElementById('patientMedicalNotes').value = patient.medicalNotes || '';
+        
+        // تعيين الحالة
+        const status = patient.isVip ? 'vip' : patient.status;
+        document.querySelector(`input[name="status"][value="${status}"]`).checked = true;
+    }
+
+    savePatientForm() {
+        const formData = {
+            name: document.getElementById('patientName').value,
+            phone: document.getElementById('patientPhone').value,
+            email: document.getElementById('patientEmail').value,
+            age: parseInt(document.getElementById('patientAge').value) || null,
+            gender: document.getElementById('patientGender').value,
+            bloodType: document.getElementById('patientBloodType').value,
+            address: document.getElementById('patientAddress').value,
+            medicalNotes: document.getElementById('patientMedicalNotes').value,
+            status: document.querySelector('input[name="status"]:checked').value,
+            isVip: document.querySelector('input[name="status"]:checked').value === 'vip'
+        };
+
+        if (this.editingPatient) {
+            // تحديث المريض الموجود
+            Object.assign(this.editingPatient, formData);
+        } else {
+            // إضافة مريض جديد
+            const newPatient = {
+                id: 'PAT-' + Date.now().toString().slice(-8),
+                ...formData,
+                appointments: [],
+                totalSpent: 0,
+                lastVisit: new Date().toISOString(),
+                visitsCount: 0,
+                createdAt: new Date().toISOString(),
+                isNew: true
+            };
+            this.patients.push(newPatient);
+        }
+
+        this.savePatients();
+        this.updateStats();
+        this.applyFilters();
+        this.renderPatients();
+        this.closePatientForm();
+
+        alert(this.editingPatient ? 'تم تحديث بيانات المريض بنجاح!' : 'تم إضافة المريض بنجاح!');
+    }
+
+    closePatientForm() {
+        document.getElementById('patientFormModal').style.display = 'none';
+        this.editingPatient = null;
+    }
+
+    editPatient(patientId) {
+        this.showPatientForm(patientId);
+    }
+
+    toggleVip(patientId) {
+        const patient = this.patients.find(p => p.id === patientId);
+        if (!patient) return;
+
+        patient.isVip = !patient.isVip;
+        patient.status = patient.isVip ? 'vip' : 'active';
+        
+        this.savePatients();
+        this.updateStats();
+        this.applyFilters();
+        this.renderPatients();
+
+        alert(patient.isVip ? 'تم تمييز المريض بنجاح!' : 'تم إلغاء تمييز المريض!');
+    }
+
+    showFilterModal() {
+        const modal = document.getElementById('filterModal');
+        modal.style.display = 'block';
+    }
+
+    showExportModal() {
+        const modal = document.getElementById('exportModal');
+        modal.style.display = 'block';
+    }
+
+    exportPatients() {
+        const format = document.querySelector('input[name="exportFormat"]:checked').value;
+        const includeMedicalHistory = document.getElementById('includeMedicalHistory').checked;
+        const includeAppointments = document.getElementById('includeAppointments').checked;
+        const includeFinancial = document.getElementById('includeFinancial').checked;
+
+        // محاكاة عملية التصدير
+        alert(`جاري تصدير بيانات ${this.patients.length} مريض بصيغة ${format.toUpperCase()}...`);
+        
+        // في التطبيق الفعلي، سيتم إنشاء الملف وتنزيله
+        document.getElementById('exportModal').style.display = 'none';
+    }
+
+    getDaysSince(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = Math.abs(now - date);
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    window.patientsManager = new PatientsManager();
+});
     </script>
 </body>
 </html>
