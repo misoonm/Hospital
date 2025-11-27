@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - إدارة المرضى</title>
+    <link rel="stylesheet" href="patients.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --vip: #FFD700;
+
+    /* خلفية التطبيق: فاتحة ومريحة للعين */
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* الخطوط المحدثة */
+    --font-primary: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 20px 16px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 16px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث والتصفية */
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 10px 16px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.filter-btn {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.filter-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* قسم الإحصائيات */
+.stats-section {
+    padding: 0 16px 18px;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-liquid);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
+
+.stat-icon.total {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.stat-icon.active {
+    background: linear-gradient(135deg, var(--success), #66BB6A);
+}
+
+.stat-icon.new {
+    background: linear-gradient(135deg, var(--warning), #FFB74D);
+}
+
+.stat-icon.revenue {
+    background: linear-gradient(135deg, #9C27B0, #BA68C8);
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* التبويبات */
+.tabs-section {
+    padding: 0 16px 18px;
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 6px;
+    box-shadow: var(--shadow-light);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    min-width: 70px;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    padding: 0 16px 100px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sort-select {
+    background: var(--bg-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    min-width: 140px;
+}
+
+/* حاوية المرضى */
+.patients-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* بطاقة المريض */
+.patient-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    border-right: 4px solid var(--primary);
+    position: relative;
+}
+
+.patient-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+}
+
+.patient-card.vip {
+    border-right-color: var(--vip);
+    background: linear-gradient(135deg, #FFF9C4, #FFFFFF);
+}
+
+.patient-card.inactive {
+    border-right-color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.patient-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.patient-info-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.patient-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.patient-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.patient-avatar.vip::after {
+    content: '⭐';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 12px;
+    background: var(--vip);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.patient-details {
+    flex: 1;
+}
+
+.patient-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.patient-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.patient-status {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.status-active {
+    background: var(--success);
+}
+
+.status-inactive {
+    background: var(--text-secondary);
+}
+
+.status-vip {
+    background: var(--vip);
+    color: #333;
+}
+
+.patient-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* تفاصيل المريض */
+.patient-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.patient-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.patient-detail i {
+    width: 14px;
+    color: var(--primary);
+}
+
+.patient-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* حالة عدم وجود مرضى */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-icon {
+    font-size: 48px;
+    color: var(--primary-light);
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 6px 8px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 340px;
+    width: calc(100% - 32px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translateY(-8px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* تفاصيل المريض في النافذة */
+.patient-detail-modal {
+    padding: 18px;
+}
+
+.detail-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+}
+
+.detail-section h3 {
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 16px;
+    border-bottom: 1px solid var(--primary-light);
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.detail-value {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.medical-notes {
+    background: var(--bg-surface);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-top: 8px;
+    border-right: 3px solid var(--primary-light);
+}
+
+.notes-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.notes-content {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+/* نماذج المريض */
+.patient-form {
+    padding: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.status-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.status-option {
+    cursor: pointer;
+}
+
+.status-option input {
+    display: none;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.status-option input:checked + .status-badge {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.status-badge.active {
+    background: var(--success);
+    color: white;
+}
+
+.status-badge.inactive {
+    background: var(--text-secondary);
+    color: white;
+}
+
+.status-badge.vip {
+    background: var(--vip);
+    color: #333;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* الأزرار */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-warning {
+    background: var(--warning);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-vip {
+    background: var(--vip);
+    color: #333;
+}
+
+/* السجل الطبي */
+.medical-history {
+    padding: 18px;
+}
+
+.history-tabs {
+    display: flex;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 6px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+}
+
+.history-tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.history-tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+.history-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.history-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow-light);
+    border-right: 3px solid var(--primary);
+}
+
+.history-item.visit {
+    border-right-color: var(--info);
+}
+
+.history-item.prescription {
+    border-right-color: var(--success);
+}
+
+.history-item.test {
+    border-right-color: var(--warning);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.history-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.history-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.history-details {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.history-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+/* التصفية */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 13px;
+}
+
+.filter-option:hover {
+    background: var(--primary-light);
+}
+
+.filter-option input {
+    margin: 0;
+    transform: scale(0.9);
+}
+
+.range-filter {
+    padding: 10px;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.range-filter input {
+    width: 100%;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* التصدير */
+.export-options {
+    margin-bottom: 20px;
+}
+
+.export-option {
+    margin-bottom: 10px;
+}
+
+.export-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.export-label:hover {
+    background: var(--primary-light);
+}
+
+.export-label input:checked + .export-icon {
+    transform: scale(1.1);
+}
+
+.export-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    transition: var(--transition-liquid);
+}
+
+.export-icon.pdf {
+    background: #F44336;
+}
+
+.export-icon.excel {
+    background: #4CAF50;
+}
+
+.export-icon.csv {
+    background: #2196F3;
+}
+
+.export-info {
+    flex: 1;
+}
+
+.export-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.export-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.export-settings {
+    margin-bottom: 20px;
+}
+
+.export-settings h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.setting-option {
+    margin-bottom: 8px;
+}
+
+.setting-option label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.setting-option label:hover {
+    background: var(--primary-light);
+}
+
+.export-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .patient-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-bar {
+        padding: 8px 16px;
+    }
+    
+    .app-header {
+        padding: 16px 12px 0;
+    }
+    
+    .main-content {
+        padding: 0 12px 90px;
+    }
+    
+    .filter-actions, .export-actions, .form-actions {
+        flex-direction: column;
+    }
+    
+    .patient-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .patient-actions .btn-small {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة المرضى 👨‍⚕️</h1>
+                    <p>عرض وإدارة بيانات المرضى وسجلهم الطبي</p>
+                </div>
+                <div class="doctor-actions">
+                    <button class="action-icon" id="addPatientBtn">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                    <button class="action-icon" id="exportBtn">
+                        <i class="fas fa-file-export"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- شريط البحث والتصفية -->
+            <div class="search-filter-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="ابحث عن مريض بالاسم، الهاتف أو الرقم..." id="searchInput">
+                </div>
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- إحصائيات سريعة -->
+        <div class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalPatients">0</div>
+                        <div class="stat-label">إجمالي المرضى</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="activePatients">0</div>
+                        <div class="stat-label">مرضى نشطين</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon new">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="newPatients">0</div>
+                        <div class="stat-label">مرضى جدد</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="patientsRevenue">0 ر.ي</div>
+                        <div class="stat-label">إيرادات المرضى</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويبات -->
+        <div class="tabs-section">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="all">الكل</button>
+                <button class="tab-btn" data-tab="active">نشطين</button>
+                <button class="tab-btn" data-tab="new">جدد</button>
+                <button class="tab-btn" data-tab="inactive">غير نشطين</button>
+                <button class="tab-btn" data-tab="vip">مميزين</button>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <div class="patients-section">
+                <div class="section-header">
+                    <h2>قائمة المرضى</h2>
+                    <div class="sort-controls">
+                        <select id="sortSelect" class="sort-select">
+                            <option value="name">الاسم (أ-ي)</option>
+                            <option value="name_desc">الاسم (ي-أ)</option>
+                            <option value="recent">الأحدث</option>
+                            <option value="oldest">الأقدم</option>
+                            <option value="visits">الأكثر زيارة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="patients-container" id="patientsContainer">
+                    <!-- سيتم تعبئة المرضى ديناميكياً -->
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <h3>لا توجد مرضى</h3>
+                    <p>لا توجد مرضى مسجلين لعرضهم</p>
+                    <button class="btn-primary" id="addFirstPatientBtn">
+                        <i class="fas fa-user-plus"></i>
+                        إضافة أول مريض
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="appointments.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">مواعيدي</div>
+            </a>
+            <a href="patients.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="nav-label">المرضى</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل المريض -->
+    <div id="patientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="patientModalTitle">تفاصيل المريض</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="patientModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة/تعديل المريض -->
+    <div id="patientFormModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="patientFormTitle">إضافة مريض جديد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="patientForm" class="patient-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">الاسم الكامل *</label>
+                            <input type="text" class="form-input" id="patientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف *</label>
+                            <input type="tel" class="form-input" id="patientPhone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-input" id="patientEmail">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">العمر</label>
+                            <input type="number" class="form-input" id="patientAge" min="1" max="120">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">الجنس</label>
+                            <select class="form-select" id="patientGender">
+                                <option value="">اختر الجنس</option>
+                                <option value="male">ذكر</option>
+                                <option value="female">أنثى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">فصيلة الدم</label>
+                            <select class="form-select" id="patientBloodType">
+                                <option value="">اختر فصيلة الدم</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">العنوان</label>
+                        <textarea class="form-textarea" id="patientAddress" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">ملاحظات طبية</label>
+                        <textarea class="form-textarea" id="patientMedicalNotes" rows="3" placeholder="الحساسيات، الأمراض المزمنة، الأدوية..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">الحالة</label>
+                        <div class="status-options">
+                            <label class="status-option">
+                                <input type="radio" name="status" value="active" checked>
+                                <span class="status-badge active">نشط</span>
+                            </label>
+                            <label class="status-option">
+                                <input type="radio" name="status" value="inactive">
+                                <span class="status-badge inactive">غير نشط</span>
+                            </label>
+                            <label class="status-option">
+                                <input type="radio" name="status" value="vip">
+                                <span class="status-badge vip">مميز</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelPatientForm">إلغاء</button>
+                        <button type="submit" class="btn-primary" id="submitPatientForm">
+                            <i class="fas fa-save"></i>
+                            حفظ المريض
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة السجل الطبي -->
+    <div id="medicalHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="medicalHistoryTitle">السجل الطبي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="medicalHistoryBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التصفية -->
+    <div id="filterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية المرضى</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <h3>حالة المريض</h3>
+                    <div class="filter-options" id="statusFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="active" checked>
+                            <span>نشط</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="inactive" checked>
+                            <span>غير نشط</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="vip" checked>
+                            <span>مميز</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>الجنس</h3>
+                    <div class="filter-options" id="genderFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="male" checked>
+                            <span>ذكر</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="female" checked>
+                            <span>أنثى</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>فصيلة الدم</h3>
+                    <div class="filter-options" id="bloodTypeFilter">
+                        <!-- سيتم تعبئة خيارات فصائل الدم ديناميكياً -->
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>عدد الزيارات</h3>
+                    <div class="range-filter">
+                        <div class="range-labels">
+                            <span>0</span>
+                            <span id="visitsRangeValue">5+</span>
+                        </div>
+                        <input type="range" id="visitsRange" min="0" max="10" value="5">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-secondary" id="resetFilters">إعادة التعيين</button>
+                    <button class="btn-primary" id="applyFilters">تطبيق التصفية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التصدير -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصدير بيانات المرضى</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="export-option">
+                        <label class="export-label">
+                            <input type="radio" name="exportFormat" value="pdf" checked>
+                            <div class="export-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="export-info">
+                                <div class="export-title">PDF</div>
+                                <div class="export-desc">ملف قابل للطباعة</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <label class="export-label">
+                            <input type="radio" name="exportFormat" value="excel">
+                            <div class="export-icon excel">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <div class="export-info">
+                                <div class="export-title">Excel</div>
+                                <div class="export-desc">ملف بيانات</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="export-option">
+                        <label class="export-label">
+                            <input type="radio" name="exportFormat" value="csv">
+                            <div class="export-icon csv">
+                                <i class="fas fa-file-csv"></i>
+                            </div>
+                            <div class="export-info">
+                                <div class="export-title">CSV</div>
+                                <div class="export-desc">ملف نصي</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="export-settings">
+                    <h3>الإعدادات</h3>
+                    <div class="setting-option">
+                        <label>
+                            <input type="checkbox" id="includeMedicalHistory" checked>
+                            <span>تضمين السجل الطبي</span>
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <label>
+                            <input type="checkbox" id="includeAppointments" checked>
+                            <span>تضمين سجل المواعيد</span>
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <label>
+                            <input type="checkbox" id="includeFinancial" checked>
+                            <span>تضمين البيانات المالية</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="export-actions">
+                    <button class="btn-secondary" id="cancelExport">إلغاء</button>
+                    <button class="btn-primary" id="confirmExport">
+                        <i class="fas fa-download"></i>
+                        تصدير البيانات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      hhhhhh
+    </script>
+</body>
+</html>
