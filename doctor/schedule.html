@@ -1156,6 +1156,721 @@ body {
         </div>
     </div>
 
-    <script src="appointments.js"></script>
+    <script>
+        // نظام إدارة المواعيد للطبيب
+class DoctorAppointmentsManager {
+    constructor() {
+        this.appointments = [];
+        this.filteredAppointments = [];
+        this.currentTab = 'all';
+        this.currentDate = new Date().toISOString().split('T')[0];
+        this.filters = {
+            status: ['pending', 'confirmed', 'completed'],
+            visitType: ['كشف', 'متابعة', 'استشارة', 'طوارئ']
+        };
+        this.doctorId = 'DOC-001'; // يمكن جلبها من بيانات تسجيل الدخول
+        this.doctorName = 'د. ياسر عباس'; // يمكن جلبها من بيانات تسجيل الدخول
+        this.init();
+    }
+
+    init() {
+        this.loadAppointments();
+        this.setupEventListeners();
+        this.updateStats();
+        this.renderAppointments();
+        this.updateTime();
+        this.updateWalletBalance();
+    }
+
+    loadAppointments() {
+        // تحميل المواعيد من localStorage أو من API
+        const savedAppointments = localStorage.getItem('doctor_appointments_bookings');
+        
+        if (savedAppointments) {
+            const allAppointments = JSON.parse(savedAppointments);
+            // تصفية المواعيد الخاصة بهذا الطبيب فقط
+            this.appointments = allAppointments.filter(appointment => 
+                appointment.doctorId === this.doctorId || 
+                appointment.doctorName === this.doctorName
+            );
+        } else {
+            // بيانات تجريبية للطبيب
+            this.appointments = this.getSampleAppointments();
+            this.saveAppointments();
+        }
+        
+        this.applyFilters();
+    }
+
+    getSampleAppointments() {
+        return [
+            {
+                id: 1,
+                doctorId: 'DOC-001',
+                doctorName: 'د. ياسر عباس',
+                doctorSpecialty: 'أمراض المسالك البولية',
+                patientName: 'أحمد محمد',
+                patientId: 'PAT-001',
+                patientPhone: '0551234567',
+                patientEmail: 'ahmed@example.com',
+                date: new Date().toISOString().split('T')[0],
+                time: '10:00',
+                visitType: 'كشف',
+                notes: 'يشكو من آلام في الظهر',
+                status: 'pending',
+                paymentMethod: 'المحفظة الإلكترونية',
+                fee: 200,
+                transactionId: 'TRX-001',
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 2,
+                doctorId: 'DOC-001',
+                doctorName: 'د. ياسر عباس',
+                doctorSpecialty: 'أمراض المسالك البولية',
+                patientName: 'فاطمة علي',
+                patientId: 'PAT-002',
+                patientPhone: '0557654321',
+                patientEmail: 'fatima@example.com',
+                date: new Date().toISOString().split('T')[0],
+                time: '11:30',
+                visitType: 'متابعة',
+                notes: 'متابعة بعد العملية',
+                status: 'confirmed',
+                paymentMethod: 'نقدي',
+                fee: 150,
+                transactionId: 'TRX-002',
+                createdAt: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: 3,
+                doctorId: 'DOC-001',
+                doctorName: 'د. ياسر عباس',
+                doctorSpecialty: 'أمراض المسالك البولية',
+                patientName: 'خالد عبدالله',
+                patientId: 'PAT-003',
+                patientPhone: '0551112233',
+                patientEmail: 'khaled@example.com',
+                date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                time: '09:00',
+                visitType: 'استشارة',
+                notes: 'استشارة حول نتائج التحاليل',
+                status: 'confirmed',
+                paymentMethod: 'بطاقة ائتمان',
+                fee: 180,
+                transactionId: 'TRX-003',
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: 4,
+                doctorId: 'DOC-001',
+                doctorName: 'د. ياسر عباس',
+                doctorSpecialty: 'أمراض المسالك البولية',
+                patientName: 'سارة أحمد',
+                patientId: 'PAT-004',
+                patientPhone: '0554445566',
+                patientEmail: 'sara@example.com',
+                date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
+                time: '14:00',
+                visitType: 'كشف',
+                notes: 'فحص دوري',
+                status: 'completed',
+                paymentMethod: 'المحفظة الإلكترونية',
+                fee: 200,
+                transactionId: 'TRX-004',
+                createdAt: new Date(Date.now() - 259200000).toISOString()
+            }
+        ];
+    }
+
+    saveAppointments() {
+        // حفظ المواعيد في localStorage
+        const allAppointments = JSON.parse(localStorage.getItem('doctor_appointments_bookings')) || [];
+        
+        // تحديث المواعيد الخاصة بهذا الطبيب فقط
+        const otherAppointments = allAppointments.filter(appointment => 
+            appointment.doctorId !== this.doctorId && 
+            appointment.doctorName !== this.doctorName
+        );
+        
+        const updatedAppointments = [...otherAppointments, ...this.appointments];
+        localStorage.setItem('doctor_appointments_bookings', JSON.stringify(updatedAppointments));
+    }
+
+    setupEventListeners() {
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.searchAppointments(e.target.value);
+        });
+
+        // التبويبات
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.changeTab(e.target.dataset.tab);
+            });
+        });
+
+        // تصفية التاريخ
+        document.getElementById('dateFilter').addEventListener('change', (e) => {
+            this.currentDate = e.target.value;
+            this.applyFilters();
+            this.renderAppointments();
+        });
+
+        // زر الإحصائيات
+        document.getElementById('statsBtn').addEventListener('click', () => {
+            this.showStatsModal();
+        });
+
+        // زر المحفظة
+        document.getElementById('walletBtn').addEventListener('click', () => {
+            window.location.href = 'financial.html';
+        });
+
+        // التصفية
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            this.showFilterModal();
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // تحديث الوقت
+        setInterval(() => this.updateTime(), 60000);
+
+        // تطبيق التصفية
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            this.applyUserFilters();
+        });
+
+        // إعادة تعيين التصفية
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            this.resetFilters();
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    updateStats() {
+        const total = this.appointments.length;
+        const pending = this.appointments.filter(a => a.status === 'pending').length;
+        const confirmed = this.appointments.filter(a => a.status === 'confirmed').length;
+        const revenue = this.appointments
+            .filter(a => a.status === 'completed' || a.status === 'confirmed')
+            .reduce((sum, a) => sum + a.fee, 0);
+
+        document.getElementById('totalAppointments').textContent = total;
+        document.getElementById('pendingAppointments').textContent = pending;
+        document.getElementById('confirmedAppointments').textContent = confirmed;
+        document.getElementById('totalRevenue').textContent = `${revenue} ر.ي`;
+    }
+
+    updateWalletBalance() {
+        const financialAccount = JSON.parse(localStorage.getItem('financialAccount')) || { balance: 0 };
+        document.getElementById('walletBadge').textContent = financialAccount.balance;
+    }
+
+    searchAppointments(query) {
+        const searchTerm = query.toLowerCase();
+        if (searchTerm.trim() === '') {
+            this.applyFilters();
+        } else {
+            this.filteredAppointments = this.filteredAppointments.filter(appointment => 
+                appointment.patientName.toLowerCase().includes(searchTerm) ||
+                appointment.patientPhone.includes(searchTerm) ||
+                appointment.visitType.toLowerCase().includes(searchTerm) ||
+                appointment.status.toLowerCase().includes(searchTerm)
+            );
+        }
+        this.renderAppointments();
+    }
+
+    changeTab(tab) {
+        this.currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+        this.applyFilters();
+        this.renderAppointments();
+    }
+
+    applyFilters() {
+        let filtered = [...this.appointments];
+
+        // تصفية حسب التبويب
+        if (this.currentTab !== 'all') {
+            filtered = filtered.filter(appointment => appointment.status === this.currentTab);
+        }
+
+        // تصفية حسب التاريخ
+        filtered = filtered.filter(appointment => appointment.date === this.currentDate);
+
+        // تصفية حسب الحالة
+        filtered = filtered.filter(appointment => this.filters.status.includes(appointment.status));
+
+        // تصفية حسب نوع الزيارة
+        filtered = filtered.filter(appointment => this.filters.visitType.includes(appointment.visitType));
+
+        this.filteredAppointments = filtered;
+    }
+
+    applyUserFilters() {
+        // جمع حالات المواعيد المختارة
+        this.filters.status = Array.from(document.querySelectorAll('#statusFilter input:checked'))
+            .map(input => input.value);
+
+        // جمع أنواع الزيارات المختارة
+        this.filters.visitType = Array.from(document.querySelectorAll('#visitTypeFilter input:checked'))
+            .map(input => input.value);
+
+        this.applyFilters();
+        this.renderAppointments();
+        document.getElementById('filterModal').style.display = 'none';
+    }
+
+    resetFilters() {
+        this.filters = {
+            status: ['pending', 'confirmed', 'completed'],
+            visitType: ['كشف', 'متابعة', 'استشارة', 'طوارئ']
+        };
+        document.querySelectorAll('#statusFilter input').forEach(input => {
+            input.checked = ['pending', 'confirmed', 'completed'].includes(input.value);
+        });
+        document.querySelectorAll('#visitTypeFilter input').forEach(input => {
+            input.checked = true;
+        });
+    }
+
+    renderAppointments() {
+        const container = document.getElementById('appointmentsContainer');
+        const emptyState = document.getElementById('emptyState');
+
+        if (this.filteredAppointments.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        container.style.display = 'block';
+        emptyState.style.display = 'none';
+
+        let appointmentsHTML = '';
+
+        this.filteredAppointments.forEach(appointment => {
+            const statusClass = appointment.status;
+            const statusText = {
+                'pending': 'في الانتظار',
+                'confirmed': 'مؤكدة',
+                'completed': 'مكتملة',
+                'cancelled': 'ملغية'
+            }[appointment.status] || 'في الانتظار';
+
+            appointmentsHTML += `
+                <div class="appointment-card ${statusClass}" onclick="doctorAppointmentsManager.showAppointmentDetails(${appointment.id})">
+                    <div class="appointment-header">
+                        <div class="appointment-patient">
+                            <div class="patient-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="patient-info">
+                                <div class="patient-name">${appointment.patientName}</div>
+                                <div class="visit-type">${appointment.visitType}</div>
+                            </div>
+                        </div>
+                        <div class="appointment-status status-${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="appointment-details">
+                        <div class="appointment-detail">
+                            <i class="fas fa-calendar"></i>
+                            ${appointment.date}
+                        </div>
+                        <div class="appointment-detail">
+                            <i class="fas fa-clock"></i>
+                            ${appointment.time}
+                        </div>
+                        <div class="appointment-detail">
+                            <i class="fas fa-phone"></i>
+                            ${appointment.patientPhone}
+                        </div>
+                        <div class="appointment-detail">
+                            <i class="fas fa-money-bill"></i>
+                            ${appointment.fee} ر.ي
+                        </div>
+                    </div>
+                    <div class="appointment-actions">
+                        ${appointment.status === 'pending' ? `
+                            <button class="btn-primary btn-small" onclick="event.stopPropagation(); doctorAppointmentsManager.confirmAppointment(${appointment.id})">
+                                <i class="fas fa-check"></i>
+                                تأكيد
+                            </button>
+                            <button class="btn-danger btn-small" onclick="event.stopPropagation(); doctorAppointmentsManager.cancelAppointment(${appointment.id})">
+                                <i class="fas fa-times"></i>
+                                رفض
+                            </button>
+                        ` : ''}
+                        ${appointment.status === 'confirmed' ? `
+                            <button class="btn-success btn-small" onclick="event.stopPropagation(); doctorAppointmentsManager.completeAppointment(${appointment.id})">
+                                <i class="fas fa-check-double"></i>
+                                إكمال
+                            </button>
+                            <button class="btn-danger btn-small" onclick="event.stopPropagation(); doctorAppointmentsManager.cancelAppointment(${appointment.id})">
+                                <i class="fas fa-times"></i>
+                                إلغاء
+                            </button>
+                        ` : ''}
+                        ${appointment.status === 'completed' ? `
+                            <button class="btn-secondary btn-small" onclick="event.stopPropagation(); doctorAppointmentsManager.addToWallet(${appointment.id})">
+                                <i class="fas fa-wallet"></i>
+                                إضافة للمحفظة
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = appointmentsHTML;
+    }
+
+    showAppointmentDetails(appointmentId) {
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        if (!appointment) return;
+
+        const modal = document.getElementById('appointmentModal');
+        document.getElementById('appointmentModalTitle').textContent = `تفاصيل الموعد - ${appointment.patientName}`;
+
+        const statusText = {
+            'pending': 'في الانتظار',
+            'confirmed': 'مؤكدة',
+            'completed': 'مكتملة',
+            'cancelled': 'ملغية'
+        }[appointment.status] || 'في الانتظار';
+
+        const modalBody = document.getElementById('appointmentModalBody');
+        modalBody.innerHTML = `
+            <div class="appointment-detail-modal">
+                <div class="detail-section">
+                    <h3>معلومات المريض</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">الاسم الكامل</div>
+                            <div class="detail-value">${appointment.patientName}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم الهاتف</div>
+                            <div class="detail-value">${appointment.patientPhone}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">البريد الإلكتروني</div>
+                            <div class="detail-value">${appointment.patientEmail}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رقم المريض</div>
+                            <div class="detail-value">${appointment.patientId}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>تفاصيل الموعد</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">التاريخ</div>
+                            <div class="detail-value">${appointment.date}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الوقت</div>
+                            <div class="detail-value">${appointment.time}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">نوع الزيارة</div>
+                            <div class="detail-value">${appointment.visitType}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الحالة</div>
+                            <div class="detail-value">${statusText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">طريقة الدفع</div>
+                            <div class="detail-value">${appointment.paymentMethod}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رسوم الكشف</div>
+                            <div class="detail-value">${appointment.fee} ر.ي</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${appointment.notes ? `
+                <div class="detail-section">
+                    <h3>ملاحظات المريض</h3>
+                    <div class="patient-notes">
+                        <div class="notes-label">ما ذكره المريض:</div>
+                        <div class="notes-content">${appointment.notes}</div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="appointment-actions" style="margin-top: 20px;">
+                    ${appointment.status === 'pending' ? `
+                        <button class="btn-primary" onclick="doctorAppointmentsManager.confirmAppointment(${appointment.id})">
+                            <i class="fas fa-check"></i>
+                            تأكيد الموعد
+                        </button>
+                        <button class="btn-danger" onclick="doctorAppointmentsManager.cancelAppointment(${appointment.id})">
+                            <i class="fas fa-times"></i>
+                            رفض الموعد
+                        </button>
+                    ` : ''}
+                    ${appointment.status === 'confirmed' ? `
+                        <button class="btn-success" onclick="doctorAppointmentsManager.completeAppointment(${appointment.id})">
+                            <i class="fas fa-check-double"></i>
+                            إكمال الموعد
+                        </button>
+                        <button class="btn-danger" onclick="doctorAppointmentsManager.cancelAppointment(${appointment.id})">
+                            <i class="fas fa-times"></i>
+                            إلغاء الموعد
+                        </button>
+                    ` : ''}
+                    ${appointment.status === 'completed' ? `
+                        <button class="btn-primary" onclick="doctorAppointmentsManager.addToWallet(${appointment.id})">
+                            <i class="fas fa-wallet"></i>
+                            إضافة المبلغ للمحفظة
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    confirmAppointment(appointmentId) {
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        if (!appointment) return;
+
+        appointment.status = 'confirmed';
+        this.saveAppointments();
+        this.updateStats();
+        this.applyFilters();
+        this.renderAppointments();
+        document.getElementById('appointmentModal').style.display = 'none';
+        
+        alert('تم تأكيد الموعد بنجاح!');
+    }
+
+    completeAppointment(appointmentId) {
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        if (!appointment) return;
+
+        appointment.status = 'completed';
+        this.saveAppointments();
+        this.updateStats();
+        this.applyFilters();
+        this.renderAppointments();
+        document.getElementById('appointmentModal').style.display = 'none';
+        
+        alert('تم إكمال الموعد بنجاح! يمكنك الآن إضافة المبلغ إلى محفظتك.');
+    }
+
+    cancelAppointment(appointmentId) {
+        if (!confirm('هل أنت متأكد من إلغاء هذا الموعد؟')) return;
+
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        if (!appointment) return;
+
+        appointment.status = 'cancelled';
+        this.saveAppointments();
+        this.updateStats();
+        this.applyFilters();
+        this.renderAppointments();
+        document.getElementById('appointmentModal').style.display = 'none';
+        
+        alert('تم إلغاء الموعد بنجاح!');
+    }
+
+    addToWallet(appointmentId) {
+        const appointment = this.appointments.find(a => a.id === appointmentId);
+        if (!appointment || appointment.status !== 'completed') {
+            alert('لا يمكن إضافة المبلغ للمحفظة. يجب إكمال الموعد أولاً.');
+            return;
+        }
+
+        // التحقق من عدم إضافة المبلغ مسبقاً
+        if (appointment.addedToWallet) {
+            alert('تم إضافة هذا المبلغ للمحفظة مسبقاً.');
+            return;
+        }
+
+        // إضافة المبلغ للمحفظة
+        const financialAccount = JSON.parse(localStorage.getItem('financialAccount')) || { balance: 0 };
+        financialAccount.balance += appointment.fee;
+        localStorage.setItem('financialAccount', JSON.stringify(financialAccount));
+
+        // تسجيل المعاملة
+        const financialTransactions = JSON.parse(localStorage.getItem('financialTransactions')) || [];
+        const transaction = {
+            id: 'DR' + Date.now().toString().slice(-8),
+            type: 'deposit',
+            title: `حجز موعد - ${appointment.patientName}`,
+            description: `رسوم كشف طبي - ${appointment.visitType}`,
+            amount: appointment.fee,
+            ref: appointment.transactionId || 'N/A',
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-appointment'
+        };
+        
+        financialTransactions.unshift(transaction);
+        localStorage.setItem('financialTransactions', JSON.stringify(financialTransactions));
+
+        // تسجيل النشاط
+        const financialActivities = JSON.parse(localStorage.getItem('financialActivities')) || [];
+        const activity = {
+            id: Date.now(),
+            type: 'deposit',
+            title: `إيراد موعد - ${appointment.patientName}`,
+            amount: appointment.fee,
+            time: 'الآن',
+            icon: 'fa-calendar-check'
+        };
+        
+        financialActivities.unshift(activity);
+        if (financialActivities.length > 10) {
+            financialActivities.pop();
+        }
+        localStorage.setItem('financialActivities', JSON.stringify(financialActivities));
+
+        // تحديث حالة الموعد
+        appointment.addedToWallet = true;
+        this.saveAppointments();
+        this.updateWalletBalance();
+        
+        alert(`تم إضافة مبلغ ${appointment.fee} ر.ي إلى محفظتك بنجاح!`);
+        document.getElementById('appointmentModal').style.display = 'none';
+    }
+
+    showStatsModal() {
+        const modal = document.getElementById('statsModal');
+        const modalBody = document.getElementById('statsModalBody');
+
+        // حساب الإحصائيات
+        const totalAppointments = this.appointments.length;
+        const completedAppointments = this.appointments.filter(a => a.status === 'completed').length;
+        const cancelledAppointments = this.appointments.filter(a => a.status === 'cancelled').length;
+        const totalRevenue = this.appointments
+            .filter(a => a.status === 'completed')
+            .reduce((sum, a) => sum + a.fee, 0);
+        
+        // إحصائيات حسب نوع الزيارة
+        const visitTypeStats = {};
+        this.appointments.forEach(appointment => {
+            if (!visitTypeStats[appointment.visitType]) {
+                visitTypeStats[appointment.visitType] = 0;
+            }
+            visitTypeStats[appointment.visitType]++;
+        });
+
+        // توليد مخطط الأعمدة
+        const chartBars = Object.entries(visitTypeStats).map(([type, count]) => {
+            const percentage = (count / totalAppointments) * 100;
+            return `
+                <div class="chart-bar" style="height: ${percentage}%">
+                    <div class="chart-label">${type}</div>
+                </div>
+            `;
+        }).join('');
+
+        modalBody.innerHTML = `
+            <div class="stats-details">
+                <div class="stats-chart">
+                    <div class="chart-header">
+                        <div class="chart-title">توزيع المواعيد حسب نوع الزيارة</div>
+                        <div class="chart-period">آخر 30 يوم</div>
+                    </div>
+                    <div class="chart-container">
+                        ${chartBars}
+                    </div>
+                </div>
+
+                <div class="stats-summary">
+                    <div class="summary-card">
+                        <div class="summary-value">${totalAppointments}</div>
+                        <div class="summary-label">إجمالي المواعيد</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-value">${completedAppointments}</div>
+                        <div class="summary-label">مواعيد مكتملة</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-value">${cancelledAppointments}</div>
+                        <div class="summary-label">مواعيد ملغية</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-value">${totalRevenue} ر.ي</div>
+                        <div class="summary-label">إجمالي الإيرادات</div>
+                    </div>
+                </div>
+
+                <div class="detail-section" style="margin-top: 20px;">
+                    <h3>تفاصيل الإيرادات</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">الإيرادات هذا الشهر</div>
+                            <div class="detail-value">${totalRevenue} ر.ي</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">متوسط سعر الكشف</div>
+                            <div class="detail-value">${completedAppointments > 0 ? Math.round(totalRevenue / completedAppointments) : 0} ر.ي</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">نسبة الإلغاء</div>
+                            <div class="detail-value">${totalAppointments > 0 ? Math.round((cancelledAppointments / totalAppointments) * 100) : 0}%</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">معدل الإشغال</div>
+                            <div class="detail-value">${totalAppointments > 0 ? Math.round((completedAppointments / totalAppointments) * 100) : 0}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    showFilterModal() {
+        const modal = document.getElementById('filterModal');
+        modal.style.display = 'block';
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    window.doctorAppointmentsManager = new DoctorAppointmentsManager();
+    
+    // تعيين تاريخ اليوم كافتراضي
+    document.getElementById('dateFilter').value = new Date().toISOString().split('T')[0];
+});
+    </script>
 </body>
 </html>
