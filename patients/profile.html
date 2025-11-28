@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - الملف الشخصي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* جميع الأنماط السابقة تبقى كما هي */
+        :root {
+            /* الألوان الأساسية: أزرق طبي هادئ */
+            --primary: #1976D2;
+            --primary-dark: #1565C0;
+            --primary-light: #BBDEFB;
+            --secondary: #4CAF50;
+            --accent: #FF5252;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --info: #2196F3;
+
+            /* خلفية التطبيق: فاتحة ومريحة للعين */
+            --bg-light: #F5F9FF;
+            --bg-surface: #ffffff;
+            --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+            --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+
+            /* الزوايا والانتقالات */
+            --radius-xl: 30px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+            /* الخطوط المحدثة */
+            --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* التطبيق الرئيسي */
+        .ultra-app {
+            max-width: 450px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--bg-light);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+            overflow-x: hidden;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        /* الهيدر */
+        .app-header {
+            padding: 20px 16px 0;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .title-section h1 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .title-section p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* أيقونات التفاعل */
+        .action-icon {
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            position: relative;
+            font-size: 16px;
+        }
+
+        .action-icon:active {
+            box-shadow: var(--shadow-inset);
+            color: var(--primary-dark);
+        }
+
+        .icon-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 0 16px 100px;
+        }
+
+        /* شاشة الترحيب */
+        .welcome-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* بطاقة الملف الشخصي */
+        .profile-card {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-light);
+            transition: var(--transition-liquid);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .profile-card:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .profile-header {
+            padding: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 40px;
+            color: var(--primary);
+            border: 4px solid white;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .profile-id {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .profile-body {
+            padding: 20px;
+        }
+
+        .info-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--primary-light);
+            padding-bottom: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-size: 14px;
+            text-align: left;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .info-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            padding: 6px 8px;
+            border-radius: var(--radius-xl);
+            z-index: 1000;
+            max-width: 340px;
+            width: calc(100% - 32px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item-dock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 0;
+            border-radius: var(--radius-md);
+            transition: var(--transition-liquid);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-item-dock.active {
+            color: var(--primary-dark);
+        }
+
+        .nav-item-dock.active .nav-icon-dock {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transform: translateY(-8px);
+            transition: var(--transition-liquid);
+        }
+
+        .nav-icon-dock {
+            font-size: 16px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-label {
+            font-size: 9px;
+            font-weight: 600;
+            margin-top: 2px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-item-dock.active .nav-label {
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        /* النوافذ المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease-out;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: var(--shadow-card);
+            animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideUp {
+            from {opacity: 0; transform: translateY(100%);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* نماذج الحساب */
+        .account-form {
+            padding: 18px;
+        }
+
+        .form-section {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-light);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .required {
+            color: var(--accent);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-inset);
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition-liquid);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            box-shadow: var(--shadow-light);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* حقل رقم الهاتف */
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phone-prefix {
+            background: var(--primary-light);
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            color: var(--primary-dark);
+            min-width: 70px;
+            text-align: center;
+            box-shadow: var(--shadow-inset);
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        /* رفع الصور */
+        .avatar-upload, .file-upload {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .avatar-preview, .file-preview {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed var(--primary-light);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            background: var(--bg-surface);
+            text-align: center;
+            padding: 10px;
+        }
+
+        .file-preview {
+            width: 100%;
+            height: 150px;
+        }
+
+        .avatar-preview:hover, .file-preview:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .avatar-preview.has-image, .file-preview.has-image {
+            border-style: solid;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .avatar-preview i, .file-preview i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .avatar-preview span, .file-preview span {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .avatar-input, .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* قوة كلمة المرور */
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 4px;
+            transition: var(--transition-liquid);
+        }
+
+        .strength-bar::before {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: var(--transition-liquid);
+        }
+
+        .strength-bar.weak::before {
+            width: 33%;
+            background: var(--accent);
+        }
+
+        .strength-bar.medium::before {
+            width: 66%;
+            background: var(--warning);
+        }
+
+        .strength-bar.strong::before {
+            width: 100%;
+            background: var(--success);
+        }
+
+        .strength-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* مطابقة كلمة المرور */
+        .password-match {
+            font-size: 11px;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .password-match.valid {
+            color: var(--success);
+        }
+
+        .password-match.invalid {
+            color: var(--accent);
+        }
+
+        /* خانة الاختيار */
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .checkbox-label input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--primary-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-liquid);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-label input:checked + .checkmark {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkbox-label input:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        /* أزرار الإجراء */
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .btn-small {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-small:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        /* الكاميرا */
+        .camera-container {
+            text-align: center;
+        }
+
+        #cameraVideo {
+            width: 100%;
+            max-width: 300px;
+            height: 400px;
+            background: #000;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* أزرار الإجراءات */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 428px) {
+            .phone-input-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .phone-prefix {
+                width: 100%;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                gap: 6px;
+                align-items: flex-start;
+            }
+            
+            .info-label {
+                min-width: auto;
+            }
+            
+            .info-value {
+                text-align: right;
+                padding-right: 0;
+            }
+            
+            .info-actions {
+                align-self: flex-end;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-button {
+                min-width: auto;
+            }
+            
+            #cameraVideo {
+                height: 300px;
+            }
+            
+            .avatar-preview, .file-preview {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .file-preview {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>الملف الشخصي 👤</h1>
+                    <p>إدارة بياناتك الشخصية والمالية</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">2</span>
+                    </button>
+                    <button class="action-icon" id="settingsBtn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الملف الشخصي -->
+        <div class="main-content" id="mainContent">
+            <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="consultation.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-comment-medical"></i>
+                </div>
+                <div class="nav-label">استشارة طبية</div>
+            </a>
+            <a href="patient-profile.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">الملف الشخصي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء الحساب -->
+    <div id="createAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>أنشئ حسابك واستمتع بجميع خدمات التطبيق</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createAccountForm" class="account-form">
+                    <!-- البيانات الشخصية -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user-circle"></i>
+                            البيانات الشخصية
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">اسم المريض الرباعي <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="fullName" required 
+                                   placeholder="أدخل الاسم الرباعي الكامل">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">صورة البروفايل</label>
+                            <div class="avatar-upload">
+                                <div class="avatar-preview" id="avatarPreview">
+                                    <i class="fas fa-user"></i>
+                                    <span>انقر لرفع الصورة</span>
+                                </div>
+                                <input type="file" id="avatarInput" accept="image/*" class="avatar-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تاريخ الميلاد <span class="required">*</span></label>
+                            <input type="date" class="form-input" id="birthDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">المحافظة <span class="required">*</span></label>
+                            <select class="form-select" id="governorate" required>
+                                <option value="">اختر المحافظة</option>
+                                <option value="صنعاء">صنعاء</option>
+                                <option value="عدن">عدن</option>
+                                <option value="حجة">حجة</option>
+                                <option value="عمران">عمران</option>
+                                <option value="صعدة">صعدة</option>
+                                <option value="ذمار">ذمار</option>
+                                <option value="إب">إب</option>
+                                <option value="البيضاء">البيضاء</option>
+                                <option value="المحويت">المحويت</option>
+                                <option value="الحديدة">الحديدة</option>
+                                <option value="المهرة">المهرة</option>
+                                <option value="حضرموت">حضرموت</option>
+                                <option value="شبوة">شبوة</option>
+                                <option value="تعز">تعز</option>
+                                <option value="لحج">لحج</option>
+                                <option value="أبين">أبين</option>
+                                <option value="ضالع">ضالع</option>
+                                <option value="البيضاء">البيضاء</option>
+                                <option value="الجوف">الجوف</option>
+                                <option value="المهرة">المهرة</option>
+                                <option value="ريمة">ريمة</option>
+                                <option value="صعدة">صعدة</option>
+                                <option value="عمران">عمران</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">محل الإقامة <span class="required">*</span></label>
+                            <textarea class="form-textarea" id="address" required 
+                                      placeholder="أدخل عنوان السكن التفصيلي" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف <span class="required">*</span></label>
+                            <div class="phone-input-container">
+                                <div class="phone-prefix">+967</div>
+                                <input type="tel" class="form-input phone-input" id="phoneNumber" required 
+                                       placeholder="أدخل رقم الهاتف">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني (اختياري)</label>
+                            <input type="email" class="form-input" id="email" 
+                                   placeholder="example@email.com">
+                        </div>
+                    </div>
+
+                    <!-- البيانات المالية -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-wallet"></i>
+                            البيانات المالية
+                        </h3>
+
+                        <div class="form-group">
+                            <label class="form-label">صورة البطاقة الشخصية (الوجه الأمامي) <span class="required">*</span></label>
+                            <div class="file-upload">
+                                <div class="file-preview" id="idFrontPreview">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>انقر لرفع صورة الوجه الأمامي</span>
+                                </div>
+                                <input type="file" id="idFrontInput" accept="image/*" class="file-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">صورة البطاقة الشخصية (الوجه الخلفي) <span class="required">*</span></label>
+                            <div class="file-upload">
+                                <div class="file-preview" id="idBackPreview">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>انقر لرفع صورة الوجه الخلفي</span>
+                                </div>
+                                <input type="file" id="idBackInput" accept="image/*" class="file-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">صورة سيلفي مع البطاقة الشخصية <span class="required">*</span></label>
+                            <div class="file-upload">
+                                <div class="file-preview" id="selfiePreview">
+                                    <i class="fas fa-camera"></i>
+                                    <span>انقر لالتقاط صورة سيلفي</span>
+                                </div>
+                                <input type="file" id="selfieInput" accept="image/*" class="file-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">كلمة مرور المعاملات المالية <span class="required">*</span></label>
+                            <input type="password" class="form-input" id="transactionPassword" required 
+                                   placeholder="أدخل كلمة مرور قوية" minlength="6">
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="strength-bar"></div>
+                                <div class="strength-text">قوة الكلمة</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">تأكيد كلمة المرور <span class="required">*</span></label>
+                            <input type="password" class="form-input" id="confirmTransactionPassword" required 
+                                   placeholder="أعد إدخال كلمة المرور">
+                            <div class="password-match" id="passwordMatch"></div>
+                        </div>
+                    </div>
+
+                    <!-- الشروط والأحكام -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span class="checkmark"></span>
+                                أوافق على <a href="#" class="link">الشروط والأحكام</a> و <a href="#" class="link">سياسة الخصوصية</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- أزرار الإجراء -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="patientProfile.closeCreateAccountModal()">
+                            <i class="fas fa-times"></i>
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            إنشاء الحساب
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل البيانات -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تعديل البيانات الشخصية</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" class="account-form">
+                    <!-- سيتم تعبئة النموذج هنا ديناميكياً -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تغيير كلمة المرور -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تغيير كلمة مرور المعاملات</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" class="account-form">
+                    <div class="form-group">
+                        <label class="form-label">كلمة المرور الحالية</label>
+                        <input type="password" class="form-input" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">كلمة المرور الجديدة</label>
+                        <input type="password" class="form-input" id="newPassword" required minlength="6">
+                        <div class="password-strength" id="newPasswordStrength">
+                            <div class="strength-bar"></div>
+                            <div class="strength-text">قوة الكلمة</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                        <input type="password" class="form-input" id="confirmNewPassword" required>
+                        <div class="password-match" id="newPasswordMatch"></div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="patientProfile.closeChangePasswordModal()">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            تغيير كلمة المرور
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام الملف الشخصي للمريض
+class PatientProfile {
+    constructor() {
+        this.patientData = null;
+        this.init();
+    }
+
+    init() {
+        this.loadPatientData();
+        this.setupEventListeners();
+        this.renderProfile();
+        this.updateTime();
+        
+        // إضافة body للكاميرا modal
+        const cameraModal = document.getElementById('cameraModal');
+        if (cameraModal) {
+            cameraModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>التقاط صورة سيلفي</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body" id="cameraModalBody">
+                        <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    loadPatientData() {
+        try {
+            const savedPatientData = localStorage.getItem('patient_profile_data');
+            console.log('بيانات المريض المحفوظة:', savedPatientData);
+            
+            if (savedPatientData && savedPatientData !== 'null') {
+                this.patientData = JSON.parse(savedPatientData);
+                console.log('بيانات المريض المحملة:', this.patientData);
+            } else {
+                console.log('لا يوجد حساب محفوظ، عرض شاشة الترحيب');
+            }
+        } catch (error) {
+            console.error('خطأ في تحميل البيانات:', error);
+            this.patientData = null;
+        }
+    }
+
+    savePatientData() {
+        if (this.patientData) {
+            localStorage.setItem('patient_profile_data', JSON.stringify(this.patientData));
+            console.log('تم حفظ البيانات:', this.patientData);
+        }
+    }
+
+    setupEventListeners() {
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // نموذج إنشاء الحساب
+        const createAccountForm = document.getElementById('createAccountForm');
+        if (createAccountForm) {
+            createAccountForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.createAccount();
+            });
+        }
+
+        // نموذج تعديل البيانات
+        const editProfileForm = document.getElementById('editProfileForm');
+        if (editProfileForm) {
+            editProfileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.updateProfile();
+            });
+        }
+
+        // نموذج تغيير كلمة المرور
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        if (changePasswordForm) {
+            changePasswordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.changePassword();
+            });
+        }
+
+        // رفع الصور
+        this.setupImageUploads();
+        
+        // التحقق من كلمة المرور
+        this.setupPasswordValidation();
+
+        // تحديث الوقت
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    setupImageUploads() {
+        // صورة البروفايل
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        
+        if (avatarInput && avatarPreview) {
+            avatarInput.addEventListener('change', (e) => {
+                this.previewImage(e.target, avatarPreview);
+            });
+        }
+
+        // صورة البطاقة الأمامية
+        const idFrontInput = document.getElementById('idFrontInput');
+        const idFrontPreview = document.getElementById('idFrontPreview');
+        
+        if (idFrontInput && idFrontPreview) {
+            idFrontInput.addEventListener('change', (e) => {
+                this.previewImage(e.target, idFrontPreview);
+            });
+        }
+
+        // صورة البطاقة الخلفية
+        const idBackInput = document.getElementById('idBackInput');
+        const idBackPreview = document.getElementById('idBackPreview');
+        
+        if (idBackInput && idBackPreview) {
+            idBackInput.addEventListener('change', (e) => {
+                this.previewImage(e.target, idBackPreview);
+            });
+        }
+
+        // صورة السيلفي
+        const selfieInput = document.getElementById('selfieInput');
+        const selfiePreview = document.getElementById('selfiePreview');
+        
+        if (selfieInput && selfiePreview) {
+            selfieInput.addEventListener('change', (e) => {
+                this.previewImage(e.target, selfiePreview);
+            });
+        }
+    }
+
+    setupPasswordValidation() {
+        const passwordInput = document.getElementById('transactionPassword');
+        const confirmPasswordInput = document.getElementById('confirmTransactionPassword');
+
+        if (passwordInput && confirmPasswordInput) {
+            passwordInput.addEventListener('input', () => {
+                this.checkPasswordStrength();
+                this.checkPasswordMatch();
+            });
+
+            confirmPasswordInput.addEventListener('input', () => {
+                this.checkPasswordMatch();
+            });
+        }
+    }
+
+    checkPasswordStrength() {
+        const passwordInput = document.getElementById('transactionPassword');
+        const strengthBar = document.querySelector('#passwordStrength .strength-bar');
+        const strengthText = document.querySelector('#passwordStrength .strength-text');
+
+        if (!passwordInput || !strengthBar || !strengthText) return;
+
+        const password = passwordInput.value;
+        let strength = 0;
+        let text = 'قوة الكلمة';
+
+        if (password.length >= 6) strength++;
+        if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+        if (password.match(/\d/)) strength++;
+        if (password.match(/[^a-zA-Z\d]/)) strength++;
+
+        strengthBar.className = 'strength-bar';
+        
+        switch (strength) {
+            case 0:
+            case 1:
+                strengthBar.classList.add('weak');
+                text = 'ضعيفة';
+                break;
+            case 2:
+            case 3:
+                strengthBar.classList.add('medium');
+                text = 'متوسطة';
+                break;
+            case 4:
+                strengthBar.classList.add('strong');
+                text = 'قوية';
+                break;
+        }
+
+        strengthText.textContent = text;
+    }
+
+    checkPasswordMatch() {
+        const password = document.getElementById('transactionPassword')?.value;
+        const confirmPassword = document.getElementById('confirmTransactionPassword')?.value;
+        const matchElement = document.getElementById('passwordMatch');
+
+        if (!matchElement) return;
+
+        if (!password || !confirmPassword) {
+            matchElement.textContent = '';
+            matchElement.className = 'password-match';
+            return;
+        }
+
+        if (password === confirmPassword) {
+            matchElement.textContent = 'كلمة المرور متطابقة';
+            matchElement.className = 'password-match valid';
+        } else {
+            matchElement.textContent = 'كلمة المرور غير متطابقة';
+            matchElement.className = 'password-match invalid';
+        }
+    }
+
+    previewImage(input, previewElement) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewElement.style.backgroundImage = `url(${e.target.result})`;
+                previewElement.classList.add('has-image');
+                previewElement.innerHTML = '';
+                
+                // حفظ الصورة في البيانات المؤقتة
+                if (!this.tempData) this.tempData = {};
+                this.tempData[input.id] = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    openCameraModal() {
+        const modal = document.getElementById('cameraModal');
+        if (modal) {
+            modal.style.display = 'block';
+
+            // عرض تعليمات للمستخدم
+            const cameraBody = document.getElementById('cameraModalBody');
+            if (cameraBody) {
+                cameraBody.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 48px; color: var(--primary); margin-bottom: 20px;">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 style="margin-bottom: 15px; color: var(--text-primary);">التقاط صورة سيلفي</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 25px; line-height: 1.6;">
+                            للتقاط صورة سيلفي مع البطاقة الشخصية:<br>
+                            1. احمل البطاقة الشخصية بجانب وجهك<br>
+                            2. تأكد من وضوح البيانات في الصورة<br>
+                            3. اضغط على زر "رفع صورة" لاختيار الصورة من معرض الصور
+                        </p>
+                        
+                        <div class="camera-controls">
+                            <button class="btn-secondary" onclick="patientProfile.closeCameraModal()" style="margin: 5px;">
+                                <i class="fas fa-times"></i>
+                                إلغاء
+                            </button>
+                            <button class="btn-primary" onclick="patientProfile.openImagePicker()" style="margin: 5px;">
+                                <i class="fas fa-image"></i>
+                                رفع صورة من المعرض
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    closeCameraModal() {
+        const modal = document.getElementById('cameraModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    openImagePicker() {
+        // إنشاء input file مخفي
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                this.handleSelfieImage(file);
+            }
+        });
+
+        // إضافة إلى DOM والنقر عليه
+        document.body.appendChild(fileInput);
+        fileInput.click();
+        document.body.removeChild(fileInput);
+        
+        this.closeCameraModal();
+    }
+
+    handleSelfieImage(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const selfiePreview = document.getElementById('selfiePreview');
+            if (selfiePreview) {
+                selfiePreview.style.backgroundImage = `url(${e.target.result})`;
+                selfiePreview.classList.add('has-image');
+                selfiePreview.innerHTML = '';
+
+                // حفظ الصورة في البيانات المؤقتة
+                if (!this.tempData) this.tempData = {};
+                this.tempData.selfieImage = e.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    showCreateAccountModal() {
+        const modal = document.getElementById('createAccountModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+
+    closeCreateAccountModal() {
+        const modal = document.getElementById('createAccountModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    createAccount() {
+        console.log('بدء إنشاء الحساب...');
+        
+        // التحقق من صحة البيانات
+        if (!this.validateCreateAccountForm()) {
+            console.log('فشل التحقق من صحة البيانات');
+            return;
+        }
+
+        // إنشاء معرفات فريدة
+        const patientId = this.generatePatientId();
+        const financialAccountId = this.generateFinancialAccountId();
+
+        // جمع البيانات
+        const formData = {
+            // البيانات الشخصية
+            id: patientId,
+            financialAccountId: financialAccountId,
+            fullName: document.getElementById('fullName').value,
+            birthDate: document.getElementById('birthDate').value,
+            governorate: document.getElementById('governorate').value,
+            address: document.getElementById('address').value,
+            phoneNumber: '+967' + document.getElementById('phoneNumber').value,
+            email: document.getElementById('email').value || '',
+            
+            // البيانات المالية
+            transactionPassword: document.getElementById('transactionPassword').value,
+            
+            // الصور
+            avatar: this.tempData?.avatarInput || '',
+            idFront: this.tempData?.idFrontInput || '',
+            idBack: this.tempData?.idBackInput || '',
+            selfie: this.tempData?.selfieImage || '',
+
+            // بيانات إضافية
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            status: 'active'
+        };
+
+        console.log('بيانات الحساب الجديد:', formData);
+
+        // حفظ البيانات
+        this.patientData = formData;
+        this.savePatientData();
+
+        // إنشاء الحساب المالي
+        this.createFinancialAccount(formData);
+
+        // إغلاق النافذة وعرض الملف الشخصي
+        this.closeCreateAccountModal();
+        this.renderProfile();
+
+        alert('تم إنشاء الحساب بنجاح! يمكنك الآن استخدام جميع خدمات التطبيق.');
+        console.log('تم إنشاء الحساب بنجاح');
+    }
+
+    validateCreateAccountForm() {
+        const requiredFields = [
+            'fullName', 'birthDate', 'governorate', 'address', 'phoneNumber',
+            'transactionPassword', 'confirmTransactionPassword'
+        ];
+
+        for (let field of requiredFields) {
+            const element = document.getElementById(field);
+            if (!element || !element.value.trim()) {
+                alert(`يرجى ملء حقل ${field}`);
+                if (element) element.focus();
+                return false;
+            }
+        }
+
+        // التحقق من كلمة المرور
+        const password = document.getElementById('transactionPassword').value;
+        const confirmPassword = document.getElementById('confirmTransactionPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('كلمة المرور غير متطابقة');
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+            return false;
+        }
+
+        // التحقق من الموافقة على الشروط
+        if (!document.getElementById('agreeTerms').checked) {
+            alert('يرجى الموافقة على الشروط والأحكام');
+            return false;
+        }
+
+        return true;
+    }
+
+    generatePatientId() {
+        const timestamp = Date.now().toString().slice(-8);
+        const random = Math.random().toString(36).substr(2, 4).toUpperCase();
+        return `PAT${timestamp}${random}`;
+    }
+
+    generateFinancialAccountId() {
+        const timestamp = Date.now().toString().slice(-10);
+        return `FA${timestamp}`;
+    }
+
+    createFinancialAccount(patientData) {
+        const financialAccount = {
+            id: patientData.financialAccountId,
+            patientId: patientData.id,
+            patientName: patientData.fullName,
+            balance: 0,
+            currency: 'ر.ي',
+            status: 'active',
+            createdAt: new Date().toISOString(),
+            transactions: []
+        };
+
+        localStorage.setItem('financialAccount', JSON.stringify(financialAccount));
+    }
+
+    renderProfile() {
+        const mainContent = document.getElementById('mainContent');
+        if (!mainContent) return;
+
+        console.log('عرض الملف الشخصي، بيانات المريض:', this.patientData);
+
+        if (!this.patientData) {
+            mainContent.innerHTML = this.getWelcomeScreenHTML();
+        } else {
+            mainContent.innerHTML = this.getProfileHTML();
+        }
+    }
+
+    getWelcomeScreenHTML() {
+        return `
+            <div class="welcome-screen">
+                <div class="welcome-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 class="welcome-title">مرحباً بك في طبيب 24/7</h1>
+                <p class="welcome-subtitle">
+                    أنشئ حسابك الآن واستمتع بجميع خدماتنا الطبية المتكاملة<br>
+                    حجز المواعيد، الاستشارات الطبية، والمزيد...
+                </p>
+                <button class="btn-primary" onclick="patientProfile.showCreateAccountModal()">
+                    <i class="fas fa-user-plus"></i>
+                    إنشاء حساب جديد
+                </button>
+            </div>
+        `;
+    }
+
+    getProfileHTML() {
+        const patient = this.patientData;
+        const age = this.calculateAge(patient.birthDate);
+
+        return `
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        ${patient.avatar ? 
+                            `<img src="${patient.avatar}" alt="${patient.fullName}">` :
+                            `<i class="fas fa-user"></i>`
+                        }
+                        <button class="edit-avatar-btn" onclick="patientProfile.editAvatar()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h2 class="profile-name">${patient.fullName}</h2>
+                    <div class="profile-id">رقم المريض: ${patient.id}</div>
+                </div>
+                
+                <div class="profile-body">
+                    <!-- البيانات الشخصية -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user-circle"></i>
+                            البيانات الشخصية
+                        </h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">الاسم الكامل</span>
+                                <span class="info-value">${patient.fullName}</span>
+                                <div class="info-actions">
+                                    <button class="btn-small" onclick="patientProfile.editPersonalInfo()">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">تاريخ الميلاد</span>
+                                <span class="info-value">${this.formatDate(patient.birthDate)} (${age} سنة)</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">المحافظة</span>
+                                <span class="info-value">${patient.governorate}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">عنوان السكن</span>
+                                <span class="info-value">${patient.address}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">رقم الهاتف</span>
+                                <span class="info-value">${patient.phoneNumber}</span>
+                            </div>
+                            ${patient.email ? `
+                            <div class="info-item">
+                                <span class="info-label">البريد الإلكتروني</span>
+                                <span class="info-value">${patient.email}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <!-- البيانات المالية -->
+                    <div class="info-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-wallet"></i>
+                            البيانات المالية
+                        </h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">رقم الحساب المالي</span>
+                                <span class="info-value">${patient.financialAccountId}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">حالة الحساب</span>
+                                <span class="info-value" style="color: var(--success);">نشط</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">كلمة المرور المالية</span>
+                                <span class="info-value">••••••</span>
+                                <div class="info-actions">
+                                    <button class="btn-small" onclick="patientProfile.showChangePasswordModal()">
+                                        <i class="fas fa-key"></i>
+                                        تغيير
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-secondary action-button" onclick="patientProfile.exportData()">
+                    <i class="fas fa-download"></i>
+                    تصدير البيانات
+                </button>
+                <button class="btn-secondary action-button" onclick="patientProfile.deleteAccount()">
+                    <i class="fas fa-trash"></i>
+                    حذف الحساب
+                </button>
+            </div>
+        `;
+    }
+
+    calculateAge(birthDate) {
+        const today = new Date();
+        const birth = new Date(birthDate);
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+        
+        return age;
+    }
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ar-EG');
+    }
+
+    editPersonalInfo() {
+        const patient = this.patientData;
+        const modal = document.getElementById('editProfileModal');
+        
+        if (!modal) return;
+        
+        document.getElementById('editProfileForm').innerHTML = `
+            <div class="form-section">
+                <div class="form-group">
+                    <label class="form-label">اسم المريض الرباعي</label>
+                    <input type="text" class="form-input" id="editFullName" value="${patient.fullName}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تاريخ الميلاد</label>
+                    <input type="date" class="form-input" id="editBirthDate" value="${patient.birthDate}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">المحافظة</label>
+                    <select class="form-select" id="editGovernorate" required>
+                        <option value="">اختر المحافظة</option>
+                        <option value="صنعاء" ${patient.governorate === 'صنعاء' ? 'selected' : ''}>صنعاء</option>
+                        <option value="عدن" ${patient.governorate === 'عدن' ? 'selected' : ''}>عدن</option>
+                        <option value="حجة" ${patient.governorate === 'حجة' ? 'selected' : ''}>حجة</option>
+                        <option value="عمران" ${patient.governorate === 'عمران' ? 'selected' : ''}>عمران</option>
+                        <option value="صعدة" ${patient.governorate === 'صعدة' ? 'selected' : ''}>صعدة</option>
+                        <option value="ذمار" ${patient.governorate === 'ذمار' ? 'selected' : ''}>ذمار</option>
+                        <option value="إب" ${patient.governorate === 'إب' ? 'selected' : ''}>إب</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">محل الإقامة</label>
+                    <textarea class="form-textarea" id="editAddress" required rows="3">${patient.address}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف</label>
+                    <div class="phone-input-container">
+                        <div class="phone-prefix">+967</div>
+                        <input type="tel" class="form-input phone-input" id="editPhoneNumber" 
+                               value="${patient.phoneNumber.replace('+967', '')}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-input" id="editEmail" value="${patient.email || ''}">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="patientProfile.closeEditModal()">
+                    إلغاء
+                </button>
+                <button type="submit" class="btn-primary">
+                    حفظ التغييرات
+                </button>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    closeEditModal() {
+        const modal = document.getElementById('editProfileModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    updateProfile() {
+        const updatedData = {
+            fullName: document.getElementById('editFullName').value,
+            birthDate: document.getElementById('editBirthDate').value,
+            governorate: document.getElementById('editGovernorate').value,
+            address: document.getElementById('editAddress').value,
+            phoneNumber: '+967' + document.getElementById('editPhoneNumber').value,
+            email: document.getElementById('editEmail').value,
+            updatedAt: new Date().toISOString()
+        };
+
+        // تحديث البيانات
+        this.patientData = { ...this.patientData, ...updatedData };
+        this.savePatientData();
+
+        // تحديث العرض
+        this.closeEditModal();
+        this.renderProfile();
+
+        alert('تم تحديث البيانات بنجاح!');
+    }
+
+    showChangePasswordModal() {
+        const modal = document.getElementById('changePasswordModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+
+    closeChangePasswordModal() {
+        const modal = document.getElementById('changePasswordModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    changePassword() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+        // التحقق من كلمة المرور الحالية
+        if (currentPassword !== this.patientData.transactionPassword) {
+            alert('كلمة المرور الحالية غير صحيحة');
+            return;
+        }
+
+        // التحقق من كلمة المرور الجديدة
+        if (newPassword !== confirmNewPassword) {
+            alert('كلمة المرور الجديدة غير متطابقة');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+            return;
+        }
+
+        // تحديث كلمة المرور
+        this.patientData.transactionPassword = newPassword;
+        this.patientData.updatedAt = new Date().toISOString();
+        this.savePatientData();
+
+        this.closeChangePasswordModal();
+        alert('تم تغيير كلمة المرور بنجاح!');
+    }
+
+    editAvatar() {
+        this.openImagePickerForAvatar();
+    }
+
+    openImagePickerForAvatar() {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.patientData.avatar = e.target.result;
+                    this.savePatientData();
+                    this.renderProfile();
+                    alert('تم تحديث صورة البروفايل بنجاح!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.body.appendChild(fileInput);
+        fileInput.click();
+        document.body.removeChild(fileInput);
+    }
+
+    exportData() {
+        const dataStr = JSON.stringify(this.patientData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `patient_data_${this.patientData.id}.json`;
+        link.click();
+        
+        alert('تم تصدير البيانات بنجاح!');
+    }
+
+    deleteAccount() {
+        if (confirm('هل أنت متأكد من حذف الحساب؟ هذه العملية لا يمكن التراجع عنها.')) {
+            if (confirm('سيتم حذف جميع بياناتك بشكل دائم. هل ما زلت تريد المتابعة؟')) {
+                localStorage.removeItem('patient_profile_data');
+                localStorage.removeItem('financialAccount');
+                this.patientData = null;
+                this.renderProfile();
+                alert('تم حذف الحساب بنجاح.');
+            }
+        }
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    window.patientProfile = new PatientProfile();
+});
+</script>
+</body>
+</html>
