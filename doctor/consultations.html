@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - إدارة الاستشارات</title>
+    <link rel="stylesheet" href="doctor-consultations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    /* الألوان الأساسية: أزرق طبي هادئ */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* خلفية التطبيق: فاتحة ومريحة للعين */
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* الخطوط المحدثة */
+    --font-primary: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 20px 16px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 16px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط التبويبات */
+.tabs-container {
+    margin-bottom: 16px;
+}
+
+.tabs-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+}
+
+.tabs-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    padding: 10px 16px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    position: relative;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+    transform: scale(0.95);
+    border-color: var(--primary-dark);
+}
+
+.tab:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.tab i {
+    font-size: 12px;
+}
+
+.tab-badge {
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: -4px;
+}
+
+.tab.active .tab-badge {
+    background: white;
+    color: var(--primary);
+}
+
+/* شريط الإحصائيات */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 0 16px 18px;
+}
+
+.stat-item {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.stat-item:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    padding: 0 16px 100px;
+}
+
+.content-header {
+    margin-bottom: 16px;
+}
+
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 10px 16px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.filter-btn {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.filter-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+.sort-controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* قائمة الاستشارات */
+.consultations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.consultation-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    border-right: 4px solid var(--primary);
+}
+
+.consultation-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.consultation-card.pending {
+    border-right-color: var(--warning);
+}
+
+.consultation-card.scheduled {
+    border-right-color: var(--info);
+}
+
+.consultation-card.completed {
+    border-right-color: var(--success);
+}
+
+.consultation-card.cancelled {
+    border-right-color: var(--accent);
+}
+
+.consultation-header {
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.consultation-patient {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.patient-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--primary);
+    border: 2px solid white;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.patient-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.patient-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-name {
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 14px;
+    color: var(--primary-dark);
+}
+
+.consultation-type {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.consultation-meta {
+    text-align: left;
+}
+
+.consultation-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.consultation-status {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-pending {
+    background: var(--warning);
+    color: white;
+}
+
+.status-scheduled {
+    background: var(--info);
+    color: white;
+}
+
+.status-completed {
+    background: var(--success);
+    color: white;
+}
+
+.status-cancelled {
+    background: var(--accent);
+    color: white;
+}
+
+.consultation-body {
+    padding: 14px;
+}
+
+.consultation-symptoms {
+    margin-bottom: 12px;
+}
+
+.symptoms-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.symptoms-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.consultation-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 11px;
+}
+
+.consultation-detail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+}
+
+.consultation-footer {
+    padding: 12px 14px;
+    background: rgba(0, 0, 0, 0.02);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.consultation-price {
+    font-weight: 700;
+    color: var(--success);
+    font-size: 14px;
+}
+
+.consultation-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 6px 8px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 340px;
+    width: calc(100% - 32px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translateY(-8px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* تفاصيل الاستشارة */
+.consultation-detail-view {
+    padding: 18px;
+}
+
+.detail-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+}
+
+.detail-section h3 {
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 16px;
+    border-bottom: 1px solid var(--primary-light);
+    padding-bottom: 6px;
+}
+
+.patient-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.patient-avatar-large {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--primary);
+    border: 3px solid white;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.patient-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.patient-info-large {
+    flex: 1;
+}
+
+.patient-name-large {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--primary-dark);
+}
+
+.patient-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.detail-value {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.symptoms-full {
+    line-height: 1.6;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* نماذج الإدارة */
+.consultation-form {
+    padding: 18px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* الأزرار */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-success:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: var(--warning);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-warning:hover {
+    background: #e68a00;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background: #ff1a1a;
+    transform: translateY(-2px);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-xsmall {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+/* أزرار الإجراءات */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.action-buttons .btn-primary,
+.action-buttons .btn-secondary,
+.action-buttons .btn-success,
+.action-buttons .btn-warning,
+.action-buttons .btn-danger {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* التصفية */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 13px;
+}
+
+.filter-option:hover {
+    background: var(--primary-light);
+}
+
+.filter-option input {
+    margin: 0;
+    transform: scale(0.9);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* الإحصائيات */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-light);
+}
+
+.stat-card .stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.stat-card .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chart-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-light);
+}
+
+.chart-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--primary);
+    text-align: center;
+}
+
+.chart-placeholder {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-light), var(--bg-surface));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* رسائل الحالة */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+.empty-state h3 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .consultation-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons .btn-primary,
+    .action-buttons .btn-secondary,
+    .action-buttons .btn-success,
+    .action-buttons .btn-warning,
+    .action-buttons .btn-danger {
+        flex: none;
+        width: 100%;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tabs-scroll {
+        gap: 6px;
+    }
+    
+    .tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .consultation-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .consultation-meta {
+        text-align: right;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>إدارة الاستشارات 👨‍⚕️</h1>
+                    <p>إدارة طلبات الاستشارات الواردة</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">3</span>
+                    </button>
+                    <button class="action-icon" id="statsBtn">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- شريط التبويبات -->
+            <div class="tabs-container">
+                <div class="tabs-scroll" id="consultationTabs">
+                    <div class="tab active" data-tab="pending">
+                        <i class="fas fa-clock"></i>
+                        <span>قيد الانتظار</span>
+                        <span class="tab-badge">5</span>
+                    </div>
+                    <div class="tab" data-tab="scheduled">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>المجدولة</span>
+                        <span class="tab-badge">3</span>
+                    </div>
+                    <div class="tab" data-tab="completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>المكتملة</span>
+                        <span class="tab-badge">12</span>
+                    </div>
+                    <div class="tab" data-tab="cancelled">
+                        <i class="fas fa-times-circle"></i>
+                        <span>الملغية</span>
+                        <span class="tab-badge">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط الإحصائيات السريعة -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label">استشارات جديدة</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3</div>
+                <div class="stat-label">مجدولة اليوم</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">87%</div>
+                <div class="stat-label">معدل الرضا</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">1.2K</div>
+                <div class="stat-label">إجمالي الأرباح</div>
+            </div>
+        </div>
+
+        <!-- محتوى الاستشارات -->
+        <div class="main-content">
+            <!-- شريط البحث والتصفية -->
+            <div class="content-header">
+                <div class="search-filter-bar">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="ابحث في الاستشارات..." id="searchConsultations">
+                    </div>
+                    <button class="filter-btn" id="consultationFilterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+                
+                <div class="sort-controls">
+                    <select class="form-select" id="sortConsultations">
+                        <option value="newest">الأحدث أولاً</option>
+                        <option value="oldest">الأقدم أولاً</option>
+                        <option value="price-high">الأعلى سعراً</option>
+                        <option value="price-low">الأقل سعراً</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- قائمة الاستشارات -->
+            <div class="consultations-list" id="consultationsList">
+                <!-- سيتم تعبئة الاستشارات ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="doctor-dashboard.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="doctor-consultations.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-comment-medical"></i>
+                </div>
+                <div class="nav-label">الاستشارات</div>
+            </a>
+            <a href="doctor-schedule.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">الجدول</div>
+            </a>
+            <a href="doctor-profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">الملف الشخصي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الاستشارة -->
+    <div id="consultationDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="consultationDetailTitle">تفاصيل الاستشارة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="consultationDetailBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إدارة الاستشارة -->
+    <div id="manageConsultationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="manageConsultationTitle">إدارة الاستشارة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="manageConsultationBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الرد على الاستشارة -->
+    <div id="replyConsultationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الرد على الاستشارة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="replyConsultationBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة جدولة الاستشارة -->
+    <div id="scheduleConsultationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>جدولة الاستشارة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="scheduleConsultationBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الإحصائيات -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إحصائيات الاستشارات</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="statsModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التصفية المتقدمة -->
+    <div id="advancedFilterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تصفية الاستشارات</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <h3>حالة الاستشارة</h3>
+                    <div class="filter-options" id="statusFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="pending" checked>
+                            <span>قيد الانتظار</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="scheduled" checked>
+                            <span>مجدولة</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="completed">
+                            <span>مكتملة</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="cancelled">
+                            <span>ملغية</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>نوع الاستشارة</h3>
+                    <div class="filter-options" id="typeFilter">
+                        <label class="filter-option">
+                            <input type="checkbox" value="هاتف" checked>
+                            <span>هاتفية</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="واتساب" checked>
+                            <span>واتساب</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="فيديو" checked>
+                            <span>فيديو</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="رسالة" checked>
+                            <span>رسالة</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>الفترة الزمنية</h3>
+                    <div class="filter-options" id="timeFilter">
+                        <label class="filter-option">
+                            <input type="radio" name="timeRange" value="today" checked>
+                            <span>اليوم</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timeRange" value="week">
+                            <span>أسبوع</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timeRange" value="month">
+                            <span>شهر</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timeRange" value="all">
+                            <span>الكل</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-secondary" id="resetAdvancedFilters">إعادة التعيين</button>
+                    <button class="btn-primary" id="applyAdvancedFilters">تطبيق التصفية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الملاحظات الطبية -->
+    <div id="medicalNotesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الملاحظات الطبية</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="medicalNotesBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+// نظام إدارة الاستشارات للأطباء
+class DoctorConsultationsManager {
+    constructor() {
+        this.consultations = [];
+        this.filteredConsultations = [];
+        this.currentConsultation = null;
+        this.currentTab = 'pending';
+        this.filters = {
+            status: ['pending', 'scheduled'],
+            type: ['هاتف', 'واتساب', 'فيديو', 'رسالة'],
+            timeRange: 'today'
+        };
+        this.sortBy = 'newest';
+        this.searchTerm = '';
+        this.init();
+    }
+
+    init() {
+        this.loadConsultations();
+        this.setupEventListeners();
+        this.renderConsultations();
+        this.updateStats();
+        this.updateTime();
+    }
+
+    loadConsultations() {
+        const savedConsultations = localStorage.getItem('doctor_consultations');
+        
+        if (savedConsultations) {
+            this.consultations = JSON.parse(savedConsultations);
+        } else {
+            this.consultations = this.getSampleConsultations();
+        }
+        
+        this.applyFiltersAndSort();
+        this.saveConsultations();
+    }
+
+    getSampleConsultations() {
+        return [
+            {
+                id: 1,
+                patientId: 'PAT001',
+                patientName: 'أحمد محمد',
+                patientPhone: '+966501234567',
+                patientAvatar: 'patient1.jpg',
+                doctorId: 1,
+                doctorName: 'د. ياسر عباس',
+                communicationMethod: 'هاتف',
+                consultationType: 'استشارة عامة',
+                symptoms: 'ألم في الصدر مع ضيق في التنفس منذ يومين، مع شعور بالدوخة أحياناً.',
+                preferredTime: 'المساء',
+                status: 'pending',
+                fee: 150,
+                createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // قبل ساعتين
+                scheduledTime: null,
+                completedAt: null,
+                doctorNotes: '',
+                patientRating: null,
+                paymentMethod: 'المحفظة الإلكترونية',
+                transactionId: 'TX001'
+            },
+            {
+                id: 2,
+                patientId: 'PAT002',
+                patientName: 'فاطمة عبدالله',
+                patientPhone: '+966502345678',
+                patientAvatar: 'patient2.jpg',
+                doctorId: 1,
+                doctorName: 'د. ياسر عباس',
+                communicationMethod: 'واتساب',
+                consultationType: 'متابعة حالة',
+                symptoms: 'متابعة علاج الضغط، هل أحتاج لتغيير الجرعة؟',
+                preferredTime: 'الصباح',
+                status: 'scheduled',
+                fee: 120,
+                createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // قبل يوم
+                scheduledTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // بعد ساعتين
+                completedAt: null,
+                doctorNotes: 'يجب مراجعة قراءات الضغط الأخيرة',
+                patientRating: null,
+                paymentMethod: 'بطاقة ائتمان',
+                transactionId: 'TX002'
+            },
+            {
+                id: 3,
+                patientId: 'PAT003',
+                patientName: 'خالد سعيد',
+                patientPhone: '+966503456789',
+                patientAvatar: 'patient3.jpg',
+                doctorId: 1,
+                doctorName: 'د. ياسر عباس',
+                communicationMethod: 'فيديو',
+                consultationType: 'استشارة متخصصة',
+                symptoms: 'ألم مستمر في المفاصل مع تورم في الركبة اليسرى، صعوبة في المشي.',
+                preferredTime: 'أي وقت',
+                status: 'completed',
+                fee: 200,
+                createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // قبل 3 أيام
+                scheduledTime: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 30 * 60 * 1000).toISOString(),
+                doctorNotes: 'يحتاج إلى تحاليل دم وأشعة للمفاصل، وصف مسكنات ومضادات التهاب',
+                patientRating: 5,
+                paymentMethod: 'المحفظة الإلكترونية',
+                transactionId: 'TX003'
+            },
+            {
+                id: 4,
+                patientId: 'PAT004',
+                patientName: 'نورة عبدالرحمن',
+                patientPhone: '+966504567890',
+                patientAvatar: 'patient4.jpg',
+                doctorId: 1,
+                doctorName: 'د. ياسر عباس',
+                communicationMethod: 'رسالة',
+                consultationType: 'تحليل نتائج',
+                symptoms: 'ارسال نتائج تحاليل الدم والكوليسترول للاطلاع عليها وإبداء الرأي.',
+                preferredTime: 'المساء',
+                status: 'pending',
+                fee: 100,
+                createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // قبل ساعة
+                scheduledTime: null,
+                completedAt: null,
+                doctorNotes: '',
+                patientRating: null,
+                paymentMethod: 'تحويل بنكي',
+                transactionId: 'TX004'
+            },
+            {
+                id: 5,
+                patientId: 'PAT005',
+                patientName: 'محمد علي',
+                patientPhone: '+966505678901',
+                patientAvatar: 'patient5.jpg',
+                doctorId: 1,
+                doctorName: 'د. ياسر عباس',
+                communicationMethod: 'هاتف',
+                consultationType: 'استشارة دواء',
+                symptoms: 'هل يمكنني أخذ الدواء X مع الدواء Y؟ وهل هناك تفاعلات بينهما؟',
+                preferredTime: 'الظهر',
+                status: 'cancelled',
+                fee: 130,
+                createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // قبل 6 ساعات
+                scheduledTime: null,
+                completedAt: null,
+                doctorNotes: 'تم الإلغاء من قبل المريض',
+                patientRating: null,
+                paymentMethod: 'المحفظة الإلكترونية',
+                transactionId: 'TX005'
+            }
+        ];
+    }
+
+    saveConsultations() {
+        localStorage.setItem('doctor_consultations', JSON.stringify(this.consultations));
+    }
+
+    setupEventListeners() {
+        // التبويبات
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                this.switchTab(e.currentTarget.dataset.tab);
+            });
+        });
+
+        // البحث
+        document.getElementById('searchConsultations').addEventListener('input', (e) => {
+            this.searchTerm = e.target.value;
+            this.applyFiltersAndSort();
+        });
+
+        // التصفية
+        document.getElementById('consultationFilterBtn').addEventListener('click', () => {
+            this.showAdvancedFilterModal();
+        });
+
+        // الترتيب
+        document.getElementById('sortConsultations').addEventListener('change', (e) => {
+            this.sortBy = e.target.value;
+            this.applyFiltersAndSort();
+        });
+
+        // الإحصائيات
+        document.getElementById('statsBtn').addEventListener('click', () => {
+            this.showStatsModal();
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // تحديث الوقت
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    switchTab(tab) {
+        this.currentTab = tab;
+        
+        // تحديث التبويبات النشطة
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+        
+        this.applyFiltersAndSort();
+    }
+
+    applyFiltersAndSort() {
+        let filtered = this.consultations;
+
+        // التصفية حسب التبويب
+        if (this.currentTab !== 'all') {
+            filtered = filtered.filter(consultation => consultation.status === this.currentTab);
+        }
+
+        // التصفية حسب البحث
+        if (this.searchTerm.trim() !== '') {
+            const searchTerm = this.searchTerm.toLowerCase();
+            filtered = filtered.filter(consultation => 
+                consultation.patientName.toLowerCase().includes(searchTerm) ||
+                consultation.consultationType.toLowerCase().includes(searchTerm) ||
+                consultation.symptoms.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        // التصفية المتقدمة
+        filtered = filtered.filter(consultation => 
+            this.filters.status.includes(consultation.status) &&
+            this.filters.type.includes(consultation.communicationMethod)
+        );
+
+        // التصفية حسب الفترة الزمنية
+        const now = new Date();
+        filtered = filtered.filter(consultation => {
+            const consultationDate = new Date(consultation.createdAt);
+            
+            switch (this.filters.timeRange) {
+                case 'today':
+                    return consultationDate.toDateString() === now.toDateString();
+                case 'week':
+                    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+                    return consultationDate >= weekAgo;
+                case 'month':
+                    const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+                    return consultationDate >= monthAgo;
+                default:
+                    return true;
+            }
+        });
+
+        // الترتيب
+        filtered.sort((a, b) => {
+            switch (this.sortBy) {
+                case 'newest':
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                case 'oldest':
+                    return new Date(a.createdAt) - new Date(b.createdAt);
+                case 'price-high':
+                    return b.fee - a.fee;
+                case 'price-low':
+                    return a.fee - b.fee;
+                default:
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+        });
+
+        this.filteredConsultations = filtered;
+        this.renderConsultations();
+        this.updateTabBadges();
+    }
+
+    updateTabBadges() {
+        const tabs = ['pending', 'scheduled', 'completed', 'cancelled'];
+        
+        tabs.forEach(tab => {
+            const count = this.consultations.filter(c => c.status === tab).length;
+            const badge = document.querySelector(`[data-tab="${tab}"] .tab-badge`);
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        });
+    }
+
+    updateStats() {
+        const totalConsultations = this.consultations.length;
+        const pendingConsultations = this.consultations.filter(c => c.status === 'pending').length;
+        const scheduledToday = this.consultations.filter(c => 
+            c.status === 'scheduled' && 
+            new Date(c.scheduledTime).toDateString() === new Date().toDateString()
+        ).length;
+        
+        const completedConsultations = this.consultations.filter(c => c.status === 'completed');
+        const totalEarnings = completedConsultations.reduce((sum, c) => sum + c.fee, 0);
+        
+        const ratedConsultations = completedConsultations.filter(c => c.patientRating);
+        const satisfactionRate = ratedConsultations.length > 0 
+            ? Math.round((ratedConsultations.reduce((sum, c) => sum + c.patientRating, 0) / ratedConsultations.length) * 20)
+            : 87;
+
+        // تحديث شريط الإحصائيات
+        document.querySelectorAll('.stat-item')[0].querySelector('.stat-value').textContent = pendingConsultations;
+        document.querySelectorAll('.stat-item')[1].querySelector('.stat-value').textContent = scheduledToday;
+        document.querySelectorAll('.stat-item')[2].querySelector('.stat-value').textContent = satisfactionRate + '%';
+        document.querySelectorAll('.stat-item')[3].querySelector('.stat-value').textContent = totalEarnings;
+    }
+
+    renderConsultations() {
+        const container = document.getElementById('consultationsList');
+        
+        if (this.filteredConsultations.length === 0) {
+            container.innerHTML = this.getEmptyStateHTML();
+            return;
+        }
+
+        let consultationsHTML = '';
+
+        this.filteredConsultations.forEach(consultation => {
+            const timeAgo = this.getTimeAgo(consultation.createdAt);
+            const statusText = this.getStatusText(consultation.status);
+            const methodIcon = this.getMethodIcon(consultation.communicationMethod);
+
+            consultationsHTML += `
+                <div class="consultation-card ${consultation.status}" onclick="doctorConsultationsManager.showConsultationDetail(${consultation.id})">
+                    <div class="consultation-header">
+                        <div class="consultation-patient">
+                            <div class="patient-avatar">
+                                <img src="${consultation.patientAvatar}" alt="${consultation.patientName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                <i class="fas fa-user" style="display: none;"></i>
+                            </div>
+                            <div class="patient-info">
+                                <div class="patient-name">${consultation.patientName}</div>
+                                <div class="consultation-type">
+                                    <i class="${methodIcon}"></i>
+                                    ${consultation.consultationType}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="consultation-meta">
+                            <div class="consultation-time">${timeAgo}</div>
+                            <div class="consultation-status status-${consultation.status}">${statusText}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-body">
+                        <div class="consultation-symptoms">
+                            <div class="symptoms-title">الأعراض / المشكلة</div>
+                            <div class="symptoms-text">${consultation.symptoms}</div>
+                        </div>
+                        <div class="consultation-details">
+                            <div class="consultation-detail">
+                                <i class="fas fa-phone"></i>
+                                ${consultation.communicationMethod}
+                            </div>
+                            <div class="consultation-detail">
+                                <i class="fas fa-clock"></i>
+                                ${consultation.preferredTime}
+                            </div>
+                            <div class="consultation-detail">
+                                <i class="fas fa-money-bill"></i>
+                                ${consultation.fee} ر.ي
+                            </div>
+                            <div class="consultation-detail">
+                                <i class="fas fa-calendar"></i>
+                                ${new Date(consultation.createdAt).toLocaleDateString('ar-EG')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="consultation-footer">
+                        <div class="consultation-price">${consultation.fee} ر.ي</div>
+                        <div class="consultation-actions">
+                            ${this.getActionButtons(consultation)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = consultationsHTML;
+    }
+
+    getEmptyStateHTML() {
+        return `
+            <div class="empty-state">
+                <i class="fas fa-comment-medical"></i>
+                <h3>لا توجد استشارات</h3>
+                <p>لا توجد استشارات متطابقة مع معايير البحث والتصفية المحددة</p>
+            </div>
+        `;
+    }
+
+    getTimeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'الآن';
+        if (diffMins < 60) return `قبل ${diffMins} دقيقة`;
+        if (diffHours < 24) return `قبل ${diffHours} ساعة`;
+        if (diffDays < 7) return `قبل ${diffDays} يوم`;
+        return date.toLocaleDateString('ar-EG');
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            'pending': 'قيد الانتظار',
+            'scheduled': 'مجدولة',
+            'completed': 'مكتملة',
+            'cancelled': 'ملغية'
+        };
+        return statusMap[status] || status;
+    }
+
+    getMethodIcon(method) {
+        const iconMap = {
+            'هاتف': 'fas fa-phone',
+            'واتساب': 'fab fa-whatsapp',
+            'فيديو': 'fas fa-video',
+            'رسالة': 'fas fa-envelope'
+        };
+        return iconMap[method] || 'fas fa-comment-medical';
+    }
+
+    getActionButtons(consultation) {
+        let buttons = '';
+        
+        switch (consultation.status) {
+            case 'pending':
+                buttons = `
+                    <button class="btn-success btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.acceptConsultation(${consultation.id})">
+                        <i class="fas fa-check"></i>
+                        قبول
+                    </button>
+                    <button class="btn-danger btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.rejectConsultation(${consultation.id})">
+                        <i class="fas fa-times"></i>
+                        رفض
+                    </button>
+                    <button class="btn-secondary btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.scheduleConsultation(${consultation.id})">
+                        <i class="fas fa-calendar"></i>
+                        جدولة
+                    </button>
+                `;
+                break;
+                
+            case 'scheduled':
+                buttons = `
+                    <button class="btn-success btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.startConsultation(${consultation.id})">
+                        <i class="fas fa-play"></i>
+                        بدء
+                    </button>
+                    <button class="btn-warning btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.rescheduleConsultation(${consultation.id})">
+                        <i class="fas fa-clock"></i>
+                        إعادة جدولة
+                    </button>
+                `;
+                break;
+                
+            case 'completed':
+                buttons = `
+                    <button class="btn-secondary btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.viewMedicalNotes(${consultation.id})">
+                        <i class="fas fa-file-medical"></i>
+                        الملاحظات
+                    </button>
+                `;
+                break;
+                
+            case 'cancelled':
+                buttons = `
+                    <button class="btn-secondary btn-xsmall" onclick="event.stopPropagation(); doctorConsultationsManager.viewDetails(${consultation.id})">
+                        <i class="fas fa-info"></i>
+                        تفاصيل
+                    </button>
+                `;
+                break;
+        }
+        
+        return buttons;
+    }
+
+    showConsultationDetail(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        this.currentConsultation = consultation;
+        const modal = document.getElementById('consultationDetailModal');
+        
+        document.getElementById('consultationDetailTitle').textContent = `تفاصيل الاستشارة - ${consultation.patientName}`;
+        
+        const modalBody = document.getElementById('consultationDetailBody');
+        modalBody.innerHTML = this.getConsultationDetailHTML(consultation);
+
+        modal.style.display = 'block';
+    }
+
+    getConsultationDetailHTML(consultation) {
+        const methodIcon = this.getMethodIcon(consultation.communicationMethod);
+        const statusText = this.getStatusText(consultation.status);
+        
+        return `
+            <div class="consultation-detail-view">
+                <div class="detail-section">
+                    <h3>معلومات المريض</h3>
+                    <div class="patient-profile">
+                        <div class="patient-avatar-large">
+                            <img src="${consultation.patientAvatar}" alt="${consultation.patientName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                            <i class="fas fa-user" style="display: none;"></i>
+                        </div>
+                        <div class="patient-info-large">
+                            <div class="patient-name-large">${consultation.patientName}</div>
+                            <div class="patient-meta">
+                                <div>رقم الهاتف: ${consultation.patientPhone}</div>
+                                <div>رقم المريض: ${consultation.patientId}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>تفاصيل الاستشارة</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">طريقة التواصل</div>
+                            <div class="detail-value">
+                                <i class="${methodIcon}"></i>
+                                ${consultation.communicationMethod}
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">نوع الاستشارة</div>
+                            <div class="detail-value">${consultation.consultationType}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الحالة</div>
+                            <div class="detail-value">
+                                <span class="consultation-status status-${consultation.status}">${statusText}</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">الوقت المفضل</div>
+                            <div class="detail-value">${consultation.preferredTime}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">رسوم الاستشارة</div>
+                            <div class="detail-value">${consultation.fee} ر.ي</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">طريقة الدفع</div>
+                            <div class="detail-value">${consultation.paymentMethod}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>وصف المشكلة</h3>
+                    <div class="symptoms-full">${consultation.symptoms}</div>
+                </div>
+
+                ${consultation.doctorNotes ? `
+                <div class="detail-section">
+                    <h3>الملاحظات الطبية</h3>
+                    <div class="symptoms-full">${consultation.doctorNotes}</div>
+                </div>
+                ` : ''}
+
+                ${consultation.scheduledTime ? `
+                <div class="detail-section">
+                    <h3>معلومات الجدولة</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">مجدولة لـ</div>
+                            <div class="detail-value">${new Date(consultation.scheduledTime).toLocaleString('ar-EG')}</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="action-buttons">
+                    ${this.getDetailActionButtons(consultation)}
+                </div>
+            </div>
+        `;
+    }
+
+    getDetailActionButtons(consultation) {
+        let buttons = '';
+        
+        switch (consultation.status) {
+            case 'pending':
+                buttons = `
+                    <button class="btn-success" onclick="doctorConsultationsManager.acceptConsultation(${consultation.id})">
+                        <i class="fas fa-check"></i>
+                        قبول الاستشارة
+                    </button>
+                    <button class="btn-secondary" onclick="doctorConsultationsManager.scheduleConsultation(${consultation.id})">
+                        <i class="fas fa-calendar"></i>
+                        جدولة الاستشارة
+                    </button>
+                    <button class="btn-danger" onclick="doctorConsultationsManager.rejectConsultation(${consultation.id})">
+                        <i class="fas fa-times"></i>
+                        رفض الاستشارة
+                    </button>
+                `;
+                break;
+                
+            case 'scheduled':
+                buttons = `
+                    <button class="btn-success" onclick="doctorConsultationsManager.startConsultation(${consultation.id})">
+                        <i class="fas fa-play"></i>
+                        بدء الاستشارة
+                    </button>
+                    <button class="btn-warning" onclick="doctorConsultationsManager.rescheduleConsultation(${consultation.id})">
+                        <i class="fas fa-clock"></i>
+                        إعادة جدولة
+                    </button>
+                    <button class="btn-secondary" onclick="doctorConsultationsManager.addMedicalNotes(${consultation.id})">
+                        <i class="fas fa-file-medical"></i>
+                        إضافة ملاحظات
+                    </button>
+                `;
+                break;
+                
+            case 'completed':
+                buttons = `
+                    <button class="btn-secondary" onclick="doctorConsultationsManager.viewMedicalNotes(${consultation.id})">
+                        <i class="fas fa-file-medical"></i>
+                        عرض الملاحظات
+                    </button>
+                    <button class="btn-primary" onclick="doctorConsultationsManager.contactPatient(${consultation.id})">
+                        <i class="fas fa-phone"></i>
+                        التواصل مع المريض
+                    </button>
+                `;
+                break;
+        }
+        
+        // زر إضافي للجميع
+        buttons += `
+            <button class="btn-secondary" onclick="doctorConsultationsManager.contactPatient(${consultation.id})">
+                <i class="fas fa-phone"></i>
+                التواصل مع المريض
+            </button>
+        `;
+        
+        return buttons;
+    }
+
+    // دوال إدارة الاستشارات
+    acceptConsultation(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        consultation.status = 'scheduled';
+        consultation.scheduledTime = new Date().toISOString();
+        
+        this.saveConsultations();
+        this.applyFiltersAndSort();
+        this.updateStats();
+        
+        alert('تم قبول الاستشارة بنجاح!');
+        document.getElementById('consultationDetailModal').style.display = 'none';
+    }
+
+    rejectConsultation(consultationId) {
+        if (!confirm('هل أنت متأكد من رفض هذه الاستشارة؟')) return;
+
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        consultation.status = 'cancelled';
+        
+        this.saveConsultations();
+        this.applyFiltersAndSort();
+        this.updateStats();
+        
+        alert('تم رفض الاستشارة بنجاح!');
+        document.getElementById('consultationDetailModal').style.display = 'none';
+    }
+
+    scheduleConsultation(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        this.currentConsultation = consultation;
+        const modal = document.getElementById('scheduleConsultationModal');
+        
+        const modalBody = document.getElementById('scheduleConsultationBody');
+        modalBody.innerHTML = `
+            <div class="consultation-form">
+                <div class="form-group">
+                    <label class="form-label">تاريخ ووقت الاستشارة</label>
+                    <input type="datetime-local" class="form-input" id="consultationDateTime" 
+                           min="${new Date().toISOString().slice(0, 16)}"
+                           value="${new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16)}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                    <textarea class="form-textarea" id="scheduleNotes" placeholder="أضف أي ملاحظات للمريض..."></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="doctorConsultationsManager.confirmSchedule()">
+                        <i class="fas fa-calendar-check"></i>
+                        تأكيد الجدولة
+                    </button>
+                    <button class="btn-secondary" onclick="document.getElementById('scheduleConsultationModal').style.display='none'">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    confirmSchedule() {
+        const dateTime = document.getElementById('consultationDateTime').value;
+        const notes = document.getElementById('scheduleNotes').value;
+
+        if (!dateTime) {
+            alert('يرجى اختيار تاريخ ووقت للاستشارة');
+            return;
+        }
+
+        this.currentConsultation.status = 'scheduled';
+        this.currentConsultation.scheduledTime = new Date(dateTime).toISOString();
+        if (notes) {
+            this.currentConsultation.doctorNotes = notes;
+        }
+        
+        this.saveConsultations();
+        this.applyFiltersAndSort();
+        this.updateStats();
+        
+        alert('تم جدولة الاستشارة بنجاح!');
+        document.getElementById('scheduleConsultationModal').style.display = 'none';
+        document.getElementById('consultationDetailModal').style.display = 'none';
+    }
+
+    startConsultation(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        // محاكاة بدء الاستشارة
+        consultation.status = 'completed';
+        consultation.completedAt = new Date().toISOString();
+        
+        this.saveConsultations();
+        this.applyFiltersAndSort();
+        this.updateStats();
+        
+        alert('تم بدء الاستشارة واكتمالها بنجاح!');
+        document.getElementById('consultationDetailModal').style.display = 'none';
+    }
+
+    rescheduleConsultation(consultationId) {
+        this.scheduleConsultation(consultationId);
+    }
+
+    addMedicalNotes(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        this.currentConsultation = consultation;
+        const modal = document.getElementById('medicalNotesModal');
+        
+        const modalBody = document.getElementById('medicalNotesBody');
+        modalBody.innerHTML = `
+            <div class="consultation-form">
+                <div class="form-group">
+                    <label class="form-label">الملاحظات الطبية</label>
+                    <textarea class="form-textarea" id="medicalNotes" placeholder="أدخل الملاحظات الطبية والتشخيص والعلاج..." rows="8">${consultation.doctorNotes || ''}</textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="doctorConsultationsManager.saveMedicalNotes()">
+                        <i class="fas fa-save"></i>
+                        حفظ الملاحظات
+                    </button>
+                    <button class="btn-secondary" onclick="document.getElementById('medicalNotesModal').style.display='none'">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    saveMedicalNotes() {
+        const notes = document.getElementById('medicalNotes').value;
+
+        this.currentConsultation.doctorNotes = notes;
+        this.saveConsultations();
+        
+        alert('تم حفظ الملاحظات الطبية بنجاح!');
+        document.getElementById('medicalNotesModal').style.display = 'none';
+        
+        // تحديث عرض التفاصيل إذا كان مفتوحاً
+        if (document.getElementById('consultationDetailModal').style.display === 'block') {
+            this.showConsultationDetail(this.currentConsultation.id);
+        }
+    }
+
+    viewMedicalNotes(consultationId) {
+        this.addMedicalNotes(consultationId);
+    }
+
+    contactPatient(consultationId) {
+        const consultation = this.consultations.find(c => c.id === consultationId);
+        if (!consultation) return;
+
+        let contactUrl = '';
+        
+        switch (consultation.communicationMethod) {
+            case 'هاتف':
+                contactUrl = `tel:${consultation.patientPhone}`;
+                break;
+            case 'واتساب':
+                contactUrl = `https://wa.me/${consultation.patientPhone.replace('+', '')}`;
+                break;
+            default:
+                contactUrl = `tel:${consultation.patientPhone}`;
+        }
+        
+        window.open(contactUrl, '_blank');
+    }
+
+    // التصفية المتقدمة
+    showAdvancedFilterModal() {
+        const modal = document.getElementById('advancedFilterModal');
+        modal.style.display = 'block';
+    }
+
+    applyAdvancedFilters() {
+        // جمع الحالات المختارة
+        this.filters.status = Array.from(document.querySelectorAll('#statusFilter input:checked'))
+            .map(input => input.value);
+
+        // جمع أنواع التواصل المختارة
+        this.filters.type = Array.from(document.querySelectorAll('#typeFilter input:checked'))
+            .map(input => input.value);
+
+        // تحديث الفترة الزمنية
+        const timeRange = document.querySelector('input[name="timeRange"]:checked');
+        if (timeRange) {
+            this.filters.timeRange = timeRange.value;
+        }
+
+        this.applyFiltersAndSort();
+        document.getElementById('advancedFilterModal').style.display = 'none';
+    }
+
+    resetAdvancedFilters() {
+        // إعادة تعيين جميع الفلاتر
+        document.querySelectorAll('#statusFilter input').forEach(input => {
+            input.checked = ['pending', 'scheduled'].includes(input.value);
+        });
+        
+        document.querySelectorAll('#typeFilter input').forEach(input => {
+            input.checked = true;
+        });
+        
+        document.querySelector('input[name="timeRange"][value="today"]').checked = true;
+    }
+
+    // الإحصائيات
+    showStatsModal() {
+        const modal = document.getElementById('statsModal');
+        
+        const modalBody = document.getElementById('statsModalBody');
+        modalBody.innerHTML = this.getStatsHTML();
+        
+        modal.style.display = 'block';
+    }
+
+    getStatsHTML() {
+        const totalConsultations = this.consultations.length;
+        const pendingCount = this.consultations.filter(c => c.status === 'pending').length;
+        const scheduledCount = this.consultations.filter(c => c.status === 'scheduled').length;
+        const completedCount = this.consultations.filter(c => c.status === 'completed').length;
+        const cancelledCount = this.consultations.filter(c => c.status === 'cancelled').length;
+        
+        const totalEarnings = this.consultations
+            .filter(c => c.status === 'completed')
+            .reduce((sum, c) => sum + c.fee, 0);
+            
+        const monthlyEarnings = this.consultations
+            .filter(c => c.status === 'completed' && 
+                new Date(c.completedAt) >= new Date(new Date().getFullYear(), new Date().getMonth(), 1))
+            .reduce((sum, c) => sum + c.fee, 0);
+            
+        const ratedConsultations = this.consultations.filter(c => c.patientRating);
+        const avgRating = ratedConsultations.length > 0 
+            ? (ratedConsultations.reduce((sum, c) => sum + c.patientRating, 0) / ratedConsultations.length).toFixed(1)
+            : '0.0';
+
+        return `
+            <div style="padding: 18px;">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${totalConsultations}</div>
+                        <div class="stat-label">إجمالي الاستشارات</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${completedCount}</div>
+                        <div class="stat-label">استشارات مكتملة</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${totalEarnings}</div>
+                        <div class="stat-label">إجمالي الأرباح (ر.ي)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${avgRating}</div>
+                        <div class="stat-label">متوسط التقييم</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">توزيع الاستشارات</div>
+                    <div class="chart-placeholder">
+                        <div style="text-align: center;">
+                            <div>قيد الانتظار: ${pendingCount}</div>
+                            <div>مجدولة: ${scheduledCount}</div>
+                            <div>مكتملة: ${completedCount}</div>
+                            <div>ملغية: ${cancelledCount}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">الأرباح الشهرية</div>
+                    <div class="chart-placeholder">
+                        إجمالي أرباح هذا الشهر: ${monthlyEarnings} ر.ي
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="doctorConsultationsManager.exportStats()">
+                        <i class="fas fa-download"></i>
+                        تصدير الإحصائيات
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    exportStats() {
+        alert('جاري تصدير الإحصائيات...');
+        // في التطبيق الفعلي، سيتم إنشاء ملف PDF أو Excel
+    }
+}
+
+// تهيئة التطبيق
+document.addEventListener('DOMContentLoaded', function() {
+    window.doctorConsultationsManager = new DoctorConsultationsManager();
+    
+    // إعداد أحداث التصفية المتقدمة
+    document.getElementById('applyAdvancedFilters').addEventListener('click', () => {
+        window.doctorConsultationsManager.applyAdvancedFilters();
+    });
+    
+    document.getElementById('resetAdvancedFilters').addEventListener('click', () => {
+        window.doctorConsultationsManager.resetAdvancedFilters();
+    });
+});
+</script>
+</body>
+</html>
