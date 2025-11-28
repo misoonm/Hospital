@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - مواعيدي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #1565C0;
+            --primary-light: #BBDEFB;
+            --secondary: #4CAF50;
+            --accent: #FF5252;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --info: #2196F3;
+            --bg-light: #F5F9FF;
+            --bg-surface: #ffffff;
+            --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+            --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+            --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+            --radius-xl: 30px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --font-primary: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+            --font-heading: 'Almarai', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            direction: rtl;
+            overflow-x: hidden;
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .ultra-app {
+            max-width: 450px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--bg-light);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+            overflow-x: hidden;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        /* الهيدر */
+        .app-header {
+            padding: 20px 16px 0;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .title-section h1 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .title-section p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* أيقونات التفاعل */
+        .action-icon {
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            position: relative;
+            font-size: 16px;
+        }
+
+        .action-icon:active {
+            box-shadow: var(--shadow-inset);
+            color: var(--primary-dark);
+        }
+
+        .icon-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* التبويبات */
+        .tabs-container {
+            padding: 0 16px;
+            margin-bottom: 18px;
+        }
+
+        .tabs-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 6px;
+        }
+
+        .tabs-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid transparent;
+            font-size: 13px;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-inset);
+            transform: scale(0.95);
+            border-color: var(--primary-dark);
+        }
+
+        .tab:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .tab i {
+            font-size: 12px;
+        }
+
+        /* إحصائيات سريعة */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 16px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition-liquid);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 16px;
+        }
+
+        .stat-icon.upcoming {
+            background: var(--warning);
+            color: white;
+        }
+
+        .stat-icon.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .stat-icon.total {
+            background: var(--primary);
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 0 16px 100px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* فلترة متقدمة */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 14px;
+            border: none;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-inset);
+            font-size: 13px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition-liquid);
+        }
+
+        .filter-select:focus {
+            box-shadow: var(--shadow-light);
+        }
+
+        /* قائمة المواعيد */
+        .appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .appointment-item {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-light);
+            transition: var(--transition-liquid);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .appointment-item:hover {
+            box-shadow: var(--shadow-inset);
+            transform: translateY(-2px);
+        }
+
+        .appointment-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .appointment-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .type-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+        }
+
+        .type-doctor {
+            background: var(--primary);
+        }
+
+        .type-hospital {
+            background: var(--info);
+        }
+
+        .type-lab {
+            background: var(--secondary);
+        }
+
+        .appointment-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+            font-size: 15px;
+        }
+
+        .appointment-subtitle {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .appointment-status {
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-upcoming {
+            background: var(--warning);
+            color: white;
+        }
+
+        .status-completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-cancelled {
+            background: var(--accent);
+            color: white;
+        }
+
+        .appointment-details {
+            padding: 16px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .detail-item i {
+            width: 14px;
+            color: var(--primary);
+        }
+
+        .appointment-services {
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .services-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .service-tag {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: var(--shadow-inset);
+        }
+
+        .btn-danger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-liquid);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-danger:hover {
+            background: #e53935;
+        }
+
+        /* حالة عدم وجود مواعيد */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .empty-description {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-light);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            padding: 6px 8px;
+            border-radius: var(--radius-xl);
+            z-index: 1000;
+            max-width: 340px;
+            width: calc(100% - 32px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item-dock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 0;
+            border-radius: var(--radius-md);
+            transition: var(--transition-liquid);
+            flex: 1;
+            position: relative;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-item-dock.active {
+            color: var(--primary-dark);
+        }
+
+        .nav-item-dock.active .nav-icon-dock {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transform: translateY(-8px);
+            transition: var(--transition-liquid);
+        }
+
+        .nav-icon-dock {
+            font-size: 16px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-label {
+            font-size: 9px;
+            font-weight: 600;
+            margin-top: 2px;
+            transition: var(--transition-liquid);
+        }
+
+        .nav-item-dock.active .nav-label {
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        /* النوافذ المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease-out;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: var(--shadow-card);
+            animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideUp {
+            from {opacity: 0; transform: translateY(100%);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 428px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+            }
+            
+            .filter-select {
+                min-width: auto;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .appointment-actions {
+                flex-direction: column;
+            }
+            
+            .status-bar {
+                padding: 8px 16px;
+            }
+            
+            .app-header {
+                padding: 16px 12px 0;
+            }
+            
+            .main-content {
+                padding: 0 12px 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>مواعيدي 📅</h1>
+                    <p>إدارة جميع مواعيدك الطبية</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="filterBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="action-icon" id="syncBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويبات -->
+        <div class="tabs-container">
+            <div class="tabs-scroll" id="tabsScroll">
+                <div class="tab active" data-tab="all">
+                    <i class="fas fa-th-large"></i>
+                    الكل
+                </div>
+                <div class="tab" data-tab="upcoming">
+                    <i class="fas fa-clock"></i>
+                    القادمة
+                </div>
+                <div class="tab" data-tab="completed">
+                    <i class="fas fa-check-circle"></i>
+                    المكتملة
+                </div>
+                <div class="tab" data-tab="cancelled">
+                    <i class="fas fa-times-circle"></i>
+                    الملغاة
+                </div>
+            </div>
+        </div>
+
+        <!-- إحصائيات سريعة -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon upcoming">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number" id="upcomingCount">0</div>
+                <div class="stat-label">قادمة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="stat-number" id="completedCount">0</div>
+                <div class="stat-label">مكتملة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">المجموع</div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- فلترة متقدمة -->
+            <div class="filter-bar">
+                <select class="filter-select" id="typeFilter">
+                    <option value="all">جميع الأنواع</option>
+                    <option value="doctor">أطباء</option>
+                    <option value="hospital">مستشفيات</option>
+                    <option value="lab">مختبرات</option>
+                </select>
+                <select class="filter-select" id="dateFilter">
+                    <option value="all">جميع التواريخ</option>
+                    <option value="today">اليوم</option>
+                    <option value="week">هذا الأسبوع</option>
+                    <option value="month">هذا الشهر</option>
+                </select>
+                <select class="filter-select" id="sortFilter">
+                    <option value="newest">الأحدث أولاً</option>
+                    <option value="oldest">الأقدم أولاً</option>
+                    <option value="date">حسب التاريخ</option>
+                </select>
+            </div>
+
+            <!-- قسم المواعيد -->
+            <div class="appointments-section">
+                <div class="section-header">
+                    <h2 id="appointmentsTitle">جميع المواعيد</h2>
+                    <span class="appointments-count" id="appointmentsCount">0 موعد</span>
+                </div>
+
+                <div class="appointments-list" id="appointmentsList">
+                    <!-- سيتم تعبئة المواعيد ديناميكياً -->
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="hospital-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <div class="nav-label">حجز مستشفى</div>
+            </a>
+            <a href="lab-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <div class="nav-label">حجز مختبر</div>
+            </a>
+            <a href="appointments.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">مواعيدي</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الموعد -->
+    <div id="appointmentDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="appointmentDetailsTitle">تفاصيل الموعد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="appointmentDetailsBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفاتورة -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="invoiceModalTitle">فاتورة الحجز</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="invoiceModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التقييم -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="ratingModalTitle">تقييم الخدمة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="ratingModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // نظام إدارة المواعيد المتكامل
+        class UnifiedAppointmentsSystem {
+            constructor() {
+                this.allAppointments = [];
+                this.filteredAppointments = [];
+                this.currentTab = 'all';
+                this.filters = {
+                    type: 'all',
+                    date: 'all',
+                    sort: 'newest'
+                };
+                this.currentAppointment = null;
+                this.init();
+            }
+
+            init() {
+                this.loadAllAppointments();
+                this.setupEventListeners();
+                this.renderAppointments();
+                this.updateStats();
+                this.updateTime();
+            }
+
+            // دالة لجمع جميع المواعيد من الأنظمة المختلفة
+            loadAllAppointments() {
+                // جمع مواعيد الأطباء
+                const doctorAppointments = JSON.parse(localStorage.getItem('doctor_appointments_bookings')) || [];
+                const hospitalAppointments = JSON.parse(localStorage.getItem('hospital_appointments_bookings')) || [];
+                const labAppointments = JSON.parse(localStorage.getItem('lab_appointments_bookings')) || [];
+
+                // إضافة نوع الخدمة لكل موعد
+                const doctorAppointmentsWithType = doctorAppointments.map(apt => ({
+                    ...apt,
+                    type: 'doctor',
+                    typeName: 'طبيب',
+                    icon: 'fas fa-user-md',
+                    color: 'type-doctor'
+                }));
+
+                const hospitalAppointmentsWithType = hospitalAppointments.map(apt => ({
+                    ...apt,
+                    type: 'hospital',
+                    typeName: 'مستشفى',
+                    icon: 'fas fa-hospital',
+                    color: 'type-hospital'
+                }));
+
+                const labAppointmentsWithType = labAppointments.map(apt => ({
+                    ...apt,
+                    type: 'lab',
+                    typeName: 'مختبر',
+                    icon: 'fas fa-flask',
+                    color: 'type-lab'
+                }));
+
+                // دمج جميع المواعيد
+                this.allAppointments = [
+                    ...doctorAppointmentsWithType,
+                    ...hospitalAppointmentsWithType,
+                    ...labAppointmentsWithType
+                ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                this.filteredAppointments = [...this.allAppointments];
+            }
+
+            setupEventListeners() {
+                // التبويبات
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        this.currentTab = tab.dataset.tab;
+                        this.applyFilters();
+                    });
+                });
+
+                // الفلاتر
+                document.getElementById('typeFilter').addEventListener('change', (e) => {
+                    this.filters.type = e.target.value;
+                    this.applyFilters();
+                });
+
+                document.getElementById('dateFilter').addEventListener('change', (e) => {
+                    this.filters.date = e.target.value;
+                    this.applyFilters();
+                });
+
+                document.getElementById('sortFilter').addEventListener('change', (e) => {
+                    this.filters.sort = e.target.value;
+                    this.applyFilters();
+                });
+
+                // زر التحديث
+                document.getElementById('syncBtn').addEventListener('click', () => {
+                    this.syncAppointments();
+                });
+
+                // إغلاق النوافذ
+                document.querySelectorAll('.close').forEach(closeBtn => {
+                    closeBtn.addEventListener('click', function() {
+                        this.closest('.modal').style.display = 'none';
+                    });
+                });
+
+                // النقر خارج النوافذ
+                window.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        e.target.style.display = 'none';
+                    }
+                });
+
+                // تحديث الوقت
+                setInterval(() => this.updateTime(), 60000);
+            }
+
+            updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-EG', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                document.getElementById('currentTime').textContent = timeString;
+            }
+
+            applyFilters() {
+                let filtered = [...this.allAppointments];
+
+                // تصفية حسب التبويب
+                if (this.currentTab !== 'all') {
+                    filtered = filtered.filter(apt => apt.status === this.currentTab);
+                }
+
+                // تصفية حسب النوع
+                if (this.filters.type !== 'all') {
+                    filtered = filtered.filter(apt => apt.type === this.filters.type);
+                }
+
+                // تصفية حسب التاريخ
+                if (this.filters.date !== 'all') {
+                    const now = new Date();
+                    filtered = filtered.filter(apt => {
+                        const aptDate = new Date(apt.date);
+                        switch (this.filters.date) {
+                            case 'today':
+                                return aptDate.toDateString() === now.toDateString();
+                            case 'week':
+                                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                                return aptDate >= weekAgo;
+                            case 'month':
+                                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                                return aptDate >= monthAgo;
+                            default:
+                                return true;
+                        }
+                    });
+                }
+
+                // ترتيب النتائج
+                switch (this.filters.sort) {
+                    case 'newest':
+                        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        break;
+                    case 'oldest':
+                        filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                        break;
+                    case 'date':
+                        filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+                        break;
+                }
+
+                this.filteredAppointments = filtered;
+                this.renderAppointments();
+                this.updateStats();
+            }
+
+            updateStats() {
+                const upcoming = this.allAppointments.filter(apt => apt.status === 'confirmed').length;
+                const completed = this.allAppointments.filter(apt => apt.status === 'completed').length;
+                const total = this.allAppointments.length;
+
+                document.getElementById('upcomingCount').textContent = upcoming;
+                document.getElementById('completedCount').textContent = completed;
+                document.getElementById('totalCount').textContent = total;
+                document.getElementById('appointmentsCount').textContent = `${this.filteredAppointments.length} موعد`;
+            }
+
+            renderAppointments() {
+                const container = document.getElementById('appointmentsList');
+                
+                if (this.filteredAppointments.length === 0) {
+                    container.innerHTML = this.renderEmptyState();
+                    return;
+                }
+
+                let appointmentsHTML = '';
+
+                this.filteredAppointments.forEach(appointment => {
+                    appointmentsHTML += this.renderAppointmentItem(appointment);
+                });
+
+                container.innerHTML = appointmentsHTML;
+
+                // إضافة الأحداث للعناصر
+                this.setupAppointmentEvents();
+            }
+
+            renderEmptyState() {
+                return `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="empty-title">لا توجد مواعيد</div>
+                        <div class="empty-description">
+                            ${this.currentTab === 'all' ? 
+                                'لم تقم بحجز أي مواعيد بعد' : 
+                                `لا توجد مواعيد ${this.getTabName(this.currentTab)}`
+                            }
+                        </div>
+                        <button class="btn-primary" onclick="unifiedAppointmentsSystem.navigateToBooking()">
+                            <i class="fas fa-plus"></i>
+                            حجز موعد جديد
+                        </button>
+                    </div>
+                `;
+            }
+
+            getTabName(tab) {
+                const names = {
+                    'all': 'جميع',
+                    'upcoming': 'قادمة',
+                    'completed': 'مكتملة',
+                    'cancelled': 'ملغاة'
+                };
+                return names[tab] || tab;
+            }
+
+            renderAppointmentItem(appointment) {
+                const statusClass = `status-${appointment.status}`;
+                const statusText = this.getStatusText(appointment.status);
+                const services = this.getServicesList(appointment);
+                const amount = appointment.fee || appointment.totalAmount || 0;
+
+                return `
+                    <div class="appointment-item" data-id="${appointment.id}">
+                        <div class="appointment-header">
+                            <div>
+                                <div class="appointment-type">
+                                    <div class="type-icon ${appointment.color}">
+                                        <i class="${appointment.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <div class="appointment-title">${this.getAppointmentTitle(appointment)}</div>
+                                        <div class="appointment-subtitle">${appointment.typeName}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="appointment-status ${statusClass}">${statusText}</div>
+                        </div>
+                        
+                        <div class="appointment-details">
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar"></i>
+                                    ${appointment.date}
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    ${appointment.time}
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    ${appointment.location || 'غير محدد'}
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-money-bill"></i>
+                                    ${amount} ر.ي
+                                </div>
+                            </div>
+
+                            ${services ? `
+                                <div class="appointment-services">
+                                    <div class="services-title">الخدمات:</div>
+                                    <div class="services-list">
+                                        ${services}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <div class="appointment-actions">
+                                <button class="btn-secondary" onclick="unifiedAppointmentsSystem.showAppointmentDetails('${appointment.id}')">
+                                    <i class="fas fa-eye"></i>
+                                    التفاصيل
+                                </button>
+                                ${appointment.status === 'confirmed' ? `
+                                    <button class="btn-danger" onclick="unifiedAppointmentsSystem.cancelAppointment('${appointment.id}')">
+                                        <i class="fas fa-times"></i>
+                                        إلغاء
+                                    </button>
+                                ` : ''}
+                                ${appointment.status === 'completed' ? `
+                                    <button class="btn-primary" onclick="unifiedAppointmentsSystem.showRatingModal('${appointment.id}')">
+                                        <i class="fas fa-star"></i>
+                                        تقييم
+                                    </button>
+                                ` : ''}
+                                <button class="btn-secondary" onclick="unifiedAppointmentsSystem.showInvoice('${appointment.id}')">
+                                    <i class="fas fa-receipt"></i>
+                                    الفاتورة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getAppointmentTitle(appointment) {
+                switch (appointment.type) {
+                    case 'doctor':
+                        return appointment.doctorName || 'طبيب';
+                    case 'hospital':
+                        return appointment.hospitalName || 'مستشفى';
+                    case 'lab':
+                        return appointment.labName || 'مختبر';
+                    default:
+                        return 'موعد';
+                }
+            }
+
+            getStatusText(status) {
+                const statuses = {
+                    'confirmed': 'قادم',
+                    'completed': 'مكتمل',
+                    'cancelled': 'ملغي'
+                };
+                return statuses[status] || status;
+            }
+
+            getServicesList(appointment) {
+                if (appointment.services && appointment.services.length > 0) {
+                    return appointment.services.map(service => 
+                        `<span class="service-tag">${service.name}</span>`
+                    ).join('');
+                } else if (appointment.tests && appointment.tests.length > 0) {
+                    return appointment.tests.map(test => 
+                        `<span class="service-tag">${test.name}</span>`
+                    ).join('');
+                } else if (appointment.visitType) {
+                    return `<span class="service-tag">${appointment.visitType}</span>`;
+                }
+                return null;
+            }
+
+            setupAppointmentEvents() {
+                // يمكن إضافة أحداث إضافية هنا إذا لزم الأمر
+            }
+
+            showAppointmentDetails(appointmentId) {
+                const appointment = this.allAppointments.find(apt => apt.id == appointmentId);
+                if (!appointment) return;
+
+                this.currentAppointment = appointment;
+                const modal = document.getElementById('appointmentDetailsModal');
+                
+                document.getElementById('appointmentDetailsTitle').textContent = `تفاصيل الموعد - ${this.getAppointmentTitle(appointment)}`;
+                
+                const modalBody = document.getElementById('appointmentDetailsBody');
+                modalBody.innerHTML = this.renderAppointmentDetails(appointment);
+
+                modal.style.display = 'block';
+            }
+
+            renderAppointmentDetails(appointment) {
+                const services = this.getDetailedServices(appointment);
+                const amount = appointment.fee || appointment.totalAmount || 0;
+
+                return `
+                    <div style="padding: 18px;">
+                        <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                <div class="type-icon ${appointment.color}" style="width: 40px; height: 40px;">
+                                    <i class="${appointment.icon}"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 16px;">${this.getAppointmentTitle(appointment)}</div>
+                                    <div style="color: var(--text-secondary); font-size: 13px;">${appointment.typeName}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); text-align: center;">
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">التاريخ</div>
+                                <div style="font-weight: 700;">${appointment.date}</div>
+                            </div>
+                            <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); text-align: center;">
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">الوقت</div>
+                                <div style="font-weight: 700;">${appointment.time}</div>
+                            </div>
+                        </div>
+
+                        ${services ? `
+                            <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+                                <div style="font-weight: 700; margin-bottom: 8px;">الخدمات المقدمة</div>
+                                ${services}
+                            </div>
+                        ` : ''}
+
+                        <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+                            <div style="font-weight: 700; margin-bottom: 8px;">معلومات إضافية</div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);">المبلغ:</span>
+                                    <span style="font-weight: 700; color: var(--success);">${amount} ر.ي</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);">طريقة الدفع:</span>
+                                    <span>${appointment.paymentMethod || 'غير محدد'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);">الحالة:</span>
+                                    <span class="appointment-status status-${appointment.status}">${this.getStatusText(appointment.status)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        ${appointment.notes ? `
+                            <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-lg);">
+                                <div style="font-weight: 700; margin-bottom: 8px;">ملاحظات</div>
+                                <div style="color: var(--text-secondary); line-height: 1.5;">${appointment.notes}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            getDetailedServices(appointment) {
+                if (appointment.services && appointment.services.length > 0) {
+                    return appointment.services.map(service => `
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                            <span>${service.name}</span>
+                            <span style="font-weight: 700; color: var(--success);">${service.price} ر.ي</span>
+                        </div>
+                    `).join('');
+                } else if (appointment.tests && appointment.tests.length > 0) {
+                    return appointment.tests.map(test => `
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                            <span>${test.name}</span>
+                            <span style="font-weight: 700; color: var(--success);">${test.price} ر.ي</span>
+                        </div>
+                    `).join('');
+                }
+                return null;
+            }
+
+            showInvoice(appointmentId) {
+                // هنا يمكن تنفيذ عرض الفاتورة
+                alert('عرض الفاتورة - سيتم تنفيذ هذه الوظيفة في الخطوة التالية');
+            }
+
+            showRatingModal(appointmentId) {
+                // هنا يمكن تنفيذ نافذة التقييم
+                alert('نافذة التقييم - سيتم تنفيذ هذه الوظيفة في الخطوة التالية');
+            }
+
+            cancelAppointment(appointmentId) {
+                if (confirm('هل أنت متأكد من إلغاء هذا الموعد؟')) {
+                    // البحث عن الموعد في الأنظمة المختلفة
+                    this.cancelInSystem('doctor_appointments_bookings', appointmentId);
+                    this.cancelInSystem('hospital_appointments_bookings', appointmentId);
+                    this.cancelInSystem('lab_appointments_bookings', appointmentId);
+                    
+                    // إعادة تحميل البيانات
+                    this.loadAllAppointments();
+                    this.applyFilters();
+                    alert('تم إلغاء الموعد بنجاح');
+                }
+            }
+
+            cancelInSystem(storageKey, appointmentId) {
+                const appointments = JSON.parse(localStorage.getItem(storageKey)) || [];
+                const appointment = appointments.find(apt => apt.id == appointmentId);
+                if (appointment) {
+                    appointment.status = 'cancelled';
+                    localStorage.setItem(storageKey, JSON.stringify(appointments));
+                }
+            }
+
+            syncAppointments() {
+                this.loadAllAppointments();
+                this.applyFilters();
+                
+                // تأثير مرئي للتحديث
+                const syncBtn = document.getElementById('syncBtn');
+                syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                setTimeout(() => {
+                    syncBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                    alert('تم تحديث البيانات بنجاح');
+                }, 1000);
+            }
+
+            navigateToBooking() {
+                // يمكن توجيه المستخدم لصفحة الحجز المناسبة
+                window.location.href = 'doctor-appointment.html';
+            }
+        }
+
+        // تهيئة النظام
+        document.addEventListener('DOMContentLoaded', function() {
+            window.unifiedAppointmentsSystem = new UnifiedAppointmentsSystem();
+        });
+    </script>
+</body>
+</html>
