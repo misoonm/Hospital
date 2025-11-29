@@ -935,6 +935,448 @@ body {
         <!-- محتوى نافذة التحويل -->
     </div>
 
-    <script src="financial.js"></script>
+    <script>
+        // نظام إدارة الحساب المالي المتكامل
+class FinancialSystem {
+    constructor() {
+        this.userAccount = null;
+        this.transactions = [];
+        this.paymentMethods = [];
+        this.init();
+    }
+
+    init() {
+        this.loadUserData();
+        this.updateUI();
+        this.startLiveUpdates();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    loadUserData() {
+        // تحميل بيانات المستخدم من localStorage
+        const patientData = JSON.parse(localStorage.getItem('patient_profile_data'));
+        const financialData = JSON.parse(localStorage.getItem('financial_account'));
+        
+        if (patientData && financialData) {
+            this.userAccount = {
+                ...patientData,
+                ...financialData
+            };
+            this.transactions = JSON.parse(localStorage.getItem('financial_transactions')) || [];
+            this.paymentMethods = JSON.parse(localStorage.getItem('payment_methods')) || [];
+        }
+    }
+
+    updateUI() {
+        if (this.userAccount) {
+            // إظهار واجهة الحساب المالي
+            document.getElementById('noAccountState').style.display = 'none';
+            document.getElementById('financialHeader').style.display = 'block';
+            document.getElementById('financialContent').style.display = 'block';
+            
+            // تحديث بيانات المستخدم
+            this.updateUserProfile();
+            
+            // تحديث طرق الدفع
+            this.renderPaymentMethods();
+            
+            // تحديث المعاملات
+            this.renderTransactions();
+            
+            // تحديث الإحصائيات
+            this.updateStatistics();
+        } else {
+            // إظهار رسالة إنشاء الحساب
+            document.getElementById('noAccountState').style.display = 'block';
+            document.getElementById('financialHeader').style.display = 'none';
+            document.getElementById('financialContent').style.display = 'none';
+        }
+    }
+
+    updateUserProfile() {
+        if (!this.userAccount) return;
+
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('displayUserName');
+        const accountNumber = document.getElementById('displayAccountNumber');
+        const balance = document.getElementById('displayBalance');
+
+        // تحديث صورة المستخدم
+        if (this.userAccount.avatar) {
+            userAvatar.innerHTML = `<img src="${this.userAccount.avatar}" alt="${this.userAccount.fullName}">`;
+        } else {
+            userAvatar.innerHTML = '<i class="fas fa-user"></i>';
+        }
+
+        // تحديث الاسم ورقم الحساب والرصيد
+        userName.textContent = this.userAccount.fullName || 'مستخدم';
+        accountNumber.textContent = `رقم الحساب: ${this.userAccount.accountNumber || 'غير محدد'}`;
+        balance.textContent = `${(this.userAccount.balance || 0).toLocaleString()} ر.ي`;
+    }
+
+    renderPaymentMethods() {
+        const container = document.getElementById('paymentMethods');
+        container.innerHTML = '';
+
+        const methods = [
+            { id: 1, name: 'جوالي', icon: 'fa-mobile-alt', type: 'wallet', active: false },
+            { id: 2, name: 'جيب', icon: 'fa-money-bill-wave', type: 'wallet', active: false },
+            { id: 3, name: 'فلوسك', icon: 'fa-coins', type: 'wallet', active: false },
+            { id: 4, name: 'ون كاش', icon: 'fa-qrcode', type: 'wallet', active: false },
+            { id: 5, name: 'بطاقة ائتمان', icon: 'fa-credit-card', type: 'card', active: false },
+            { id: 6, name: 'تحويل بنكي', icon: 'fa-university', type: 'bank', active: false }
+        ];
+
+        methods.forEach(method => {
+            const methodElement = document.createElement('div');
+            methodElement.className = `payment-method-card ${method.active ? 'active' : ''}`;
+            methodElement.onclick = () => this.selectPaymentMethod(method);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fas ${method.icon}"></i>
+                </div>
+                <div class="payment-name">${method.name}</div>
+                <div class="payment-balance">${method.active ? 'مفعل' : 'غير مفعل'}</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        // زر إضافة طريقة دفع جديدة
+        const addButton = document.createElement('button');
+        addButton.className = 'add-payment-btn';
+        addButton.innerHTML = `
+            <i class="fas fa-plus-circle"></i>
+            إضافة طريقة دفع جديدة
+        `;
+        addButton.onclick = () => this.showAddPaymentMethod();
+        container.appendChild(addButton);
+    }
+
+    renderTransactions(filter = 'all') {
+        const container = document.getElementById('transactionList');
+        container.innerHTML = '';
+
+        const filteredTransactions = filter === 'all' 
+            ? this.transactions 
+            : this.transactions.filter(t => t.type === filter);
+
+        this.updateFilterCounts();
+
+        if (filteredTransactions.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #64748b;">
+                    <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد معاملات</div>
+                </div>
+            `;
+            return;
+        }
+
+        filteredTransactions.forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.className = 'transaction-item';
+            transactionElement.onclick = () => this.showTransactionDetails(transaction);
+            
+            const iconClass = this.getTransactionIcon(transaction.type);
+            const amountColor = transaction.amount >= 0 ? '#059669' : '#dc2626';
+            const amountSign = transaction.amount >= 0 ? '+' : '';
+            
+            transactionElement.innerHTML = `
+                <div class="transaction-icon" style="background: ${this.getTransactionColor(transaction.type)}">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-title">${transaction.title}</div>
+                    <div class="transaction-description">${transaction.description}</div>
+                    <div class="transaction-meta">
+                        <span class="transaction-ref">${transaction.ref}</span>
+                        <span>${transaction.date}</span>
+                    </div>
+                </div>
+                <div class="transaction-amount" style="color: ${amountColor}">
+                    ${amountSign}${transaction.amount} ر.ي
+                </div>
+                <div class="transaction-status">${transaction.status}</div>
+            `;
+            
+            container.appendChild(transactionElement);
+        });
+    }
+
+    updateStatistics() {
+        const container = document.getElementById('statsGrid');
+        if (!container) return;
+
+        const monthlyStats = this.calculateMonthlyStats();
+        
+        container.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">
+                        ${monthlyStats.totalDeposits.toLocaleString()} ر.ي
+                    </div>
+                    <div style="font-size: 13px; color: #64748b;">إجمالي الإيداعات</div>
+                </div>
+                <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--error); margin-bottom: 8px;">
+                        ${monthlyStats.totalWithdrawals.toLocaleString()} ر.ي
+                    </div>
+                    <div style="font-size: 13px; color: #64748b;">إجمالي السحوبات</div>
+                </div>
+                <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--success); margin-bottom: 8px;">
+                        ${monthlyStats.transactionCount}
+                    </div>
+                    <div style="font-size: 13px; color: #64748b;">عدد المعاملات</div>
+                </div>
+                <div style="background: #f0f9ff; padding: 20px; border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: var(--warning); margin-bottom: 8px;">
+                        ${monthlyStats.averageTransaction.toLocaleString()} ر.ي
+                    </div>
+                    <div style="font-size: 13px; color: #64748b;">متوسط المعاملة</div>
+                </div>
+            </div>
+        `;
+    }
+
+    calculateMonthlyStats() {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        
+        const monthlyTransactions = this.transactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            return transactionDate.getMonth() === currentMonth && 
+                   transactionDate.getFullYear() === currentYear;
+        });
+
+        const totalDeposits = monthlyTransactions
+            .filter(t => t.amount > 0)
+            .reduce((sum, t) => sum + t.amount, 0);
+
+        const totalWithdrawals = monthlyTransactions
+            .filter(t => t.amount < 0)
+            .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+        const transactionCount = monthlyTransactions.length;
+        const averageTransaction = transactionCount > 0 ? 
+            (totalDeposits + totalWithdrawals) / transactionCount : 0;
+
+        return {
+            totalDeposits,
+            totalWithdrawals,
+            transactionCount,
+            averageTransaction
+        };
+    }
+
+    updateFilterCounts() {
+        const counts = {
+            all: this.transactions.length,
+            deposit: this.transactions.filter(t => t.type === 'deposit').length,
+            withdrawal: this.transactions.filter(t => t.type === 'withdrawal').length,
+            transfer: this.transactions.filter(t => t.type === 'transfer').length
+        };
+
+        document.getElementById('countAll').textContent = counts.all;
+        document.getElementById('countDeposits').textContent = counts.deposit;
+        document.getElementById('countWithdrawals').textContent = counts.withdrawal;
+        document.getElementById('countTransfers').textContent = counts.transfer;
+    }
+
+    getTransactionIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'withdrawal': 'fa-upload',
+            'transfer': 'fa-exchange-alt',
+            'payment': 'fa-credit-card'
+        };
+        return icons[type] || 'fa-exchange-alt';
+    }
+
+    getTransactionColor(type) {
+        const colors = {
+            'deposit': 'var(--gradient-success)',
+            'withdrawal': 'var(--gradient-warning)',
+            'transfer': 'var(--gradient-primary)',
+            'payment': 'var(--gradient-premium)'
+        };
+        return colors[type] || 'var(--gradient-primary)';
+    }
+
+    selectPaymentMethod(method) {
+        this.showNotification(`تم اختيار ${method.name}`, 'info');
+    }
+
+    showAddPaymentMethod() {
+        this.showNotification('سيتم فتح نافذة إضافة طريقة دفع جديدة', 'info');
+    }
+
+    showTransactionDetails(transaction) {
+        const details = `
+            تفاصيل المعاملة:
+            
+            الخدمة: ${transaction.title}
+            الوصف: ${transaction.description}
+            المبلغ: ${transaction.amount} ر.ي
+            رقم المرجع: ${transaction.ref}
+            التاريخ: ${transaction.date}
+            الحالة: ${transaction.status}
+        `;
+        
+        alert(details);
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    startLiveUpdates() {
+        // محاكاة تحديثات حية للرصيد والمعاملات
+        setInterval(() => {
+            if (this.userAccount && Math.random() > 0.8) {
+                this.userAccount.balance += Math.floor(Math.random() * 100) - 30;
+                this.saveData();
+                this.updateUI();
+            }
+        }, 30000);
+    }
+
+    saveData() {
+        if (this.userAccount) {
+            localStorage.setItem('financial_account', JSON.stringify(this.userAccount));
+            localStorage.setItem('financial_transactions', JSON.stringify(this.transactions));
+            localStorage.setItem('payment_methods', JSON.stringify(this.paymentMethods));
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // إنشاء إشعار مؤقت
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'success' ? '#059669' : type === 'error' ? '#dc2626' : '#2563eb'};
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-large);
+            z-index: 3000;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease-out;
+        `;
+        
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 4000);
+    }
+}
+
+// وظائف الواجهة العامة
+function redirectToProfile() {
+    window.location.href = 'profile.html';
+}
+
+function filterTransactions(type) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    financialSystem.renderTransactions(type);
+}
+
+function refreshTransactions() {
+    financialSystem.showNotification('جاري تحديث البيانات...', 'info');
+    setTimeout(() => {
+        financialSystem.renderTransactions();
+        financialSystem.showNotification('تم تحديث البيانات', 'success');
+    }, 1000);
+}
+
+function downloadStatement() {
+    financialSystem.showNotification('جاري تحميل كشف الحساب...', 'info');
+    setTimeout(() => {
+        financialSystem.showNotification('تم تحميل كشف الحساب بنجاح', 'success');
+    }, 1500);
+}
+
+function openDepositModal() {
+    financialSystem.showNotification('نافذة الإيداع قريباً...', 'info');
+}
+
+function openWithdrawModal() {
+    financialSystem.showNotification('نافذة السحب قريباً...', 'info');
+}
+
+function openTransferModal() {
+    financialSystem.showNotification('نافذة التحويل قريباً...', 'info');
+}
+
+// تهيئة النظام المالي
+const financialSystem = new FinancialSystem();
+
+// إضافة بعض البيانات التجريبية عند التحميل الأول
+document.addEventListener('DOMContentLoaded', function() {
+    // محاكاة بيانات تجريبية إذا لم تكن موجودة
+    const sampleTransactions = [
+        {
+            id: 1,
+            type: 'deposit',
+            title: 'إيداع رصيد',
+            description: 'إيداع عبر محفظة جوالي',
+            amount: 50000,
+            ref: 'DEP001',
+            date: '2024-01-15',
+            status: 'مكتمل'
+        },
+        {
+            id: 2,
+            type: 'withdrawal',
+            title: 'سحب نقدي',
+            description: 'سحب من ماكينة الصراف الآلي',
+            amount: -15000,
+            ref: 'WD001',
+            date: '2024-01-14',
+            status: 'مكتمل'
+        },
+        {
+            id: 3,
+            type: 'transfer',
+            title: 'تحويل إلى صيدلية',
+            description: 'دفع فاتورة أدوية',
+            amount: -7500,
+            ref: 'TR001',
+            date: '2024-01-13',
+            status: 'مكتمل'
+        }
+    ];
+
+    // إذا لم تكن هناك معاملات محفوظة، استخدم العينات
+    if (!localStorage.getItem('financial_transactions')) {
+        localStorage.setItem('financial_transactions', JSON.stringify(sampleTransactions));
+    }
+});
+    </script>
 </body>
 </html>
