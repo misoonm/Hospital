@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طبيب 24/7 - الإعدادات المتقدمة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      /* إعدادات طبيب 24/7 - الإعدادات المتقدمة */
+:root {
+    /* نظام الألوان المتكامل */
+    --primary: #1976D2;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --secondary: #4CAF50;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+    --danger: #F44336;
+    
+    /* نظام الخلفيات */
+    --bg-light: #F5F9FF;
+    --bg-surface: #ffffff;
+    --bg-dark: #1E293B;
+    --bg-darker: #0F172A;
+    
+    /* نظام الظلال */
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(25, 118, 210, 0.15);
+    --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
+    /* نظام النصوص */
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+    --text-light: #64748B;
+    --text-inverse: #FFFFFF;
+    
+    /* نظام الزوايا */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    
+    /* نظام الانتقالات */
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* نظام الخطوط */
+    --font-primary: 'Tajawal', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+    
+    /* نظام المسافات */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 20px 16px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 16px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    padding: 0 16px 100px;
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 6px 8px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 340px;
+    width: calc(100% - 32px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translateY(-8px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* بطاقات الإعدادات */
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.settings-section {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    transition: var(--transition-liquid);
+}
+
+.settings-section:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.section-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.section-header i {
+    font-size: 20px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.settings-list {
+    padding: 0;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-lg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item:hover {
+    background: var(--primary-light);
+    transform: translateX(-8px);
+}
+
+.setting-item:active {
+    background: var(--bg-surface);
+    transform: translateX(-4px);
+}
+
+.setting-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex: 1;
+}
+
+.setting-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: var(--transition-liquid);
+}
+
+.setting-item:hover .setting-icon {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.setting-text {
+    flex: 1;
+}
+
+.setting-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    font-size: 14px;
+}
+
+.setting-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* عناصر التحكم */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-inset);
+    transition: var(--transition-liquid);
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background: var(--text-secondary);
+    transition: var(--transition-liquid);
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background: var(--primary);
+    box-shadow: var(--shadow-light);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+    background: white;
+}
+
+.toggle-slider:active {
+    transform: scale(0.9);
+}
+
+/* شريط التقدم */
+.progress-bar {
+    width: 100px;
+    height: 6px;
+    background: var(--bg-surface);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inset);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* شريط البحث */
+.search-container {
+    position: relative;
+    margin-bottom: var(--space-lg);
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 45px 12px 16px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.search-input:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* نماذج الإعدادات */
+.settings-form {
+    padding: 18px;
+}
+
+.form-section {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.required {
+    color: var(--accent);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* أزرار الإجراء */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-small {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-small:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+/* ألوان الأزرار */
+.btn-success { background: var(--success); color: white; }
+.btn-warning { background: var(--warning); color: white; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-info { background: var(--info); color: white; }
+
+/* خانة الاختيار */
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.checkbox-label input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary-light);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-liquid);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.checkbox-label input:checked + .checkmark {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkbox-label input:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* شريط التمرير المخصص */
+.range-slider {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-surface);
+    border-radius: 3px;
+    outline: none;
+    box-shadow: var(--shadow-inset);
+    -webkit-appearance: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* شريط الذاكرة */
+.memory-usage {
+    background: var(--bg-light);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-sm);
+}
+
+.memory-bar {
+    height: 8px;
+    background: var(--bg-surface);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--shadow-inset);
+    margin-bottom: var(--space-sm);
+}
+
+.memory-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.memory-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* قائمة الألوان */
+.color-palette {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 3px solid transparent;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.active {
+    border-color: var(--text-primary);
+    transform: scale(1.15);
+}
+
+/* شريط اللغة */
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border: 2px solid transparent;
+}
+
+.language-option:hover {
+    transform: translateX(-5px);
+    box-shadow: var(--shadow-light);
+}
+
+.language-option.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.language-flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+
+/* إشعارات النظام */
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-sm);
+    transition: var(--transition-liquid);
+}
+
+.notification-item:hover {
+    transform: translateX(-5px);
+    box-shadow: var(--shadow-light);
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* النسخ الاحتياطي */
+.backup-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.backup-option {
+    background: var(--bg-surface);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+}
+
+.backup-option:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-card);
+}
+
+.backup-icon {
+    font-size: 24px;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+}
+
+/* الأمان */
+.security-level {
+    background: var(--bg-light);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-sm);
+}
+
+.security-bar {
+    height: 6px;
+    background: var(--bg-surface);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+}
+
+.security-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--success), var(--warning), var(--danger));
+    border-radius: 3px;
+}
+
+.security-text {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* الوضع الداكن */
+body.dark-mode {
+    --bg-light: #1E293B;
+    --bg-surface: #0F172A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #94A3B8;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.05), 6px 6px 12px rgba(0, 0, 0, 0.3);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.3), inset -3px -3px 6px rgba(255, 255, 255, 0.05);
+}
+
+/* تأثيرات الظهور */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .settings-form {
+        padding: 12px;
+    }
+    
+    .form-section {
+        padding: 12px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .backup-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-palette {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .setting-item {
+        padding: var(--space-md);
+    }
+}
+
+/* مؤشر التحميل */
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-light);
+    border-top: 2px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* رسائل التنبيه */
+.alert {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.alert-success {
+    background: var(--success);
+    color: white;
+}
+
+.alert-warning {
+    background: var(--warning);
+    color: white;
+}
+
+.alert-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.alert-info {
+    background: var(--info);
+    color: white;
+}
+
+/* شريط التبويب */
+.tab-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.tab-header {
+    display: flex;
+    background: var(--primary);
+    padding: var(--space-md);
+}
+
+.tab-button {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    padding: var(--space-sm);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border-radius: var(--radius-sm);
+}
+
+.tab-button.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-content {
+    padding: var(--space-lg);
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+   </style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>الإعدادات المتقدمة ⚙️</h1>
+                    <p>إدارة كاملة لتجربة التطبيق</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="action-icon" id="themeBtn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الإعدادات -->
+        <div class="main-content">
+            <!-- شريط البحث -->
+            <div class="search-container">
+                <input type="text" class="search-input" id="settingsSearch" placeholder="ابحث في الإعدادات...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="settings-container">
+                <!-- إعدادات الحساب -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-user-cog"></i>
+                        <h2>إعدادات الحساب</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="profileModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-user-edit"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الملف الشخصي</div>
+                                    <div class="setting-description">إدارة بياناتك الشخصية والمهنية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="privacyModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الخصوصية</div>
+                                    <div class="setting-description">تحكم في من يمكنه رؤية معلوماتك</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="securityModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الأمان</div>
+                                    <div class="setting-description">كلمات المرور والمصادقة الثنائية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إعدادات التطبيق -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h2>إعدادات التطبيق</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">المظهر</div>
+                                    <div class="setting-description">الوضع الداكن والألوان</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="darkModeToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="languageModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">اللغة</div>
+                                    <div class="setting-description">اللغة: العربية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الإشعارات</div>
+                                    <div class="setting-description">إدارة التنبيهات والإشعارات</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notificationsToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="storageModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">التخزين</div>
+                                    <div class="setting-description">1.2 جيجابايت مستخدم من 2 جيجابايت</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إعدادات الخدمات الطبية -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h2>الخدمات الطبية</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">تذكير المواعيد</div>
+                                    <div class="setting-description">إشعارات قبل المواعيد</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="appointmentRemindersToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-pills"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">تذكير الأدوية</div>
+                                    <div class="setting-description">تنبيهات مواعيد الأدوية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="medicationRemindersToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="emergencyModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">جهات الاتصال الطارئة</div>
+                                    <div class="setting-description">إدارة جهات الاتصال في الحالات الطارئة</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="healthDataModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-file-medical"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">السجل الصحي</div>
+                                    <div class="setting-description">إدارة البيانات الصحية والتقارير</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إعدادات الدفع والمحفظة -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-wallet"></i>
+                        <h2>الدفع والمحفظة</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="paymentMethodsModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">طرق الدفع</div>
+                                    <div class="setting-description">إدارة البطاقات والمحافظ الإلكترونية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="subscriptionModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الاشتراكات</div>
+                                    <div class="setting-description">إدارة خطط الاشتراك والمزايا</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-receipt"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الفواتير</div>
+                                    <div class="setting-description">سجل الفواتير والإشعارات</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="invoiceNotificationsToggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إعدادات الخصوصية والأمان -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-user-shield"></i>
+                        <h2>الخصوصية والأمان</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="dataSharingModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">مشاركة البيانات</div>
+                                    <div class="setting-description">التحكم في مشاركة البيانات مع الأطباء</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-fingerprint"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">المصادقة البيومترية</div>
+                                    <div class="setting-description">بصمة الإصبع أو التعرف على الوجه</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="biometricToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="sessionsModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الجلسات النشطة</div>
+                                    <div class="setting-description">إدارة الأجهزة المتصلة</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="permissionsModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الصلاحيات</div>
+                                    <div class="setting-description">إدارة أذونات التطبيق</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إعدادات متقدمة -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-cogs"></i>
+                        <h2>إعدادات متقدمة</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="backupModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">النسخ الاحتياطي</div>
+                                    <div class="setting-description">نسخ البيانات واستعادتها</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="cacheModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-broom"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">مسح الذاكرة المؤقتة</div>
+                                    <div class="setting-description">تحسين أداء التطبيق</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="logsModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">سجلات النظام</div>
+                                    <div class="setting-description">عرض سجلات الأخطاء والنشاط</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="developerModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">خيارات المطور</div>
+                                    <div class="setting-description">إعدادات متقدمة للمطورين</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- معلومات التطبيق -->
+                <div class="settings-section fade-in">
+                    <div class="section-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>معلومات التطبيق</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="aboutModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">عن التطبيق</div>
+                                    <div class="setting-description">الإصدار 2.1.0 - طبيب 24/7</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="helpModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">المساعدة والدعم</div>
+                                    <div class="setting-description">الأسئلة الشائعة والدعم الفني</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="feedbackModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-comment-dots"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">تقييم التطبيق</div>
+                                    <div class="setting-description">شاركنا رأيك لتطوير التطبيق</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="legalModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">الشروط والسياسات</div>
+                                    <div class="setting-description">الشروط والأحكام وسياسة الخصوصية</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- إجراءات الحساب -->
+                <div class="settings-section fade-in">
+                    <div class="section-header" style="background: linear-gradient(135deg, var(--warning), var(--danger));">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>إجراءات الحساب</h2>
+                    </div>
+                    <div class="settings-list">
+                        <div class="setting-item" data-modal="exportDataModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">تصدير البيانات</div>
+                                    <div class="setting-description">تحميل نسخة من جميع بياناتك</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+
+                        <div class="setting-item" data-modal="deleteAccountModal">
+                            <div class="setting-info">
+                                <div class="setting-icon">
+                                    <i class="fas fa-user-slash"></i>
+                                </div>
+                                <div class="setting-text">
+                                    <div class="setting-title">حذف الحساب</div>
+                                    <div class="setting-description">حذف الحساب وجميع البيانات بشكل دائم</div>
+                                </div>
+                            </div>
+                            <div class="setting-control">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="consultation.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-comment-medical"></i>
+                </div>
+                <div class="nav-label">استشارة طبية</div>
+            </a>
+            <a href="patient-profile.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">الملف الشخصي</div>
+            </a>
+            <a href="settings.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="nav-label">الإعدادات</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- جميع النوافذ المنبثقة -->
+    <!-- نافذة الملف الشخصي -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الملف الشخصي</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="settings-form" id="profileForm">
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            المعلومات الأساسية
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">الاسم الكامل</label>
+                            <input type="text" class="form-input" id="fullName" value="محمد أحمد" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-input" id="email" value="mohamed@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-input" id="phone" value="+966500000000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-map-marker-alt"></i>
+                            المعلومات الجغرافية
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">المدينة</label>
+                            <select class="form-select" id="city">
+                                <option value="riyadh">الرياض</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="dammam">الدمام</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">العنوان</label>
+                            <textarea class="form-textarea" id="address" rows="3">حي السلام، شارع الملك فهد</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('profileModal')">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            حفظ التغييرات
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة اللغة -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إعدادات اللغة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="settings-form">
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-language"></i>
+                            اختر اللغة
+                        </h3>
+                        <div class="language-options">
+                            <div class="language-option active" data-lang="ar">
+                                <div class="language-flag">🇸🇦</div>
+                                <div class="setting-text">
+                                    <div class="setting-title">العربية</div>
+                                    <div class="setting-description">اللغة العربية - الافتراضية</div>
+                                </div>
+                            </div>
+                            <div class="language-option" data-lang="en">
+                                <div class="language-flag">🇺🇸</div>
+                                <div class="setting-text">
+                                    <div class="setting-title">English</div>
+                                    <div class="setting-description">English Language</div>
+                                </div>
+                            </div>
+                            <div class="language-option" data-lang="fr">
+                                <div class="language-flag">🇫🇷</div>
+                                <div class="setting-text">
+                                    <div class="setting-title">Français</div>
+                                    <div class="setting-description">Langue française</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('languageModal')">
+                            إلغاء
+                        </button>
+                        <button type="button" class="btn-primary" onclick="settingsManager.changeLanguage()">
+                            تطبيق اللغة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نوافذ أخرى (سيتم إضافتها في JS) -->
+    <div id="modalContainer"></div>
+
+    <script>
+      // نظام الإعدادات المتقدمة - طبيب 24/7
+class SettingsManager {
+    constructor() {
+        this.settings = {};
+        this.currentTheme = 'light';
+        this.init();
+    }
+
+    init() {
+        this.loadSettings();
+        this.setupEventListeners();
+        this.setupModals();
+        this.updateTime();
+        this.setupSearch();
+        this.setupAnimations();
+        
+        // تحديث الوقت كل دقيقة
+        setInterval(() => this.updateTime(), 60000);
+        
+        console.log('نظام الإعدادات المتقدم جاهز للعمل');
+    }
+
+    loadSettings() {
+        try {
+            const savedSettings = localStorage.getItem('app_settings');
+            if (savedSettings) {
+                this.settings = JSON.parse(savedSettings);
+                console.log('الإعدادات المحملة:', this.settings);
+            } else {
+                // الإعدادات الافتراضية
+                this.settings = {
+                    theme: 'light',
+                    language: 'ar',
+                    notifications: true,
+                    appointmentReminders: true,
+                    medicationReminders: true,
+                    biometricAuth: false,
+                    dataSharing: true,
+                    autoBackup: true,
+                    soundEnabled: true,
+                    vibrationEnabled: true
+                };
+                this.saveSettings();
+            }
+            this.applySettings();
+        } catch (error) {
+            console.error('خطأ في تحميل الإعدادات:', error);
+        }
+    }
+
+    saveSettings() {
+        localStorage.setItem('app_settings', JSON.stringify(this.settings));
+        console.log('الإعدادات المحفوظة:', this.settings);
+    }
+
+    applySettings() {
+        // تطبيق الوضع الداكن
+        if (this.settings.theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').checked = true;
+        } else {
+            document.body.classList.remove('dark-mode');
+            document.getElementById('darkModeToggle').checked = false;
+        }
+
+        // تطبيق إعدادات الإشعارات
+        document.getElementById('notificationsToggle').checked = this.settings.notifications;
+        document.getElementById('appointmentRemindersToggle').checked = this.settings.appointmentReminders;
+        document.getElementById('medicationRemindersToggle').checked = this.settings.medicationReminders;
+        document.getElementById('biometricToggle').checked = this.settings.biometricAuth;
+
+        // تحديث واجهة المستخدم
+        this.updateUI();
+    }
+
+    setupEventListeners() {
+        // تبديل الوضع الداكن
+        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+            this.toggleDarkMode(e.target.checked);
+        });
+
+        // تبديل الإشعارات
+        document.getElementById('notificationsToggle').addEventListener('change', (e) => {
+            this.settings.notifications = e.target.checked;
+            this.saveSettings();
+            this.showNotification('تم تحديث إعدادات الإشعارات');
+        });
+
+        // تبديل تذكير المواعيد
+        document.getElementById('appointmentRemindersToggle').addEventListener('change', (e) => {
+            this.settings.appointmentReminders = e.target.checked;
+            this.saveSettings();
+            this.showNotification('تم تحديث إعدادات تذكير المواعيد');
+        });
+
+        // تبديل تذكير الأدوية
+        document.getElementById('medicationRemindersToggle').addEventListener('change', (e) => {
+            this.settings.medicationReminders = e.target.checked;
+            this.saveSettings();
+            this.showNotification('تم تحديث إعدادات تذكير الأدوية');
+        });
+
+        // تبديل المصادقة البيومترية
+        document.getElementById('biometricToggle').addEventListener('change', (e) => {
+            this.settings.biometricAuth = e.target.checked;
+            this.saveSettings();
+            if (e.target.checked) {
+                this.showNotification('تم تفعيل المصادقة البيومترية');
+            } else {
+                this.showNotification('تم إيقاف المصادقة البيومترية');
+            }
+        });
+
+        // زر البحث
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            document.getElementById('settingsSearch').focus();
+        });
+
+        // زر السمة
+        document.getElementById('themeBtn').addEventListener('click', () => {
+            this.toggleDarkMode(!document.body.classList.contains('dark-mode'));
+        });
+
+        // إغلاق النوافذ
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // النقر خارج النوافذ
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // عناصر الإعدادات القابلة للنقر
+        document.querySelectorAll('.setting-item[data-modal]').forEach(item => {
+            item.addEventListener('click', () => {
+                const modalId = item.getAttribute('data-modal');
+                this.openModal(modalId);
+            });
+        });
+
+        // نموذج الملف الشخصي
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.updateProfile();
+        });
+    }
+
+    setupModals() {
+        // إنشاء النوافذ المنبثقة الديناميكية
+        this.createDynamicModals();
+    }
+
+    createDynamicModals() {
+        const modals = {
+            // نافذة الخصوصية
+            privacyModal: {
+                title: 'إعدادات الخصوصية',
+                content: `
+                    <div class="settings-form">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-eye"></i>
+                                الرؤية
+                            </h3>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="profileVisibility" checked>
+                                    <span class="checkmark"></span>
+                                    إظهار الملف الشخصي للأطباء
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="onlineStatus" checked>
+                                    <span class="checkmark"></span>
+                                    إظهار حالة الاتصال
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-friends"></i>
+                                الاتصالات
+                            </h3>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="allowMessages" checked>
+                                    <span class="checkmark"></span>
+                                    السماح برسائل الأطباء
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="allowCalls" checked>
+                                    <span class="checkmark"></span>
+                                    السماح بالمكالمات من الأطباء
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('privacyModal')">
+                                إلغاء
+                            </button>
+                            <button type="button" class="btn-primary" onclick="settingsManager.savePrivacySettings()">
+                                حفظ الإعدادات
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // نافذة الأمان
+            securityModal: {
+                title: 'إعدادات الأمان',
+                content: `
+                    <div class="settings-form">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-shield-alt"></i>
+                                مستوى الأمان
+                            </h3>
+                            <div class="security-level">
+                                <div class="security-bar">
+                                    <div class="security-fill" style="width: 85%"></div>
+                                </div>
+                                <div class="security-text">مستوى أمان قوي - 85%</div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-key"></i>
+                                كلمة المرور
+                            </h3>
+                            <div class="form-group">
+                                <label class="form-label">كلمة المرور الحالية</label>
+                                <input type="password" class="form-input" id="currentPassword">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">كلمة المرور الجديدة</label>
+                                <input type="password" class="form-input" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">تأكيد كلمة المرور</label>
+                                <input type="password" class="form-input" id="confirmPassword">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-mobile-alt"></i>
+                                المصادقة الثنائية
+                            </h3>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="twoFactorAuth">
+                                    <span class="checkmark"></span>
+                                    تفعيل المصادقة الثنائية
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('securityModal')">
+                                إلغاء
+                            </button>
+                            <button type="button" class="btn-primary" onclick="settingsManager.updateSecurity()">
+                                تحديث الأمان
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // نافذة التخزين
+            storageModal: {
+                title: 'إدارة التخزين',
+                content: `
+                    <div class="settings-form">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-chart-pie"></i>
+                                استخدام التخزين
+                            </h3>
+                            <div class="memory-usage">
+                                <div class="memory-bar">
+                                    <div class="memory-fill" style="width: 60%"></div>
+                                </div>
+                                <div class="memory-stats">
+                                    <span>1.2 جيجابايت مستخدم</span>
+                                    <span>2 جيجابايت متاح</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-hdd"></i>
+                                تفاصيل التخزين
+                            </h3>
+                            <div class="storage-details">
+                                <div class="storage-item">
+                                    <span>الصور والفيديوهات</span>
+                                    <span>800 ميجابايت</span>
+                                </div>
+                                <div class="storage-item">
+                                    <span>المستندات الطبية</span>
+                                    <span>300 ميجابايت</span>
+                                </div>
+                                <div class="storage-item">
+                                    <span>البيانات المخزنة مؤقتاً</span>
+                                    <span>100 ميجابايت</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-broom"></i>
+                                تنظيف التخزين
+                            </h3>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="clearCache">
+                                    <span class="checkmark"></span>
+                                    مسح الذاكرة المؤقتة (100 ميجابايت)
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="clearOldFiles">
+                                    <span class="checkmark"></span>
+                                    حذف الملفات القديمة
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('storageModal')">
+                                إلغاء
+                            </button>
+                            <button type="button" class="btn-danger" onclick="settingsManager.cleanStorage()">
+                                تنظيف التخزين
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // نافذة الطوارئ
+            emergencyModal: {
+                title: 'جهات الاتصال الطارئة',
+                content: `
+                    <div class="settings-form">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-ambulance"></i>
+                                جهات الاتصال
+                            </h3>
+                            <div class="emergency-contacts">
+                                <div class="contact-item">
+                                    <div class="contact-info">
+                                        <div class="contact-name">أحمد محمد</div>
+                                        <div class="contact-relation">الأب</div>
+                                        <div class="contact-phone">+966500000001</div>
+                                    </div>
+                                    <button class="btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div class="contact-item">
+                                    <div class="contact-info">
+                                        <div class="contact-name">فاطمة أحمد</div>
+                                        <div class="contact-relation">الأم</div>
+                                        <div class="contact-phone">+966500000002</div>
+                                    </div>
+                                    <button class="btn-small btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-plus"></i>
+                                إضافة جهة اتصال
+                            </h3>
+                            <div class="form-group">
+                                <label class="form-label">الاسم</label>
+                                <input type="text" class="form-input" id="contactName">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">صلة القرابة</label>
+                                <input type="text" class="form-input" id="contactRelation">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" class="form-input" id="contactPhone">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('emergencyModal')">
+                                إلغاء
+                            </button>
+                            <button type="button" class="btn-primary" onclick="settingsManager.addEmergencyContact()">
+                                إضافة جهة اتصال
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+
+            // نافذة النسخ الاحتياطي
+            backupModal: {
+                title: 'النسخ الاحتياطي',
+                content: `
+                    <div class="settings-form">
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-cloud"></i>
+                                النسخ الاحتياطي التلقائي
+                            </h3>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="autoBackup" checked>
+                                    <span class="checkmark"></span>
+                                    النسخ الاحتياطي التلقائي
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">معدل النسخ الاحتياطي</label>
+                                <select class="form-select" id="backupFrequency">
+                                    <option value="daily">يومياً</option>
+                                    <option value="weekly">أسبوعياً</option>
+                                    <option value="monthly">شهرياً</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-history"></i>
+                                آخر نسخة احتياطية
+                            </h3>
+                            <div class="backup-info">
+                                <p>آخر نسخة احتياطية: 2024-01-15 14:30</p>
+                                <p>حجم النسخة: 450 ميجابايت</p>
+                            </div>
+                        </div>
+
+                        <div class="backup-options">
+                            <div class="backup-option" onclick="settingsManager.createBackup()">
+                                <div class="backup-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="setting-title">إنشاء نسخة</div>
+                                <div class="setting-description">نسخة احتياطية جديدة</div>
+                            </div>
+                            <div class="backup-option" onclick="settingsManager.restoreBackup()">
+                                <div class="backup-icon">
+                                    <i class="fas fa-cloud-download-alt"></i>
+                                </div>
+                                <div class="setting-title">استعادة</div>
+                                <div class="setting-description">استعادة نسخة سابقة</div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="settingsManager.closeModal('backupModal')">
+                                إغلاق
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // إضافة النوافذ إلى DOM
+        const modalContainer = document.getElementById('modalContainer');
+        for (const [modalId, modalData] of Object.entries(modals)) {
+            const modalHTML = `
+                <div id="${modalId}" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>${modalData.title}</h2>
+                            <span class="close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            ${modalData.content}
+                        </div>
+                    </div>
+                </div>
+            `;
+            modalContainer.innerHTML += modalHTML;
+        }
+    }
+
+    setupSearch() {
+        const searchInput = document.getElementById('settingsSearch');
+        searchInput.addEventListener('input', (e) => {
+            this.filterSettings(e.target.value);
+        });
+    }
+
+    setupAnimations() {
+        // تأثيرات الظهور عند التمرير
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        fadeElements.forEach(element => {
+            appearOnScroll.observe(element);
+        });
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        document.getElementById('currentTime').textContent = timeString;
+    }
+
+    toggleDarkMode(enable) {
+        if (enable) {
+            document.body.classList.add('dark-mode');
+            this.settings.theme = 'dark';
+            document.getElementById('themeBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            document.body.classList.remove('dark-mode');
+            this.settings.theme = 'light';
+            document.getElementById('themeBtn').innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        this.saveSettings();
+        this.showNotification(`تم تفعيل الوضع ${enable ? 'الداكن' : 'الفاتح'}`);
+    }
+
+    openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'block';
+        } else {
+            console.error('النافذة غير موجودة:', modalId);
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    filterSettings(query) {
+        const settingsItems = document.querySelectorAll('.setting-item');
+        const queryLower = query.toLowerCase();
+        
+        settingsItems.forEach(item => {
+            const title = item.querySelector('.setting-title').textContent.toLowerCase();
+            const description = item.querySelector('.setting-description').textContent.toLowerCase();
+            
+            if (title.includes(queryLower) || description.includes(queryLower)) {
+                item.style.display = 'flex';
+                item.classList.add('fade-in', 'visible');
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // إظهار/إخفاء الأقسام بناءً على النتائج
+        const sections = document.querySelectorAll('.settings-section');
+        sections.forEach(section => {
+            const visibleItems = section.querySelectorAll('.setting-item[style="display: flex"]');
+            if (visibleItems.length === 0 && query) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+            }
+        });
+    }
+
+    updateProfile() {
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            city: document.getElementById('city').value,
+            address: document.getElementById('address').value
+        };
+
+        // حفظ البيانات في localStorage
+        localStorage.setItem('user_profile', JSON.stringify(formData));
+        
+        this.showNotification('تم تحديث الملف الشخصي بنجاح');
+        this.closeModal('profileModal');
+    }
+
+    changeLanguage() {
+        const selectedLang = document.querySelector('.language-option.active').getAttribute('data-lang');
+        this.settings.language = selectedLang;
+        this.saveSettings();
+        this.showNotification('تم تغيير اللغة بنجاح');
+        this.closeModal('languageModal');
+        
+        // إعادة تحميل الصفحة لتطبيق اللغة
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }
+
+    savePrivacySettings() {
+        const settings = {
+            profileVisibility: document.getElementById('profileVisibility').checked,
+            onlineStatus: document.getElementById('onlineStatus').checked,
+            allowMessages: document.getElementById('allowMessages').checked,
+            allowCalls: document.getElementById('allowCalls').checked
+        };
+
+        localStorage.setItem('privacy_settings', JSON.stringify(settings));
+        this.showNotification('تم حفظ إعدادات الخصوصية');
+        this.closeModal('privacyModal');
+    }
+
+    updateSecurity() {
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (newPassword !== confirmPassword) {
+            this.showNotification('كلمة المرور غير متطابقة', 'error');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            this.showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+            return;
+        }
+
+        // محاكاة تحديث كلمة المرور
+        this.showNotification('تم تحديث كلمة المرور بنجاح');
+        this.closeModal('securityModal');
+    }
+
+    cleanStorage() {
+        const clearCache = document.getElementById('clearCache').checked;
+        const clearOldFiles = document.getElementById('clearOldFiles').checked;
+
+        // محاكاة عملية التنظيف
+        this.showNotification('جاري تنظيف التخزين...', 'info');
+        
+        setTimeout(() => {
+            let cleanedSize = 0;
+            if (clearCache) cleanedSize += 100;
+            if (clearOldFiles) cleanedSize += 50;
+            
+            this.showNotification(`تم تنظيف ${cleanedSize} ميجابايت من المساحة`);
+            this.closeModal('storageModal');
+        }, 2000);
+    }
+
+    addEmergencyContact() {
+        const name = document.getElementById('contactName').value;
+        const relation = document.getElementById('contactRelation').value;
+        const phone = document.getElementById('contactPhone').value;
+
+        if (!name || !relation || !phone) {
+            this.showNotification('يرجى ملء جميع الحقول', 'error');
+            return;
+        }
+
+        // إضافة جهة الاتصال إلى القائمة
+        this.showNotification('تم إضافة جهة الاتصال الطارئة');
+        
+        // مسح الحقول
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactRelation').value = '';
+        document.getElementById('contactPhone').value = '';
+    }
+
+    createBackup() {
+        this.showNotification('جاري إنشاء نسخة احتياطية...', 'info');
+        
+        setTimeout(() => {
+            this.showNotification('تم إنشاء النسخة الاحتياطية بنجاح');
+        }, 3000);
+    }
+
+    restoreBackup() {
+        this.showNotification('جاري استعادة النسخة الاحتياطية...', 'info');
+        
+        setTimeout(() => {
+            this.showNotification('تم استعادة النسخة الاحتياطية بنجاح');
+        }, 3000);
+    }
+
+    showNotification(message, type = 'success') {
+        // إنشاء عنصر الإشعار
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+            <span>${message}</span>
+        `;
+
+        // إضافة الإشعار إلى الصفحة
+        document.body.appendChild(notification);
+
+        // إظهار الإشعار
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+        }, 100);
+
+        // إخفاء الإشعار بعد 3 ثوانٍ
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    updateUI() {
+        // تحديث واجهة المستخدم بناءً على الإعدادات الحالية
+        console.log('تم تحديث واجهة المستخدم');
+    }
+
+    // وظائف متقدمة
+    exportData() {
+        this.showNotification('جاري تصدير البيانات...', 'info');
+        
+        // محاكاة تصدير البيانات
+        setTimeout(() => {
+            const data = {
+                profile: JSON.parse(localStorage.getItem('user_profile') || '{}'),
+                settings: this.settings,
+                medicalData: this.getMedicalData()
+            };
+
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `medical_data_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            this.showNotification('تم تصدير البيانات بنجاح');
+        }, 2000);
+    }
+
+    getMedicalData() {
+        // محاكاة بيانات طبية
+        return {
+            appointments: [],
+            medications: [],
+            labResults: [],
+            medicalHistory: []
+        };
+    }
+
+    deleteAccount() {
+        if (confirm('هل أنت متأكد من حذف الحساب؟ هذه العملية لا يمكن التراجع عنها.')) {
+            this.showNotification('جاري حذف الحساب...', 'warning');
+            
+            setTimeout(() => {
+                // محاكاة حذف الحساب
+                localStorage.clear();
+                this.showNotification('تم حذف الحساب بنجاح');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 3000);
+        }
+    }
+
+    // تحليل استخدام التطبيق
+    getAppUsage() {
+        return {
+            storage: {
+                used: 1.2,
+                total: 2,
+                unit: 'GB'
+            },
+            lastBackup: '2024-01-15 14:30',
+            activeSessions: 1,
+            loginCount: 47
+        };
+    }
+
+    // إعدادات الأداء
+    optimizePerformance() {
+        this.showNotification('جاري تحسين الأداء...', 'info');
+        
+        setTimeout(() => {
+            // محاكاة تحسين الأداء
+            this.showNotification('تم تحسين أداء التطبيق بنجاح');
+        }, 2000);
+    }
+
+    // إعدادات الشبكة
+    updateNetworkSettings() {
+        const settings = {
+            autoDownload: document.getElementById('autoDownload')?.checked || false,
+            videoQuality: document.getElementById('videoQuality')?.value || 'medium',
+            dataSaver: document.getElementById('dataSaver')?.checked || false
+        };
+
+        localStorage.setItem('network_settings', JSON.stringify(settings));
+        this.showNotification('تم تحديث إعدادات الشبكة');
+    }
+}
+
+// تهيئة نظام الإعدادات
+document.addEventListener('DOMContentLoaded', function() {
+    window.settingsManager = new SettingsManager();
+});
+
+// وظائف مساعدة إضافية
+const SettingsHelper = {
+    // تحويل البايت إلى وحدات مقروءة
+    formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    },
+
+    // تحقق من دعم الميزات
+    checkFeatureSupport() {
+        return {
+            notifications: 'Notification' in window,
+            geolocation: 'geolocation' in navigator,
+            localStorage: 'localStorage' in window,
+            serviceWorker: 'serviceWorker' in navigator,
+            pushManager: 'PushManager' in window
+        };
+    },
+
+    // الحصول على معلومات الجهاز
+    getDeviceInfo() {
+        return {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            cookiesEnabled: navigator.cookieEnabled,
+            javaEnabled: navigator.javaEnabled(),
+            online: navigator.onLine,
+            hardwareConcurrency: navigator.hardwareConcurrency || 'غير معروف',
+            deviceMemory: navigator.deviceMemory || 'غير معروف'
+        };
+    },
+
+    // إنشاء تقرير تشخيصي
+    generateDiagnosticReport() {
+        const features = this.checkFeatureSupport();
+        const deviceInfo = this.getDeviceInfo();
+        const settings = JSON.parse(localStorage.getItem('app_settings') || '{}');
+        
+        return {
+            timestamp: new Date().toISOString(),
+            features,
+            deviceInfo,
+            settings,
+            storage: {
+                total: localStorage.length,
+                keys: Object.keys(localStorage)
+            }
+        };
+    }
+};
+
+// جعل الدوال المساعدة متاحة globally
+window.SettingsHelper = SettingsHelper;
+    </script>
+</body>
+</html>
