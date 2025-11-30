@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلباتي من الصيدلية - M24</title>
+    <link rel="stylesheet" href="pharmacy-orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+    /* الألوان الأساسية: أخضر صيدلاني */
+    --primary: #2E7D32;
+    --primary-dark: #1B5E20;
+    --primary-light: #C8E6C9;
+    --secondary: #1976D2;
+    --accent: #FF5252;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --info: #2196F3;
+
+    /* خلفية التطبيق: فاتحة ومريحة للعين */
+    --bg-light: #F8FDF8;
+    --bg-surface: #ffffff;
+    --shadow-light: -6px -6px 12px rgba(255, 255, 255, 0.9), 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-inset: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+    --shadow-card: 0 10px 30px rgba(46, 125, 50, 0.15);
+    --text-primary: #1E293B;
+    --text-secondary: #475569;
+
+    /* الزوايا والانتقالات */
+    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition-liquid: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* الخطوط المحدثة */
+    --font-primary: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* التطبيق الرئيسي */
+.ultra-app {
+    max-width: 450px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg-light);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
+}
+
+/* شريط الحالة */
+.status-bar {
+    background: transparent;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+}
+
+/* الهيدر */
+.app-header {
+    padding: 20px 16px 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.title-section h1 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* أيقونات التفاعل */
+.action-icon {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    position: relative;
+    font-size: 16px;
+}
+
+.action-icon:active {
+    box-shadow: var(--shadow-inset);
+    color: var(--primary-dark);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* شريط البحث والتصفية */
+.search-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.search-bar {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-inset);
+    padding: 10px 16px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    padding: 0;
+}
+
+.search-icon {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.filter-btn {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 14px;
+}
+
+.filter-btn:active {
+    box-shadow: var(--shadow-inset);
+}
+
+/* شريط التبويب */
+.tabs-section {
+    padding: 0 16px 18px;
+}
+
+.tabs-container {
+    display: flex;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--radius-lg);
+    padding: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-inset);
+}
+
+/* محتوى التبويب */
+.tab-content {
+    display: none;
+    padding: 0 16px 100px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* حاوية الطلبات */
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* بطاقة الطلب */
+.order-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    border-right: 4px solid var(--primary);
+}
+
+.order-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.order-card.pending {
+    border-right-color: var(--warning);
+}
+
+.order-card.in-progress {
+    border-right-color: var(--info);
+}
+
+.order-card.completed {
+    border-right-color: var(--success);
+}
+
+.order-card.cancelled {
+    border-right-color: var(--accent);
+}
+
+.order-header {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.order-info {
+    flex: 1;
+}
+
+.order-id {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.order-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.order-status {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.status-pending {
+    background: var(--warning);
+}
+
+.status-in-progress {
+    background: var(--info);
+}
+
+.status-completed {
+    background: var(--success);
+}
+
+.status-cancelled {
+    background: var(--accent);
+}
+
+.order-body {
+    padding: 16px;
+}
+
+.order-items {
+    margin-bottom: 12px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.item-quantity {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.item-price {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.order-footer {
+    padding: 0 16px 16px;
+    display: flex;
+    gap: 8px;
+}
+
+/* قسم الصيدليات القريبة */
+.location-section {
+    padding-bottom: 20px;
+}
+
+.location-header {
+    background: var(--bg-light);
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.location-info i {
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.location-info h3 {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.location-info p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.refresh-location-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    font-size: 16px;
+}
+
+.refresh-location-btn:hover {
+    background: var(--primary-dark);
+}
+
+.distance-filter {
+    background: var(--bg-light);
+    padding: 12px 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.distance-filter label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.distance-filter select {
+    background: var(--bg-surface);
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset);
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+}
+
+/* حاوية الصيدليات */
+.pharmacies-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* بطاقة الصيدلية */
+.pharmacy-card {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-liquid);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.pharmacy-card:hover {
+    box-shadow: var(--shadow-inset);
+    transform: translateY(-2px);
+}
+
+.pharmacy-header {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pharmacy-info {
+    flex: 1;
+}
+
+.pharmacy-name {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.pharmacy-address {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pharmacy-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.pharmacy-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pharmacy-distance {
+    background: var(--primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.pharmacy-body {
+    padding: 0 16px 16px;
+}
+
+.pharmacy-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-open {
+    background: var(--success);
+}
+
+.status-closed {
+    background: var(--accent);
+}
+
+.status-24h {
+    background: var(--info);
+}
+
+.status-text {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pharmacy-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* زر الطلب العائم */
+.order-fab {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-card);
+    z-index: 999;
+    transition: var(--transition-liquid);
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.order-fab:hover {
+    transform: scale(1.1);
+}
+
+.order-fab:active {
+    transform: scale(0.9);
+}
+
+/* شريط التنقل السفلي */
+.bottom-nav-dock {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-light);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    padding: 6px 8px;
+    border-radius: var(--radius-xl);
+    z-index: 1000;
+    max-width: 340px;
+    width: calc(100% - 32px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-item-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: var(--transition-liquid);
+    flex: 1;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-secondary);
+}
+
+.nav-item-dock.active {
+    color: var(--primary-dark);
+}
+
+.nav-item-dock.active .nav-icon-dock {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translateY(-8px);
+    transition: var(--transition-liquid);
+}
+
+.nav-icon-dock {
+    font-size: 16px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-liquid);
+}
+
+.nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    margin-top: 2px;
+    transition: var(--transition-liquid);
+}
+
+.nav-item-dock.active .nav-label {
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+/* النوافذ المنبثقة */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease-out;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-card);
+    animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+@keyframes modalSlideUp {
+    from {opacity: 0; transform: translateY(100%);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    background: var(--primary);
+    color: white;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* نماذج الطلبات */
+.order-form {
+    padding: 18px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition-liquid);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    box-shadow: var(--shadow-light);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* إضافة الأدوية */
+.medicines-list {
+    margin-bottom: 16px;
+}
+
+.medicine-item {
+    background: var(--bg-light);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.medicine-info {
+    flex: 1;
+}
+
+.medicine-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.medicine-details {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.add-medicine-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    justify-content: center;
+}
+
+.add-medicine-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* الأزرار */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+    box-shadow: var(--shadow-inset);
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* التقييم */
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 16px 0;
+}
+
+.rating-star {
+    font-size: 28px;
+    color: #ddd;
+    cursor: pointer;
+    transition: var(--transition-liquid);
+}
+
+.rating-star.active {
+    color: var(--warning);
+}
+
+.rating-star:hover {
+    transform: scale(1.2);
+}
+
+/* حالة التحميل */
+.loading-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--primary-light);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* رسائل الحالة */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: var(--primary-light);
+}
+
+/* التكيف مع الشاشات الصغيرة */
+@media (max-width: 428px) {
+    .status-bar {
+        padding: 8px 16px;
+    }
+    
+    .app-header {
+        padding: 16px 12px 0;
+    }
+    
+    .tabs-section {
+        padding: 0 12px 16px;
+    }
+    
+    .tab-content {
+        padding: 0 12px 90px;
+    }
+    
+    .order-fab {
+        bottom: 70px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .bottom-nav-dock {
+        bottom: 15px;
+        max-width: 320px;
+    }
+    
+    .pharmacy-actions {
+        flex-direction: column;
+    }
+    
+    .order-footer {
+        flex-direction: column;
+    }
+}
+  </style>
+</head>
+<body>
+    <div class="ultra-app">
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="currentTime">10:03 م</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="title-section">
+                    <h1>طلباتي من الصيدلية 🏥</h1>
+                    <p>إدارة طلبات الأدوية والمستلزمات</p>
+                </div>
+                <div class="customer-actions">
+                    <button class="action-icon" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="icon-badge" id="notificationBadge">3</span>
+                    </button>
+                    <button class="action-icon" id="locationBtn">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- شريط البحث والتصفية -->
+            <div class="search-filter-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="ابحث عن دواء، صيدلية أو طلب..." id="searchInput">
+                </div>
+                <button class="filter-btn" id="filterBtn">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- شريط التبويب -->
+        <div class="tabs-section">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="current">الطلبات الحالية</button>
+                <button class="tab-btn" data-tab="history">سجل الطلبات</button>
+                <button class="tab-btn" data-tab="pharmacies">الصيدليات القريبة</button>
+            </div>
+        </div>
+
+        <!-- محتوى الطلبات الحالية -->
+        <div class="tab-content active" id="currentTab">
+            <div class="orders-container">
+                <!-- سيتم تعبئة الطلبات الحالية ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- محتوى سجل الطلبات -->
+        <div class="tab-content" id="historyTab">
+            <div class="orders-container">
+                <!-- سيتم تعبئة سجل الطلبات ديناميكياً -->
+            </div>
+        </div>
+
+        <!-- محتوى الصيدليات القريبة -->
+        <div class="tab-content" id="pharmaciesTab">
+            <div class="location-section">
+                <div class="location-header">
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3 id="currentLocationText">جاري تحديد موقعك...</h3>
+                            <p id="locationStatus">يتم الآن اكتشاف أقرب الصيدليات</p>
+                        </div>
+                    </div>
+                    <button class="refresh-location-btn" id="refreshLocation">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+                <div class="distance-filter">
+                    <label>نطاق البحث:</label>
+                    <select id="distanceRange">
+                        <option value="5">5 كم</option>
+                        <option value="10" selected>10 كم</option>
+                        <option value="15">15 كم</option>
+                        <option value="20">20 كم</option>
+                    </select>
+                </div>
+
+                <div class="pharmacies-container" id="pharmaciesContainer">
+                    <!-- سيتم تعبئة الصيدليات القريبة ديناميكياً -->
+                </div>
+            </div>
+        </div>
+
+        <!-- زر الطلب العائم -->
+        <button class="order-fab" id="newOrderBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-dock">
+            <a href="index.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="pharmacy-orders.html" class="nav-item-dock active">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="nav-label">الصيدلية</div>
+            </a>
+            <a href="doctor-appointment.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="nav-label">حجز دكتور</div>
+            </a>
+            <a href="financial.html" class="nav-item-dock">
+                <div class="nav-icon-dock">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المحفظة</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء طلب جديد -->
+    <div id="newOrderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>طلب دواء جديد</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="newOrderBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الطلب -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="orderDetailsTitle">تفاصيل الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="orderDetailsBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل الصيدلية -->
+    <div id="pharmacyDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="pharmacyDetailsTitle">تفاصيل الصيدلية</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="pharmacyDetailsBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد الاستلام -->
+    <div id="confirmReceiptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تأكيد استلام الطلب</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="confirmReceiptBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التقييم -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تقييم الخدمة</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="ratingModalBody">
+                <!-- سيتم تعبئة المحتوى هنا ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <script src="pharmacy-orders.js"></script>
+</body>
+</html>
