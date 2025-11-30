@@ -2187,6 +2187,1144 @@ body {
         </div>
     </div>
 
-    <script src="financial.js"></script>
+    <script>
+        // نظام إدارة الحساب المالي للمرضى مع الوظائف المتقدمة
+class PatientFinancialSystem {
+    constructor() {
+        this.patientAccount = JSON.parse(localStorage.getItem('patientFinancialAccount')) || null;
+        this.transactions = JSON.parse(localStorage.getItem('patientTransactions')) || [];
+        this.linkedWallets = JSON.parse(localStorage.getItem('patientLinkedWallets')) || [];
+        this.currentView = 'list';
+        this.visibleTransactions = 12;
+        this.currentFilter = 'all';
+        this.sortBy = 'date_desc';
+        this.selectedWallet = null;
+        this.init();
+    }
+
+    init() {
+        this.updateUI();
+        this.setupEventListeners();
+        this.startLiveUpdates();
+        this.updateTime();
+        this.renderCategories();
+        setInterval(() => this.updateTime(), 60000);
+        
+        // توليد أرقام الحساب والمريض تلقائياً عند فتح النافذة
+        this.generateAccountNumbers();
+    }
+
+    setupEventListeners() {
+        // تحديث الوقت
+        setInterval(() => {
+            this.updateTime();
+        }, 60000);
+
+        // إغلاق النوافذ بالضغط خارجها
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // منع إرسال النماذج
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+            });
+        });
+    }
+
+    // 1. إنشاء أرقام فريدة تلقائياً
+    generateAccountNumbers() {
+        const patientId = this.generatePatientId();
+        const accountNumber = this.generateAccountNumber();
+        
+        document.getElementById('patientId').value = patientId;
+        document.getElementById('accountNumber').value = accountNumber;
+    }
+
+    generatePatientId() {
+        const timestamp = Date.now().toString();
+        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        return `PT${timestamp.slice(-6)}${random}`;
+    }
+
+    generateAccountNumber() {
+        const timestamp = Date.now().toString();
+        const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        return `AC${timestamp.slice(-6)}${random}`;
+    }
+
+    // 2. نظام ربط المحافظ
+    async linkWallet(walletData) {
+        if (!this.patientAccount) {
+            this.showNotification('يجب إنشاء حساب أولاً', 'error');
+            return false;
+        }
+
+        // محاكاة التحقق من المحفظة
+        this.showLoading('جاري التحقق من المحفظة...');
+        
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this.hideLoading();
+                
+                const success = Math.random() > 0.2; // 80% success rate
+                if (success) {
+                    const linkedWallet = {
+                        id: 'W' + Date.now(),
+                        type: walletData.type,
+                        name: this.getWalletProviderName(walletData.type),
+                        number: walletData.number,
+                        owner: walletData.owner,
+                        phone: walletData.phone,
+                        isVerified: true,
+                        linkedAt: new Date().toISOString(),
+                        balance: Math.floor(Math.random() * 50000) + 1000
+                    };
+                    
+                    this.linkedWallets.push(linkedWallet);
+                    localStorage.setItem('patientLinkedWallets', JSON.stringify(this.linkedWallets));
+                    
+                    this.showNotification(`تم ربط محفظة ${linkedWallet.name} بنجاح`, 'success');
+                    resolve(true);
+                } else {
+                    this.showNotification('فشل التحقق من المحفظة. يرجى التحقق من البيانات', 'error');
+                    resolve(false);
+                }
+            }, 2000);
+        });
+    }
+
+    getWalletProviderName(walletType) {
+        const providers = {
+            'jawali': 'جوالي',
+            'jeeb': 'جيب',
+            'felousak': 'فلوسك',
+            'onecash': 'ون كاش',
+            'yemen_net': 'يمن نت',
+            'mobile_money': 'موبايل موني',
+            'kuraimi': 'محفظة الكريمي'
+        };
+        return providers[walletType] || walletType;
+    }
+
+    // 3. تنزيل كشف الحساب
+    downloadStatement(period = 'month') {
+        if (!this.patientAccount) {
+            this.showNotification('لا يوجد حساب لتحميل كشف الحساب', 'error');
+            return;
+        }
+
+        this.showLoading('جاري إعداد كشف الحساب...');
+
+        setTimeout(() => {
+            this.hideLoading();
+            
+            const filteredTransactions = this.getFilteredTransactionsByPeriod(period);
+            const statementData = this.generateStatementData(filteredTransactions, period);
+            const csvContent = this.generateCSV(statementData);
+            
+            this.downloadCSV(csvContent, `كشف_الحساب_${period}_${new Date().toISOString().split('T')[0]}.csv`);
+            this.showNotification('تم تحميل كشف الحساب بنجاح', 'success');
+        }, 1500);
+    }
+
+    getFilteredTransactionsByPeriod(period) {
+        const now = new Date();
+        let startDate;
+
+        switch (period) {
+            case 'week':
+                startDate = new Date(now.setDate(now.getDate() - 7));
+                break;
+            case 'month':
+                startDate = new Date(now.setMonth(now.getMonth() - 1));
+                break;
+            case 'quarter':
+                startDate = new Date(now.setMonth(now.getMonth() - 3));
+                break;
+            case 'year':
+                startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+                break;
+            default:
+                startDate = new Date(0); // جميع المعاملات
+        }
+
+        return this.transactions.filter(transaction => 
+            new Date(transaction.date) >= startDate
+        );
+    }
+
+    generateStatementData(transactions, period) {
+        const totalIncome = transactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+        const totalExpenses = transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0);
+        const netBalance = totalIncome - totalExpenses;
+
+        return {
+            period: period,
+            transactions: transactions,
+            summary: {
+                totalIncome,
+                totalExpenses,
+                netBalance,
+                transactionCount: transactions.length
+            }
+        };
+    }
+
+    generateCSV(statementData) {
+        let csv = 'تاريخ,وقت,نوع المعاملة,الوصف,المبلغ,رقم المرجع,الحالة\n';
+        
+        statementData.transactions.forEach(transaction => {
+            const row = [
+                transaction.date,
+                transaction.time,
+                this.getTransactionTypeText(transaction.type),
+                transaction.description,
+                transaction.amount,
+                transaction.ref,
+                this.getStatusText(transaction.status)
+            ].join(',');
+            
+            csv += row + '\n';
+        });
+
+        // إضافة الملخص
+        csv += '\nملخص كشف الحساب\n';
+        csv += `الفترة,${statementData.period}\n`;
+        csv += `إجمالي الإيرادات,${statementData.summary.totalIncome}\n`;
+        csv += `إجمالي المصروفات,${statementData.summary.totalExpenses}\n`;
+        csv += `صافي الرصيد,${statementData.summary.netBalance}\n`;
+        csv += `عدد المعاملات,${statementData.summary.transactionCount}\n`;
+
+        return csv;
+    }
+
+    downloadCSV(csvContent, fileName) {
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // 4. استعراض الإيصالات في نوافذ منبثقة
+    showTransactionDetails(transactionId) {
+        const transaction = this.transactions.find(t => t.id === transactionId);
+        if (!transaction) return;
+
+        this.showReceipt(transaction);
+    }
+
+    showReceipt(transaction) {
+        const receiptContent = document.getElementById('receiptContent');
+        
+        const receiptHTML = `
+            <div class="receipt-header">
+                <div class="receipt-title">إيصال معاملة</div>
+                <div class="receipt-subtitle">طبيب 24/7</div>
+            </div>
+            
+            <div class="receipt-details">
+                <div class="receipt-row">
+                    <span class="receipt-label">رقم المعاملة:</span>
+                    <span class="receipt-value">${transaction.ref}</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">نوع المعاملة:</span>
+                    <span class="receipt-value">${this.getTransactionTypeText(transaction.type)}</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">الوصف:</span>
+                    <span class="receipt-value">${transaction.description}</span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">التاريخ والوقت:</span>
+                    <span class="receipt-value">${transaction.date} - ${transaction.time}</span>
+                </div>
+                
+                ${transaction.method ? `
+                <div class="receipt-row">
+                    <span class="receipt-label">طريقة الدفع:</span>
+                    <span class="receipt-value">${this.getPaymentMethodName(transaction.method)}</span>
+                </div>
+                ` : ''}
+                
+                ${transaction.recipient ? `
+                <div class="receipt-row">
+                    <span class="receipt-label">المستلم:</span>
+                    <span class="receipt-value">${transaction.recipient}</span>
+                </div>
+                ` : ''}
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">المبلغ:</span>
+                    <span class="receipt-value receipt-amount" style="color: ${transaction.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+                        ${transaction.amount >= 0 ? '+' : ''}${transaction.amount} ر.ي
+                    </span>
+                </div>
+                
+                <div class="receipt-row">
+                    <span class="receipt-label">الحالة:</span>
+                    <span class="receipt-value">${this.getStatusText(transaction.status)}</span>
+                </div>
+            </div>
+            
+            <div class="receipt-footer">
+                <div>شكراً لاستخدامكم خدمات طبيب 24/7</div>
+                <div>للشكاوى والاستفسارات: 800244007</div>
+            </div>
+        `;
+        
+        receiptContent.innerHTML = receiptHTML;
+        openModal('transactionDetailsModal');
+    }
+
+    // 5. نظام التصنيفات المتقدم
+    renderCategories() {
+        const container = document.getElementById('categoriesScroll');
+        if (!container) return;
+
+        const categories = [
+            { id: 'all', name: 'الكل', icon: 'fa-list', count: this.transactions.length },
+            { id: 'payment', name: 'المدفوعات', icon: 'fa-credit-card', count: this.transactions.filter(t => t.type === 'payment').length },
+            { id: 'deposit', name: 'الإيداعات', icon: 'fa-download', count: this.transactions.filter(t => t.type === 'deposit').length },
+            { id: 'refund', name: 'المستردات', icon: 'fa-undo', count: this.transactions.filter(t => t.type === 'refund').length },
+            { id: 'transfer', name: 'التحويلات', icon: 'fa-exchange-alt', count: this.transactions.filter(t => t.type === 'transfer').length },
+            { id: 'insurance', name: 'التأمين', icon: 'fa-shield-alt', count: this.transactions.filter(t => t.type === 'insurance').length }
+        ];
+
+        let categoriesHTML = '';
+        categories.forEach(category => {
+            categoriesHTML += `
+                <div class="category-chip liquid-transition ${this.currentFilter === category.id ? 'active' : ''}" 
+                     data-category="${category.id}" onclick="filterByCategory('${category.id}')">
+                    <i class="fas ${category.icon}"></i>
+                    ${category.name}
+                    <span class="category-count">${category.count}</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = categoriesHTML;
+    }
+
+    updateUI() {
+        if (this.patientAccount) {
+            document.getElementById('noAccountState').style.display = 'none';
+            document.getElementById('financialHeader').style.display = 'block';
+            document.getElementById('financialContent').style.display = 'block';
+            
+            document.getElementById('displayBalance').textContent = `${this.patientAccount.balance.toLocaleString()} ر.ي`;
+            document.getElementById('monthlySpending').textContent = `${this.getMonthlySpending().toLocaleString()} ر.ي`;
+            document.getElementById('displayAccountNumber').textContent = this.patientAccount.accountNumber;
+            document.getElementById('displayPatientId').textContent = this.patientAccount.patientId;
+            
+            this.updateStats();
+            this.renderTransactions();
+            this.updateLoadMoreButton();
+            this.renderCategories();
+        } else {
+            document.getElementById('noAccountState').style.display = 'block';
+            document.getElementById('financialHeader').style.display = 'none';
+            document.getElementById('financialContent').style.display = 'none';
+        }
+    }
+
+    updateStats() {
+        const totalTransactions = this.transactions.length;
+        const paymentCount = this.transactions.filter(t => t.type === 'payment').length;
+        const depositCount = this.transactions.filter(t => t.type === 'deposit').length;
+        const refundCount = this.transactions.filter(t => t.type === 'refund').length;
+
+        document.getElementById('totalTransactions').textContent = totalTransactions;
+        document.getElementById('paymentCount').textContent = paymentCount;
+        document.getElementById('depositCount').textContent = depositCount;
+        document.getElementById('refundCount').textContent = refundCount;
+    }
+
+    createAccount(accountData) {
+        // التحقق من تطابق كلمات المرور
+        if (accountData.transactionPassword !== accountData.confirmTransactionPassword) {
+            this.showNotification('كلمات المرور غير متطابقة', 'error');
+            return null;
+        }
+
+        // التحقق من الموافقة على الشروط
+        if (!accountData.agreeTerms) {
+            this.showNotification('يجب الموافقة على الشروط والأحكام', 'error');
+            return null;
+        }
+
+        const newAccount = {
+            ...accountData,
+            balance: 0,
+            createdAt: new Date().toISOString(),
+            status: 'active',
+            patientId: document.getElementById('patientId').value,
+            accountNumber: document.getElementById('accountNumber').value
+        };
+
+        this.patientAccount = newAccount;
+        localStorage.setItem('patientFinancialAccount', JSON.stringify(newAccount));
+        
+        // حفظ بيانات المريض الشخصية في الملف الشخصي
+        this.savePatientProfile(accountData);
+        
+        // إضافة معاملة إنشاء الحساب
+        this.addTransaction({
+            type: 'account_creation',
+            title: 'إنشاء حساب المريض',
+            description: 'تم إنشاء الحساب المالي للمريض',
+            amount: 0,
+            status: 'completed'
+        });
+        
+        this.showNotification('تم إنشاء حساب المريض بنجاح', 'success');
+        this.updateUI();
+        
+        return newAccount;
+    }
+
+    savePatientProfile(accountData) {
+        const patientProfile = {
+            fullName: accountData.fullName,
+            birthDate: accountData.birthDate,
+            governorate: accountData.governorate,
+            address: accountData.address,
+            phone: accountData.phone,
+            email: accountData.email,
+            patientId: document.getElementById('patientId').value,
+            avatar: accountData.profileImage || null,
+            createdAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('patient_profile_data', JSON.stringify(patientProfile));
+    }
+
+    addTransaction(transaction) {
+        // إضافة معرف فريد إذا لم يكن موجوداً
+        if (!transaction.id) {
+            transaction.id = 'T' + Date.now();
+        }
+        
+        // إضافة الطابع الزمني إذا لم يكن موجوداً
+        if (!transaction.date) {
+            transaction.date = new Date().toLocaleDateString('ar-EG');
+        }
+        if (!transaction.time) {
+            transaction.time = new Date().toLocaleTimeString('ar-EG');
+        }
+
+        this.transactions.unshift(transaction);
+        this.saveData();
+        this.updateUI();
+    }
+
+    // الوظائف المساعدة
+    getTransactionTypeText(type) {
+        const types = {
+            'deposit': 'إيداع',
+            'payment': 'دفع',
+            'refund': 'استرداد',
+            'transfer': 'تحويل',
+            'insurance': 'تأمين',
+            'account_creation': 'إنشاء حساب'
+        };
+        return types[type] || type;
+    }
+
+    showLoading(message = 'جاري المعالجة...') {
+        const loadingModal = document.getElementById('loadingModal');
+        const loadingText = loadingModal.querySelector('p');
+        loadingText.textContent = message;
+        loadingModal.style.display = 'block';
+    }
+
+    hideLoading() {
+        document.getElementById('loadingModal').style.display = 'none';
+    }
+
+    showNotification(message, type = 'info') {
+        // إزالة أي إشعارات سابقة
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => notification.remove());
+
+        // إنشاء إشعار جديد
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // إزالة الإشعار بعد 4 ثوان
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }
+        }, 4000);
+    }
+
+    processDeposit(depositData) {
+        if (!this.patientAccount) return false;
+
+        const transactionId = 'DP' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'deposit',
+            title: `إيداع عبر ${this.getPaymentMethodName(depositData.method)}`,
+            description: `إيداع إلى حساب المريض - ${depositData.purpose}`,
+            amount: depositData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-prescription',
+            method: depositData.method,
+            walletNumber: depositData.walletNumber
+        };
+
+        this.patientAccount.balance += depositData.amount;
+        this.addTransaction(newTransaction);
+        this.showNotification(`تم الإيداع بنجاح: ${depositData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    processPayment(paymentData) {
+        if (!this.patientAccount) return false;
+        if (this.patientAccount.balance < paymentData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const transactionId = 'PY' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'payment',
+            title: `دفع ${paymentData.type}`,
+            description: `دفع لـ ${paymentData.providerName} - ${paymentData.description}`,
+            amount: -paymentData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-appointment',
+            provider: paymentData.providerName,
+            serviceType: paymentData.type
+        };
+
+        this.patientAccount.balance -= paymentData.amount;
+        this.addTransaction(newTransaction);
+        this.showNotification(`تم الدفع بنجاح: ${paymentData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    processTransfer(transferData) {
+        if (!this.patientAccount) return false;
+        if (this.patientAccount.balance < transferData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const transactionId = 'TR' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'transfer',
+            title: `تحويل إلى ${transferData.recipientName}`,
+            description: `تحويل ${transferData.purpose}`,
+            amount: -transferData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-transfer',
+            recipient: transferData.recipientName,
+            account: transferData.recipientAccount,
+            purpose: transferData.purpose
+        };
+
+        this.patientAccount.balance -= transferData.amount;
+        this.addTransaction(newTransaction);
+        this.showNotification(`تم التحويل بنجاح: ${transferData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    saveData() {
+        localStorage.setItem('patientFinancialAccount', JSON.stringify(this.patientAccount));
+        localStorage.setItem('patientTransactions', JSON.stringify(this.transactions));
+        localStorage.setItem('patientLinkedWallets', JSON.stringify(this.linkedWallets));
+    }
+
+    getMonthlySpending() {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        
+        return this.transactions
+            .filter(t => {
+                const transactionDate = new Date(t.date);
+                return transactionDate.getMonth() === currentMonth && 
+                       transactionDate.getFullYear() === currentYear &&
+                       t.amount < 0;
+            })
+            .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+    }
+
+    getFilteredTransactions() {
+        let filtered = this.transactions;
+
+        // تطبيق الفلترة حسب النوع
+        if (this.currentFilter !== 'all') {
+            filtered = filtered.filter(t => t.type === this.currentFilter);
+        }
+
+        // تطبيق الفرز
+        this.applySorting(filtered);
+
+        return filtered;
+    }
+
+    applySorting(transactions) {
+        switch (this.sortBy) {
+            case 'date_desc':
+                transactions.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+                break;
+            case 'date_asc':
+                transactions.sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
+                break;
+            case 'amount_desc':
+                transactions.sort((a, b) => b.amount - a.amount);
+                break;
+            case 'amount_asc':
+                transactions.sort((a, b) => a.amount - b.amount);
+                break;
+        }
+    }
+
+    renderTransactions() {
+        this.renderTransactionsList();
+        this.renderTransactionsGrid();
+        this.renderCategories(); // تحديث التصنيفات
+    }
+
+    renderTransactionsList() {
+        const container = document.getElementById('transactionsList');
+        const transactionsToShow = this.getFilteredTransactions().slice(0, this.visibleTransactions);
+        
+        let listHTML = '';
+        transactionsToShow.forEach(transaction => {
+            listHTML += `
+                <div class="invoice-card-list liquid-transition" onclick="patientFinancialSystem.showTransactionDetails('${transaction.id}')">
+                    <div class="invoice-header">
+                        <div class="invoice-info">
+                            <div class="invoice-number">${transaction.title}</div>
+                            <div class="invoice-customer">${transaction.description}</div>
+                            <div class="invoice-date">${transaction.date} - ${transaction.time}</div>
+                        </div>
+                        <div class="invoice-amount">
+                            <div class="amount-value" style="color: ${transaction.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+                                ${transaction.amount >= 0 ? '+' : ''}${transaction.amount} ر.ي
+                            </div>
+                            <div class="amount-label">${transaction.ref}</div>
+                        </div>
+                    </div>
+                    <div class="invoice-footer">
+                        <div class="invoice-status status-${transaction.status}">
+                            ${this.getStatusText(transaction.status)}
+                        </div>
+                        <div class="invoice-actions-list">
+                            <button class="btn-neumorphism btn-small" onclick="event.stopPropagation(); patientFinancialSystem.showTransactionDetails('${transaction.id}')">
+                                <i class="fas fa-receipt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        if (transactionsToShow.length === 0) {
+            listHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد معاملات</div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = listHTML;
+    }
+
+    renderTransactionsGrid() {
+        const container = document.getElementById('transactionsGrid');
+        const transactionsToShow = this.getFilteredTransactions().slice(0, this.visibleTransactions);
+        
+        let gridHTML = '';
+        transactionsToShow.forEach(transaction => {
+            gridHTML += `
+                <div class="invoice-card-grid liquid-transition" onclick="patientFinancialSystem.showTransactionDetails('${transaction.id}')">
+                    <div class="invoice-icon" style="background: ${this.getTransactionColor(transaction.type)}">
+                        <i class="fas ${this.getTransactionIcon(transaction.type)}"></i>
+                    </div>
+                    <div class="invoice-number-grid">${transaction.title}</div>
+                    <div class="invoice-customer-grid">${transaction.description}</div>
+                    <div class="invoice-amount-grid" style="color: ${transaction.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+                        ${transaction.amount >= 0 ? '+' : ''}${transaction.amount} ر.ي
+                    </div>
+                    <div class="invoice-date-grid">${transaction.date}</div>
+                    <div class="invoice-status-grid status-${transaction.status}">
+                        ${this.getStatusText(transaction.status)}
+                    </div>
+                </div>
+            `;
+        });
+
+        if (transactionsToShow.length === 0) {
+            gridHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">
+                    <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد معاملات</div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = gridHTML;
+    }
+
+    getTransactionIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'payment': 'fa-credit-card',
+            'refund': 'fa-undo',
+            'transfer': 'fa-exchange-alt',
+            'account_creation': 'fa-user-plus',
+            'insurance': 'fa-shield-alt'
+        };
+        return icons[type] || 'fa-exchange-alt';
+    }
+
+    getTransactionColor(type) {
+        const colors = {
+            'deposit': 'var(--success)',
+            'payment': 'var(--warning)',
+            'refund': 'var(--info)',
+            'transfer': 'var(--primary)',
+            'account_creation': 'var(--secondary)',
+            'insurance': 'var(--purple)'
+        };
+        return colors[type] || 'var(--primary)';
+    }
+
+    getStatusText(status) {
+        const statusMap = {
+            'completed': 'مكتمل',
+            'pending': 'معلق',
+            'failed': 'فاشل',
+            'cancelled': 'ملغي'
+        };
+        return statusMap[status] || status;
+    }
+
+    getPaymentMethodName(methodId) {
+        const methods = {
+            'jawali': 'جوالي',
+            'jeeb': 'جيب',
+            'felousak': 'فلوسك',
+            'onecash': 'ون كاش',
+            'yemen_net': 'يمن نت',
+            'mobile_money': 'موبايل موني',
+            'kuraimi': 'محفظة الكريمي'
+        };
+        return methods[methodId] || methodId;
+    }
+
+    changeView(view) {
+        this.currentView = view;
+        
+        // تحديث أزرار العرض
+        document.querySelectorAll('.view-option').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.view === view) {
+                btn.classList.add('active');
+            }
+        });
+
+        // تبديل العرض
+        const listView = document.getElementById('transactionsList');
+        const gridView = document.getElementById('transactionsGrid');
+        
+        if (view === 'list') {
+            listView.style.display = 'flex';
+            gridView.style.display = 'none';
+        } else {
+            listView.style.display = 'none';
+            gridView.style.display = 'grid';
+        }
+    }
+
+    filterByCategory(category) {
+        this.currentFilter = category;
+        this.visibleTransactions = 12;
+        this.renderTransactions();
+        this.updateLoadMoreButton();
+
+        // تحديث الإحصائيات النشطة
+        document.querySelectorAll('.stat-item').forEach(item => item.classList.remove('active'));
+        if (category === 'all') {
+            document.querySelector('.stat-item:nth-child(1)').classList.add('active');
+        } else if (category === 'payment') {
+            document.querySelector('.stat-item:nth-child(2)').classList.add('active');
+        } else if (category === 'deposit') {
+            document.querySelector('.stat-item:nth-child(3)').classList.add('active');
+        } else if (category === 'refund') {
+            document.querySelector('.stat-item:nth-child(4)').classList.add('active');
+        }
+    }
+
+    sortTransactions() {
+        const sortSelect = document.getElementById('sortSelect');
+        this.sortBy = sortSelect.value;
+        this.renderTransactions();
+    }
+
+    loadMoreTransactions() {
+        this.visibleTransactions += 8;
+        this.renderTransactions();
+        this.updateLoadMoreButton();
+    }
+
+    updateLoadMoreButton() {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const filteredTransactions = this.getFilteredTransactions();
+        
+        if (loadMoreBtn) {
+            if (this.visibleTransactions >= filteredTransactions.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'flex';
+            }
+        }
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const timeElement = document.getElementById('currentTime');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+
+    startLiveUpdates() {
+        setInterval(() => {
+            if (this.patientAccount && Math.random() > 0.8) {
+                // محاكاة معاملات عشوائية
+                const transactionTypes = ['payment', 'refund'];
+                const randomType = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+                
+                if (randomType === 'payment') {
+                    const paymentData = {
+                        amount: Math.floor(Math.random() * 200) + 50,
+                        type: 'استشارة طبية',
+                        providerName: 'د. كريم أحمد',
+                        description: 'استشارة طبية عبر التطبيق'
+                    };
+                    this.processPayment(paymentData);
+                } else {
+                    const refundData = {
+                        amount: Math.floor(Math.random() * 100) + 20,
+                        type: 'refund',
+                        providerName: 'مستشفى النخبة',
+                        description: 'استرداد مبلغ زيارة'
+                    };
+                    // محاكاة استرداد
+                    const transactionId = 'RF' + Date.now().toString().slice(-8);
+                    const newTransaction = {
+                        id: transactionId,
+                        type: 'refund',
+                        title: `استرداد من ${refundData.providerName}`,
+                        description: refundData.description,
+                        amount: refundData.amount,
+                        ref: transactionId,
+                        date: new Date().toLocaleDateString('ar-EG'),
+                        time: new Date().toLocaleTimeString('ar-EG'),
+                        status: 'completed',
+                        icon: 'icon-refund',
+                        provider: refundData.providerName
+                    };
+
+                    this.patientAccount.balance += refundData.amount;
+                    this.addTransaction(newTransaction);
+                }
+            }
+        }, 60000); // كل دقيقة
+    }
+}
+
+// تهيئة النظام المالي للمرضى
+const patientFinancialSystem = new PatientFinancialSystem();
+
+// وظائف الواجهة العامة
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function createPatientAccount() {
+    const formData = {
+        fullName: document.getElementById('fullName').value,
+        birthDate: document.getElementById('birthDate').value,
+        governorate: document.getElementById('governorate').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        profileImage: document.getElementById('profileImage').files[0] ? URL.createObjectURL(document.getElementById('profileImage').files[0]) : null,
+        transactionPassword: document.getElementById('transactionPassword').value,
+        confirmTransactionPassword: document.getElementById('confirmTransactionPassword').value,
+        agreeTerms: document.getElementById('agreeTerms').checked
+    };
+
+    // التحقق من الحقول الإلزامية
+    if (!formData.fullName || !formData.birthDate || !formData.governorate || !formData.address || !formData.phone || !formData.transactionPassword || !formData.confirmTransactionPassword) {
+        patientFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    // التحقق من ملفات البطاقة الشخصية
+    const idCardFront = document.getElementById('idCardFront').files[0];
+    const idCardBack = document.getElementById('idCardBack').files[0];
+    const selfieWithId = document.getElementById('selfieWithId').files[0];
+
+    if (!idCardFront || !idCardBack || !selfieWithId) {
+        patientFinancialSystem.showNotification('يرجى رفع جميع صور البطاقة الشخصية المطلوبة', 'error');
+        return;
+    }
+
+    patientFinancialSystem.createAccount(formData);
+    closeModal('createAccountModal');
+}
+
+function previewProfileImage(input) {
+    const preview = document.getElementById('imagePreview');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="معاينة الصورة">`;
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.innerHTML = '';
+    }
+}
+
+function processDeposit() {
+    const depositData = {
+        amount: parseFloat(document.getElementById('depositAmount').value),
+        method: document.getElementById('depositMethod').value,
+        walletNumber: document.getElementById('depositWalletNumber').value,
+        purpose: document.getElementById('depositPurpose').value
+    };
+
+    if (!depositData.amount || !depositData.method || !depositData.walletNumber) {
+        patientFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (depositData.amount < 1000) {
+        patientFinancialSystem.showNotification('الحد الأدنى للإيداع هو 1000 ر.ي', 'error');
+        return;
+    }
+
+    const success = patientFinancialSystem.processDeposit(depositData);
+    if (success) {
+        closeModal('depositModal');
+        document.getElementById('depositAmount').value = '';
+        document.getElementById('depositWalletNumber').value = '';
+    }
+}
+
+function processPayment() {
+    const paymentData = {
+        amount: parseFloat(document.getElementById('paymentAmount').value),
+        type: document.getElementById('paymentType').value,
+        providerName: document.getElementById('providerName').value,
+        description: document.getElementById('paymentDescription').value
+    };
+
+    if (!paymentData.amount || !paymentData.type || !paymentData.providerName) {
+        patientFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (paymentData.amount < 100) {
+        patientFinancialSystem.showNotification('الحد الأدنى للدفع هو 100 ر.ي', 'error');
+        return;
+    }
+
+    const success = patientFinancialSystem.processPayment(paymentData);
+    if (success) {
+        closeModal('paymentModal');
+        document.getElementById('paymentAmount').value = '';
+        document.getElementById('providerName').value = '';
+        document.getElementById('paymentDescription').value = '';
+    }
+}
+
+function processTransfer() {
+    const transferData = {
+        amount: parseFloat(document.getElementById('transferAmount').value),
+        recipientType: document.getElementById('recipientType').value,
+        recipientName: document.getElementById('recipientName').value,
+        recipientAccount: document.getElementById('recipientAccount').value,
+        purpose: document.getElementById('transferPurpose').value
+    };
+
+    if (!transferData.amount || !transferData.recipientType || !transferData.recipientName || !transferData.recipientAccount || !transferData.purpose) {
+        patientFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (transferData.amount < 100) {
+        patientFinancialSystem.showNotification('الحد الأدنى للتحويل هو 100 ر.ي', 'error');
+        return;
+    }
+
+    const success = patientFinancialSystem.processTransfer(transferData);
+    if (success) {
+        closeModal('transferModal');
+        document.getElementById('transferAmount').value = '';
+        document.getElementById('recipientName').value = '';
+        document.getElementById('recipientAccount').value = '';
+        document.getElementById('transferPurpose').value = '';
+    }
+}
+
+function filterByCategory(category) {
+    patientFinancialSystem.filterByCategory(category);
+}
+
+function changeView(view) {
+    patientFinancialSystem.changeView(view);
+}
+
+function sortTransactions() {
+    patientFinancialSystem.sortTransactions();
+}
+
+function loadMoreTransactions() {
+    patientFinancialSystem.loadMoreTransactions();
+}
+
+function refreshTransactions() {
+    patientFinancialSystem.showNotification('جاري تحديث البيانات...', 'info');
+    setTimeout(() => {
+        patientFinancialSystem.renderTransactions();
+        patientFinancialSystem.showNotification('تم تحديث البيانات', 'success');
+    }, 1000);
+}
+
+function downloadStatement() {
+    patientFinancialSystem.downloadStatement('month');
+}
+
+// وظائف المحافظ
+function selectWallet(walletType) {
+    patientFinancialSystem.selectedWallet = walletType;
+    
+    // تحديث الواجهة
+    document.querySelectorAll('.wallet-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    document.querySelector(`.wallet-option[data-wallet="${walletType}"]`).classList.add('selected');
+    
+    // إظهار نموذج المحفظة
+    document.getElementById('walletFormSection').style.display = 'block';
+    document.getElementById('selectedWalletTitle').textContent = `معلومات محفظة ${patientFinancialSystem.getWalletProviderName(walletType)}`;
+    document.getElementById('linkWalletBtn').disabled = false;
+}
+
+async function linkWallet() {
+    if (!patientFinancialSystem.selectedWallet) {
+        patientFinancialSystem.showNotification('يرجى اختيار نوع المحفظة', 'error');
+        return;
+    }
+
+    const walletData = {
+        type: patientFinancialSystem.selectedWallet,
+        number: document.getElementById('walletNumber').value,
+        owner: document.getElementById('walletOwner').value,
+        phone: document.getElementById('walletPhone').value
+    };
+
+    if (!walletData.number || !walletData.owner || !walletData.phone) {
+        patientFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    const success = await patientFinancialSystem.linkWallet(walletData);
+    if (success) {
+        closeModal('linkWalletModal');
+        // إعادة تعيين النموذج
+        document.getElementById('walletNumber').value = '';
+        document.getElementById('walletOwner').value = '';
+        document.getElementById('walletPhone').value = '';
+        document.getElementById('walletFormSection').style.display = 'none';
+        document.getElementById('linkWalletBtn').disabled = true;
+        patientFinancialSystem.selectedWallet = null;
+    }
+}
+
+// وظائف الإيصالات
+function printReceipt() {
+    window.print();
+}
+
+function downloadReceipt() {
+    patientFinancialSystem.showNotification('جاري تحضير ملف PDF...', 'info');
+    setTimeout(() => {
+        patientFinancialSystem.showNotification('تم تحميل الإيصال كملف PDF', 'success');
+    }, 1500);
+}
+
+// نسخ رقم الحساب
+function copyAccountNumber() {
+    const accountNumber = document.getElementById('displayAccountNumber').textContent;
+    navigator.clipboard.writeText(accountNumber).then(() => {
+        patientFinancialSystem.showNotification('تم نسخ رقم الحساب', 'success');
+    }).catch(() => {
+        patientFinancialSystem.showNotification('فشل نسخ رقم الحساب', 'error');
+    });
+}
+    </script>
 </body>
 </html>
