@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحساب المالي - طبيب 24/7</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* جميع أنماط CSS السابقة تبقى كما هي */
+        /* ... CSS الكامل من الإجابة السابقة ... */
+    </style>
+</head>
+<body>
+    <!-- تأثيرات الخلفية الديناميكية -->
+    <div class="background-effects">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span id="currentTime">2:45</span>
+        </div>
+        <div class="status-right">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="premium-app">
+        <!-- حالة عدم وجود حساب -->
+        <div id="noAccountState" class="no-account-state">
+            <div class="no-account-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="no-account-title">لا يوجد حساب مالي</div>
+            <div class="no-account-description">
+                يبدو أنك لم تنشئ حساباً بعد<br>
+                أنشئ حسابك الشخصي أولاً للتمتع بجميع خدماتنا المالية
+            </div>
+            <button class="create-account-btn" onclick="redirectToProfile()">
+                <i class="fas fa-user-plus"></i>
+                إنشاء حساب شخصي
+            </button>
+        </div>
+
+        <!-- الهيدر المالي (يظهر بعد إنشاء الحساب) -->
+        <div id="financialHeader" class="financial-header" style="display: none;">
+            <div class="header-background"></div>
+            
+            <!-- أيقونة ربط المحافظ -->
+            <button class="wallet-link-icon" onclick="openLinkWalletModal()">
+                <i class="fas fa-wallet"></i>
+            </button>
+            
+            <div class="client-info">
+                <div class="client-avatar" id="clientAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="client-name" id="displayUserName">---</div>
+                <div class="account-number" id="displayAccountNumber">---</div>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-label">الرصيد المتاح</div>
+                <div class="balance-amount pulse" id="displayBalance">0 ر.ي</div>
+                <div class="balance-actions">
+                    <button class="balance-btn" onclick="openDepositWithPassword()">
+                        <i class="fas fa-download"></i>
+                        إيداع
+                    </button>
+                    <button class="balance-btn" onclick="openWithdrawWithPassword()">
+                        <i class="fas fa-upload"></i>
+                        سحب
+                    </button>
+                    <button class="balance-btn" onclick="openTransferWithPassword()">
+                        <i class="fas fa-exchange-alt"></i>
+                        تحويل
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي (يظهر بعد إنشاء الحساب) -->
+        <div id="financialContent" class="financial-content" style="display: none;">
+            <!-- طرق الدفع -->
+            <div class="section-title">طرق الدفع</div>
+            <div class="payment-methods" id="paymentMethods">
+                <!-- سيتم تعبئتها بالجافاسكربت -->
+            </div>
+
+            <!-- الفواتير -->
+            <div class="section-title">الفواتير</div>
+            <div class="transactions-section">
+                <div class="section-header">
+                    <div class="section-actions">
+                        <button class="action-btn" onclick="downloadStatement()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                        <button class="action-btn" onclick="refreshTransactions()">
+                            <i class="fas fa-sync-alt"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+                <div class="transaction-filters">
+                    <button class="filter-btn active" onclick="filterTransactions('all')">
+                        الكل <span class="filter-count" id="countAll">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('appointments')">
+                        المواعيد <span class="filter-count" id="countAppointments">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('consultations')">
+                        الاستشارات <span class="filter-count" id="countConsultations">0</span>
+                    </button>
+                    <button class="filter-btn" onclick="filterTransactions('pharmacy')">
+                        الصيدليات <span class="filter-count" id="countPharmacy">0</span>
+                    </button>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- الحركات الأخيرة -->
+            <div class="section-title">الحركات الأخيرة</div>
+            <div class="recent-activity">
+                <div class="activity-list" id="activityList">
+                    <!-- سيتم تعبئتها بالجافاسكربت -->
+                </div>
+            </div>
+
+            <!-- التقرير المالي -->
+            <div class="section-title">التقرير المالي</div>
+            <div class="financial-report">
+                <div class="report-stats">
+                    <div class="report-stat">
+                        <div class="report-value" id="monthlyExpenses">0 ر.ي</div>
+                        <div class="report-label">المصروفات هذا الشهر</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="monthlyIncome">0 ر.ي</div>
+                        <div class="report-label">الإيداعات هذا الشهر</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="totalTransactions">0</div>
+                        <div class="report-label">عدد المعاملات</div>
+                    </div>
+                    <div class="report-stat">
+                        <div class="report-value" id="digitalWallets">0%</div>
+                        <div class="report-label">محافظ رقمية</div>
+                    </div>
+                </div>
+                <div class="report-chart-container">
+                    <canvas id="financeChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- نوافذ منبثقة -->
+        
+        <!-- نافذة الإيداع -->
+        <div id="depositModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إيداع أموال</div>
+                    <button class="close-modal" onclick="closeModal('depositModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="depositAmount" placeholder="أدخل المبلغ بالريال اليمني" min="1000" step="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">طريقة الدفع *</label>
+                    <select class="form-select" id="depositMethod" required>
+                        <option value="">اختر طريقة الدفع</option>
+                        <option value="jawali">جوالي</option>
+                        <option value="jeeb">جيب</option>
+                        <option value="felousak">فلوسك</option>
+                        <option value="onecash">ون كاش</option>
+                        <option value="yemen_net">يمن نت</option>
+                        <option value="mobile_money">موبايل موني</option>
+                        <option value="kuraimi">محفظة الكريمي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم المحفظة *</label>
+                    <input type="text" class="form-input" id="depositWalletNumber" placeholder="أدخل رقم المحفظة" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من الإيداع</label>
+                    <select class="form-select" id="depositPurpose">
+                        <option value="general">رصيد عام</option>
+                        <option value="appointments">لدفع المواعيد</option>
+                        <option value="medications">لشراء الأدوية</option>
+                        <option value="consultations">للاستشارات الطبية</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('depositModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processDeposit()">إيداع</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة السحب -->
+        <div id="withdrawModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">سحب أموال</div>
+                    <button class="close-modal" onclick="closeModal('withdrawModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="withdrawAmount" placeholder="أدخل المبلغ بالريال اليمني" min="1000" step="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">طريقة السحب *</label>
+                    <select class="form-select" id="withdrawMethod" required onchange="showWithdrawDetails()">
+                        <option value="">اختر طريقة السحب</option>
+                        <option value="bank_transfer">تحويل بنكي</option>
+                        <option value="wallet">إلى محفظة رقمية</option>
+                        <option value="cash">سحب نقدي</option>
+                    </select>
+                </div>
+                
+                <div id="withdrawBankDetails" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">اسم البنك *</label>
+                        <input type="text" class="form-input" id="bankName" placeholder="اسم البنك">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الحساب البنكي *</label>
+                        <input type="text" class="form-input" id="bankAccount" placeholder="رقم الحساب">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">اسم صاحب الحساب *</label>
+                        <input type="text" class="form-input" id="accountHolder" placeholder="اسم صاحب الحساب">
+                    </div>
+                </div>
+                
+                <div id="withdrawWalletDetails" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">رقم المحفظة *</label>
+                        <input type="text" class="form-input" id="withdrawWalletNumber" placeholder="رقم المحفظة">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من السحب</label>
+                    <input type="text" class="form-input" id="withdrawPurpose" placeholder="الغرض من السحب">
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('withdrawModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processWithdrawal()">سحب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة التحويل -->
+        <div id="transferModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تحويل أموال</div>
+                    <button class="close-modal" onclick="closeModal('transferModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">المبلغ *</label>
+                    <input type="number" class="form-input" id="transferAmount" placeholder="أدخل المبلغ بالريال اليمني" min="100" step="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">نوع المستلم *</label>
+                    <select class="form-select" id="recipientType" required>
+                        <option value="">اختر نوع المستلم</option>
+                        <option value="doctor">طبيب</option>
+                        <option value="hospital">مستشفى</option>
+                        <option value="pharmacy">صيدلية</option>
+                        <option value="lab">مختبر</option>
+                        <option value="individual">فرد</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم المستلم *</label>
+                    <input type="text" class="form-input" id="recipientName" placeholder="اسم المستلم" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم حساب المستلم *</label>
+                    <input type="text" class="form-input" id="recipientAccount" placeholder="رقم الحساب أو المحفظة" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الغرض من التحويل *</label>
+                    <input type="text" class="form-input" id="transferPurpose" placeholder="الغرض من التحويل" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية</label>
+                    <textarea class="form-textarea" id="transferNotes" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('transferModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="processTransfer()">تحويل</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة ربط محفظة -->
+        <div id="linkWalletModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">ربط محفظة رقمية</div>
+                    <button class="close-modal" onclick="closeModal('linkWalletModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اختر نوع المحفظة *</label>
+                    <select class="form-select" id="walletType" required onchange="showWalletFields()">
+                        <option value="">اختر المحفظة</option>
+                        <option value="jawali">جوالي</option>
+                        <option value="jeeb">جيب</option>
+                        <option value="felousak">فلوسك</option>
+                        <option value="onecash">ون كاش</option>
+                        <option value="yemen_net">يمن نت</option>
+                        <option value="mobile_money">موبايل موني</option>
+                        <option value="kuraimi">محفظة الكريمي</option>
+                    </select>
+                </div>
+                
+                <div id="walletFields">
+                    <!-- سيتم تعبئتها ديناميكياً -->
+                </div>
+                
+                <div class="wallet-verification">
+                    <h4 style="color: #92400e; margin-bottom: 15px;">تفعيل المحفظة</h4>
+                    <div class="verification-steps">
+                        <div class="verification-step">
+                            <div class="step-number active">1</div>
+                            <div class="step-label">إدخال البيانات</div>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">2</div>
+                            <div class="step-label">التحقق</div>
+                        </div>
+                        <div class="verification-step">
+                            <div class="step-number">3</div>
+                            <div class="step-label">مفعلة</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('linkWalletModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="linkWallet()">ربط المحفظة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تأكيد كلمة المرور -->
+        <div id="passwordConfirmModal" class="modal password-confirm-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">تأكيد العملية</div>
+                    <button class="close-modal" onclick="closeModal('passwordConfirmModal')">×</button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور المالية *</label>
+                    <div class="password-input-group">
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="أدخل كلمة المرور المالية" required>
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="transaction-info" id="transactionInfo">
+                        <!-- سيتم تعبئتها ديناميكياً -->
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('passwordConfirmModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="confirmTransaction()">تأكيد</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة إضافة بطاقة -->
+        <div id="addCardModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">إضافة بطاقة دفع</div>
+                    <button class="close-modal" onclick="closeModal('addCardModal')">×</button>
+                </div>
+                
+                <div class="card-preview">
+                    <div class="card-logo">
+                        <i class="fab fa-cc-visa"></i>
+                    </div>
+                    <div class="card-chip"></div>
+                    <div class="card-number" id="previewCardNumber">**** **** **** ****</div>
+                    <div class="card-details">
+                        <div class="card-holder">
+                            <div>حامل البطاقة</div>
+                            <div id="previewCardHolder">الاسم الكامل</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div>انتهاء الصلاحية</div>
+                            <div id="previewCardExpiry">MM/YY</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">رقم البطاقة *</label>
+                    <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                           maxlength="19" oninput="formatCardNumber()" onkeyup="updateCardPreview()" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">انتهاء الصلاحية *</label>
+                        <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" 
+                               maxlength="5" oninput="formatExpiry()" onkeyup="updateCardPreview()" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">CVV *</label>
+                        <input type="text" class="form-input" id="cardCvv" placeholder="123" 
+                               maxlength="3" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">اسم حامل البطاقة *</label>
+                    <input type="text" class="form-input" id="cardHolder" placeholder="كما هو مدون على البطاقة" 
+                           onkeyup="updateCardPreview()" required>
+                </div>
+                
+                <div class="payment-security">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                        <span style="font-weight: 700; color: var(--text-primary);">مدفوعات آمنة</span>
+                    </div>
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <i class="fas fa-lock"></i>
+                            <span>مشفر بـ SSL</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-user-shield"></i>
+                            <span>حماية من الاحتيال</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>معتمد من PCI</span>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-clock"></i>
+                            <span>مراقبة 24/7</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="transaction-limits">
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للإيداع</span>
+                        <span class="limit-value">50,000 ر.ي</span>
+                    </div>
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للسحب</span>
+                        <span class="limit-value">20,000 ر.ي</span>
+                    </div>
+                    <div class="limit-item">
+                        <span class="limit-label">الحد اليومي للتحويل</span>
+                        <span class="limit-value">30,000 ر.ي</span>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal('addCardModal')">إلغاء</button>
+                    <button class="btn btn-primary" onclick="addCard()">إضافة البطاقة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط التنقل السفلي -->
+        <div class="bottom-nav-premium">
+            <a href="index.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-label">الرئيسية</div>
+            </a>
+            <a href="appointments.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="nav-label">المواعيد</div>
+            </a>
+            <a href="financial.html" class="nav-item-premium active">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="nav-label">المال</div>
+            </a>
+            <a href="chat.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="nav-label">المحادثة</div>
+            </a>
+            <a href="profile.html" class="nav-item-premium">
+                <div class="nav-icon-premium">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">الملف الشخصي</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+// نظام التكامل مع المحافظ والبطاقات
+class PaymentIntegration {
+    constructor() {
+        this.walletProviders = {
+            'jawali': {
+                name: 'جوالي',
+                logo: 'fa-mobile-alt',
+                verificationUrl: 'https://api.jawali.com/verify',
+                depositUrl: 'https://api.jawali.com/deposit',
+                withdrawUrl: 'https://api.jawali.com/withdraw',
+                limits: { daily: 50000, perTransaction: 10000 }
+            },
+            'jeeb': {
+                name: 'جيب',
+                logo: 'fa-money-bill-wave',
+                verificationUrl: 'https://api.jeeb.com/verify',
+                depositUrl: 'https://api.jeeb.com/deposit',
+                withdrawUrl: 'https://api.jeeb.com/withdraw',
+                limits: { daily: 40000, perTransaction: 8000 }
+            },
+            'felousak': {
+                name: 'فلوسك',
+                logo: 'fa-coins',
+                verificationUrl: 'https://api.felousak.com/verify',
+                depositUrl: 'https://api.felousak.com/deposit',
+                withdrawUrl: 'https://api.felousak.com/withdraw',
+                limits: { daily: 30000, perTransaction: 5000 }
+            },
+            'onecash': {
+                name: 'ون كاش',
+                logo: 'fa-qrcode',
+                verificationUrl: 'https://api.onecash.com/verify',
+                depositUrl: 'https://api.onecash.com/deposit',
+                withdrawUrl: 'https://api.onecash.com/withdraw',
+                limits: { daily: 45000, perTransaction: 9000 }
+            },
+            'yemen_net': {
+                name: 'يمن نت',
+                logo: 'fa-building',
+                verificationUrl: 'https://api.yemennet.com/verify',
+                depositUrl: 'https://api.yemennet.com/deposit',
+                withdrawUrl: 'https://api.yemennet.com/withdraw',
+                limits: { daily: 60000, perTransaction: 15000 }
+            },
+            'mobile_money': {
+                name: 'موبايل موني',
+                logo: 'fa-sim-card',
+                verificationUrl: 'https://api.mobilemoney.com/verify',
+                depositUrl: 'https://api.mobilemoney.com/deposit',
+                withdrawUrl: 'https://api.mobilemoney.com/withdraw',
+                limits: { daily: 35000, perTransaction: 7000 }
+            },
+            'kuraimi': {
+                name: 'محفظة الكريمي',
+                logo: 'fa-university',
+                verificationUrl: 'https://api.kuraimi.com/verify',
+                depositUrl: 'https://api.kuraimi.com/deposit',
+                withdrawUrl: 'https://api.kuraimi.com/withdraw',
+                limits: { daily: 55000, perTransaction: 12000 }
+            }
+        };
+
+        this.cardProcessors = {
+            'visa': {
+                name: 'Visa',
+                logo: 'fa-cc-visa',
+                processorUrl: 'https://api.visa.com/process',
+                verificationUrl: 'https://api.visa.com/verify'
+            },
+            'mastercard': {
+                name: 'MasterCard',
+                logo: 'fa-cc-mastercard',
+                processorUrl: 'https://api.mastercard.com/process',
+                verificationUrl: 'https://api.mastercard.com/verify'
+            }
+        };
+    }
+
+    // محاكاة الاتصال بمزود المحفظة
+    async verifyWallet(walletType, walletData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.2;
+                if (success) {
+                    resolve({
+                        success: true,
+                        message: 'تم التحقق من المحفظة بنجاح',
+                        walletId: 'W' + Date.now(),
+                        balance: Math.floor(Math.random() * 10000) + 1000
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل التحقق من المحفظة. يرجى التحقق من البيانات'
+                    });
+                }
+            }, 2000);
+        });
+    }
+
+    // محاكاة عملية الإيداع عبر المحفظة
+    async processWalletDeposit(walletType, amount, walletNumber) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.1;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'D' + Date.now(),
+                        amount: amount,
+                        fee: this.calculateFee(amount, 'deposit'),
+                        newBalance: amount - this.calculateFee(amount, 'deposit')
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية الإيداع. يرجى المحاولة لاحقاً'
+                    });
+                }
+            }, 3000);
+        });
+    }
+
+    // محاكاة عملية السحب عبر المحفظة
+    async processWalletWithdrawal(walletType, amount, walletNumber) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.1;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'W' + Date.now(),
+                        amount: amount,
+                        fee: this.calculateFee(amount, 'withdraw'),
+                        netAmount: amount - this.calculateFee(amount, 'withdraw')
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية السحب. يرجى التحقق من الرصيد'
+                    });
+                }
+            }, 3000);
+        });
+    }
+
+    // محاكاة التحقق من البطاقة
+    async verifyCard(cardData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const isValid = this.validateCardNumber(cardData.number.replace(/\s/g, ''));
+                if (isValid) {
+                    resolve({
+                        success: true,
+                        cardId: 'C' + Date.now(),
+                        processor: this.detectCardProcessor(cardData.number),
+                        message: 'تم التحقق من البطاقة بنجاح'
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'رقم البطاقة غير صحيح'
+                    });
+                }
+            }, 1500);
+        });
+    }
+
+    // محاكاية عملية الدفع بالبطاقة
+    async processCardPayment(cardData, amount) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const success = Math.random() > 0.05;
+                if (success) {
+                    resolve({
+                        success: true,
+                        transactionId: 'P' + Date.now(),
+                        amount: amount,
+                        authorizationCode: Math.random().toString(36).substr(2, 8).toUpperCase()
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'فشل عملية الدفع. يرجى التحقق من البيانات'
+                    });
+                }
+            }, 2500);
+        });
+    }
+
+    // حساب الرسوم
+    calculateFee(amount, type) {
+        const fees = {
+            'deposit': amount * 0.01,
+            'withdraw': amount * 0.015,
+            'transfer': amount * 0.005
+        };
+        return Math.max(fees[type] || 0, 100);
+    }
+
+    // التحقق من رقم البطاقة باستخدام خوارزمية Luhn
+    validateCardNumber(number) {
+        let sum = 0;
+        let isEven = false;
+        
+        for (let i = number.length - 1; i >= 0; i--) {
+            let digit = parseInt(number[i]);
+            
+            if (isEven) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            
+            sum += digit;
+            isEven = !isEven;
+        }
+        
+        return sum % 10 === 0;
+    }
+
+    // اكتشاف نوع البطاقة
+    detectCardProcessor(number) {
+        if (/^4/.test(number)) return 'visa';
+        if (/^5[1-5]/.test(number)) return 'mastercard';
+        return 'unknown';
+    }
+
+    // إنشاء رمز تحقق
+    generateVerificationCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    // محاكاة إرسال رمز التحقق
+    async sendVerificationCode(phone) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({
+                    success: true,
+                    code: this.generateVerificationCode(),
+                    message: 'تم إرسال رمز التحقق إلى هاتفك'
+                });
+            }, 1000);
+        });
+    }
+}
+
+// نظام إدارة الحساب المالي المتقدم
+class AdvancedFinancialSystem {
+    constructor() {
+        this.paymentIntegration = new PaymentIntegration();
+        this.linkedWallets = JSON.parse(localStorage.getItem('linkedWallets')) || [];
+        this.linkedCards = JSON.parse(localStorage.getItem('linkedCards')) || [];
+        this.pendingTransaction = null;
+        this.init();
+    }
+
+    init() {
+        this.checkUserAccount();
+        this.updateUI();
+        this.startLiveUpdates();
+        this.updateTime();
+        setInterval(() => this.updateTime(), 60000);
+    }
+
+    // التحقق من وجود حساب المستخدم - الإصدار المصحح
+    checkUserAccount() {
+        console.log('🔍 جاري التحقق من وجود حساب...');
+        
+        // محاولة قراءة بيانات المريض من localStorage
+        let patientData;
+        try {
+            patientData = JSON.parse(localStorage.getItem('patient_profile_data'));
+            console.log('📊 بيانات المريض:', patientData);
+        } catch (error) {
+            console.error('❌ خطأ في قراءة بيانات المريض:', error);
+            patientData = null;
+        }
+
+        if (patientData && patientData.id) {
+            console.log('✅ يوجد حساب شخصي:', patientData.fullName);
+            
+            // محاولة قراءة الحساب المالي الموجود
+            let financialAccount;
+            try {
+                financialAccount = JSON.parse(localStorage.getItem('financialAccount'));
+                console.log('💰 الحساب المالي الموجود:', financialAccount);
+            } catch (error) {
+                console.error('❌ خطأ في قراءة الحساب المالي:', error);
+                financialAccount = null;
+            }
+
+            if (!financialAccount) {
+                console.log('🆕 إنشاء حساب مالي جديد...');
+                // إنشاء حساب مالي جديد
+                financialAccount = this.createFinancialAccount(patientData);
+            } else {
+                console.log('✅ استخدام الحساب المالي الموجود');
+                this.userAccount = financialAccount;
+            }
+            
+            // تحميل البيانات الأخرى
+            this.transactions = JSON.parse(localStorage.getItem('financialTransactions')) || [];
+            this.activities = JSON.parse(localStorage.getItem('financialActivities')) || [];
+            
+            console.log('📈 المعاملات:', this.transactions.length);
+            console.log('📋 الأنشطة:', this.activities.length);
+            
+        } else {
+            console.log('❌ لا يوجد حساب شخصي');
+            this.userAccount = null;
+            this.transactions = [];
+            this.activities = [];
+        }
+    }
+
+    // إنشاء حساب مالي تلقائياً من بيانات الملف الشخصي - الإصدار المصحح
+    createFinancialAccount(patientData) {
+        console.log('🔄 إنشاء حساب مالي جديد...');
+        
+        const accountNumber = 'FA' + Date.now().toString().slice(-8);
+        const newAccount = {
+            fullName: patientData.fullName,
+            accountNumber: accountNumber,
+            balance: 0,
+            phone: patientData.phoneNumber,
+            email: patientData.email || '',
+            createdAt: new Date().toISOString(),
+            status: 'active',
+            patientId: patientData.id,
+            avatar: patientData.avatar || '',
+            transactionPassword: patientData.transactionPassword || ''
+        };
+
+        console.log('✅ الحساب الجديد:', newAccount);
+        
+        this.userAccount = newAccount;
+        localStorage.setItem('financialAccount', JSON.stringify(newAccount));
+        
+        this.addActivity('account_creation', 'إنشاء الحساب المالي', 0, 'الآن');
+        this.showNotification('تم إنشاء الحساب المالي بنجاح', 'success');
+        
+        return newAccount;
+    }
+
+    updateUI() {
+        console.log('🎨 تحديث واجهة المستخدم...');
+        console.log('👤 بيانات المستخدم:', this.userAccount);
+        
+        if (this.userAccount) {
+            document.getElementById('noAccountState').style.display = 'none';
+            document.getElementById('financialHeader').style.display = 'block';
+            document.getElementById('financialContent').style.display = 'block';
+            
+            // تحديث بيانات المستخدم
+            document.getElementById('displayUserName').textContent = this.userAccount.fullName || '---';
+            document.getElementById('displayAccountNumber').textContent = `رقم الحساب: ${this.userAccount.accountNumber || '---'}`;
+            document.getElementById('displayBalance').textContent = `${(this.userAccount.balance || 0).toLocaleString()} ر.ي`;
+            
+            // تحديث صورة البروفايل
+            const clientAvatar = document.getElementById('clientAvatar');
+            if (this.userAccount.avatar) {
+                clientAvatar.innerHTML = `<img src="${this.userAccount.avatar}" alt="${this.userAccount.fullName}">`;
+                console.log('🖼️ تم تحميل صورة البروفايل');
+            } else {
+                clientAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                console.log('👤 استخدام الأيقونة الافتراضية');
+            }
+            
+            this.renderPaymentMethods();
+            this.renderTransactions();
+            this.renderActivities();
+            this.updateFinancialReport();
+            this.initializeChart();
+            
+            console.log('✅ تم تحديث واجهة المستخدم بنجاح');
+        } else {
+            console.log('❌ لا يوجد حساب، عرض حالة عدم وجود حساب');
+            document.getElementById('noAccountState').style.display = 'block';
+            document.getElementById('financialHeader').style.display = 'none';
+            document.getElementById('financialContent').style.display = 'none';
+        }
+    }
+
+    // فتح نافذة تأكيد كلمة المرور
+    openPasswordConfirm(transactionType, transactionData) {
+        this.pendingTransaction = {
+            type: transactionType,
+            data: transactionData
+        };
+
+        let transactionInfo = '';
+        switch (transactionType) {
+            case 'deposit':
+                transactionInfo = `
+                    <div style="background: #f0f9ff; padding: 15px; border-radius: 12px; border-right: 4px solid var(--success);">
+                        <div style="font-weight: 700; margin-bottom: 8px;">تفاصيل الإيداع:</div>
+                        <div>المبلغ: <strong>${transactionData.amount.toLocaleString()} ر.ي</strong></div>
+                        <div>طريقة الدفع: <strong>${this.getPaymentMethodName(transactionData.method)}</strong></div>
+                    </div>
+                `;
+                break;
+            case 'withdrawal':
+                transactionInfo = `
+                    <div style="background: #fef2f2; padding: 15px; border-radius: 12px; border-right: 4px solid var(--error);">
+                        <div style="font-weight: 700; margin-bottom: 8px;">تفاصيل السحب:</div>
+                        <div>المبلغ: <strong>${transactionData.amount.toLocaleString()} ر.ي</strong></div>
+                        <div>طريقة السحب: <strong>${this.getPaymentMethodName(transactionData.method)}</strong></div>
+                    </div>
+                `;
+                break;
+            case 'transfer':
+                transactionInfo = `
+                    <div style="background: #f0f9ff; padding: 15px; border-radius: 12px; border-right: 4px solid var(--info);">
+                        <div style="font-weight: 700; margin-bottom: 8px;">تفاصيل التحويل:</div>
+                        <div>المبلغ: <strong>${transactionData.amount.toLocaleString()} ر.ي</strong></div>
+                        <div>المستلم: <strong>${transactionData.recipientName}</strong></div>
+                        <div>الغرض: <strong>${transactionData.purpose}</strong></div>
+                    </div>
+                `;
+                break;
+        }
+
+        document.getElementById('transactionInfo').innerHTML = transactionInfo;
+        document.getElementById('confirmPassword').value = '';
+        openModal('passwordConfirmModal');
+    }
+
+    // التحقق من كلمة المرور
+    verifyPassword(password) {
+        if (!this.userAccount || !this.userAccount.transactionPassword) {
+            return false;
+        }
+        return this.userAccount.transactionPassword === password;
+    }
+
+    async processDeposit(depositData) {
+        if (!this.userAccount) {
+            this.showNotification('لا يوجد حساب مالي', 'error');
+            return false;
+        }
+
+        const wallet = this.linkedWallets.find(w => w.type === depositData.method);
+        if (!wallet) {
+            this.showNotification('المحفظة غير مربوطة', 'error');
+            return false;
+        }
+
+        this.showNotification('جاري معالجة الإيداع...', 'info');
+
+        const result = await this.paymentIntegration.processWalletDeposit(
+            depositData.method,
+            depositData.amount,
+            depositData.walletNumber
+        );
+
+        if (result.success) {
+            // تحديث رصيد المحفظة
+            const walletIndex = this.linkedWallets.findIndex(w => w.type === depositData.method);
+            if (walletIndex !== -1) {
+                this.linkedWallets[walletIndex].balance += result.newBalance;
+            }
+            
+            // تحديث رصيد الحساب الرئيسي
+            this.userAccount.balance += depositData.amount;
+            
+            // تسجيل المعاملة
+            const transaction = {
+                id: result.transactionId,
+                type: 'deposit',
+                title: `إيداع عبر ${wallet.name}`,
+                description: `إيداع من المحفظة - ${depositData.purpose}`,
+                amount: depositData.amount,
+                ref: result.transactionId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                status: 'completed',
+                icon: 'icon-consultation',
+                method: depositData.method,
+                walletNumber: depositData.walletNumber,
+                fee: result.fee
+            };
+
+            this.transactions.unshift(transaction);
+            this.addActivity('deposit', `إيداع عبر ${wallet.name}`, depositData.amount, 'الآن');
+            
+            this.saveData();
+            this.updateUI();
+            this.showNotification(`تم الإيداع بنجاح: ${depositData.amount.toLocaleString()} ر.ي`, 'success');
+            
+            return true;
+        } else {
+            this.showNotification(result.message, 'error');
+            return false;
+        }
+    }
+
+    async processWithdrawal(withdrawalData) {
+        if (!this.userAccount) {
+            this.showNotification('لا يوجد حساب مالي', 'error');
+            return false;
+        }
+
+        if (this.userAccount.balance < withdrawalData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const wallet = this.linkedWallets.find(w => w.type === withdrawalData.method);
+        if (!wallet) {
+            this.showNotification('المحفظة غير مربوطة', 'error');
+            return false;
+        }
+
+        this.showNotification('جاري معالجة السحب...', 'info');
+
+        const result = await this.paymentIntegration.processWalletWithdrawal(
+            withdrawalData.method,
+            withdrawalData.amount,
+            withdrawalData.walletNumber
+        );
+
+        if (result.success) {
+            // تحديث رصيد المحفظة
+            const walletIndex = this.linkedWallets.findIndex(w => w.type === withdrawalData.method);
+            if (walletIndex !== -1) {
+                this.linkedWallets[walletIndex].balance += result.netAmount;
+            }
+            
+            // تحديث رصيد الحساب الرئيسي
+            this.userAccount.balance -= withdrawalData.amount;
+            
+            // تسجيل المعاملة
+            const transaction = {
+                id: result.transactionId,
+                type: 'withdrawal',
+                title: `سحب عبر ${wallet.name}`,
+                description: `سحب إلى المحفظة - ${withdrawalData.purpose}`,
+                amount: -withdrawalData.amount,
+                ref: result.transactionId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                time: new Date().toLocaleTimeString('ar-EG'),
+                status: 'completed',
+                icon: 'icon-hospital',
+                method: withdrawalData.method,
+                walletNumber: withdrawalData.walletNumber,
+                fee: result.fee,
+                netAmount: result.netAmount
+            };
+
+            this.transactions.unshift(transaction);
+            this.addActivity('withdrawal', `سحب عبر ${wallet.name}`, -withdrawalData.amount, 'الآن');
+            
+            this.saveData();
+            this.updateUI();
+            this.showNotification(`تم السحب بنجاح: ${withdrawalData.amount.toLocaleString()} ر.ي`, 'success');
+            
+            return true;
+        } else {
+            this.showNotification(result.message, 'error');
+            return false;
+        }
+    }
+
+    processTransfer(transferData) {
+        if (!this.userAccount) {
+            this.showNotification('لا يوجد حساب مالي', 'error');
+            return false;
+        }
+
+        if (this.userAccount.balance < transferData.amount) {
+            this.showNotification('الرصيد غير كافي', 'error');
+            return false;
+        }
+
+        const transactionId = 'TR' + Date.now().toString().slice(-8);
+        const newTransaction = {
+            id: transactionId,
+            type: 'transfer',
+            title: `تحويل إلى ${transferData.recipientName}`,
+            description: `تحويل ${transferData.purpose} - ${transferData.notes || 'لا توجد ملاحظات'}`,
+            amount: -transferData.amount,
+            ref: transactionId,
+            date: new Date().toLocaleDateString('ar-EG'),
+            time: new Date().toLocaleTimeString('ar-EG'),
+            status: 'completed',
+            icon: 'icon-appointment',
+            recipient: transferData.recipientName,
+            account: transferData.recipientAccount,
+            purpose: transferData.purpose
+        };
+
+        this.userAccount.balance -= transferData.amount;
+        this.transactions.unshift(newTransaction);
+        this.addActivity('transfer', `تحويل إلى ${transferData.recipientName}`, -transferData.amount, 'الآن');
+
+        this.saveData();
+        this.updateUI();
+        this.showNotification(`تم التحويل بنجاح: ${transferData.amount.toLocaleString()} ر.ي`, 'success');
+        
+        return true;
+    }
+
+    // ربط محفظة جديدة
+    async linkWallet(walletData) {
+        const verification = await this.paymentIntegration.verifyWallet(walletData.type, walletData);
+        
+        if (verification.success) {
+            const linkedWallet = {
+                id: verification.walletId,
+                type: walletData.type,
+                name: this.paymentIntegration.walletProviders[walletData.type].name,
+                number: walletData.number,
+                balance: verification.balance,
+                isVerified: true,
+                linkedAt: new Date().toISOString()
+            };
+            
+            this.linkedWallets.push(linkedWallet);
+            localStorage.setItem('linkedWallets', JSON.stringify(this.linkedWallets));
+            
+            this.showNotification(`تم ربط محفظة ${linkedWallet.name} بنجاح`, 'success');
+            return true;
+        } else {
+            this.showNotification(verification.message, 'error');
+            return false;
+        }
+    }
+
+    // إضافة بطاقة جديدة
+    async addCard(cardData) {
+        const verification = await this.paymentIntegration.verifyCard(cardData);
+        
+        if (verification.success) {
+            const linkedCard = {
+                id: verification.cardId,
+                number: this.maskCardNumber(cardData.number),
+                lastFour: cardData.number.slice(-4),
+                holder: cardData.holder,
+                expiry: cardData.expiry,
+                processor: verification.processor,
+                isVerified: true,
+                addedAt: new Date().toISOString()
+            };
+            
+            this.linkedCards.push(linkedCard);
+            localStorage.setItem('linkedCards', JSON.stringify(this.linkedCards));
+            
+            this.showNotification('تم إضافة البطاقة بنجاح', 'success');
+            return true;
+        } else {
+            this.showNotification(verification.message, 'error');
+            return false;
+        }
+    }
+
+    renderPaymentMethods() {
+        const container = document.getElementById('paymentMethods');
+        if (!container) return;
+        
+        container.innerHTML = '';
+
+        // عرض المحافظ المربوطة
+        this.linkedWallets.forEach(wallet => {
+            const methodElement = document.createElement('div');
+            methodElement.className = 'payment-method active';
+            methodElement.onclick = () => this.selectPaymentMethod(wallet.id);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fas ${this.paymentIntegration.walletProviders[wallet.type].logo}"></i>
+                </div>
+                <div class="payment-name">${wallet.name}</div>
+                <div class="payment-balance">${wallet.balance.toLocaleString()} ر.ي</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        // عرض البطاقات المربوطة
+        this.linkedCards.forEach(card => {
+            const methodElement = document.createElement('div');
+            methodElement.className = 'payment-method active';
+            methodElement.onclick = () => this.selectPaymentMethod(card.id);
+            
+            methodElement.innerHTML = `
+                <div class="payment-icon">
+                    <i class="fab fa-cc-${card.processor}"></i>
+                </div>
+                <div class="payment-name">${card.processor}</div>
+                <div class="payment-balance">${card.lastFour}</div>
+            `;
+            
+            container.appendChild(methodElement);
+        });
+
+        // أزرار الإضافة
+        const addWalletBtn = document.createElement('div');
+        addWalletBtn.className = 'payment-method';
+        addWalletBtn.onclick = openLinkWalletModal;
+        addWalletBtn.innerHTML = `
+            <div class="payment-icon">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="payment-name">ربط محفظة</div>
+            <div class="payment-balance">جديد</div>
+        `;
+        container.appendChild(addWalletBtn);
+
+        const addCardBtn = document.createElement('div');
+        addCardBtn.className = 'payment-method';
+        addCardBtn.onclick = openAddCardModal;
+        addCardBtn.innerHTML = `
+            <div class="payment-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-name">إضافة بطاقة</div>
+            <div class="payment-balance">جديد</div>
+        `;
+        container.appendChild(addCardBtn);
+    }
+
+    renderTransactions(filter = 'all') {
+        const container = document.getElementById('transactionList');
+        if (!container) return;
+        
+        container.innerHTML = '';
+
+        const filteredTransactions = filter === 'all' 
+            ? this.transactions 
+            : this.transactions.filter(t => t.type === filter);
+
+        this.updateFilterCounts();
+
+        if (filteredTransactions.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <i class="fas fa-receipt" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <div>لا توجد معاملات</div>
+                </div>
+            `;
+            return;
+        }
+
+        filteredTransactions.forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.className = 'transaction-item';
+            transactionElement.onclick = () => this.showTransactionDetails(transaction);
+            
+            transactionElement.innerHTML = `
+                <div class="transaction-icon ${transaction.icon}">
+                    <i class="fas ${this.getTransactionIcon(transaction.type)}"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-title">${transaction.title}</div>
+                    <div class="transaction-description">${transaction.description}</div>
+                    <div class="transaction-meta">
+                        <span class="transaction-ref">${transaction.ref}</span>
+                        <span>${transaction.date} - ${transaction.time}</span>
+                    </div>
+                </div>
+                <div class="transaction-amount" style="color: ${transaction.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+                    ${transaction.amount >= 0 ? '+' : ''}${transaction.amount} ر.ي
+                </div>
+                <div class="transaction-status">مكتمل</div>
+            `;
+            
+            container.appendChild(transactionElement);
+        });
+    }
+
+    renderActivities() {
+        const container = document.getElementById('activityList');
+        if (!container) return;
+        
+        container.innerHTML = '';
+
+        if (this.activities.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: var(--text-secondary);">
+                    <i class="fas fa-history" style="font-size: 32px; margin-bottom: 8px;"></i>
+                    <div>لا توجد حركات حديثة</div>
+                </div>
+            `;
+            return;
+        }
+
+        this.activities.forEach(activity => {
+            const activityElement = document.createElement('div');
+            activityElement.className = 'activity-item';
+            
+            activityElement.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas ${activity.icon}"></i>
+                </div>
+                <div class="activity-details">
+                    <div class="activity-title">${activity.title}</div>
+                    <div class="activity-time">${activity.time}</div>
+                </div>
+                <div class="activity-amount ${activity.amount > 0 ? 'amount-positive' : 'amount-negative'}">
+                    ${activity.amount > 0 ? '+' : ''}${activity.amount} ر.ي
+                </div>
+            `;
+            
+            container.appendChild(activityElement);
+        });
+    }
+
+    updateFilterCounts() {
+        const counts = {
+            all: this.transactions.length,
+            appointments: this.transactions.filter(t => t.type === 'appointment').length,
+            consultations: this.transactions.filter(t => t.type === 'consultation').length,
+            pharmacy: this.transactions.filter(t => t.type === 'pharmacy').length
+        };
+
+        const countAll = document.getElementById('countAll');
+        const countAppointments = document.getElementById('countAppointments');
+        const countConsultations = document.getElementById('countConsultations');
+        const countPharmacy = document.getElementById('countPharmacy');
+
+        if (countAll) countAll.textContent = counts.all;
+        if (countAppointments) countAppointments.textContent = counts.appointments;
+        if (countConsultations) countConsultations.textContent = counts.consultations;
+        if (countPharmacy) countPharmacy.textContent = counts.pharmacy;
+    }
+
+    updateFinancialReport() {
+        const currentMonth = new Date().getMonth();
+        const monthlyTransactions = this.transactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            return transactionDate.getMonth() === currentMonth;
+        });
+
+        const monthlyExpenses = monthlyTransactions
+            .filter(t => t.amount < 0)
+            .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+        const monthlyIncome = monthlyTransactions
+            .filter(t => t.amount > 0)
+            .reduce((sum, t) => sum + t.amount, 0);
+
+        const monthlyExpensesElem = document.getElementById('monthlyExpenses');
+        const monthlyIncomeElem = document.getElementById('monthlyIncome');
+        const totalTransactionsElem = document.getElementById('totalTransactions');
+        const digitalWalletsElem = document.getElementById('digitalWallets');
+
+        if (monthlyExpensesElem) monthlyExpensesElem.textContent = monthlyExpenses.toLocaleString() + ' ر.ي';
+        if (monthlyIncomeElem) monthlyIncomeElem.textContent = monthlyIncome.toLocaleString() + ' ر.ي';
+        if (totalTransactionsElem) totalTransactionsElem.textContent = this.transactions.length;
+        if (digitalWalletsElem) digitalWalletsElem.textContent = this.linkedWallets.length > 0 ? '100%' : '0%';
+    }
+
+    initializeChart() {
+        const ctx = document.getElementById('financeChart');
+        if (!ctx) return;
+        
+        const expenseData = {
+            appointments: this.transactions.filter(t => t.type === 'appointment' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            consultations: this.transactions.filter(t => t.type === 'consultation' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            pharmacy: this.transactions.filter(t => t.type === 'pharmacy' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0),
+            hospital: this.transactions.filter(t => t.type === 'hospital' && t.amount < 0).reduce((sum, t) => sum + Math.abs(t.amount), 0)
+        };
+
+        if (window.financeChart) {
+            window.financeChart.destroy();
+        }
+
+        window.financeChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['المواعيد', 'الاستشارات', 'الصيدليات', 'المستشفيات'],
+                datasets: [{
+                    data: [
+                        expenseData.appointments,
+                        expenseData.consultations,
+                        expenseData.pharmacy,
+                        expenseData.hospital
+                    ],
+                    backgroundColor: [
+                        '#8b5cf6',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#ef4444'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        rtl: true,
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                family: 'Tajawal',
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+
+    addActivity(type, title, amount, time) {
+        const activity = {
+            id: Date.now(),
+            type: type,
+            title: title,
+            amount: amount,
+            time: time,
+            icon: this.getActivityIcon(type)
+        };
+        
+        this.activities.unshift(activity);
+        if (this.activities.length > 10) {
+            this.activities.pop();
+        }
+        
+        localStorage.setItem('financialActivities', JSON.stringify(this.activities));
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 4000);
+    }
+
+    saveData() {
+        if (this.userAccount) {
+            localStorage.setItem('financialAccount', JSON.stringify(this.userAccount));
+        }
+        localStorage.setItem('financialTransactions', JSON.stringify(this.transactions));
+        localStorage.setItem('financialActivities', JSON.stringify(this.activities));
+        localStorage.setItem('linkedWallets', JSON.stringify(this.linkedWallets));
+        localStorage.setItem('linkedCards', JSON.stringify(this.linkedCards));
+    }
+
+    updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('ar-EG', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        const currentTimeElem = document.getElementById('currentTime');
+        if (currentTimeElem) {
+            currentTimeElem.textContent = timeString;
+        }
+    }
+
+    startLiveUpdates() {
+        setInterval(() => {
+            if (this.userAccount && Math.random() > 0.7) {
+                this.updateUI();
+            }
+        }, 60000);
+    }
+
+    // وظائف مساعدة
+    getPaymentMethodName(methodId) {
+        const methods = {
+            'jawali': 'جوالي',
+            'jeeb': 'جيب',
+            'felousak': 'فلوسك',
+            'onecash': 'ون كاش',
+            'yemen_net': 'يمن نت',
+            'mobile_money': 'موبايل موني',
+            'kuraimi': 'محفظة الكريمي'
+        };
+        return methods[methodId] || methodId;
+    }
+
+    getActivityIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'withdrawal': 'fa-upload',
+            'transfer': 'fa-exchange-alt',
+            'account_creation': 'fa-user-plus',
+            'payment': 'fa-credit-card'
+        };
+        return icons[type] || 'fa-exchange-alt';
+    }
+
+    getTransactionIcon(type) {
+        const icons = {
+            'deposit': 'fa-download',
+            'withdrawal': 'fa-upload',
+            'transfer': 'fa-exchange-alt',
+            'consultation': 'fa-user-md',
+            'appointment': 'fa-calendar-check',
+            'hospital': 'fa-hospital',
+            'pharmacy': 'fa-pills'
+        };
+        return icons[type] || 'fa-receipt';
+    }
+
+    maskCardNumber(number) {
+        return '**** **** **** ' + number.slice(-4);
+    }
+
+    selectPaymentMethod(methodId) {
+        this.showNotification('تم اختيار طريقة الدفع', 'info');
+    }
+
+    showTransactionDetails(transaction) {
+        let details = `تفاصيل المعاملة:\n\n`;
+        details += `الخدمة: ${transaction.title}\n`;
+        details += `الوصف: ${transaction.description}\n`;
+        details += `المبلغ: ${transaction.amount} ر.ي\n`;
+        details += `رقم المرجع: ${transaction.ref}\n`;
+        details += `التاريخ: ${transaction.date} ${transaction.time}\n`;
+        details += `الحالة: ${transaction.status}\n`;
+        
+        if (transaction.method) {
+            details += `طريقة الدفع: ${this.getPaymentMethodName(transaction.method)}\n`;
+        }
+        
+        if (transaction.recipient) {
+            details += `المستلم: ${transaction.recipient}\n`;
+        }
+
+        alert(details);
+    }
+}
+
+// تهيئة النظام المتقدم
+const advancedFinancialSystem = new AdvancedFinancialSystem();
+
+// وظائف الواجهة العامة
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function redirectToProfile() {
+    window.location.href = 'patient-profile.html';
+}
+
+// وظائف تأكيد كلمة المرور
+function openDepositWithPassword() {
+    openModal('depositModal');
+}
+
+function openWithdrawWithPassword() {
+    openModal('withdrawModal');
+}
+
+function openTransferWithPassword() {
+    openModal('transferModal');
+}
+
+async function confirmTransaction() {
+    const password = document.getElementById('confirmPassword');
+    if (!password) return;
+    
+    const passwordValue = password.value;
+    
+    if (!passwordValue) {
+        advancedFinancialSystem.showNotification('يرجى إدخال كلمة المرور', 'error');
+        return;
+    }
+
+    if (!advancedFinancialSystem.verifyPassword(passwordValue)) {
+        advancedFinancialSystem.showNotification('كلمة المرور غير صحيحة', 'error');
+        return;
+    }
+
+    closeModal('passwordConfirmModal');
+    
+    const pendingTransaction = advancedFinancialSystem.pendingTransaction;
+    if (!pendingTransaction) return;
+
+    let success = false;
+    
+    switch (pendingTransaction.type) {
+        case 'deposit':
+            success = await advancedFinancialSystem.processDeposit(pendingTransaction.data);
+            break;
+        case 'withdrawal':
+            success = await advancedFinancialSystem.processWithdrawal(pendingTransaction.data);
+            break;
+        case 'transfer':
+            success = advancedFinancialSystem.processTransfer(pendingTransaction.data);
+            break;
+    }
+
+    if (success) {
+        // إغلاق النوافذ المفتوحة
+        closeModal('depositModal');
+        closeModal('withdrawModal');
+        closeModal('transferModal');
+    }
+}
+
+async function processDeposit() {
+    const depositAmount = document.getElementById('depositAmount');
+    const depositMethod = document.getElementById('depositMethod');
+    const depositWalletNumber = document.getElementById('depositWalletNumber');
+    const depositPurpose = document.getElementById('depositPurpose');
+
+    if (!depositAmount || !depositMethod || !depositWalletNumber) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    const depositData = {
+        amount: parseFloat(depositAmount.value),
+        method: depositMethod.value,
+        walletNumber: depositWalletNumber.value,
+        purpose: depositPurpose ? depositPurpose.value : 'general'
+    };
+
+    if (!depositData.amount || !depositData.method || !depositData.walletNumber) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (depositData.amount < 1000) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للإيداع هو 1000 ر.ي', 'error');
+        return;
+    }
+
+    advancedFinancialSystem.openPasswordConfirm('deposit', depositData);
+}
+
+async function processWithdrawal() {
+    const withdrawAmount = document.getElementById('withdrawAmount');
+    const withdrawMethod = document.getElementById('withdrawMethod');
+    const withdrawPurpose = document.getElementById('withdrawPurpose');
+    const withdrawWalletNumber = document.getElementById('withdrawWalletNumber');
+
+    if (!withdrawAmount || !withdrawMethod) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    const withdrawalData = {
+        amount: parseFloat(withdrawAmount.value),
+        method: withdrawMethod.value,
+        purpose: withdrawPurpose ? withdrawPurpose.value : '',
+        walletNumber: withdrawWalletNumber ? withdrawWalletNumber.value : ''
+    };
+
+    if (!withdrawalData.amount || !withdrawalData.method) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (withdrawalData.amount < 1000) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للسحب هو 1000 ر.ي', 'error');
+        return;
+    }
+
+    advancedFinancialSystem.openPasswordConfirm('withdrawal', withdrawalData);
+}
+
+function processTransfer() {
+    const transferAmount = document.getElementById('transferAmount');
+    const recipientType = document.getElementById('recipientType');
+    const recipientName = document.getElementById('recipientName');
+    const recipientAccount = document.getElementById('recipientAccount');
+    const transferPurpose = document.getElementById('transferPurpose');
+    const transferNotes = document.getElementById('transferNotes');
+
+    if (!transferAmount || !recipientType || !recipientName || !recipientAccount || !transferPurpose) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    const transferData = {
+        amount: parseFloat(transferAmount.value),
+        recipientType: recipientType.value,
+        recipientName: recipientName.value,
+        recipientAccount: recipientAccount.value,
+        purpose: transferPurpose.value,
+        notes: transferNotes ? transferNotes.value : ''
+    };
+
+    if (!transferData.amount || !transferData.recipientType || !transferData.recipientName || !transferData.recipientAccount || !transferData.purpose) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول الإلزامية', 'error');
+        return;
+    }
+
+    if (transferData.amount < 100) {
+        advancedFinancialSystem.showNotification('الحد الأدنى للتحويل هو 100 ر.ي', 'error');
+        return;
+    }
+
+    advancedFinancialSystem.openPasswordConfirm('transfer', transferData);
+}
+
+function filterTransactions(type) {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    advancedFinancialSystem.renderTransactions(type);
+}
+
+function refreshTransactions() {
+    advancedFinancialSystem.showNotification('جاري تحديث البيانات...', 'info');
+    setTimeout(() => {
+        advancedFinancialSystem.renderTransactions();
+        advancedFinancialSystem.showNotification('تم تحديث البيانات', 'success');
+    }, 1000);
+}
+
+function downloadStatement() {
+    advancedFinancialSystem.showNotification('جاري تحميل كشف الحساب...', 'info');
+    setTimeout(() => {
+        advancedFinancialSystem.showNotification('تم تحميل كشف الحساب بنجاح', 'success');
+    }, 1500);
+}
+
+// وظائف المحافظ والبطاقات
+function showWalletFields() {
+    const walletType = document.getElementById('walletType');
+    const walletFields = document.getElementById('walletFields');
+    
+    if (!walletType || !walletFields) return;
+    
+    if (!walletType.value) {
+        walletFields.innerHTML = '';
+        return;
+    }
+
+    const provider = advancedFinancialSystem.paymentIntegration.walletProviders[walletType.value];
+    if (!provider) return;
+    
+    walletFields.innerHTML = `
+        <div class="form-group">
+            <label class="form-label">رقم المحفظة *</label>
+            <input type="text" class="form-input" id="walletNumber" placeholder="أدخل رقم ${provider.name}" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">اسم صاحب المحفظة *</label>
+            <input type="text" class="form-input" id="walletOwner" placeholder="اسم صاحب المحفظة" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">رقم الهاتف المسجل *</label>
+            <input type="tel" class="form-input" id="walletPhone" placeholder="05XXXXXXXX" required>
+        </div>
+    `;
+}
+
+async function linkWallet() {
+    const walletType = document.getElementById('walletType');
+    const walletNumber = document.getElementById('walletNumber');
+    const walletOwner = document.getElementById('walletOwner');
+    const walletPhone = document.getElementById('walletPhone');
+
+    if (!walletType || !walletNumber || !walletOwner || !walletPhone) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    const walletData = {
+        type: walletType.value,
+        number: walletNumber.value,
+        owner: walletOwner.value,
+        phone: walletPhone.value
+    };
+
+    const success = await advancedFinancialSystem.linkWallet(walletData);
+    if (success) {
+        closeModal('linkWalletModal');
+        advancedFinancialSystem.renderPaymentMethods();
+    }
+}
+
+function formatCardNumber() {
+    const input = document.getElementById('cardNumber');
+    if (!input) return;
+    
+    let value = input.value.replace(/\s/g, '').replace(/\D/g, '');
+    
+    if (value.length > 16) {
+        value = value.substr(0, 16);
+    }
+    
+    let formatted = '';
+    for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+            formatted += ' ';
+        }
+        formatted += value[i];
+    }
+    
+    input.value = formatted;
+}
+
+function formatExpiry() {
+    const input = document.getElementById('cardExpiry');
+    if (!input) return;
+    
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length > 4) {
+        value = value.substr(0, 4);
+    }
+    
+    if (value.length >= 2) {
+        value = value.substr(0, 2) + '/' + value.substr(2);
+    }
+    
+    input.value = value;
+}
+
+function updateCardPreview() {
+    const cardNumber = document.getElementById('cardNumber');
+    const cardExpiry = document.getElementById('cardExpiry');
+    const cardHolder = document.getElementById('cardHolder');
+    const previewCardNumber = document.getElementById('previewCardNumber');
+    const previewCardExpiry = document.getElementById('previewCardExpiry');
+    const previewCardHolder = document.getElementById('previewCardHolder');
+
+    if (!cardNumber || !cardExpiry || !cardHolder || !previewCardNumber || !previewCardExpiry || !previewCardHolder) return;
+
+    const number = cardNumber.value || '**** **** **** ****';
+    const expiry = cardExpiry.value || 'MM/YY';
+    const holder = cardHolder.value || 'الاسم الكامل';
+    
+    previewCardNumber.textContent = number;
+    previewCardExpiry.textContent = expiry;
+    previewCardHolder.textContent = holder.toUpperCase();
+}
+
+async function addCard() {
+    const cardNumber = document.getElementById('cardNumber');
+    const cardExpiry = document.getElementById('cardExpiry');
+    const cardCvv = document.getElementById('cardCvv');
+    const cardHolder = document.getElementById('cardHolder');
+
+    if (!cardNumber || !cardExpiry || !cardCvv || !cardHolder) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    const number = cardNumber.value.replace(/\s/g, '');
+    const expiry = cardExpiry.value;
+    const cvv = cardCvv.value;
+    const holder = cardHolder.value;
+
+    if (!number || !expiry || !cvv || !holder) {
+        advancedFinancialSystem.showNotification('يرجى ملء جميع الحقول', 'error');
+        return;
+    }
+
+    if (number.replace(/\s/g, '').length !== 16) {
+        advancedFinancialSystem.showNotification('رقم البطاقة يجب أن يكون 16 رقماً', 'error');
+        return;
+    }
+
+    const cardData = {
+        number: number,
+        expiry: expiry,
+        cvv: cvv,
+        holder: holder
+    };
+
+    const success = await advancedFinancialSystem.addCard(cardData);
+    if (success) {
+        closeModal('addCardModal');
+        advancedFinancialSystem.renderPaymentMethods();
+    }
+}
+
+function openLinkWalletModal() {
+    openModal('linkWalletModal');
+}
+
+function openAddCardModal() {
+    openModal('addCardModal');
+}
+
+function showWithdrawDetails() {
+    const method = document.getElementById('withdrawMethod');
+    const bankDetails = document.getElementById('withdrawBankDetails');
+    const walletDetails = document.getElementById('withdrawWalletDetails');
+
+    if (!method || !bankDetails || !walletDetails) return;
+
+    bankDetails.style.display = method.value === 'bank_transfer' ? 'block' : 'none';
+    walletDetails.style.display = method.value === 'wallet' ? 'block' : 'none';
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    
+    const icon = input.nextElementSibling.querySelector('i');
+    if (!icon) return;
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+// إغلاق النوافذ بالضغط خارجها
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+}
+
+// منع إرسال النماذج
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+    });
+});
+
+// إعادة تحميل الصفحة عند العودة إليها
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        location.reload();
+    }
+});
+</script>
+</body>
+</html>
