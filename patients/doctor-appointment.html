@@ -3193,6 +3193,220 @@ class AdvancedDoctorAppointments {
     }
 
     // باقي الدوال الأساسية (showRatingModal, submitRating, showAppointmentsHistory, etc.)
+    showRatingModal(doctorId) {
+        const doctor = this.doctors.find(d => d.id === doctorId);
+        if (!doctor) return;
+
+        this.currentDoctor = doctor;
+        const modal = document.getElementById('ratingModal');
+        
+        document.getElementById('ratingModalTitle').textContent = `تقييم الطبيب - ${doctor.name}`;
+        
+        const modalBody = document.getElementById('ratingModalBody');
+        modalBody.innerHTML = `
+            <div class="rating-form">
+                <div class="rating-summary">
+                    <div class="rating-overall">
+                        <div class="rating-value">${doctor.rating}</div>
+                        <div class="rating-count">${doctor.reviewCount} تقييم</div>
+                    </div>
+                    <div class="rating-breakdown">
+                        ${Object.entries(doctor.ratings.breakdown || {}).map(([criterion, value]) => `
+                            <div class="rating-bar">
+                                <div class="rating-label">${criterion}</div>
+                                <div class="rating-progress">
+                                    <div class="rating-progress-fill" style="width: ${(value / 5) * 100}%"></div>
+                                </div>
+                                <div class="rating-percentage">${value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="rating-stars" id="ratingStars">
+                    <i class="fas fa-star rating-star" data-rating="1"></i>
+                    <i class="fas fa-star rating-star" data-rating="2"></i>
+                    <i class="fas fa-star rating-star" data-rating="3"></i>
+                    <i class="fas fa-star rating-star" data-rating="4"></i>
+                    <i class="fas fa-star rating-star" data-rating="5"></i>
+                </div>
+
+                <div class="rating-criteria">
+                    <h3>التقييم التفصيلي</h3>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">التواصل</div>
+                        <div class="criterion-stars" data-criterion="التواصل">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">الوقت</div>
+                        <div class="criterion-stars" data-criterion="الوقت">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">التشخيص</div>
+                        <div class="criterion-stars" data-criterion="التشخيص">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                    <div class="rating-criterion">
+                        <div class="criterion-label">العلاج</div>
+                        <div class="criterion-stars" data-criterion="العلاج">
+                            <i class="fas fa-star criterion-star" data-rating="1"></i>
+                            <i class="fas fa-star criterion-star" data-rating="2"></i>
+                            <i class="fas fa-star criterion-star" data-rating="3"></i>
+                            <i class="fas fa-star criterion-star" data-rating="4"></i>
+                            <i class="fas fa-star criterion-star" data-rating="5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تعليقك (اختياري)</label>
+                    <textarea class="form-textarea" id="ratingComment" placeholder="شاركنا تجربتك مع الطبيب..."></textarea>
+                </div>
+
+                <button class="btn-primary" onclick="advancedDoctorAppointments.submitRating()">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال التقييم
+                </button>
+            </div>
+        `;
+
+        // إضافة أحداث النجوم
+        setTimeout(() => {
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.dataset.rating);
+                    this.setRatingStars(rating);
+                });
+            });
+
+            document.querySelectorAll('.criterion-stars .criterion-star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const criterion = star.closest('.criterion-stars').dataset.criterion;
+                    const rating = parseInt(star.dataset.rating);
+                    this.setCriterionStars(criterion, rating);
+                });
+            });
+        }, 100);
+
+        modal.style.display = 'block';
+    }
+
+    setRatingStars(rating) {
+        this.currentRating = rating;
+        document.querySelectorAll('.rating-star').forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    setCriterionStars(criterion, rating) {
+        const stars = document.querySelectorAll(`[data-criterion="${criterion}"] .criterion-star`);
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    submitRating() {
+        if (this.currentRating === 0) {
+            alert('يرجى اختيار تقييم عام للطبيب');
+            return;
+        }
+
+        const comment = document.getElementById('ratingComment').value;
+        
+        // جمع تقييمات المعايير
+        const criteriaRatings = {};
+        document.querySelectorAll('.criterion-stars').forEach(criterionStars => {
+            const criterion = criterionStars.dataset.criterion;
+            const activeStars = criterionStars.querySelectorAll('.criterion-star.active').length;
+            criteriaRatings[criterion] = activeStars;
+        });
+
+        const rating = {
+            id: Date.now(),
+            doctorId: this.currentDoctor.id,
+            doctorName: this.currentDoctor.name,
+            rating: this.currentRating,
+            criteriaRatings: criteriaRatings,
+            comment: comment,
+            date: new Date().toISOString(),
+            patientName: this.getPatientName()
+        };
+
+        this.ratings.push(rating);
+        this.saveRatings();
+
+        // تحديث تقييم الطبيب
+        this.updateDoctorRating(this.currentDoctor.id);
+
+        alert('شكراً لك! تم إرسال تقييمك بنجاح.');
+        document.getElementById('ratingModal').style.display = 'none';
+    }
+
+    updateDoctorRating(doctorId) {
+        const doctor = this.doctors.find(d => d.id === doctorId);
+        if (!doctor) return;
+
+        const doctorRatings = this.ratings.filter(r => r.doctorId === doctorId);
+        
+        if (doctorRatings.length === 0) return;
+
+        // حساب التقييم العام
+        const overallRating = doctorRatings.reduce((sum, r) => sum + r.rating, 0) / doctorRatings.length;
+        
+        // حساب تقييمات المعايير
+        const criteriaRatings = {};
+        const criteriaCount = {};
+        
+        doctorRatings.forEach(rating => {
+            Object.entries(rating.criteriaRatings).forEach(([criterion, value]) => {
+                if (!criteriaRatings[criterion]) {
+                    criteriaRatings[criterion] = 0;
+                    criteriaCount[criterion] = 0;
+                }
+                criteriaRatings[criterion] += value;
+                criteriaCount[criterion]++;
+            });
+        });
+
+        Object.keys(criteriaRatings).forEach(criterion => {
+            criteriaRatings[criterion] = criteriaRatings[criterion] / criteriaCount[criterion];
+        });
+
+        // تحديث بيانات الطبيب
+        doctor.rating = Math.round(overallRating * 10) / 10;
+        doctor.reviewCount = doctorRatings.length;
+        doctor.ratings = {
+            overall: doctor.rating,
+            breakdown: criteriaRatings
+        };
+
+        this.saveDoctors();
+    }
     // ... [يتم الحفاظ على جميع الدوال الأساسية الأخرى كما هي بدون تغيير]
 }
 
