@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -26,9 +26,9 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalHospital
+import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -39,9 +39,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -54,11 +56,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.runtime.CompositionLocalProvider
 
 private val Blue = Color(0xFF1976D2)
@@ -74,15 +77,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private data class AccountType(
-    val title: String,
-    val detail: String,
-    val emoji: String,
-    val color: Color
-)
+private data class AccountType(val title: String, val detail: String, val emoji: String, val color: Color)
 
 private val accountTypes = listOf(
-    AccountType("مريض", "ابحث عن طبيب واحجز موعداً", "🩺", Blue),
+    AccountType("مريض", "ابحث ��ن طبيب واحجز موعداً", "🩺", Blue),
     AccountType("طبيب / ممارس صحي", "إدارة المواعيد والمرضى", "👨‍⚕️", Color(0xFF2475C5)),
     AccountType("مستشفى / مركز طبي", "إدارة خدمات ومواعيد المنشأة", "🏥", Color(0xFF8E44AD)),
     AccountType("صيدلية", "إدارة طلبات الأدوية", "💊", Green),
@@ -101,47 +99,50 @@ private enum class DashboardTab(val title: String, val icon: ImageVector) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HospitalApp() {
-    var selectedAccount by rememberSaveable { mutableStateOf<String?>(null) }
+    var signedIn by rememberSaveable { mutableStateOf(false) }
+    var showRegistration by rememberSaveable { mutableStateOf(false) }
+    var selectedAccount by rememberSaveable { mutableStateOf("مريض") }
+    var displayName by rememberSaveable { mutableStateOf("مستخدم تجريبي") }
     var selectedTab by rememberSaveable { mutableStateOf(DashboardTab.Home.name) }
-    val account = accountTypes.firstOrNull { it.title == selectedAccount }
+    val account = accountTypes.firstOrNull { it.title == selectedAccount } ?: accountTypes.first()
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        MaterialTheme(
-            colorScheme = MaterialTheme.colorScheme.copy(primary = Blue, secondary = Green),
-            typography = MaterialTheme.typography
-        ) {
-            Scaffold(
-                containerColor = Page,
-                contentWindowInsets = WindowInsets(0),
-                topBar = {
-                    if (account == null) {
+        MaterialTheme(colorScheme = MaterialTheme.colorScheme.copy(primary = Blue, secondary = Green)) {
+            if (!signedIn) {
+                if (showRegistration) {
+                    RegisterScreen(
+                        onBack = { showRegistration = false },
+                        onRegister = { name, role ->
+                            displayName = name
+                            selectedAccount = role
+                            signedIn = true
+                            showRegistration = false
+                        }
+                    )
+                } else {
+                    LoginScreen(
+                        onLogin = { signedIn = true },
+                        onRegister = { showRegistration = true }
+                    )
+                }
+            } else {
+                Scaffold(
+                    containerColor = Page,
+                    contentWindowInsets = WindowInsets(0),
+                    topBar = {
                         TopAppBar(
-                            title = { Text("طبيب 24/7", fontWeight = FontWeight.Bold) },
+                            title = { Text(if (selectedTab == DashboardTab.Home.name) "طبيب 24/7" else DashboardTab.valueOf(selectedTab).title, fontWeight = FontWeight.Bold) },
                             navigationIcon = {
                                 Icon(Icons.Default.LocalHospital, contentDescription = null, tint = Blue,
                                     modifier = Modifier.padding(horizontal = 12.dp).size(28.dp))
                             },
                             actions = {
-                                IconButton(onClick = {}) {
-                                    Icon(Icons.Default.NotificationsNone, contentDescription = "الإشعارات")
-                                }
+                                IconButton(onClick = {}) { Icon(Icons.Default.NotificationsNone, contentDescription = "الإشعارات") }
                             },
                             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
                         )
-                    } else {
-                        TopAppBar(
-                            title = { Text(account.title, fontWeight = FontWeight.Bold) },
-                            navigationIcon = {
-                                IconButton(onClick = { selectedAccount = null; selectedTab = DashboardTab.Home.name }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "العودة")
-                                }
-                            },
-                            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
-                        )
-                    }
-                },
-                bottomBar = {
-                    if (account != null) {
+                    },
+                    bottomBar = {
                         NavigationBar(containerColor = Color.White) {
                             DashboardTab.entries.forEach { tab ->
                                 NavigationBarItem(
@@ -153,16 +154,13 @@ private fun HospitalApp() {
                             }
                         }
                     }
-                }
-            ) { padding ->
-                if (account == null) {
-                    AccountPicker(Modifier.padding(padding), onSelect = { selectedAccount = it })
-                } else {
+                ) { padding ->
                     Dashboard(
                         modifier = Modifier.padding(padding),
                         account = account,
+                        displayName = displayName,
                         tab = DashboardTab.valueOf(selectedTab),
-                        onChooseAccount = { selectedAccount = null }
+                        onSignOut = { signedIn = false; showRegistration = false; selectedTab = DashboardTab.Home.name }
                     )
                 }
             }
@@ -171,127 +169,153 @@ private fun HospitalApp() {
 }
 
 @Composable
-private fun AccountPicker(modifier: Modifier = Modifier, onSelect: (String) -> Unit) {
+private fun LoginScreen(onLogin: () -> Unit, onRegister: () -> Unit) {
+    var username by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var error by rememberSaveable { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier.fillMaxSize().background(Page).padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Surface(color = Blue, shape = CircleShape, modifier = Modifier.size(82.dp)) {
+            BoxCenter { Icon(Icons.Default.LocalHospital, contentDescription = null, tint = Color.White, modifier = Modifier.size(42.dp)) }
+        }
+        Spacer(Modifier.height(18.dp))
+        Text("طبيب 24/7", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text("سجّل الدخول للمتابعة", color = Muted, modifier = Modifier.padding(top = 6.dp, bottom = 24.dp))
+        OutlinedTextField(value = username, onValueChange = { username = it; error = "" }, label = { Text("اسم المستخدم أو البريد الإلكتروني") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(value = password, onValueChange = { password = it; error = "" }, label = { Text("كلمة المرور") }, singleLine = true, visualTransformation = PasswordVisualTransformation(), modifier = Modifier.fillMaxWidth())
+        if (error.isNotBlank()) Text(error, color = Color(0xFFB3261E), modifier = Modifier.padding(top = 8.dp))
+        Spacer(Modifier.height(18.dp))
+        Button(
+            onClick = { if (username.isNotBlank() && password.isNotBlank()) onLogin() else error = "أدخل اسم المستخدم وكلمة المرور للمتابعة." },
+            modifier = Modifier.fillMaxWidth().height(52.dp), colors = ButtonDefaults.buttonColors(containerColor = Blue)
+        ) { Text("تسجيل الدخول") }
+        TextButton(onClick = onRegister) { Text("ليس لديك حساب؟ أنشئ حساباً تجريبياً") }
+        Text("وضع تجريبي محلي — لا يتم إرسال بياناتك أو حفظها على خادم.", color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 12.dp))
+    }
+}
+
+@Composable
+private fun RegisterScreen(onBack: () -> Unit, onRegister: (String, String) -> Unit) {
+    var name by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var role by rememberSaveable { mutableStateOf(accountTypes.first().title) }
+    var error by rememberSaveable { mutableStateOf("") }
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+        modifier = Modifier.fillMaxSize().background(Page),
+        contentPadding = PaddingValues(24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
+            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "عودة") }
+            Text("إنشاء حساب تجريبي", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+            Text("اختر نوع الحساب وأدخل بياناتك للعرض التجريبي.", color = Muted)
+        }
+        item { OutlinedTextField(name, { name = it; error = "" }, label = { Text("الاسم الكامل") }, singleLine = true, modifier = Modifier.fillMaxWidth()) }
+        item { OutlinedTextField(email, { email = it; error = "" }, label = { Text("البريد الإلكتروني") }, singleLine = true, modifier = Modifier.fillMaxWidth()) }
+        item { OutlinedTextField(password, { password = it; error = "" }, label = { Text("كلمة المرور") }, singleLine = true, visualTransformation = PasswordVisualTransformation(), modifier = Modifier.fillMaxWidth()) }
+        item {
+            Text("نوع الحساب", color = Ink, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(4.dp))
+        }
+        items(accountTypes) { option ->
             Card(
-                colors = CardDefaults.cardColors(containerColor = Blue),
-                shape = RoundedCornerShape(24.dp),
+                onClick = { role = option.title },
+                colors = CardDefaults.cardColors(containerColor = if (role == option.title) Color(0xFFE5F1FC) else Color.White),
+                shape = RoundedCornerShape(14.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.Start) {
-                    Text("رعايتك الصحية أقرب", color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.height(8.dp))
-                    Text("منصة تربط المرضى بمقدمي الخدمات الصحية في مكان واحد.", color = Color.White.copy(alpha = .9f), fontSize = 16.sp)
-                    Spacer(Modifier.height(18.dp))
-                    Surface(color = Color.White.copy(alpha = .18f), shape = RoundedCornerShape(50)) {
-                        Text("خدمات صحية على مدار الساعة", color = Color.White, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp))
-                    }
-                }
-            }
-            Spacer(Modifier.height(20.dp))
-            Text("اختر نوع حسابك", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
-            Text("يمكنك تغيير القسم لاحقاً من حسابك.", color = Muted, modifier = Modifier.padding(top = 4.dp, bottom = 4.dp))
-        }
-        items(accountTypes) { account ->
-            Card(
-                onClick = { onSelect(account.title) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier.size(52.dp).background(account.color.copy(alpha = .12f), RoundedCornerShape(16.dp)),
-                        contentAlignment = Alignment.Center
-                    ) { Text(account.emoji, fontSize = 27.sp) }
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(account.title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
-                        Text(account.detail, color = Muted, fontSize = 14.sp, modifier = Modifier.padding(top = 4.dp))
-                    }
-                    Text("‹", color = account.color, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Row(Modifier.fillMaxWidth().padding(13.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(option.emoji, fontSize = 24.sp)
+                    Spacer(Modifier.width(12.dp))
+                    Text(option.title, modifier = Modifier.weight(1f), color = Ink, fontWeight = FontWeight.Medium)
+                    Text(if (role == option.title) "✓" else "", color = Blue, fontWeight = FontWeight.Bold)
                 }
             }
         }
         item {
-            Text("تنبيه: هذه نسخة أولية بواجهات أصلية وبيانات تجريبية. يلزم ربطها بخادم آمن لتفعيل الحسابات والحجوزات.",
-                color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp))
+            if (error.isNotBlank()) Text(error, color = Color(0xFFB3261E))
+            Button(
+                onClick = {
+                    when {
+                        name.isBlank() || email.isBlank() || password.isBlank() -> error = "يرجى تعبئة جميع الحقول."
+                        !email.contains("@") -> error = "أدخل بريداً إلكترونياً صالحاً."
+                        password.length < 6 -> error = "كلمة المرور التجريبية يجب أن تتكون من 6 أحرف على الأقل."
+                        else -> onRegister(name.trim(), role)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().height(52.dp), colors = ButtonDefaults.buttonColors(containerColor = Blue)
+            ) { Text("إنشاء حساب تجريبي") }
+            Text("هذا النموذج لا ينشئ حساباً حقيقياً ولا يحفظ البيانات.", color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 10.dp))
         }
     }
 }
 
 @Composable
-private fun Dashboard(modifier: Modifier, account: AccountType, tab: DashboardTab, onChooseAccount: () -> Unit) {
+private fun BoxCenter(content: @Composable () -> Unit) {
+    androidx.compose.foundation.layout.Box(contentAlignment = Alignment.Center, content = { content() })
+}
+
+@Composable
+private fun Dashboard(modifier: Modifier, account: AccountType, displayName: String, tab: DashboardTab, onSignOut: () -> Unit) {
     when (tab) {
-        DashboardTab.Home -> HomeDashboard(modifier, account)
-        DashboardTab.Appointments -> SimpleListScreen(
-            modifier, "مواعيدي", "تابع المواعيد القادمة وحالتها",
-            listOf("موعد استشارة", "زيارة متابعة", "نتيجة فحص")
-        )
-        DashboardTab.Messages -> SimpleListScreen(
-            modifier, "الرسائل", "محادثاتك الصحية",
-            listOf("مركز الرعاية الصحية", "د. أحمد محمد", "صيدلية الأمل")
-        )
-        DashboardTab.Profile -> ProfileScreen(modifier, account, onChooseAccount)
+        DashboardTab.Home -> HomeDashboard(modifier, account, displayName)
+        DashboardTab.Appointments -> SimpleListScreen(modifier, "مواعيدي", "مواعيد تجريبية للعرض فقط", listOf("استشارة طبية • اليوم 10:30 صباحاً", "زيارة متابعة • غداً 02:00 ظهراً", "فحص مخبري • الأحد 09:00 صباحاً"))
+        DashboardTab.Messages -> SimpleListScreen(modifier, "الرسائل", "محادثات تجريبية — غير متصلة بخدمة مراسلة", listOf("مركز الرعاية الصحية", "د. أحمد محمد", "صيدلية الأمل"))
+        DashboardTab.Profile -> ProfileScreen(modifier, account, displayName, onSignOut)
     }
 }
 
 @Composable
-private fun HomeDashboard(modifier: Modifier, account: AccountType) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+private fun HomeDashboard(modifier: Modifier, account: AccountType, displayName: String) {
+    LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         item {
-            Text("مرحباً بك 👋", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Text("قسم ${account.title}", color = Muted, modifier = Modifier.padding(top = 4.dp))
+            Text("مرحباً، $displayName 👋", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+            Text("حساب ${account.title}", color = Muted, modifier = Modifier.padding(top = 4.dp))
         }
         item {
-            Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-                Column(Modifier.fillMaxWidth().padding(18.dp)) {
-                    Text("ملخص اليوم", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Blue)) {
+                Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                    Text("صحتك أولويتنا", color = Color.White, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                    Text("تابع خدماتك الصحية من مكان واحد.", color = Color.White.copy(alpha = .9f), modifier = Modifier.padding(top = 6.dp))
                     Spacer(Modifier.height(14.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        MetricCard("03", "مواعيد قادمة", Blue, Modifier.weight(1f))
-                        MetricCard("02", "رسائل جديدة", Green, Modifier.weight(1f))
+                    Surface(color = Color.White, shape = RoundedCornerShape(12.dp)) {
+                        Text("عرض المواعيد", color = Blue, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp))
                     }
                 }
             }
         }
         item {
-            Text("إجراءات سريعة", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+            Text("ملخص اليوم", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(10.dp))
-            Card(shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-                Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(46.dp).background(Blue.copy(alpha = .1f), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Blue)
-                    }
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                MetricCard("03", "مواعيد تجريبية", Blue, Modifier.weight(1f))
+                MetricCard("02", "رسائل تجريبية", Green, Modifier.weight(1f))
+            }
+        }
+        item {
+            Text("خدمات سريعة", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(8.dp))
+            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Blue, modifier = Modifier.size(28.dp))
                     Spacer(Modifier.width(12.dp))
                     Column {
                         Text("إدارة المواعيد", color = Ink, fontWeight = FontWeight.Bold)
-                        Text("استعرض المواعيد وتفاصيلها", color = Muted, fontSize = 13.sp)
+                        Text("استعرض المواعيد التجريبية من شريط التنقل.", color = Muted, fontSize = 13.sp)
                     }
                 }
             }
         }
         item {
-            Card(shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFE9F5EF))) {
-                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("ℹ️", fontSize = 24.sp)
-                    Spacer(Modifier.width(10.dp))
-                    Text("للطوارئ، ات��ل بخدمات الطوارئ المحلية مباشرةً. التطبيق ليس بديلاً عن الرعاية الطبية.", color = Ink, fontSize = 13.sp)
-                }
+            Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0))) {
+                Text("للطوارئ، اتصل بخدمات الطوارئ المحلية مباشرةً. هذا النموذج التجريبي ليس بديلاً عن الرعاية الطبية.", color = Ink, fontSize = 13.sp, modifier = Modifier.padding(16.dp))
             }
         }
     }
@@ -299,9 +323,9 @@ private fun HomeDashboard(modifier: Modifier, account: AccountType) {
 
 @Composable
 private fun MetricCard(value: String, label: String, color: Color, modifier: Modifier = Modifier) {
-    Surface(modifier = modifier, color = color.copy(alpha = .08f), shape = RoundedCornerShape(14.dp)) {
-        Column(Modifier.padding(14.dp)) {
-            Text(value, color = color, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+    Surface(modifier = modifier, color = Color.White, shape = RoundedCornerShape(16.dp), shadowElevation = 1.dp) {
+        Column(Modifier.padding(16.dp)) {
+            Text(value, color = color, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
             Text(label, color = Muted, fontSize = 12.sp)
         }
     }
@@ -309,7 +333,7 @@ private fun MetricCard(value: String, label: String, color: Color, modifier: Mod
 
 @Composable
 private fun SimpleListScreen(modifier: Modifier, title: String, subtitle: String, rows: List<String>) {
-    LazyColumn(modifier.fillMaxSize(), contentPadding = androidx.compose.foundation.layout.PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
             Text(title, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.Bold)
             Text(subtitle, color = Muted, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
@@ -317,16 +341,9 @@ private fun SimpleListScreen(modifier: Modifier, title: String, subtitle: String
         items(rows) { row ->
             Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(44.dp).background(Blue.copy(alpha = .1f), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(if (title == "مواعيدي") Icons.Default.CalendarMonth else Icons.Default.ChatBubbleOutline,
-                            contentDescription = null, tint = Blue)
-                    }
+                    Icon(if (title == "مواعيدي") Icons.Default.CalendarMonth else Icons.Default.ChatBubbleOutline, contentDescription = null, tint = Blue, modifier = Modifier.size(28.dp))
                     Spacer(Modifier.width(12.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(row, color = Ink, fontWeight = FontWeight.Bold)
-                        Text(if (title == "مواعيدي") "اليوم • 10:30 صباحاً" else "اضغط لفتح المحادثة", color = Muted, fontSize = 13.sp)
-                    }
-                    Text(if (title == "مواعيدي") "قادم" else "جديد", color = Green, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text(row, color = Ink, fontWeight = FontWeight.Medium)
                 }
             }
         }
@@ -334,17 +351,17 @@ private fun SimpleListScreen(modifier: Modifier, title: String, subtitle: String
 }
 
 @Composable
-private fun ProfileScreen(modifier: Modifier, account: AccountType, onChooseAccount: () -> Unit) {
+private fun ProfileScreen(modifier: Modifier, account: AccountType, displayName: String, onSignOut: () -> Unit) {
     Column(modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         Text("حسابي", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.Bold)
         Card(shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(56.dp).background(Blue.copy(alpha = .1f), CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Person, contentDescription = null, tint = Blue, modifier = Modifier.size(30.dp))
+                Surface(color = Blue.copy(alpha = .1f), shape = CircleShape, modifier = Modifier.size(54.dp)) {
+                    BoxCenter { Icon(Icons.Default.Person, contentDescription = null, tint = Blue, modifier = Modifier.size(30.dp)) }
                 }
                 Spacer(Modifier.width(14.dp))
                 Column {
-                    Text("مستخدم تجريبي", color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                    Text(displayName, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
                     Text(account.title, color = Muted)
                 }
             }
@@ -353,11 +370,15 @@ private fun ProfileScreen(modifier: Modifier, account: AccountType, onChooseAcco
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Settings, contentDescription = null, tint = Muted)
                 Spacer(Modifier.width(12.dp))
-                Text("الإعدادات", color = Ink)
+                Column {
+                    Text("الإعدادات", color = Ink, fontWeight = FontWeight.Medium)
+                    Text("إعدادات العرض التجريبي", color = Muted, fontSize = 12.sp)
+                }
             }
         }
-        Button(onClick = onChooseAccount, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Blue)) {
-            Text("تغيير نوع الحساب")
+        Button(onClick = onSignOut, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Blue)) {
+            Text("تسجيل الخروج")
         }
+        Text("الحساب والبيانات محلية ومؤقتة، وتُمسح عند إغلاق التطبيق.", color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
     }
 }
